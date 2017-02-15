@@ -2,32 +2,37 @@ var gulp = require('gulp');
 var size = require('gulp-size');
 var uglify = require('gulp-uglify');
 var mergeStream = require('merge-stream');
-var config = require('./../config');
 var gutil = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
+var config = require('./../config');
 
 
 gulp.task('uglify:dist', function () {
 
-	if (!config.global.tasks.uglify) {
+	if (config.global.tasks.uglify) {
+
+		return mergeStream(config.global.resources.map( function(currentResource) {
+			return mergeStream(config.uglify.folders.map( function(folder) {
+
+				var srcArray = [config.global.dev + currentResource + '/' + folder + '/**/*.js'];
+
+				config.uglify.ignoreList.forEach(function (path) {
+					srcArray.push('!' + config.global.dev + currentResource + path);
+				});
+
+				return gulp.src(srcArray)
+					.pipe(config.uglify.sourcemaps ? sourcemaps.init() : gutil.noop())
+					.pipe(uglify())
+					.pipe(size({
+							title: 'uglified',
+							showFiles: true
+						}))
+					.pipe(config.uglify.sourcemaps ? sourcemaps.write() : gutil.noop())
+					.pipe(gulp.dest(config.global.dist + currentResource + '/' + folder + '/'));
+			}));
+		}));
+
+	} else {
 		gutil.log(gutil.colors.yellow('uglify disabled'));
 	}
-
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		var srcArray = [config.global.dev + currentResource + '/js/**/*.js'];
-
-		config.global.uglifyExceptions.forEach(function(exception) {
-			srcArray.push('!' + config.global.dev + currentResource + '/js/**/' + exception);
-		});
-
-		return gulp.src(srcArray)
-			.pipe(sourcemaps.init())
-			.pipe(config.global.tasks.uglify ? uglify() : gutil.noop())
-			.pipe(config.global.tasks.uglify ? size({
-				title: 'uglified',
-				showFiles: true
-			}) : gutil.noop())
-			.pipe(sourcemaps.write())
-			.pipe(gulp.dest(config.global.dist + currentResource + '/js/'));
-	}));
 });

@@ -5,27 +5,29 @@ var projectConfig = require('../../../projectConfig.json');
 var src  = 'app';
 var dev  = '.tmp';
 var dist = 'dist';
-
+var node = 'node_modules';
 
 module.exports = {
     global: {
         src:  src,
         dev:  dev,
         dist: dist,
-		resources: ['/resources'],
-		tasks: {
-			linting: true,
-			iconfont: true,
-			angular: true,
-			handlebars: true,
-			uglify: true,
-			cleanCss: true,
-			favicons: true,
-			cssStats: true,
-			typescript: true,
-			image: true
-		},
-		uglifyExceptions: []
+        node: node,
+        resources: ['/resources'],
+        tasks: {
+            linting: true,
+            iconfont: true,
+            angular: true,
+            handlebars: true,
+            uglify: true,
+            cleanCss: true,
+            favicons: true,
+            cssStats: true,
+            typescript: true,
+            image: true,
+            webpack: true
+        },
+        externalResources: {}
     },
 
     //=== Plugins ===//
@@ -54,9 +56,9 @@ module.exports = {
         html: "htmlhead.favicons.html",
         pipeHTML: true,
         replace: true,
-		icons: {
-			appleStartup: false
-		}
+        icons: {
+            appleStartup: false
+        }
     },
 
     handlebars: {
@@ -81,24 +83,24 @@ module.exports = {
         cssClass: 'icon'
     },
 
-	image: {
-		pngquant: true,
-		optipng: false,
-		zopflipng: true,
-		jpegRecompress: false,
-		jpegoptim: true,
-		mozjpeg: true,
-		gifsicle: true,
-		svgo: true,
-		concurrent: 10
-	},
+    image: {
+        pngquant: true,
+        optipng: false,
+        zopflipng: true,
+        jpegRecompress: false,
+        jpegoptim: true,
+        mozjpeg: true,
+        gifsicle: true,
+        svgo: true,
+        concurrent: 10
+    },
 
     modernizr: {
         options : [
             "setClasses",
             "addTest"
         ],
-	    excludeTests: ['hidden']
+        excludeTests: ['hidden']
     },
 
     sass: {
@@ -116,15 +118,13 @@ module.exports = {
         }
     },
 
-    typescript: {
-		noImplicitAny: true,
-		suppressImplicitAnyIndexErrors: true,
-		module: 'umd',
-		target: 'ES5'
-    },
+    typescript: {},
 
     uglify: {
-        preserveComments: 'license'
+        preserveComments: 'license',
+        sourcemaps: false,
+        folders: ['js', 'ts', 'jsx'],
+        ignoreList: []
     },
 
     zetzer: {
@@ -140,5 +140,5 @@ module.exports = {
 };
 
 if(projectConfig) {
-	_.merge(module.exports, projectConfig);
+    _.merge(module.exports, projectConfig);
 }

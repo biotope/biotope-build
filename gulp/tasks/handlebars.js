@@ -24,15 +24,13 @@ gulp.task('handlebars', function () {
 				.pipe(handlebars({
 					handlebars: require('handlebars')
 				}))
-				.pipe(wrap(config.handlebars.partialWrap, {}, {
-					imports: {
-						processPartialName: function (fileName) {
-							// Strip the extension and the underscore
-							// Escape the output with JSON.stringify
-							return JSON.stringify(path.basename(fileName, '.js').substr(1));
-						}
+				.pipe(wrap(config.handlebars.partialWrap, {
+					processPartialName: function (fileName) {
+						// Strip the extension and the underscore
+						// Escape the output with JSON.stringify
+						return JSON.stringify(path.basename(fileName, '.js').substr(1));
 					}
-				}));
+				}, {}));
 		}));
 
 		var templates =  mergeStream(config.global.resources.map( function(currentResource) {
