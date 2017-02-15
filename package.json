@@ -7,7 +7,7 @@
     "url": "https://github.com/virtualidentityag/gulp-build-framework"
   },
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "autoprefixer": "6.3.6",
     "chai": "3.5.0",
     "chai-fs": "0.1.0",
