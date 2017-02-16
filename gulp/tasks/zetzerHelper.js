@@ -2,7 +2,7 @@ var fs = require('fs');
 
 module.exports = {
 
-	package: require('./../../package.json'),
+	package: require('./../../../../package.json'),
 
 	text: function (count, max) {
 		if (max !== 0 && typeof max !== 'undefined' && max > count) {
