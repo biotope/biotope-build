@@ -18,7 +18,7 @@ gulp.task('handlebars', function () {
 
 		var partials = mergeStream(config.global.resources.map( function(currentResource) {
 			return gulp.src([
-				config.global.src + currentResource + '/templates/**/_*.hbs'
+				config.global.src + currentResource + '/hbs/**/_*.hbs'
 			])
 				.pipe(plumber())
 				.pipe(handlebars({
@@ -35,7 +35,7 @@ gulp.task('handlebars', function () {
 
 		var templates =  mergeStream(config.global.resources.map( function(currentResource) {
 			return gulp.src([
-				config.global.src + currentResource + '/templates/**/[^_]*.hbs'
+				config.global.src + currentResource + '/hbs/**/[^_]*.hbs'
 			])
 				.pipe(plumber())
 				.pipe(handlebars({
@@ -64,7 +64,7 @@ gulp.task('watch:handlebars', function () {
 	if (config.global.tasks.handlebars) {
 		config.global.resources.forEach(function (currentResource) {
 			watch([
-				config.global.src + currentResource + '/templates/**/*.hbs',
+				config.global.src + currentResource + '/hbs/**/*.hbs',
 				config.global.src + currentResource + '/js/handlebars.helper.js'
 			], function () {
 				runSequence('handlebars');
