@@ -6,7 +6,7 @@ var watch = require('gulp-watch');
 var gutil = require('gulp-util');
 var runSequence = require('run-sequence');
 var config = require('./../config');
-var webpackConfig = require('./../../webpack.config.js');
+var webpackConfig = require('./../../../../webpack.config.js');
 
 gulp.task('webpack', function() {
 
