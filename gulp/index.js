@@ -19,7 +19,6 @@ gulp.task('build:dev', function (callback) {
 		[
 			'lint:sass',
 			'lint:json',
-			'lint:typescript',
 			'jshint',
 			'eslint',
 			'iconfont',
@@ -106,7 +105,6 @@ gulp.task('serve', function (callback) {
 			'watch:angularTemplates',
 			'watch:json',
 			'watch:html',
-			'watch:typescript',
 			'watch:webpack'
 		],
 		callback
