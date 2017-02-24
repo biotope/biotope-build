@@ -33,7 +33,6 @@ gulp.task('build:dev', function (callback) {
 		[
 			'zetzer',
 			'sass',
-            'typescript',
 			'webpack',
 			'indexr'
 		],
