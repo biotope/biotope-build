@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "declaration": false,
+    "target": "ES5",
+    "module": "CommonJS"
+  },
+  "typeRoots": [
+    "node_modules/@types"
+  ],
+  "types": [
+    "jquery"
+  ],
+  "exclude": [
+    "dist",
+    "example",
+    "node_modules",
+    "test"
+  ]
+}

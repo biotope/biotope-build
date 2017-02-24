@@ -1,6 +1,6 @@
 {
   "name": "gulp-build-framework",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "An advanced frontend build runtime based on gulp",
   "repository": {
     "type": "git",
@@ -82,10 +82,12 @@
     "require-dir": "^0.3.1",
     "run-sequence": "^1.2.2",
     "serve-static": "^1.11.2",
+    "ts-loader": "^2.0.1",
     "tslint": "^4.4.2",
     "typescript": "^2.1.6",
     "vi-custom-assertions-commands": "git+https://github.com/virtualidentityag/vi-custom-assertions-commands.git#master",
     "vinyl-named": "1.1.0",
+    "webpack": "^2.2.1",
     "webpack-stream": "3.2.0",
     "yargs": "4.8.1"
   },
