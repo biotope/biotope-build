@@ -9,14 +9,11 @@ var webpackStream = require('webpack-stream');
 var webpackConfig = require('./../../webpack.config.js');
 var config = require('./../config');
 
-gulp.task('webpack', function() {
+gulp.task('webpack:jsx', function() {
 
 	if (config.global.tasks.webpack) {
 		return mergeStream(config.global.resources.map( function(currentResource) {
-			return gulp.src([
-			    config.global.src + currentResource + '/jsx/*.jsx',
-                config.global.src + currentResource + '/ts/*.ts'
-            ])
+			return gulp.src(config.global.src + currentResource + '/jsx/*.jsx')
 				.pipe(named())
 				.pipe(webpackStream(webpackConfig, webpack))
 				.pipe(gulp.dest(config.global.dev + currentResource + '/jsx/'));
@@ -27,19 +24,45 @@ gulp.task('webpack', function() {
 
 });
 
-gulp.task('watch:webpack', function () {
+gulp.task('webpack:ts', function() {
+
+    if (config.global.tasks.webpack) {
+        return mergeStream(config.global.resources.map( function(currentResource) {
+            return gulp.src(config.global.src + currentResource + '/ts/*.ts')
+                .pipe(named())
+                .pipe(webpackStream(webpackConfig, webpack))
+                .pipe(gulp.dest(config.global.dev + currentResource + '/ts/'));
+        }));
+    } else {
+        gutil.log(gutil.colors.yellow('webpack disabled'));
+    }
+
+});
+
+gulp.task('watch:webpack:jsx', function () {
 
 	if (config.global.tasks.webpack) {
 		config.global.resources.forEach(function (currentResource) {
-			watch([
-				config.global.src + currentResource + '/jsx/**/*.jsx',
-                config.global.src + currentResource + '/ts/**/*.ts'
-			], function () {
+			watch(config.global.src + currentResource + '/jsx/**/*.jsx', function () {
 				runSequence(
-					['webpack']
+					['webpack:jsx']
 				);
 			});
 		});
 	}
+
+});
+
+gulp.task('watch:webpack:ts', function () {
+
+    if (config.global.tasks.webpack) {
+        config.global.resources.forEach(function (currentResource) {
+            watch(config.global.src + currentResource + '/ts/**/*.ts', function () {
+                runSequence(
+                    ['webpack:ts']
+                );
+            });
+        });
+    }
 
 });
