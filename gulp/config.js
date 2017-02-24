@@ -83,6 +83,10 @@ module.exports = {
         cssClass: 'icon'
     },
 
+    image: {
+        verbose: true
+    },
+
     modernizr: {
         options : [
             "setClasses",

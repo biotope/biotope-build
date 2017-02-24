@@ -8,7 +8,15 @@ gulp.task('image:dist', function () {
 
 	if (config.global.tasks.image) {
 		return gulp.src(config.global.dist + '/resources/img/**/*')
-			.pipe(image())
+			.pipe(image(
+                [
+                    image.gifsicle(),
+                    image.jpegtran(),
+                    image.optipng(),
+                    image.svgo()
+                ],
+                config.image
+            ))
 			.pipe(gulp.dest(config.global.dist + '/resources/img/'));
 	} else {
 		gutil.log(gutil.colors.yellow('image compressor disabled'));
