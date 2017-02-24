@@ -1,6 +1,6 @@
 {
   "name": "gulp-build-framework",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "An advanced frontend build runtime based on gulp",
   "repository": {
     "type": "git",
@@ -42,7 +42,7 @@
     "gulp-htmlmin": "^3.0.0",
     "gulp-iconfont-css": "2.1.0",
     "gulp-if": "^2.0.2",
-    "gulp-image": "^2.7.5",
+    "gulp-imagemin": "^3.1.1",
     "gulp-inject": "^4.2.0",
     "gulp-jshint": "^2.0.4",
     "gulp-jsonlint": "^1.2.0",

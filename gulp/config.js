@@ -83,18 +83,6 @@ module.exports = {
         cssClass: 'icon'
     },
 
-    image: {
-        pngquant: true,
-        optipng: false,
-        zopflipng: true,
-        jpegRecompress: false,
-        jpegoptim: true,
-        mozjpeg: true,
-        gifsicle: true,
-        svgo: true,
-        concurrent: 10
-    },
-
     modernizr: {
         options : [
             "setClasses",
