@@ -22,7 +22,9 @@ gulp.task('cssstats', function () {
 				// IE9 selector limit
 				if (stats.selectors.total > 4096) {
 					gutil.log(gutil.colors.red('Too much selectors for IE9 (' + stats.selectors.total + ' Selectors) in ' + filepath));
-					process.exit(1);
+					if(config.cssstats.exit) {
+					    process.exit(1);
+                    }
 				} else {
 					gutil.log(gutil.colors.green('Selectors: ' + stats.selectors.total));
 				}

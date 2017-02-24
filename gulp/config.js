@@ -44,6 +44,10 @@ module.exports = {
 
     cssmin: {},
 
+    cssstats: {
+        exit: false
+    },
+
     favicons: {
         appName: "gulp-frontend-boilerplate",
         background: "#020307",
