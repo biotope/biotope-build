@@ -17,10 +17,10 @@
    For example: `yarn install https://github.com/janrembold/jquery-debouncedwidth#1.1.3`
 
    In case the target repository doesn't have a (valid) package.json:
-* Add a package.json if you have access to that repository
-* Ask the developer to add one, or better send a pull request
-* See forked repositories in https://github.com/virtualidentityag, it's possible someone else already had that problem
-* Fork the repository and add a package.json yourself and install this repository
+ * Add a package.json if you have access to that repository
+ * Ask the developer to add one, or better send a pull request
+ * See forked repositories in https://github.com/virtualidentityag, it's possible someone else already had that problem
+ * Fork the repository and add a package.json yourself and install this repository
 
 5. Update script paths in `scripts.html` and maybe other relevant script-loading files, e.g. `_mock/configuration.js` or `conditional-resource-loader` paths.
 
