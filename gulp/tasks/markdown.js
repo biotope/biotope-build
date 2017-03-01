@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var markdown = require('gulp-markdown');
+var gutil = require('gulp-util');
 var config = require('./../config');
 
 gulp.task('markdown', function () {
