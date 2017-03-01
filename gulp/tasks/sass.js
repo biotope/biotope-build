@@ -15,8 +15,8 @@ gulp.task('sass', function () {
 
 	return mergeStream(config.global.resources.map( function(currentResource) {
 		return gulp.src([
-			config.global.src + currentResource + '/css/**/*.scss',
-			'!' + config.global.src + currentResource + '/css/**/_*.scss'
+			config.global.src + currentResource + '/scss/**/*.scss',
+			'!' + config.global.src + currentResource + '/scss/**/_*.scss'
 		])
 			.pipe(sourcemaps.init())
 			.pipe(sass(config.sass).on('error', sass.logError))
@@ -32,7 +32,7 @@ gulp.task('lint:sass', function () {
 
 	if (config.global.tasks.linting) {
 		return mergeStream(config.global.resources.map( function(currentResource) {
-			return gulp.src(config.global.src + currentResource.replace('/','') + '/css/**/*.s+(a|c)ss')
+			return gulp.src(config.global.src + currentResource.replace('/','') + '/scss/**/*.s+(a|c)ss')
 				.pipe(cached('sass'))
 				.pipe(sassLint())
 				.pipe(sassLint.format())
