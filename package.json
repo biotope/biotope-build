@@ -47,6 +47,7 @@
     "gulp-jshint": "^2.0.4",
     "gulp-jsonlint": "^1.2.0",
     "gulp-livereload": "3.8.1",
+    "gulp-markdown": "^1.2.0",
     "gulp-modernizr": "1.0.0-alpha",
     "gulp-ng-annotate": "1.1.0",
     "gulp-nightwatch": "^0.3.2",

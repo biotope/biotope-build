@@ -5,6 +5,7 @@ var projectConfig = require('../../../projectConfig.json');
 var src  = 'app';
 var dev  = '.tmp';
 var dist = 'dist';
+var docs = 'documentation';
 var node = 'node_modules';
 
 module.exports = {
@@ -12,19 +13,21 @@ module.exports = {
         src:  src,
         dev:  dev,
         dist: dist,
+        docs: docs,
         node: node,
         resources: ['/resources'],
         tasks: {
-            linting: true,
-            iconfont: true,
             angular: true,
-            handlebars: true,
-            uglify: true,
             cleanCss: true,
-            favicons: true,
             cssStats: true,
-            typescript: true,
+            favicons: true,
+            handlebars: true,
+            iconfont: true,
             image: true,
+            linting: true,
+            markdown: false,
+            typescript: true,
+            uglify: true,
             webpack: true
         },
         externalResources: {}
@@ -90,6 +93,8 @@ module.exports = {
     image: {
         verbose: true
     },
+
+    markdown: {},
 
     modernizr: {
         options : [
