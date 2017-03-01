@@ -45,7 +45,7 @@ module.exports = {
     cssmin: {},
 
     cssstats: {
-        exit: false
+        exit: true
     },
 
     favicons: {
