@@ -1,18 +1,18 @@
 module.exports = {
     watch: false,
     resolve: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx']
+        extensions: ['.js', '.ts', '.tsx', '.jsx']
     },
     devtool: 'source-map',
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.ts$/,
                 loader: 'ts-loader',
                 exclude: ['/node_modules/']
             },
             {
-                test: /\.jsx$/,
+                test: /\.(j|t)sx$/,
                 loader: 'babel-loader',
                 options: {
                     cacheDirectory: true

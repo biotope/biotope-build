@@ -13,10 +13,10 @@ gulp.task('webpack:jsx', function() {
 
 	if (config.global.tasks.webpack) {
 		return mergeStream(config.global.resources.map( function(currentResource) {
-			return gulp.src(config.global.src + currentResource + '/jsx/*.jsx')
+			return gulp.src(config.global.src + currentResource + '/react/*.(j|t)sx')
 				.pipe(named())
 				.pipe(webpackStream(webpackConfig, webpack))
-				.pipe(gulp.dest(config.global.dev + currentResource + '/jsx/'));
+				.pipe(gulp.dest(config.global.dev + currentResource + '/react/'));
 		}));
 	} else {
 		gutil.log(gutil.colors.yellow('webpack disabled'));
