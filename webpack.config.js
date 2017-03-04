@@ -2,8 +2,18 @@ var excludes = [
     '/node_modules/',
     '/patterns/',
     '/dist/',
+    '/test/',
     '/.tmp/'
 ];
+
+var babelOptions = {
+    babelrc: false,
+    cacheDirectory: true,
+    presets: [
+        'es2015',
+        'react'
+    ]
+};
 
 module.exports = {
     watch: false,
@@ -15,7 +25,7 @@ module.exports = {
     externals: {
         "jquery": "jQuery",
         "react": "React",
-        "react-dom": "ReactDom"
+        "react-dom": "ReactDOM"
     },
 
     devtool: 'source-map',
@@ -32,9 +42,7 @@ module.exports = {
                 use: [
                     {
                         loader: 'babel-loader',
-                        options: {
-                            cacheDirectory: true
-                        }
+                        options: babelOptions
                     }
                 ],
                 exclude: excludes
@@ -44,12 +52,15 @@ module.exports = {
                 use: [
                     {
                         loader: 'babel-loader',
-                        options: {
-                            cacheDirectory: true
-                        }
+                        options: babelOptions
                     },
                     {
-                        loader: 'ts-loader'
+                        loader: 'ts-loader',
+                        options: {
+                            compilerOptions: {
+                                "target": "es2015"
+                            }
+                        }
                     }
                 ],
                 exclude: excludes
