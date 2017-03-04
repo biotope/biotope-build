@@ -36,3 +36,5 @@
 10. Check global variable naming for handlebars namespace, default is `global.configuration.data.tpl`. Some older projects use customer name instead of `global`. Change namespace in project config.
 
 11. Load `head.configuration.js` in `<head>` BEFORE setting global configurations. Always use global.configuration getters and setters!
+
+12. Remove .babelrc
