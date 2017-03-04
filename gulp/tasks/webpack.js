@@ -9,18 +9,22 @@ var webpackStream = require('webpack-stream');
 var webpackConfig = require('./../../webpack.config.js');
 var config = require('./../config');
 
-gulp.task('webpack:jsx', function() {
+gulp.task('webpack:react', function() {
 
-	if (config.global.tasks.webpack) {
-		return mergeStream(config.global.resources.map( function(currentResource) {
-			return gulp.src(config.global.src + currentResource + '/react/*.(j|t)sx')
-				.pipe(named())
-				.pipe(webpackStream(webpackConfig, webpack))
-				.pipe(gulp.dest(config.global.dev + currentResource + '/react/'));
-		}));
-	} else {
-		gutil.log(gutil.colors.yellow('webpack disabled'));
-	}
+    if (config.global.tasks.webpack) {
+        return mergeStream(config.global.resources.map( function(currentResource) {
+            return gulp.src(config.global.src + currentResource + '/react/*.+(t|j)sx')
+                .pipe(named())
+                .pipe(webpackStream(webpackConfig, webpack))
+                .on('error', function(err) {
+                    new gutil.PluginError('React Task', err, {showStack: true});
+                    this.emit('end');
+                })
+                .pipe(gulp.dest(config.global.dev + currentResource + '/react/'));
+        }));
+    } else {
+        gutil.log(gutil.colors.yellow('webpack disabled'));
+    }
 
 });
 
@@ -31,6 +35,10 @@ gulp.task('webpack:ts', function() {
             return gulp.src(config.global.src + currentResource + '/ts/*.ts')
                 .pipe(named())
                 .pipe(webpackStream(webpackConfig, webpack))
+                .on('error', function(err) {
+                    new gutil.PluginError('TS Task', err, {showStack: true});
+                    this.emit('end');
+                })
                 .pipe(gulp.dest(config.global.dev + currentResource + '/ts/'));
         }));
     } else {
@@ -39,17 +47,17 @@ gulp.task('webpack:ts', function() {
 
 });
 
-gulp.task('watch:webpack:jsx', function () {
+gulp.task('watch:webpack:react', function () {
 
-	if (config.global.tasks.webpack) {
-		config.global.resources.forEach(function (currentResource) {
-			watch(config.global.src + currentResource + '/jsx/**/*.jsx', function () {
-				runSequence(
-					['webpack:jsx']
-				);
-			});
-		});
-	}
+    if (config.global.tasks.webpack) {
+        config.global.resources.forEach(function (currentResource) {
+            watch(config.global.src + currentResource + '/react/**/*.+(j|t)sx', function () {
+                runSequence(
+                    ['webpack:react']
+                );
+            });
+        });
+    }
 
 });
 

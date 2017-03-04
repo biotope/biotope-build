@@ -84,7 +84,7 @@ module.exports = {
 
     iconfontCss: {
         fontName: 'Icons',
-        path: src + '/resources/css/fonts/iconfont/_icons.scss',
+        path: src + '/resources/scss/fonts/iconfont/_icons.scss',
         targetPath: '../../../../.iconfont/_icons.scss',
         fontPath: '../fonts/icons/',
         cssClass: 'icon'

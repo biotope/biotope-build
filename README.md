@@ -31,4 +31,8 @@
 
 8. Rename folder `app/resources/templates´ to `app/resources/hbs´
 
-9. Check global variable naming for handlebars namespace, default is `global.configuration.data.tpl`. Some older projects use customer name instead of `global`. Change namespace in project config.
+9. Rename folder `app/resources/jsx´ to `app/resources/react´ (fix script paths accordingly)
+
+10. Check global variable naming for handlebars namespace, default is `global.configuration.data.tpl`. Some older projects use customer name instead of `global`. Change namespace in project config.
+
+11. Load `head.configuration.js` in `<head>` BEFORE setting global configurations. Always use global.configuration getters and setters!

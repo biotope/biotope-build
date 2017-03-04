@@ -32,7 +32,7 @@ gulp.task('build:dev', function (callback) {
 		[
 			'zetzer',
 			'sass',
-			'webpack:jsx',
+			'webpack:react',
             'webpack:ts',
 			'indexr'
 		],
@@ -107,7 +107,7 @@ gulp.task('serve', function (callback) {
 			'watch:angularTemplates',
 			'watch:json',
 			'watch:html',
-			'watch:webpack:jsx',
+			'watch:webpack:react',
             'watch:webpack:ts'
 		],
 		callback
