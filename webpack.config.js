@@ -7,8 +7,8 @@ var excludes = [
 ];
 
 var babelOptions = {
-    babelrc: false,
-    cacheDirectory: true,
+    babelrc: 'false',
+    cacheDirectory: 'true',
     presets: [
         'es2015',
         'react'
@@ -23,9 +23,9 @@ module.exports = {
     },
 
     externals: {
-        "jquery": "jQuery",
-        "react": "React",
-        "react-dom": "ReactDOM"
+        jquery: 'jQuery',
+        react: 'React',
+        'react-dom': 'ReactDOM'
     },
 
     devtool: 'source-map',
@@ -58,7 +58,7 @@ module.exports = {
                         loader: 'ts-loader',
                         options: {
                             compilerOptions: {
-                                "target": "es2015"
+                                target: 'es2015'
                             }
                         }
                     }
