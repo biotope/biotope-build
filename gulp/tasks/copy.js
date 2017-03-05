@@ -23,11 +23,11 @@ gulp.task('copy:dist:js', function () {
 
 });
 
-gulp.task('copy:dist:jsx', function () {
+gulp.task('copy:dist:react', function () {
 
 	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.dev + currentResource + '/jsx/*.js')
-			.pipe(gulp.dest(config.global.dist + currentResource + '/jsx/'));
+		return gulp.src(config.global.dev + currentResource + '/react/*.js')
+			.pipe(gulp.dest(config.global.dist + currentResource + '/react/'));
 	}));
 
 });
