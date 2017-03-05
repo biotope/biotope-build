@@ -7,8 +7,8 @@ var excludes = [
 ];
 
 var babelOptions = {
-    babelrc: 'false',
-    cacheDirectory: 'true',
+    babelrc: false,
+    cacheDirectory: true,
     presets: [
         'es2015',
         'react'
