@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var less = require('gulp-less');
-var lessReporter = require('gulp-less-reporter');
+var lesshint = require('gulp-lesshint');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var cached = require('gulp-cached');
@@ -19,13 +19,22 @@ gulp.task('less', function () {
 			'!' + config.global.src + currentResource + '/less/**/_*.less'
 		])
 			.pipe(sourcemaps.init())
-			.pipe(less()).on('error', lessReporter)
+			.pipe(less().on('error', less.logError))
 			.pipe(postcss([
 				autoprefixer(config.autoprefixer)
 			]))
 			.pipe(sourcemaps.write('.'))
 			.pipe(gulp.dest(config.global.dev + currentResource + '/css'));
 	}));
+});
+
+gulp.task('lint:less', () => {
+  return gulp.src('./src/*.less')
+      .pipe(lesshint({
+        // Options
+      }))
+      .pipe(lesshint.reporter('less-reporter')) // Leave empty to use the default, "stylish"
+      .pipe(lesshint.failOnError()); // Use this to fail the task on lint errors
 });
 
 gulp.task('watch:less', function () {
