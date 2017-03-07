@@ -29,10 +29,15 @@ gulp.task('less', function () {
 });
 
 gulp.task('lint:less', function() {
-  return gulp.src('./src/*.less')
-      .pipe(lesshint({}))
-      .pipe(lesshint.reporter('less-reporter')) // Leave empty to use the default, "stylish"
-      .pipe(lesshint.failOnError()); // Use this to fail the task on lint errors
+  if (config.global.tasks.linting) {
+    return mergeStream(config.global.resources.map( function(currentResource) {
+      return gulp.src(config.global.src + currentResource.replace('/','') + '/less/**/*.less')
+				.pipe(cached('less'))
+				.pipe(lesshint({}))
+				.pipe(lesshint.reporter()) // Leave empty to use the default, "stylish"
+				.pipe(lesshint.failOnError()); // Use this to fail the task on lint errors
+    }));
+  }
 });
 
 gulp.task('watch:less', function () {
