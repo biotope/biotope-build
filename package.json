@@ -82,6 +82,7 @@
     "modernizr": "3.3.1",
     "node-resemble-js": "0.0.5",
     "opn": "4.0.1",
+    "path": "^0.12.7",
     "require-dir": "^0.3.1",
     "run-sequence": "^1.2.2",
     "serve-static": "^1.11.2",
