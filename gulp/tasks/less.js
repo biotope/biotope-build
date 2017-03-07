@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var less = require('gulp-less');
+var path = require('path');
 var lesshint = require('gulp-lesshint');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
@@ -19,7 +20,9 @@ gulp.task('less', function () {
 			'!' + config.global.src + currentResource + '/less/**/_*.less'
 		])
 			.pipe(sourcemaps.init())
-			.pipe(less().on('error', less.logError))
+			.pipe(less({
+        paths: [ path.join(__dirname, 'less', 'includes') ]
+      }))
 			.pipe(postcss([
 				autoprefixer(config.autoprefixer)
 			]))
