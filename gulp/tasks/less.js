@@ -14,21 +14,19 @@ var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('less', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src([
-			config.global.src + currentResource + '/less/**/*.less',
-			'!' + config.global.src + currentResource + '/less/**/_*.less'
-		])
-			.pipe(sourcemaps.init())
-			.pipe(less({
-        paths: [ path.join(__dirname, 'less', 'includes') ]
-      }))
-			.pipe(postcss([
-				autoprefixer(config.autoprefixer)
-			]))
-			.pipe(sourcemaps.write('.'))
-			.pipe(gulp.dest(config.global.dev + currentResource + '/css'));
-	}));
+  return mergeStream(config.global.resources.map( function(currentResource) {
+    return gulp.src([
+      config.global.src + currentResource + '/less/**/*.less',
+      '!' + config.global.src + currentResource + '/less/**/_*.less'
+    ])
+				.pipe(sourcemaps.init())
+				.pipe(less())
+				.pipe(postcss([
+				  autoprefixer(config.autoprefixer)
+        ]))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(config.global.dev + currentResource + '/css'));
+  }));
 });
 
 gulp.task('lint:less', function() {
