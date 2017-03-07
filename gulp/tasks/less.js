@@ -28,11 +28,9 @@ gulp.task('less', function () {
 	}));
 });
 
-gulp.task('lint:less', () => {
+gulp.task('lint:less', function() {
   return gulp.src('./src/*.less')
-      .pipe(lesshint({
-        // Options
-      }))
+      .pipe(lesshint({}))
       .pipe(lesshint.reporter('less-reporter')) // Leave empty to use the default, "stylish"
       .pipe(lesshint.failOnError()); // Use this to fail the task on lint errors
 });
