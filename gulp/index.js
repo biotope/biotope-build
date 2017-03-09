@@ -100,6 +100,7 @@ gulp.task('serve', function (callback) {
 			'connect:open',
 			'livereload',
 			'watch:zetzer',
+			'watch:less',
 			'watch:sass',
 			'watch:jshint',
 			'watch:eslint',
