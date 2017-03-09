@@ -17,7 +17,8 @@ gulp.task('build:dev', function (callback) {
 			'clean:iconfont'
 		],
 		[
-			'lint:sass',
+      'lint:less',
+      'lint:sass',
 			'lint:json',
 			'jshint',
 			'eslint',
@@ -31,6 +32,7 @@ gulp.task('build:dev', function (callback) {
 		],
 		[
 			'zetzer',
+			'less',
 			'sass',
 			'webpack:react',
             'webpack:ts',
