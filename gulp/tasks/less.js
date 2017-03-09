@@ -45,7 +45,7 @@ gulp.task('watch:less', function () {
 
 	config.global.resources.forEach(function(currentResource) {
 		watch([
-			config.global.src + currentResource + '/css/**/*.less'
+			config.global.src + currentResource + '/less/**/*.less'
 		], function () {
 			runSequence(
 				['lint:less'],
