@@ -17,6 +17,7 @@ gulp.task('build:dev', function (callback) {
 			'clean:iconfont'
 		],
 		[
+			'lint:less',
 			'lint:sass',
 			'lint:json',
 			'jshint',
@@ -31,9 +32,10 @@ gulp.task('build:dev', function (callback) {
 		],
 		[
 			'zetzer',
+			'less',
 			'sass',
 			'webpack:react',
-            'webpack:ts',
+			'webpack:ts',
 			'indexr'
 		],
 		[
@@ -83,7 +85,7 @@ gulp.task('build', function (callback) {
 		[
 			'inject',
 			'clean:useref',
-            'markdown',
+			'markdown',
 			'cssstats'
 		],
 		callback
@@ -100,6 +102,7 @@ gulp.task('serve', function (callback) {
 			'connect:open',
 			'livereload',
 			'watch:zetzer',
+			'watch:less',
 			'watch:sass',
 			'watch:jshint',
 			'watch:eslint',
@@ -108,7 +111,7 @@ gulp.task('serve', function (callback) {
 			'watch:json',
 			'watch:html',
 			'watch:webpack:react',
-            'watch:webpack:ts'
+			'watch:webpack:ts'
 		],
 		callback
 	);
