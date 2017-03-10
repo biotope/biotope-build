@@ -32,17 +32,15 @@ gulp.task('sass', function () {
 });
 
 gulp.task('lint:sass', function () {
-  if (config.global.tasks.sass) {
-    if (config.global.tasks.linting) {
-      return mergeStream(config.global.resources.map(function(currentResource) {
-        return gulp.src(config.global.src + currentResource.replace('/', '') + '/scss/**/*.s+(a|c)ss')
-            .pipe(cached('sass'))
-            .pipe(sassLint())
-            .pipe(sassLint.format())
-            .pipe(sassLint.failOnError());
-      }));
-    }
-  }
+	if (config.global.tasks.sass && config.global.tasks.linting) {
+		return mergeStream(config.global.resources.map(function(currentResource) {
+			return gulp.src(config.global.src + currentResource.replace('/', '') + '/scss/**/*.s+(a|c)ss')
+					.pipe(cached('sass'))
+					.pipe(sassLint())
+					.pipe(sassLint.format())
+					.pipe(sassLint.failOnError());
+		}));
+	}
 });
 
 gulp.task('watch:sass', function () {
