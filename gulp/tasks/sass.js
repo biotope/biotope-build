@@ -5,6 +5,7 @@ var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var cached = require('gulp-cached');
 var watch = require('gulp-watch');
+var gutil = require('gulp-util');
 var runSequence = require('run-sequence');
 var mergeStream = require('merge-stream');
 var config = require('./../config');
