@@ -96,6 +96,8 @@ module.exports = {
         verbose: true
     },
 
+    less    : {},
+
     markdown: {},
 
     modernizr: {

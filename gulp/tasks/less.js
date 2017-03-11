@@ -19,7 +19,7 @@ gulp.task('less', function () {
         '!' + config.global.src + currentResource + '/less/**/_*.less'
       ])
           .pipe(sourcemaps.init())
-          .pipe(less())
+          .pipe(less(config.less))
           .pipe(postcss([
             autoprefixer(config.autoprefixer)
           ]))
