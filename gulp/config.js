@@ -20,6 +20,8 @@ module.exports = {
             angular: true,
             cleanCss: true,
             cssStats: true,
+            sass: true,
+            less: false,
             favicons: true,
             handlebars: true,
             iconfont: true,
@@ -93,6 +95,8 @@ module.exports = {
     image: {
         verbose: true
     },
+
+    less    : {},
 
     markdown: {},
 
