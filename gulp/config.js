@@ -41,6 +41,10 @@ module.exports = {
         browsers: ['last 1 version']
     },
 
+    checkDependencies: {
+        packageManager: 'yarn'
+    },
+
     cleanCss: {},
 
     connect: {

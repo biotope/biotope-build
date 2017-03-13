@@ -6,7 +6,7 @@ var config = require('./../config');
 
 gulp.task('checkDependencies', function () {
 
-	var output = dependencies.sync({});
+	var output = dependencies.sync(config.checkDependencies);
 	if (output.status === 1) {
 
 		if (output.error.length > 0) {
