@@ -11,7 +11,7 @@ var config = require('./../config');
 
 gulp.task('livereload', function () {
 
-	gulpLivereload.listen();
+	gulpLivereload.listen(config.livereload);
 	watch([
 		config.global.dev + '/**/*',
 		config.global.src + '/resources/js/**/*.js',
@@ -41,7 +41,7 @@ gulp.task('connect:open', function () {
 gulp.task('connect', function () {
 
 	return connect()
-		.use(connectLivereload())
+		.use(connectLivereload(config.livereload))
 		.use(serveStatic(config.global.dev))
 		.use(serveStatic(config.global.src))
 		.listen(config.connect.port);

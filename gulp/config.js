@@ -100,6 +100,10 @@ module.exports = {
 
     less    : {},
 
+    livereload: {
+        port: 35729
+    },
+
     markdown: {},
 
     modernizr: {
