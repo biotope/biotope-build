@@ -109,13 +109,13 @@ module.exports = {
             "setClasses",
             "addTest"
         ],
-        excludeTests: ['hidden']
+        excludeTests: [
+            'hidden'
+        ]
     },
 
     sass: {
-        includePaths: [
-            'app/resources/bower_components/foundation-sites/scss/'
-        ]
+        includePaths: []
     },
 
     tslint: {
@@ -132,7 +132,7 @@ module.exports = {
     uglify: {
         preserveComments: 'license',
         sourcemaps: false,
-        folders: ['js', 'ts', 'jsx'],
+        folders: ['js', 'ts', 'react'],
         ignoreList: []
     },
 
