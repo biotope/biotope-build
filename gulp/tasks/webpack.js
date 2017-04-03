@@ -51,7 +51,10 @@ gulp.task('watch:webpack:react', function () {
 
     if (config.global.tasks.webpack) {
         config.global.resources.forEach(function (currentResource) {
-            watch(config.global.src + currentResource + '/react/**/*.+(j|t)sx', function () {
+            watch([
+                config.global.src + currentResource + '/react/**/*.+(j|t)sx',
+				config.global.src + currentResource + '/react/**/*.+(j|t)s'
+            ], function () {
                 runSequence(
                     ['webpack:react']
                 );
