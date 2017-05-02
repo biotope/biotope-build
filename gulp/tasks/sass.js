@@ -48,7 +48,8 @@ gulp.task('watch:sass', function () {
   if (config.global.tasks.sass) {
     config.global.resources.forEach(function(currentResource) {
       watch([
-        config.global.src + currentResource + '/scss/**/*.scss'
+        config.global.src + currentResource + '/scss/**/*.scss',
+		config.global.src + currentResource + '/react/**/*.scss'
       ], function() {
         runSequence(
             ['lint:sass'],
