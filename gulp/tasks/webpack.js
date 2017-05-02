@@ -32,14 +32,16 @@ gulp.task('webpack:ts', function() {
 
     if (config.global.tasks.webpack) {
         return mergeStream(config.global.resources.map( function(currentResource) {
-            return gulp.src(config.global.src + currentResource + '/ts/*.ts')
-                .pipe(named())
-                .pipe(webpackStream(webpackConfig, webpack))
-                .on('error', function(err) {
-                    new gutil.PluginError('TS Task', err, {showStack: true});
-                    this.emit('end');
-                })
-                .pipe(gulp.dest(config.global.dev + currentResource + '/ts/'));
+			return config.global.reactEntyPoints.map( function(currentReact){
+				return gulp.src(config.global.src + currentResource + '/react' + currentReact)
+					.pipe(named())
+					.pipe(webpackStream(webpackConfig, webpack))
+					.on('error', function(err) {
+						new gutil.PluginError('React Task', err, {showStack: true});
+						this.emit('end');
+					})
+					.pipe(gulp.dest(config.global.dev + currentResource + '/react/'));
+			});
         }));
     } else {
         gutil.log(gutil.colors.yellow('webpack disabled'));
