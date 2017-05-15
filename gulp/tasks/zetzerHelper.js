@@ -1,6 +1,9 @@
 var fs = require('fs');
+var gutil = require('gulp-util');
 
 module.exports = {
+
+    template: gutil.env.template,
 
 	package: require('./../../../../package.json'),
 
