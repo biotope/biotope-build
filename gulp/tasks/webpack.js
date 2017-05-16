@@ -23,7 +23,7 @@ gulp.task('webpack:react', function() {
 					})
 					.pipe(gulp.dest(config.global.dev + currentResource + '/react/'));
 			});
-		});
+		}));
     } else {
         gutil.log(gutil.colors.yellow('webpack disabled'));
     }
