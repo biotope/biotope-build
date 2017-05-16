@@ -13,7 +13,7 @@ gulp.task('webpack:react', function() {
 
     if (config.global.tasks.webpack) {
         return mergeStream(config.global.resources.map( function(currentResource) {
-			return config.global.reactEntyPoints.map(function (currentReact) {
+			return config.global.reactEntryPoints.map(function (currentReact) {
 				return gulp.src(config.global.src + currentResource + '/react' + currentReact)
 					.pipe(named())
 					.pipe(webpackStream(webpackConfig, webpack))
