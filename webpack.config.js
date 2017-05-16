@@ -50,16 +50,7 @@ module.exports = {
                 test: /\.tsx$/,
                 use: [
                     {
-                        loader: 'babel-loader',
-                        options: babelOptions
-                    },
-                    {
                         loader: 'ts-loader',
-                        options: {
-                            compilerOptions: {
-                                target: 'es2015'
-                            }
-                        }
                     }
                 ],
                 exclude: excludes
