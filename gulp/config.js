@@ -32,7 +32,8 @@ module.exports = {
             uglify: true,
             webpack: true
         },
-        externalResources: {}
+        externalResources: {},
+        reactEntryPoints: []
     },
 
     //=== Plugins ===//
