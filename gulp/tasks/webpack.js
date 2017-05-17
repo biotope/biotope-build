@@ -11,7 +11,7 @@ var config = require('./../config');
 
 gulp.task('webpack:react', function() {
 
-    if (config.global.tasks.webpack) {
+    if (config.global.tasks.webpack && config.global.reactEntryPoints.length) {
         return mergeStream(config.global.resources.map( function(currentResource) {
 			return config.global.reactEntryPoints.map(function (currentReact) {
 				return gulp.src(config.global.src + currentResource + '/react' + currentReact)
