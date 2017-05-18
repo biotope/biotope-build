@@ -1,6 +1,6 @@
 {
   "name": "gulp-build-framework",
-  "version": "4.1.4",
+  "version": "4.1.5",
   "description": "An advanced frontend build runtime based on gulp",
   "repository": {
     "type": "git",
