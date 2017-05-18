@@ -1,6 +1,7 @@
 var fs = require('fs');
 var _ = require('lodash');
-var projectConfig = require('../../../projectConfig.json');
+var cwd = process.cwd();
+var projectConfig = require(cwd + '/projectConfig.json');
 
 var src  = 'app';
 var dev  = '.tmp';
@@ -90,7 +91,7 @@ module.exports = {
     iconfontCss: {
         fontName: 'Icons',
         path: src + '/resources/scss/fonts/iconfont/_icons.scss',
-        targetPath: '../../../../.iconfont/_icons.scss',
+        targetPath: cwd + '/.iconfont/_icons.scss',
         fontPath: '../fonts/icons/',
         cssClass: 'icon'
     },
@@ -99,7 +100,7 @@ module.exports = {
         verbose: true
     },
 
-    less    : {},
+    less: {},
 
     livereload: {
         port: 35729

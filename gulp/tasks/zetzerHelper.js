@@ -1,11 +1,12 @@
 var fs = require('fs');
 var gutil = require('gulp-util');
+var cwd = process.cwd();
 
 module.exports = {
 
     template: gutil.env.template,
 
-	package: require('./../../../../package.json'),
+	package: require(cwd + '/package.json'),
 
 	text: function (count, max) {
 		if (max !== 0 && typeof max !== 'undefined' && max > count) {
@@ -27,8 +28,8 @@ module.exports = {
 	},
 
 	renderHbs: function (template, data) {
-		require('./../../../../app/resources/js/handlebars.helper.js');
-		var hbs = './../../../../.tmp/resources/js/handlebars.templates.js';
+		require(cwd + '/app/resources/js/handlebars.helper.js');
+		var hbs = cwd + '/.tmp/resources/js/handlebars.templates.js';
 		delete require.cache[require.resolve(hbs)];
 		require(hbs);
 
