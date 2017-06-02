@@ -97,9 +97,9 @@ gulp.task('serve', function (callback) {
 	runSequence(
 		'build:dev',
 		'connect',
+        'livereload',
 		[
 			'connect:open',
-			'livereload',
 			'watch:zetzer',
 			'watch:less',
 			'watch:sass',

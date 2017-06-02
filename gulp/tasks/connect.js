@@ -1,9 +1,6 @@
 var gulp = require('gulp');
-var connect = require('connect');
-var connectLivereload = require('connect-livereload');
+var connect = require('gulp-connect');
 var opn = require('opn');
-var gulpLivereload = require('gulp-livereload');
-var serveStatic = require('serve-static');
 var cached = require('gulp-cached');
 var watch = require('gulp-watch');
 var config = require('./../config');
@@ -11,24 +8,20 @@ var config = require('./../config');
 
 gulp.task('livereload', function () {
 
-	gulpLivereload.listen(config.livereload);
-	watch([
-		config.global.dev + '/**/*',
-		config.global.src + '/resources/js/**/*.js',
-		config.global.src + '/resources/bower_components/**/*',
-		config.global.src + '/_mock/**/*',
-		config.global.src + '/_assets/**/*',
-		'!' + config.global.dev + '/_mock/**/*',
-		'!' + config.global.dev + '/_assets/**/*',
-		'!' + config.global.dev + '/resources/js/vendor/**/*.js',
-		'!' + config.global.dev + '/resources/bower_components/**/*',
-		'!' + config.global.dev + '/resources/js/handlebars.templates.js'
-	], function (file) {
-		gulp.src(file.path)
-			.pipe(cached('livereload'))
-			.pipe(gulpLivereload());
-
-	});
+    return watch([
+        config.global.dev + '/**/*',
+        config.global.src + '/resources/js/**/*.js',
+        config.global.src + '/resources/bower_components/**/*',
+        config.global.src + '/_mock/**/*',
+        config.global.src + '/_assets/**/*',
+        '!' + config.global.dev + '/_mock/**/*',
+        '!' + config.global.dev + '/_assets/**/*',
+        '!' + config.global.dev + '/resources/js/vendor/**/*.js',
+        '!' + config.global.dev + '/resources/bower_components/**/*',
+        '!' + config.global.dev + '/resources/js/handlebars.templates.js'
+    ], { ignoreInitial: true })
+        .pipe(cached('livereload'))
+        .pipe(gulpLivereload());
 
 });
 
@@ -40,10 +33,11 @@ gulp.task('connect:open', function () {
 
 gulp.task('connect', function () {
 
-	return connect()
-		.use(connectLivereload(config.livereload))
-		.use(serveStatic(config.global.dev))
-		.use(serveStatic(config.global.src))
-		.listen(config.connect.port);
+    connect.server({
+        root: [config.global.dev, config.global.src],
+		port: config.connect.port,
+        livereload: config.livereload
+    });
 
 });
+
