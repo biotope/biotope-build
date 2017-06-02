@@ -16,6 +16,7 @@ var babelOptions = {
 
 module.exports = {
     watch: false,
+    cache: true,
 
     resolve: {
         extensions: ['.js', '.ts', '.tsx', '.jsx']

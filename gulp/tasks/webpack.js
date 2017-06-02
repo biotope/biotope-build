@@ -4,7 +4,8 @@ var mergeStream = require('merge-stream');
 var watch = require('gulp-watch');
 var gutil = require('gulp-util');
 var runSequence = require('run-sequence');
-var webpack = require('webpack');
+var webpackReact = require('webpack');
+var webpackTS = require('webpack');
 var webpackStream = require('webpack-stream');
 var webpackConfig = require('./../../webpack.config.js');
 var config = require('./../config');
@@ -16,7 +17,7 @@ gulp.task('webpack:react', function() {
 			return config.global.reactEntryPoints.map(function (currentReact) {
 				return gulp.src(config.global.src + currentResource + '/react' + currentReact)
 					.pipe(named())
-					.pipe(webpackStream(webpackConfig, webpack))
+					.pipe(webpackStream(webpackConfig, webpackReact))
 					.on('error', function (err) {
 						new gutil.PluginError('React Task', err, {showStack: true});
 						this.emit('end');
@@ -25,7 +26,7 @@ gulp.task('webpack:react', function() {
 			});
 		}));
     } else {
-        gutil.log(gutil.colors.yellow('webpack disabled'));
+        gutil.log(gutil.colors.yellow('webpack:react disabled'));
     }
 
 });
@@ -36,7 +37,7 @@ gulp.task('webpack:ts', function() {
         return mergeStream(config.global.resources.map( function(currentResource) {
 			return gulp.src(config.global.src + currentResource + '/ts/*.ts')
 				.pipe(named())
-				.pipe(webpackStream(webpackConfig, webpack))
+				.pipe(webpackStream(webpackConfig, webpackTS))
 				.on('error', function(err) {
 					new gutil.PluginError('TS Task', err, {showStack: true});
 					this.emit('end');
@@ -44,7 +45,7 @@ gulp.task('webpack:ts', function() {
 				.pipe(gulp.dest(config.global.dev + currentResource + '/ts/'));
         }));
     } else {
-        gutil.log(gutil.colors.yellow('webpack disabled'));
+        gutil.log(gutil.colors.yellow('webpack:ts disabled'));
     }
 
 });
