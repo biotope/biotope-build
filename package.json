@@ -80,7 +80,7 @@
     "modernizr": "3.5.0",
     "node-resemble-js": "0.0.5",
     "opn": "4.0.1",
-    "require-dir": "0.3.1",
+    "require-dir": "0.3.2",
     "run-sequence": "1.2.2",
     "serve-static": "1.12.3",
     "source-map-loader": "0.2.1",
