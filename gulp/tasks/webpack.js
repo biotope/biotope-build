@@ -17,10 +17,7 @@ gulp.task('webpack:react', function() {
 			return config.global.reactEntryPoints.map(function (currentReact) {
 				return gulp.src(config.global.src + currentResource + '/react' + currentReact)
 					.pipe(named())
-					.pipe(webpackStream(webpackConfig, webpackReact, function(err) {
-						new gutil.PluginError('React Task', err, {showStack: true});
-						// this.emit('end');
-					}))
+					.pipe(webpackStream(webpackConfig, webpackReact))
 					.pipe(gulp.dest(config.global.dev + currentResource + '/react/'));
 			});
 		}));
@@ -36,10 +33,7 @@ gulp.task('webpack:ts', function() {
         return mergeStream(config.global.resources.map( function(currentResource) {
 			return gulp.src(config.global.src + currentResource + '/ts/*.ts')
 				.pipe(named())
-				.pipe(webpackStream(webpackConfig, webpackTS, function(err) {
-					new gutil.PluginError('TS Task', err, {showStack: true});
-					// this.emit('end');
-				}))
+				.pipe(webpackStream(webpackConfig, webpackTS))
 				.pipe(gulp.dest(config.global.dev + currentResource + '/ts/'));
         }));
     } else {
