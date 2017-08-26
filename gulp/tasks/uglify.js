@@ -22,7 +22,7 @@ gulp.task('uglify:dist', function () {
 
 				return gulp.src(srcArray)
 					.pipe(config.uglify.sourcemaps ? sourcemaps.init() : gutil.noop())
-					.pipe(uglify())
+					.pipe(uglify()).on('error', gutil.log)
 					.pipe(size({
 							title: 'uglified',
 							showFiles: true

@@ -96,10 +96,7 @@ gulp.task('build', function (callback) {
 gulp.task('serve', function (callback) {
 	runSequence(
 		'build:dev',
-		'connect',
 		[
-			'connect:open',
-			'livereload',
 			'watch:zetzer',
 			'watch:less',
 			'watch:sass',
@@ -112,6 +109,10 @@ gulp.task('serve', function (callback) {
 			'watch:webpack:react',
 			'watch:webpack:ts'
 		],
+		'connect',
+        'livereload:init',
+        'livereload',
+        'connect:open',
 		callback
 	);
 });
