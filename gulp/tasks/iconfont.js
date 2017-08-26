@@ -7,6 +7,7 @@ var ttf2eot = require('gulp-ttf2eot');
 var ttf2woff = require('gulp-ttf2woff');
 var config = require('./../config');
 var runSequence = require('run-sequence');
+var mergeStream = require('merge-stream');
 
 gulp.task('iconfont', function (callback) {
 
@@ -28,11 +29,19 @@ gulp.task('iconfont', function (callback) {
 
 gulp.task('convertIconsToTtf', function () {
 
-	return gulp.src(config.global.src + '/_icons/*.svg')
-		.pipe(iconfontCss(config.iconfontCss))
-		.pipe(svgicons2svgfont(config.iconfont))
-		.pipe(svg2ttf())
-		.pipe(gulp.dest(config.global.dev + '/resources/fonts/icons/'));
+	var iconfontArray = config.iconfontCss;
+
+	if (!Array.isArray(iconfontArray)) {
+		iconfontArray = [iconfontArray];
+	}
+
+	return mergeStream(iconfontArray.map(function(currentResource) {
+		return gulp.src(config.global.src + '/_icons/*.svg')
+			.pipe(iconfontCss(currentResource))
+			.pipe(svgicons2svgfont(config.iconfont))
+			.pipe(svg2ttf())
+			.pipe(gulp.dest(config.global.dev + '/resources/fonts/icons/'));
+	}));
 
 });
 
