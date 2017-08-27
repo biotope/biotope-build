@@ -48,7 +48,20 @@ module.exports = {
     cleanCss: {},
 
     connect: {
-        port: 9000
+        port: 9000,
+        globs: [
+            dev + '/**/*',
+            src + '/resources/js/**/*.js',
+            src + '/resources/bower_components/**/*',
+            src + '/_mock/**/*',
+            src + '/_assets/**/*',
+            '!' + dev + '/_mock/**/*',
+            '!' + dev + '/_assets/**/*',
+            '!' + dev + '/resources/js/vendor/**/*.js',
+            '!' + dev + '/resources/css/**/*.map',
+            '!' + dev + '/resources/bower_components/**/*',
+            '!' + dev + '/resources/js/handlebars.templates.js'
+        ]
     },
 
     cssmin: {},
