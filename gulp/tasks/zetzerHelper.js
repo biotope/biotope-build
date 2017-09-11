@@ -55,7 +55,7 @@ module.exports = {
 		console.log('TODO: zetzer->delayedImage()');
 	},
 
-	inc: function(file) {
-		return this.include(file);
+	inc: function(file, params) {
+		return this.include(file, params);
 	}
 };
