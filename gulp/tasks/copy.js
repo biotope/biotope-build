@@ -43,7 +43,7 @@ gulp.task('copy:dist:ts', function () {
 
 gulp.task('copy:dev:npm:js', function () {
 	return mergeStream(config.global.resources.map( function(currentResource) {
-		var object = config.global.externalResources;
+		var object = config.global.externalResources[currentResource];
 
 		return mergeStream(Object.keys(object).map(function(key, index) {
 			if( typeof object[key] === 'string' ) {
@@ -62,7 +62,7 @@ gulp.task('copy:dev:npm:js', function () {
 
 gulp.task('copy:dev:npm:css', function () {
 	return mergeStream(config.global.resources.map( function(currentResource) {
-		var object = config.global.externalResources;
+		var object = config.global.externalResources[currentResource];
 
 		return mergeStream(Object.keys(object).map(function(key, index) {
 			if( typeof object[key] === 'string' ) {
