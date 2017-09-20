@@ -3,167 +3,175 @@ var _ = require('lodash');
 var cwd = process.cwd();
 var projectConfig = require(cwd + '/projectConfig.json');
 
-var src  = 'app';
-var dev  = '.tmp';
+var src = 'app';
+var dev = '.tmp';
 var dist = 'dist';
 var docs = 'documentation';
 var node = 'node_modules';
 
 module.exports = {
-    global: {
-        src:  src,
-        dev:  dev,
-        dist: dist,
-        docs: docs,
-        node: node,
-        resources: ['/resources'],
-        tasks: {
-            angular: true,
-            cleanCss: true,
-            cssStats: true,
-            sass: true,
-            less: false,
-            favicons: true,
-            handlebars: true,
-            iconfont: true,
-            image: true,
-            linting: true,
-            markdown: false,
-            typescript: true,
-            uglify: true,
-            webpack: true
-        },
-        externalResources: {},
-        reactEntryPoints: []
-    },
+	global: {
+		src: src,
+		dev: dev,
+		dist: dist,
+		docs: docs,
+		node: node,
+		resources: ['/resources'],
+		tasks: {
+			angular: true,
+			cleanCss: true,
+			cssStats: true,
+			sass: true,
+			less: false,
+			favicons: true,
+			handlebars: true,
+			iconfont: true,
+			image: true,
+			linting: true,
+			markdown: false,
+			typescript: true,
+			uglify: true,
+			webpack: true
+		},
+		externalResources: {},
+		reactEntryPoints: []
+	},
 
-    //=== Plugins ===//
-    autoprefixer: {
-        //browsers: ['last 3 versions', 'last 8 Chrome versions', 'last 8 Firefox versions' , 'Firefox ESR', 'ie 9', 'last 2 iOS versions', 'Android 4']
-        browsers: ['last 1 version']
-    },
+	//=== Plugins ===//
+	autoprefixer: {
+		//browsers: ['last 3 versions', 'last 8 Chrome versions', 'last 8 Firefox versions' , 'Firefox ESR', 'ie 9', 'last 2 iOS versions', 'Android 4']
+		browsers: ['last 1 version']
+	},
 
-    checkDependencies: {},
+	checkDependencies: {},
 
-    cleanCss: {},
+	cleanCss: {},
 
-    connect: {
-        port: 9000,
-        globs: [
-            dev + '/**/*',
-            src + '/resources/js/**/*.js',
-            src + '/resources/bower_components/**/*',
-            src + '/_mock/**/*',
-            '!' + dev + '/_mock/**/*',
-            '!' + dev + '/_assets/**/*',
-            '!' + dev + '/resources/js/vendor/**/*.js',
-            '!' + dev + '/resources/css/**/*.map',
-            '!' + dev + '/resources/bower_components/**/*',
-            '!' + dev + '/resources/js/handlebars.templates.js'
-        ]
-    },
+	connect: {
+		port: 9000,
+		globs: [
+			dev + '/**/*',
+			src + '/resources/js/**/*.js',
+			src + '/resources/bower_components/**/*',
+			src + '/_mock/**/*',
+			'!' + dev + '/_mock/**/*',
+			'!' + dev + '/_assets/**/*',
+			'!' + dev + '/resources/js/vendor/**/*.js',
+			'!' + dev + '/resources/css/**/*.map',
+			'!' + dev + '/resources/bower_components/**/*',
+			'!' + dev + '/resources/js/handlebars.templates.js'
+		]
+	},
 
-    cssmin: {},
+	cssmin: {},
 
-    cssstats: {
-        exit: true
-    },
+	cssstats: {
+		exit: true
+	},
 
-    favicons: {
-        appName: "gulp-frontend-boilerplate",
-        background: "#020307",
-        path: "favicons/",
-        display: "standalone",
-        orientation: "portrait",
-        version: 1.0,
-        logging: false,
-        online: false,
-        html: "htmlhead.favicons.html",
-        pipeHTML: true,
-        replace: true,
-        icons: {
-            appleStartup: false
-        }
-    },
+	favicons: {
+		appName: "gulp-frontend-boilerplate",
+		background: "#020307",
+		path: "favicons/",
+		display: "standalone",
+		orientation: "portrait",
+		version: 1.0,
+		logging: false,
+		online: false,
+		html: "htmlhead.favicons.html",
+		pipeHTML: true,
+		replace: true,
+		icons: {
+			appleStartup: false
+		}
+	},
 
-    handlebars: {
-        templateWrap: 'Handlebars.template(<%= contents %>)',
-        partialWrap: 'Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));',
-        namespace: 'global.configuration.data.tpl',
-        noRedeclare: true
-    },
+	handlebars: {
+		templateWrap: 'Handlebars.template(<%= contents %>)',
+		partialWrap: 'Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));',
+		namespace: 'global.configuration.data.tpl',
+		noRedeclare: true
+	},
 
-    iconfont: {
-        fontName: 'Icons',
-        prependUnicode: true,
-        timestamp: Math.round(Date.now()/1000),
-        normalize: true
-    },
+	iconfont: {
+		fontName: 'Icons',
+		prependUnicode: true,
+		timestamp: Math.round(Date.now() / 1000),
+		normalize: true
+	},
 
-    iconfontCss: {
-        fontName: 'Icons',
-        path: src + '/resources/scss/fonts/iconfont/_icons.scss',
-        targetPath: '../../../../.iconfont/_icons.scss',
-        fontPath: '../fonts/icons/',
-        cssClass: 'icon'
-    },
+	iconfontCss: [
+		{
+			fontName: 'Icons',
+			path: src + '/resources/scss/fonts/iconfont/_icons.scss',
+			targetPath: '../../../../.iconfont/_icons.scss',
+			fontPath: '../fonts/icons/',
+			cssClass: 'icon'
+		}, {
+			fontName: 'Icons',
+			path: src + '/resources/scss/fonts/iconfont/_iconStyles.scss',
+			targetPath: '../../../../.iconfont/_iconStyles.scss',
+			fontPath: '../fonts/icons/',
+			cssClass: 'icon'
+		}
+	],
 
-    image: {
-        verbose: true
-    },
+	image: {
+		verbose: true
+	},
 
-    less: {},
+	less: {},
 
-    livereload: {
-        port: 35729
-    },
+	livereload: {
+		port: 35729
+	},
 
-    markdown: {},
+	markdown: {},
 
-    modernizr: {
-        options : [
-            "setClasses",
-            "addTest"
-        ],
-        excludeTests: [
-            'hidden'
-        ]
-    },
+	modernizr: {
+		options: [
+			"setClasses",
+			"addTest"
+		],
+		excludeTests: [
+			'hidden'
+		]
+	},
 
-    sass: {
-        includePaths: []
-    },
+	sass: {
+		includePaths: []
+	},
 
-    tslint: {
-        formatter: 'prose',
-        configuration: {
-            rules: {
-                "quotemark": [true, "single"]
-            }
-        }
-    },
+	tslint: {
+		formatter: 'prose',
+		configuration: {
+			rules: {
+				"quotemark": [true, "single"]
+			}
+		}
+	},
 
-    typescript: {},
+	typescript: {},
 
-    uglify: {
-        preserveComments: 'license',
-        sourcemaps: false,
-        folders: ['js', 'ts', 'react'],
-        ignoreList: []
-    },
+	uglify: {
+		preserveComments: 'license',
+		sourcemaps: false,
+		folders: ['js', 'ts', 'react'],
+		ignoreList: []
+	},
 
-    zetzer: {
-        partials: src + '/_partials',
-        templates: src + '/_partials/layout',
-        dot_template_settings: {
-            strip: false,
-            varname: 'ftf'
-        },
-        env: require('./tasks/zetzerHelper')
-    }
+	zetzer: {
+		partials: src + '/_partials',
+		templates: src + '/_partials/layout',
+		dot_template_settings: {
+			strip: false,
+			varname: 'ftf'
+		},
+		env: require('./tasks/zetzerHelper')
+	}
 
 };
 
-if(projectConfig) {
-    _.merge(module.exports, projectConfig);
+if (projectConfig) {
+	_.merge(module.exports, projectConfig);
 }
