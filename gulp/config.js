@@ -54,7 +54,6 @@ module.exports = {
             src + '/resources/js/**/*.js',
             src + '/resources/bower_components/**/*',
             src + '/_mock/**/*',
-            src + '/_assets/**/*',
             '!' + dev + '/_mock/**/*',
             '!' + dev + '/_assets/**/*',
             '!' + dev + '/resources/js/vendor/**/*.js',
