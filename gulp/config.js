@@ -17,6 +17,7 @@ module.exports = {
 		docs: docs,
 		node: node,
 		resources: ['/resources'],
+		components: ['/_partials/components'],
 		tasks: {
 			angular: true,
 			cleanCss: true,
