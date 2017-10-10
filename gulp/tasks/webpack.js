@@ -11,6 +11,10 @@ var webpackStream = require('webpack-stream');
 var webpackConfig = require('./../../webpack.config.js');
 var config = require('./../config');
 
+/**
+ * @TODO fix typing errors
+ */
+
 gulp.task('webpack:resources:react', function() {
 
 	if (config.global.tasks.webpack && config.global.reactEntryPoints.length) {
@@ -34,16 +38,18 @@ gulp.task('webpack:resources:react', function() {
 gulp.task('webpack:components:react', function() {
 
 	if (config.global.tasks.webpack && config.global.reactEntryPoints.length) {
-		return mergeStream(config.global.resources.map( function(currentResource) {
+		return mergeStream(config.global.resources.map( function(currentResource, index) {
 			return config.global.reactEntryPoints.map(function (currentReact) {
-				return gulp.src(config.global.src + config.global.components + '/**/react' + currentReact)
+
+				return gulp.src(config.global.src + config.global.components[index] + '/**/react' + currentReact)
 					.pipe(named())
 					.pipe(webpackStream(webpackConfig, webpackReact).on('error', function(err) {
 						gutil.log('Webpack React', err);
 						this.emit('end');
 					}))
 					.pipe(rename({dirname: ''}))
-					.pipe(gulp.dest(config.global.dev + currentResource + '/components/react/'));
+					.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index] + '/react/'));
+
 			});
 		}));
 	}
@@ -70,14 +76,16 @@ gulp.task('webpack:resources:ts', function() {
 
 gulp.task('webpack:components:ts', function() {
 	if (config.global.tasks.webpack) {
-		return mergeStream(config.global.resources.map( function(currentResource) {
-			return gulp.src(config.global.src + config.global.components + '/**/ts/*.ts')
+		return mergeStream(config.global.resources.map( function(currentResource, index) {
+
+			return gulp.src(config.global.src + config.global.components[index] + '/**/ts/*.ts')
 				.pipe(named())
 				.pipe(webpackStream(webpackConfig, webpackTS).on('error', function(err) {
 					gutil.log('Webpack TS', err);
 					this.emit('end');
 				}))
-				.pipe(gulp.dest(config.global.dev + currentResource + '/components/ts/'));
+				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index] + '/ts/'));
+
 		}));
 	}
 });
@@ -103,11 +111,15 @@ gulp.task('watch:webpack:resources:react', function () {
 gulp.task('watch:webpack:components:react', function () {
 
 	if (config.global.tasks.webpack) {
-		watch([
-			config.global.src + config.global.components + '/**/react/**/*.+(j|t)sx',
-			config.global.src + config.global.components + '/**/react/**/*.+(j|t)s',
-			'!' + config.global.src + config.global.components + '/**/react/**/*.spec.(j|t)s'
-		], function () {
+
+		let components = [];
+		config.global.components.map( function(currentComponent) {
+			components.push(config.global.src + currentComponent + '/**/react/**/*.+(j|t)sx');
+			components.push(config.global.src + currentComponent + '/**/react/**/*.+(j|t)s');
+			components.push('!' + config.global.src + currentComponent + '/**/react/**/*.spec.(j|t)s');
+		});
+
+		watch(components, function () {
 			runSequence(
 				['webpack:components:react']
 			);
@@ -130,11 +142,16 @@ gulp.task('watch:webpack:resources:ts', function () {
 
 });
 
-
 gulp.task('watch:webpack:components:ts', function () {
 
 	if (config.global.tasks.webpack) {
-		watch(config.global.src + config.global.components + '/**/ts/**/*.ts', function () {
+
+		let components = [];
+		config.global.components.map( function(currentComponent) {
+			components.push(config.global.src + currentComponent + '/**/ts/**/*.ts');
+		});
+
+		watch(components, function () {
 			runSequence(
 				['webpack:components:ts']
 			);

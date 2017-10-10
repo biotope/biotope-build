@@ -16,9 +16,11 @@ gulp.task('handlebars', function () {
 	if (config.global.tasks.handlebars) {
 		// Assume all partials start with an underscore
 
-		var partials = mergeStream(config.global.resources.map( function(currentResource) {
+		var partials = mergeStream(config.global.resources.map( function(currentResource, index) {
 			return gulp.src([
-				config.global.src + currentResource + '/hbs/**/_*.hbs'
+				config.global.src + currentResource + '/hbs/**/_*.hbs',
+				config.global.src + config.global.components[index] + '/**/hbs/**/_*.hbs',
+
 			])
 				.pipe(plumber())
 				.pipe(handlebars({
@@ -33,9 +35,10 @@ gulp.task('handlebars', function () {
 				}, {}));
 		}));
 
-		var templates =  mergeStream(config.global.resources.map( function(currentResource) {
+		var templates =  mergeStream(config.global.resources.map( function(currentResource, index) {
 			return gulp.src([
-				config.global.src + currentResource + '/hbs/**/[^_]*.hbs'
+				config.global.src + currentResource + '/hbs/**/[^_]*.hbs',
+				config.global.src + config.global.components[index] + '/**/hbs/**/[^_]*.hbs'
 			])
 				.pipe(plumber())
 				.pipe(handlebars({
@@ -52,6 +55,7 @@ gulp.task('handlebars', function () {
 		return mergeStream(partials, templates)
 			.pipe(concat('handlebars.templates.js'))
 			.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { <%= contents %> }));'))
+			// @TODO warum nur nach default resources und nicht auch nach content???
 			.pipe(gulp.dest(config.global.dev + config.global.resources[0] + '/js/'));
 	} else {
 		gutil.log(gutil.colors.yellow('handlebars disabled'));
@@ -62,9 +66,10 @@ gulp.task('handlebars', function () {
 gulp.task('watch:handlebars', function () {
 
 	if (config.global.tasks.handlebars) {
-		config.global.resources.forEach(function (currentResource) {
+		config.global.resources.forEach(function (currentResource, index) {
 			watch([
 				config.global.src + currentResource + '/hbs/**/*.hbs',
+				config.global.src + global.config.components[index] + '/**/hbs/**/*.hbs',
 				config.global.src + currentResource + '/js/handlebars.helper.js'
 			], function () {
 				runSequence('handlebars');

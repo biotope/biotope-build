@@ -3,21 +3,25 @@ var gutil = require('gulp-util');
 var eslint = require('gulp-eslint');
 var cached = require('gulp-cached');
 var watch = require('gulp-watch');
+var mergeStream = require('merge-stream');
 var runSequence = require('run-sequence');
 var config = require('./../config');
 
 gulp.task('eslint', function () {
 
 	if (config.global.tasks.linting) {
-		return gulp.src([
-			config.global.src + '/resources/js/**/*.js',
-			'!' + config.global.src + '/resources/js/vendor/**/*.js',
-			'!' + config.global.src + '/resources/bower_components/**/*.js'
-		])
-			.pipe(cached('eslint'))
-			.pipe(eslint())
-			.pipe(eslint.format())
-			.pipe(eslint.failAfterError());
+		return mergeStream(config.global.resources.map(function (currentResource, index) {
+			return gulp.src([
+				config.global.src + currentResource + '/js/**/*.js',
+				config.global.src + config.global.components[index] + '/**/js/**/*.js',
+				'!' + config.global.src + currentResource + '/js/vendor/**/*.js',
+				'!' + config.global.src + config.global.components[index] + '/**/js/vendor/**/*.js'
+			])
+				.pipe(cached('eslint'))
+				.pipe(eslint())
+				.pipe(eslint.format())
+				.pipe(eslint.failAfterError());
+		}));
 	} else {
 		gutil.log(gutil.colors.yellow('linting disabled'));
 	}
@@ -27,12 +31,15 @@ gulp.task('eslint', function () {
 gulp.task('watch:eslint', function () {
 
 	if (config.global.tasks.linting) {
-		watch([
-			config.global.src + '/resources/js/**/*.js',
-			'!' + config.global.src + '/resources/js/vendor/**/*.js',
-			'!' + config.global.src + '/resources/bower_components/**/*.js'
-		], function () {
-			runSequence('eslint')
+		config.global.resources.forEach(function(currentResource, index) {
+			watch([
+				config.global.src + currentResource + '/js/**/*.js',
+				config.global.src + config.global.components[index] + '/**/js/**/*.js',
+				'!' + config.global.src + currentResource + '/js/vendor/**/*.js',
+				'!' + config.global.src + config.global.components[index] + '/**/js/vendor/**/*.js'
+			], function () {
+				runSequence('eslint')
+			});
 		});
 	} else {
 		gutil.log(gutil.colors.yellow('linting disabled'));
