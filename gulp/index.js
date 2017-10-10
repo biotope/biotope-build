@@ -17,10 +17,13 @@ gulp.task('build:dev', function (callback) {
 			'clean:iconfont'
 		],
 		[
-			// 'lint:sass', // throws too many errors currently
+			// 'lint:resources:sass',
+			// 'lint:components:sass',
 			'lint:json',
-			'jshint',
-			'eslint',
+			'jshint:resources',
+			'jshint:components',
+			'eslint:resources',
+			'eslint:components',
 			'iconfont',
 			'copy:dev:npm:js',
 			'copy:dev:npm:css'
@@ -73,8 +76,10 @@ gulp.task('build', function (callback) {
 			'copy:dist:hbs'
 		],
 		[
-			'uglify:dist',
-			'cleanCss:dist'
+			'uglify:resources:dist',
+			'uglify:components:dist',
+			'cleanCss:resources:dist',
+			'cleanCss:components:dist'
 		],
 		[
 			'useref'
@@ -116,9 +121,9 @@ gulp.task('serve', function (callback) {
 			'watch:webpack:components:ts'
 		],
 		'connect',
-        'livereload:init',
-        'livereload',
-        'connect:open',
+		'livereload:init',
+		'livereload',
+		'connect:open',
 		callback
 	);
 });

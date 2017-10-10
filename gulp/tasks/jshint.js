@@ -8,15 +8,13 @@ var watch = require('gulp-watch');
 var runSequence = require('run-sequence');
 var config = require('./../config');
 
-gulp.task('jshint', function () {
+gulp.task('jshint:resources', function () {
 
 	if (config.global.tasks.linting) {
-		return mergeStream(config.global.resources.map(function (currentResource, index) {
+		return mergeStream(config.global.resources.map(function (currentResource) {
 			return gulp.src([
 				config.global.src + currentResource + '/js/**/*.js',
-				config.global.src + config.global.components[index] + '/**/js/**/*.js',
-				'!' + config.global.src + currentResource + '/js/vendor/**/*.js',
-				'!' + config.global.src + config.global.components[index] + '/**/js/vendor/**/*.js'
+				'!' + config.global.src + currentResource + '/js/vendor/**/*.js'
 			])
 				.pipe(cached('jshint'))
 				.pipe(jshint())
@@ -28,15 +26,49 @@ gulp.task('jshint', function () {
 
 });
 
-gulp.task('watch:jshint', function () {
+
+gulp.task('jshint:components', function () {
 
 	if (config.global.tasks.linting) {
-		config.global.resources.forEach(function(currentResource, index) {
+		return mergeStream(config.global.components.map(function (currentComponent) {
+			return gulp.src([
+				config.global.src + currentComponent + '/**/js/**/*.js',
+				'!' + config.global.src + currentComponent + '/**/js/vendor/**/*.js'
+			])
+				.pipe(cached('jshint'))
+				.pipe(jshint())
+				.pipe(jshint.reporter(stylish));
+		}));
+	} else {
+		gutil.log(gutil.colors.yellow('linting disabled'));
+	}
+
+});
+
+gulp.task('watch:jshint:resources', function () {
+
+	if (config.global.tasks.linting) {
+		config.global.resources.forEach(function(currentResource) {
 			watch([
 				config.global.src + currentResource + '/js/**/*.js',
-				config.global.src + config.global.components[index] + '/**/js/**/*.js',
 				'!' + config.global.src + currentResource + '/js/vendor/**/*.js',
-				'!' + config.global.src + config.global.components[index] + '/**/js/vendor/**/*.js'
+			], function () {
+				runSequence('jshint');
+			});
+		});
+	} else {
+		gutil.log(gutil.colors.yellow('linting disabled'));
+	}
+
+});
+
+gulp.task('watch:jshint:components', function () {
+
+	if (config.global.tasks.linting) {
+		config.global.components.forEach(function(currentComponent) {
+			watch([
+				config.global.src + currentComponent + '/**/js/**/*.js',
+				'!' + config.global.src + currentComponent + '/**/js/vendor/**/*.js'
 			], function () {
 				runSequence('jshint');
 			});

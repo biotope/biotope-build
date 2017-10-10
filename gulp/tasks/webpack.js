@@ -38,17 +38,17 @@ gulp.task('webpack:resources:react', function() {
 gulp.task('webpack:components:react', function() {
 
 	if (config.global.tasks.webpack && config.global.reactEntryPoints.length) {
-		return mergeStream(config.global.resources.map( function(currentResource, index) {
+		return mergeStream(config.global.components.map( function(currentComponent) {
 			return config.global.reactEntryPoints.map(function (currentReact) {
 
-				return gulp.src(config.global.src + config.global.components[index] + '/**/react' + currentReact)
+				return gulp.src(config.global.src + currentComponent + '/**/react' + currentReact)
 					.pipe(named())
 					.pipe(webpackStream(webpackConfig, webpackReact).on('error', function(err) {
 						gutil.log('Webpack React', err);
 						this.emit('end');
 					}))
 					.pipe(rename({dirname: ''}))
-					.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index] + '/react/'));
+					.pipe(gulp.dest(config.global.dev + currentComponent + '/react/'));
 
 			});
 		}));
@@ -76,15 +76,15 @@ gulp.task('webpack:resources:ts', function() {
 
 gulp.task('webpack:components:ts', function() {
 	if (config.global.tasks.webpack) {
-		return mergeStream(config.global.resources.map( function(currentResource, index) {
+		return mergeStream(config.global.components.map( function(currentComponent) {
 
-			return gulp.src(config.global.src + config.global.components[index] + '/**/ts/*.ts')
+			return gulp.src(config.global.src + currentComponent + '/**/ts/*.ts')
 				.pipe(named())
 				.pipe(webpackStream(webpackConfig, webpackTS).on('error', function(err) {
 					gutil.log('Webpack TS', err);
 					this.emit('end');
 				}))
-				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index] + '/ts/'));
+				.pipe(gulp.dest(config.global.dev + currentComponent + '/ts/'));
 
 		}));
 	}

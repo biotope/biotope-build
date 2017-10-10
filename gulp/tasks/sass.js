@@ -41,10 +41,10 @@ gulp.task('resources:sass', function () {
 
 gulp.task('components:sass', function () {
 	if (config.global.tasks.sass) {
-		return mergeStream(config.global.resources.map(function (currentResource, index) {
+		return mergeStream(config.global.components.map(function (currentComponent, index) {
 			return gulp.src([
-				config.global.src + config.global.components[index] + '/**/scss/**/*.scss',
-				'!' + config.global.src + config.global.components[index] + '/**/scss/**/_*.scss'
+				config.global.src + currentComponent + '/**/scss/**/*.scss',
+				'!' + config.global.src + currentComponent + '/**/scss/**/_*.scss'
 			])
 				.pipe(sourcemaps.init())
 				.pipe(sass(config.sass).on('error', sass.logError))
@@ -53,7 +53,7 @@ gulp.task('components:sass', function () {
 				]))
 				.pipe(sourcemaps.write('.'))
 				.pipe(rename({dirname: ''}))
-				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index] + '/css'));
+				.pipe(gulp.dest(config.global.dev + currentComponent + '/css'));
 		}));
 	} else {
 		gutil.log(gutil.colors.yellow('sass disabled'));
@@ -64,13 +64,22 @@ gulp.task('components:sass', function () {
  * scss file liniting
  * @TODO throws warnings now, didnt work before
  */
-gulp.task('lint:sass', function () {
+gulp.task('lint:resources:sass', function () {
 	if (config.global.tasks.sass && config.global.tasks.linting) {
-		return mergeStream(config.global.resources.map(function (currentResource, index) {
-			return gulp.src([
-				config.global.src + currentResource + '/scss/**/*.s+(a|c)ss',
-				config.global.src + config.global.components[index] + '/**/scss/**/*.s+(a|c)ss'
-			])
+		return mergeStream(config.global.resources.map(function (currentResource) {
+			return gulp.src(config.global.src + currentResource + '/scss/**/*.s+(a|c)ss')
+				.pipe(cached('sass'))
+				.pipe(sassLint())
+				.pipe(sassLint.format())
+				.pipe(sassLint.failOnError());
+		}));
+	}
+});
+
+gulp.task('lint:components:sass', function () {
+	if (config.global.tasks.sass && config.global.tasks.linting) {
+		return mergeStream(config.global.components.map(function (currentComponent) {
+			return gulp.src(config.global.src + currentComponent + '/**/scss/**/*.s+(a|c)ss')
 				.pipe(cached('sass'))
 				.pipe(sassLint())
 				.pipe(sassLint.format())
