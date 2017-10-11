@@ -29,10 +29,10 @@ gulp.task('eslint:resources', function () {
 gulp.task('eslint:components', function () {
 
 	if (config.global.tasks.linting) {
-		return mergeStream(config.global.resources.map(function (currentComponent) {
+		return mergeStream(config.global.components.map(function (currentComponent) {
 			return gulp.src([
-				config.global.src + currentComponent + '/**/js/**/*.js',
-				'!' + config.global.src + currentComponent + '/**/js/vendor/**/*.js'
+				config.global.src + currentComponent + '/**/*.js',
+				'!' + config.global.src + currentComponent + '/**/vendor/**/*.js'
 			])
 				.pipe(cached('eslint'))
 				.pipe(eslint())
@@ -53,7 +53,7 @@ gulp.task('watch:eslint:resources', function () {
 				config.global.src + config.global.components[index] + '/**/js/**/*.js',
 				'!' + config.global.src + currentResource + '/js/vendor/**/*.js',
 			], function () {
-				runSequence('eslint')
+				runSequence('eslint:resources')
 			});
 		});
 	} else {
@@ -67,10 +67,10 @@ gulp.task('watch:eslint:components', function () {
 	if (config.global.tasks.linting) {
 		config.global.resources.forEach(function(currentComponent, index) {
 			watch([
-				config.global.src + currentComponent + '/**/js/**/*.js',
-				'!' + config.global.src + currentComponent + '/**/js/vendor/**/*.js'
+				config.global.src + currentComponent + '/**/*.js',
+				'!' + config.global.src + currentComponent + '/**/vendor/**/*.js'
 			], function () {
-				runSequence('eslint')
+				runSequence('eslint:components')
 			});
 		});
 	} else {

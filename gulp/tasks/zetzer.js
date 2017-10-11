@@ -37,7 +37,6 @@ gulp.task('zetzer', ['indexr'], function () {
 
 });
 
-
 gulp.task('indexr', function () {
 
 	var zetzerConfig = config.zetzer;
@@ -46,8 +45,7 @@ gulp.task('indexr', function () {
 
 	// read all files
 	var filepaths = globule.find([
-		config.global.src + '/*.html',
-		'!' + config.global.src + '/index.html'
+		config.global.src + '/_pages/*.html'
 	]);
 
 	var lastCategory = '';

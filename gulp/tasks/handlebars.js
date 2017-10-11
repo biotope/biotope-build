@@ -55,7 +55,6 @@ gulp.task('handlebars', function () {
 		return mergeStream(partials, templates)
 			.pipe(concat('handlebars.templates.js'))
 			.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { <%= contents %> }));'))
-			// @TODO warum nur nach default resources und nicht auch nach content???
 			.pipe(gulp.dest(config.global.dev + config.global.resources[0] + '/js/'));
 	} else {
 		gutil.log(gutil.colors.yellow('handlebars disabled'));
@@ -66,14 +65,18 @@ gulp.task('handlebars', function () {
 gulp.task('watch:handlebars', function () {
 
 	if (config.global.tasks.handlebars) {
-		config.global.resources.forEach(function (currentResource, index) {
-			watch([
-				config.global.src + currentResource + '/hbs/**/*.hbs',
-				config.global.src + global.config.components[index] + '/**/hbs/**/*.hbs',
-				config.global.src + currentResource + '/js/handlebars.helper.js'
-			], function () {
-				runSequence('handlebars');
-			});
+		let watchFiles = [];
+		config.global.resources.forEach(function (currentResource) {
+			watchFiles.push(config.global.src + currentResource + '/hbs/**/*.hbs');
+			watchFiles.push(config.global.src + currentResource + '/js/handlebars.helper.js');
+		});
+
+		config.global.components.forEach(function (currentComponent) {
+			watchFiles.push(config.global.src + currentComponent + '/**/hbs/**/*.hbs');
+		});
+
+		watch(watchFiles, function () {
+			runSequence('handlebars');
 		});
 	} else {
 		gutil.log(gutil.colors.yellow('handlebars disabled'));

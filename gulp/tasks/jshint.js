@@ -32,8 +32,8 @@ gulp.task('jshint:components', function () {
 	if (config.global.tasks.linting) {
 		return mergeStream(config.global.components.map(function (currentComponent) {
 			return gulp.src([
-				config.global.src + currentComponent + '/**/js/**/*.js',
-				'!' + config.global.src + currentComponent + '/**/js/vendor/**/*.js'
+				config.global.src + currentComponent + '/**/*.js',
+				'!' + config.global.src + currentComponent + '/**/vendor/**/*.js'
 			])
 				.pipe(cached('jshint'))
 				.pipe(jshint())
@@ -53,7 +53,7 @@ gulp.task('watch:jshint:resources', function () {
 				config.global.src + currentResource + '/js/**/*.js',
 				'!' + config.global.src + currentResource + '/js/vendor/**/*.js',
 			], function () {
-				runSequence('jshint');
+				runSequence('jshint:resources');
 			});
 		});
 	} else {
@@ -67,10 +67,10 @@ gulp.task('watch:jshint:components', function () {
 	if (config.global.tasks.linting) {
 		config.global.components.forEach(function(currentComponent) {
 			watch([
-				config.global.src + currentComponent + '/**/js/**/*.js',
-				'!' + config.global.src + currentComponent + '/**/js/vendor/**/*.js'
+				config.global.src + currentComponent + '/**/*.js',
+				'!' + config.global.src + currentComponent + '/**/vendor/**/*.js'
 			], function () {
-				runSequence('jshint');
+				runSequence('jshint:components');
 			});
 		});
 	} else {

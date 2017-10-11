@@ -35,16 +35,16 @@ gulp.task('resources:sass', function () {
 
 /**
  * compiles scss files
- * from app/_partials/components/../scss/
+ * from app/_partials/components/../
  * to .tmp/resources/components/css/
  */
 
 gulp.task('components:sass', function () {
 	if (config.global.tasks.sass) {
-		return mergeStream(config.global.components.map(function (currentComponent, index) {
+		return mergeStream(config.global.resources.map(function (currentResources, index) {
 			return gulp.src([
-				config.global.src + currentComponent + '/**/scss/**/*.scss',
-				'!' + config.global.src + currentComponent + '/**/scss/**/_*.scss'
+				config.global.src + config.global.components[index] + '/**/*.scss',
+				'!' + config.global.src + config.global.components[index] + '/**/_*.scss'
 			])
 				.pipe(sourcemaps.init())
 				.pipe(sass(config.sass).on('error', sass.logError))
@@ -53,7 +53,7 @@ gulp.task('components:sass', function () {
 				]))
 				.pipe(sourcemaps.write('.'))
 				.pipe(rename({dirname: ''}))
-				.pipe(gulp.dest(config.global.dev + currentComponent + '/css'));
+				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index] + '/css'));
 		}));
 	} else {
 		gutil.log(gutil.colors.yellow('sass disabled'));
@@ -79,7 +79,7 @@ gulp.task('lint:resources:sass', function () {
 gulp.task('lint:components:sass', function () {
 	if (config.global.tasks.sass && config.global.tasks.linting) {
 		return mergeStream(config.global.components.map(function (currentComponent) {
-			return gulp.src(config.global.src + currentComponent + '/**/scss/**/*.s+(a|c)ss')
+			return gulp.src(config.global.src + currentComponent + '/**/*.s+(a|c)ss')
 				.pipe(cached('sass'))
 				.pipe(sassLint())
 				.pipe(sassLint.format())
@@ -114,7 +114,7 @@ gulp.task('watch:components:sass', function () {
 	if (config.global.tasks.sass) {
 		let components = [];
 		config.global.components.map( function(currentComponent) {
-			components.push(config.global.src + currentComponent + '/**/scss/**/*.scss');
+			components.push(config.global.src + currentComponent + '/**/*.scss');
 		});
 
 		watch(components, function() {

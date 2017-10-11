@@ -38,17 +38,26 @@ gulp.task('webpack:resources:react', function() {
 gulp.task('webpack:components:react', function() {
 
 	if (config.global.tasks.webpack && config.global.reactEntryPoints.length) {
-		return mergeStream(config.global.components.map( function(currentComponent) {
+		return mergeStream(config.global.resources.map( function(currentResource, index) {
 			return config.global.reactEntryPoints.map(function (currentReact) {
-
-				return gulp.src(config.global.src + currentComponent + '/**/react' + currentReact)
+				let tmp = {};
+				return gulp.src(config.global.src + config.global.components[index] + '/**' + currentReact)
 					.pipe(named())
+					.pipe(rename(function (path) {
+						tmp[path.basename] = path;
+					}))
 					.pipe(webpackStream(webpackConfig, webpackReact).on('error', function(err) {
 						gutil.log('Webpack React', err);
 						this.emit('end');
 					}))
-					.pipe(rename({dirname: ''}))
-					.pipe(gulp.dest(config.global.dev + currentComponent + '/react/'));
+					.pipe(rename(function (path) {
+						for (key in tmp) {
+							if (key === path.basename) {
+								path.dirname = tmp[path.basename].dirname;
+							}
+						}
+					}))
+					.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index]));
 
 			});
 		}));
@@ -76,15 +85,25 @@ gulp.task('webpack:resources:ts', function() {
 
 gulp.task('webpack:components:ts', function() {
 	if (config.global.tasks.webpack) {
-		return mergeStream(config.global.components.map( function(currentComponent) {
-
-			return gulp.src(config.global.src + currentComponent + '/**/ts/*.ts')
+		return mergeStream(config.global.resources.map( function(currentResource, index) {
+			let tmp = {};
+			return gulp.src(config.global.src + config.global.components[index] + '/**/*.ts')
 				.pipe(named())
+				.pipe(rename(function (path) {
+					tmp[path.basename] = path;
+				}))
 				.pipe(webpackStream(webpackConfig, webpackTS).on('error', function(err) {
 					gutil.log('Webpack TS', err);
 					this.emit('end');
 				}))
-				.pipe(gulp.dest(config.global.dev + currentComponent + '/ts/'));
+				.pipe(rename(function (path) {
+					for (key in tmp) {
+						if (key === path.basename) {
+							path.dirname = tmp[path.basename].dirname;
+						}
+					}
+				}))
+				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index]));
 
 		}));
 	}
@@ -116,7 +135,7 @@ gulp.task('watch:webpack:components:react', function () {
 		config.global.components.map( function(currentComponent) {
 			components.push(config.global.src + currentComponent + '/**/react/**/*.+(j|t)sx');
 			components.push(config.global.src + currentComponent + '/**/react/**/*.+(j|t)s');
-			components.push('!' + config.global.src + currentComponent + '/**/react/**/*.spec.(j|t)s');
+			components.push('!' + config.global.src + currentComponent + '/**/*.spec.(j|t)s');
 		});
 
 		watch(components, function () {
@@ -148,7 +167,7 @@ gulp.task('watch:webpack:components:ts', function () {
 
 		let components = [];
 		config.global.components.map( function(currentComponent) {
-			components.push(config.global.src + currentComponent + '/**/ts/**/*.ts');
+			components.push(config.global.src + currentComponent + '/**/*.ts');
 		});
 
 		watch(components, function () {

@@ -109,8 +109,10 @@ gulp.task('serve', function (callback) {
 			'watch:less',
 			'watch:components:sass',
 			'watch:resources:sass',
-			'watch:jshint',
-			'watch:eslint',
+			'watch:components:jshint',
+			'watch:resources:jshint',
+			'watch:components:eslint',
+			'watch:resources:eslint',
 			'watch:handlebars',
 			'watch:angularTemplates',
 			'watch:json',
@@ -118,7 +120,8 @@ gulp.task('serve', function (callback) {
 			'watch:webpack:resources:react',
 			'watch:webpack:components:react',
 			'watch:webpack:resources:ts',
-			'watch:webpack:components:ts'
+			'watch:webpack:components:ts',
+			'watch:static:hb'
 		],
 		'connect',
 		'livereload:init',
