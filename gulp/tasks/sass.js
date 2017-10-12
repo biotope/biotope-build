@@ -52,9 +52,6 @@ gulp.task('components:sass', function () {
 					autoprefixer(config.autoprefixer)
 				]))
 				.pipe(sourcemaps.write('.'))
-				.pipe(rename(function (path) {
-					console.log(path);
-				}))
 				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index]));
 		}));
 	} else {
