@@ -55,6 +55,9 @@ gulp.task('webpack:components:react', function() {
 							if (key === path.basename) {
 								path.dirname = tmp[path.basename].dirname;
 							}
+							if (key === path.basename.replace('.js', '')) {
+								path.dirname = tmp[path.basename.replace('.js', '')].dirname;
+							}
 						}
 					}))
 					.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index]));
@@ -98,8 +101,12 @@ gulp.task('webpack:components:ts', function() {
 				}))
 				.pipe(rename(function (path) {
 					for (key in tmp) {
+
 						if (key === path.basename) {
 							path.dirname = tmp[path.basename].dirname;
+						}
+						if (key === path.basename.replace('.js', '')) {
+							path.dirname = tmp[path.basename.replace('.js', '')].dirname;
 						}
 					}
 				}))

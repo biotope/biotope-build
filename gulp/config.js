@@ -17,7 +17,10 @@ module.exports = {
 		docs: docs,
 		node: node,
 		resources: ['/resources'],
-		components: ['/_partials/components'],
+		// resources: ['/resources', '/z_resourcesContent'],
+		components: ['/components'],
+		// components: ['/components', '/z_componentsContent'],
+		handlebarsHelper: '/js/handlebars.helper.js',
 		tasks: {
 			angular: true,
 			cleanCss: true,
@@ -162,8 +165,8 @@ module.exports = {
 	},
 
 	zetzer: {
-		partials: src + '/_partials',
-		templates: src + '/_partials/layout',
+		partials: src + '/partials',
+		templates: src + '/partials/layout',
 		dot_template_settings: {
 			strip: false,
 			varname: 'ftf'

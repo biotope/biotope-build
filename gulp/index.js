@@ -33,7 +33,10 @@ gulp.task('build:dev', function (callback) {
 			'angularTemplates'
 		],
 		[
-			'zetzer',
+			'static:hb',
+			'static:hb:indexr'
+		],
+		[
 			'less',
 			'resources:sass',
 			'components:sass',
@@ -41,7 +44,7 @@ gulp.task('build:dev', function (callback) {
 			'webpack:components:react',
 			'webpack:resources:ts',
 			'webpack:components:ts',
-			'indexr'
+			'copy:dev:components:js'
 		],
 		[
 			'modernizr',
@@ -105,14 +108,14 @@ gulp.task('serve', function (callback) {
 	runSequence(
 		'build:dev',
 		[
-			'watch:zetzer',
+			//'watch:zetzer',
 			'watch:less',
 			'watch:components:sass',
 			'watch:resources:sass',
-			'watch:components:jshint',
-			'watch:resources:jshint',
-			'watch:components:eslint',
-			'watch:resources:eslint',
+			'watch:jshint:components',
+			'watch:jshint:resources',
+			'watch:eslint:components',
+			'watch:eslint:resources',
 			'watch:handlebars',
 			'watch:angularTemplates',
 			'watch:json',

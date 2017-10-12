@@ -35,13 +35,13 @@ gulp.task('resources:sass', function () {
 
 /**
  * compiles scss files
- * from app/_partials/components/../
+ * from app/partials/components/../
  * to .tmp/resources/components/css/
  */
 
 gulp.task('components:sass', function () {
 	if (config.global.tasks.sass) {
-		return mergeStream(config.global.resources.map(function (currentResources, index) {
+		return mergeStream(config.global.resources.map(function (currentResource, index) {
 			return gulp.src([
 				config.global.src + config.global.components[index] + '/**/*.scss',
 				'!' + config.global.src + config.global.components[index] + '/**/_*.scss'
@@ -52,8 +52,10 @@ gulp.task('components:sass', function () {
 					autoprefixer(config.autoprefixer)
 				]))
 				.pipe(sourcemaps.write('.'))
-				.pipe(rename({dirname: ''}))
-				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index] + '/css'));
+				.pipe(rename(function (path) {
+					console.log(path);
+				}))
+				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index]));
 		}));
 	} else {
 		gutil.log(gutil.colors.yellow('sass disabled'));

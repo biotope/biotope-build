@@ -14,6 +14,15 @@ gulp.task('copy:dev:js', function () {
 
 });
 
+gulp.task('copy:dev:components:js', function () {
+
+	return mergeStream(config.global.resources.map( function(currentResource, index) {
+		return gulp.src(config.global.src + config.global.components[index] + '/**/*.js')
+			.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index]));
+	}));
+
+});
+
 gulp.task('copy:dist:js', function () {
 
 	return mergeStream(config.global.resources.map( function(currentResource) {

@@ -23,9 +23,9 @@ gulp.task('zetzer', ['indexr'], function () {
 	}
 
 	return gulp.src([
-			config.global.src + '/*.html',
-			'!' + config.global.src + '/index.html'
-		])
+		config.global.src + '/*.html',
+		'!' + config.global.src + '/index.html'
+	])
 		.pipe(zetzer(zetzerConfig))
 		.on('error', notify.onError(function (error) {
 			return {
@@ -37,6 +37,7 @@ gulp.task('zetzer', ['indexr'], function () {
 
 });
 
+
 gulp.task('indexr', function () {
 
 	var zetzerConfig = config.zetzer;
@@ -45,7 +46,7 @@ gulp.task('indexr', function () {
 
 	// read all files
 	var filepaths = globule.find([
-		config.global.src + '/_pages/*.html'
+		config.global.src + '/pages/*.html'
 	]);
 
 	var lastCategory = '';
@@ -86,7 +87,7 @@ gulp.task('watch:zetzer', function () {
 
 	watch([
 		config.global.src + '/*.html',
-		config.global.src + '/_partials/**/*.html',
+		config.global.src + '/partials/**/*.html',
 		config.global.src + '/_mock/**/*.json',
 		config.global.dev + '/resources/js/handlebars.templates.js'
 	], function () {
