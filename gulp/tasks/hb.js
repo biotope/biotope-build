@@ -30,7 +30,8 @@ gulp.task('static:hb', function () {
 		// set to true to see details to partials, data, etc.
 		debug: false
 	})
-	// handlebar helper functions
+		// handlebar helper functions
+		// @TODO add possibility to inject helpers from file
 		.helpers({
 			def: function (a, b) { return a ? a : b; }
 		})

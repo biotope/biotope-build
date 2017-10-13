@@ -146,6 +146,8 @@ module.exports = {
 		includePaths: []
 	},
 
+	sassLint: {},
+
 	tslint: {
 		formatter: 'prose',
 		configuration: {

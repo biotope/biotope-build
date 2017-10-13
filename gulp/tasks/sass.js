@@ -61,14 +61,16 @@ gulp.task('components:sass', function () {
 
 /**
  * scss file liniting
- * @TODO throws warnings now, didnt work before
+ * @TODO throws warnings now, define linting rules
  */
 gulp.task('lint:resources:sass', function () {
 	if (config.global.tasks.sass && config.global.tasks.linting) {
 		return mergeStream(config.global.resources.map(function (currentResource) {
-			return gulp.src(config.global.src + currentResource + '/scss/**/*.s+(a|c)ss')
+			return gulp.src([config.global.src + currentResource + '/scss/**/*.s+(a|c)ss',
+				'!' + config.global.src + currentResource + '/scss/**/_icons.s+(a|c)ss',
+			])
 				.pipe(cached('sass'))
-				.pipe(sassLint())
+				.pipe(sassLint(config.global.sassLint))
 				.pipe(sassLint.format())
 				.pipe(sassLint.failOnError());
 		}));

@@ -17,8 +17,8 @@ gulp.task('build:dev', function (callback) {
 			'clean:iconfont'
 		],
 		[
-			// 'lint:resources:sass',
-			// 'lint:components:sass',
+			'lint:resources:sass',
+			'lint:components:sass',
 			'lint:json',
 			'jshint:resources',
 			'jshint:components',
