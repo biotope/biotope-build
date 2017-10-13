@@ -64,13 +64,13 @@ gulp.task('static:hb', function () {
 
 
 gulp.task('watch:static:hb', function () {
+	let files = [config.global.src + '/partials/**/*.{html,handlebars,hbs}'];
 
-	watch([
-		config.global.src + '/partials/**/*.{html,handlebars,hbs}',
+	config.global.components.forEach(function(currentComponent) {
+		files.push(config.global.src + currentComponent +'/**/*.{html,handlebars,hbs}');
+	});
 
-		// @TODO make ready for multiple component folders
-		config.global.src + '/components/**/*.{html,handlebars,hbs}',
-	], function () {
+		watch(files, function () {
 		runSequence(
 			['static:hb']
 		);

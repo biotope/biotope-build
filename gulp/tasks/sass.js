@@ -98,7 +98,7 @@ gulp.task('watch:resources:sass', function () {
 				config.global.src + currentResource + '/react/**/*.scss'
 			], function() {
 				runSequence(
-					['lint:sass'],
+					['lint:resources:sass'],
 					['resources:sass']
 				);
 			});
@@ -118,7 +118,7 @@ gulp.task('watch:components:sass', function () {
 
 		watch(components, function() {
 			runSequence(
-				['lint:sass'],
+				['lint:components:sass'],
 				['components:sass']
 			);
 		});

@@ -29,14 +29,14 @@ gulp.task('cleanCss:components:dist', function () {
 		gutil.log(gutil.colors.yellow('cleanCss disabled'));
 	}
 
-	return mergeStream(config.global.components.map( function(currentComponent, index) {
-		return gulp.src(config.global.dev + currentComponent + '/**/css/**/*.css')
+	return mergeStream(config.global.resources.map( function(currentResource, index) {
+		return gulp.src(config.global.dev + currentResource + config.global.components[index] + '/**/*.css')
 			.pipe(config.global.tasks.cleanCss ? cleanCss(config.cleanCss) : gutil.noop())
 			.pipe(config.global.tasks.cleanCss ? size({
 				title: 'minified',
 				showFiles: true
 			}) : gutil.noop())
-			.pipe(gulp.dest(config.global.dist + currentComponent));
+			.pipe(gulp.dest(config.global.dist + currentResource + config.global.components[index]));
 	}));
 
 });
