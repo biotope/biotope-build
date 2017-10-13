@@ -75,7 +75,6 @@
     "gulp-util": "3.0.8",
     "gulp-watch": "4.3.11",
     "gulp-wrap": "0.13.0",
-    "gulp-zetzer": "1.0.4",
     "htmlhint-stylish": "1.0.3",
     "jshint-stylish": "2.2.1",
     "lodash": "4.17.4",
