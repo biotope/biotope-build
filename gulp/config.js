@@ -17,9 +17,7 @@ module.exports = {
 		docs: docs,
 		node: node,
 		resources: ['/resources'],
-		// resources: ['/resources', '/z_resourcesContent'],
 		components: ['/components'],
-		// components: ['/components', '/z_componentsContent'],
 		handlebarsHelper: '/js/handlebars.helper.js',
 		tasks: {
 			angular: true,
