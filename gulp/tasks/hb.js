@@ -7,6 +7,7 @@ var replace = require('gulp-replace');
 var mergeStream = require('merge-stream');
 var watch = require('gulp-watch');
 var runSequence = require('run-sequence');
+var notify = require("gulp-notify");
 var handlebars = require('handlebars');
 var config = require('./../config');
 var gutil = require('gulp-util');
@@ -28,12 +29,12 @@ gulp.task('static:hb', function () {
 
 	let hbStream = hb({
 		// set to true to see details to partials, data, etc.
-		debug: false
+		debug: true
 	})
-		// handlebar helper functions
-		// @TODO add possibility to inject helpers from file
+	// handlebar helper functions
+	// @TODO add possibility to inject helpers from file
 		.helpers({
-			def: function (a, b) { return a ? a : b; },
+			def: function (a, b) {return a ? a : b;},
 			text: function (count, max) {
 				if (max !== 0 && typeof max !== 'undefined' && max > count) {
 					count = Math.floor(Math.random() * max) + count;
@@ -41,6 +42,9 @@ gulp.task('static:hb', function () {
 				var text = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. ';
 				text = text + text + text;
 				return text.substr(0, count);
+			},
+			stringify: function(object) {
+				return JSON.stringify(object);
 			}
 		})
 		// global partials
@@ -52,12 +56,14 @@ gulp.task('static:hb', function () {
 	// component partials
 	config.global.components.map( function(currentComponent, index) {
 		hbStream
-			.partials(config.global.src + currentComponent + '/**/*.{html,handlebars,hbs}');
+			.partials(config.global.src + currentComponent + '/**/*.{html,handlebars,hbs}')
+			.data(config.global.src + currentComponent + '/**/*.json')
 	});
 	// dynamic partials
 	config.global.resources.map( function(currentResource, index) {
 		hbStream
-			.partials(config.global.src + currentResource + '/**/*.hbs');
+			.partials(config.global.src + currentResource + '/**/*.hbs')
+			.data(config.global.src + currentResource + '/**/*.json');
 	});
 
 	/**
@@ -67,6 +73,12 @@ gulp.task('static:hb', function () {
 	return gulp
 		.src(config.global.src + '/pages/' + '/*.{html,handlebars,hbs}')
 		.pipe(hbStream)
+		.on('error', notify.onError(function (error) {
+			return {
+				title: 'static:hb',
+				message: error.message
+			};
+		}))
 		.pipe(gulp.dest(config.global.dev));
 
 });
@@ -79,7 +91,7 @@ gulp.task('watch:static:hb', function () {
 		files.push(config.global.src + currentComponent +'/**/*.{html,handlebars,hbs}');
 	});
 
-		watch(files, function () {
+	watch(files, function () {
 		runSequence(
 			['static:hb']
 		);
