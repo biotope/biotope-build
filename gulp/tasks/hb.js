@@ -29,7 +29,7 @@ gulp.task('static:hb', function () {
 
 	let hbStream = hb({
 		// set to true to see details to partials, data, etc.
-		debug: true
+		debug: false
 	})
 	// handlebar helper functions
 	// @TODO add possibility to inject helpers from file
