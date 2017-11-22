@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const connect = require('gulp-connect');
 const opn = require('opn');
 const cached = require('gulp-cached');
+const debug = require('gulp-debug');
 const watch = require('gulp-watch');
 const runSequence = require('run-sequence');
 
@@ -21,6 +22,7 @@ gulp.task('livereload', function () {
 
 	return gulp.src(config.connect.globs)
 	// .pipe(cached('livereload'))
+		.pipe(debug({title: 'livereload: '}))
 		.pipe(connect.reload());
 
 });

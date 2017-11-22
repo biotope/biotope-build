@@ -21,6 +21,7 @@
     "gulp-concat": "2.6.1",
     "gulp-connect": "5.0.0",
     "gulp-cssstats": "1.0.1",
+    "gulp-debug": "^3.1.0",
     "gulp-declare": "0.3.0",
     "gulp-eslint": "4.0.0",
     "gulp-favicons": "2.2.7",
