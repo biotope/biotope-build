@@ -47,9 +47,9 @@ gulp.task('eslint:components', function () {
 gulp.task('watch:eslint:resources', function () {
 
 	if (config.global.tasks.linting) {
-		config.global.resources.forEach(function(currentResource, index) {
+		config.global.resources.forEach(function(currentResource) {
 			watch([
-				config.global.src + config.global.components[index] + '/**/js/**/*.js',
+				config.global.src + currentResource + '/**/js/**/*.js',
 				'!' + config.global.src + currentResource + '/js/vendor/**/*.js',
 			], config.watch, function () {
 				runSequence('eslint:resources')

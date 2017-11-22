@@ -124,7 +124,7 @@ gulp.task('watch:static:hb:indexr', function () {
 
 	watch(config.global.src + '/pages/*.hbs', config.watch, function () {
 		runSequence(
-			['static:hb:indexr']
+			['static:hb:indexr','static:hb']
 		);
 	});
 
