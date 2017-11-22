@@ -1,5 +1,7 @@
-var gulp = require('index');
-var runSequence = require('run-sequence');
+const gulp = require('index');
+const runSequence = require('run-sequence');
+const requireDir = require('require-dir');
+requireDir('./tasks', { recurse: true });
 
 // Prevent errors caused by too many listeners in gulp-watch
 require('events').EventEmitter.defaultMaxListeners = 0;

@@ -1,15 +1,14 @@
-var fs = require('fs');
-var _ = require('lodash');
-var cwd = process.cwd();
-var projectConfig = require(cwd + '/projectConfig.json');
-var os = require('os');
-var isWin = /^win/.test(os.platform());
+const cwd = process.cwd();
+const src = 'app';
+const dev = '.tmp';
+const dist = 'dist';
+const docs = 'documentation';
+const node = 'node_modules';
 
-var src = 'app';
-var dev = '.tmp';
-var dist = 'dist';
-var docs = 'documentation';
-var node = 'node_modules';
+const _ = require('lodash');
+const projectConfig = require(cwd + '/projectConfig.js');
+const os = require('os');
+const isWin = /^win/.test(os.platform());
 
 module.exports = {
 	global: {
@@ -18,6 +17,7 @@ module.exports = {
 		dist: dist,
 		docs: docs,
 		node: node,
+		cwd: cwd,
 		isWin: isWin,
 		debug: false,
 		dataObject: 'data',
