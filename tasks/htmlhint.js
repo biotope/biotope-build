@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const htmlhint = require("gulp-htmlhint");
+const htmlhint = require('gulp-htmlhint');
 const cached = require('gulp-cached');
 const watch = require('gulp-watch');
 const runSequence = require('run-sequence');

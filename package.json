@@ -13,6 +13,7 @@
     "babel-loader": "7.1.2",
     "babel-preset-env": "^1.6.1",
     "check-dependencies": "1.1.0",
+    "colors": "^1.1.2",
     "del": "3.0.0",
     "globule": "1.2.0",
     "gulp": "3.9.1",
