@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const gutil = require('gulp-util');
+const colors = require('colors/safe');
 const iconfontCss = require('gulp-iconfont-css');
 const svgicons2svgfont = require('gulp-svgicons2svgfont');
 const svg2ttf = require('gulp-svg2ttf');
@@ -24,7 +24,7 @@ gulp.task('iconfont', function (callback) {
 		);
 	} else {
 		callback();
-		gutil.log(gutil.colors.yellow('iconfont disabled'));
+		console.log(colors.yellow('iconfont disabled'));
 	}
 
 });

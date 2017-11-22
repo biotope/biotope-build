@@ -2,7 +2,8 @@ const gulp = require('gulp');
 const named = require('vinyl-named');
 const mergeStream = require('merge-stream');
 const watch = require('gulp-watch');
-const gutil = require('gulp-util');
+const colors = require('colors/safe');
+const notify = require("gulp-notify");
 const rename = require('gulp-rename');
 const runSequence = require('run-sequence');
 const webpackTS = require('webpack');
@@ -17,31 +18,35 @@ gulp.task('webpack:resources:ts', function() {
 		return mergeStream(config.global.resources.map( function(currentResource) {
 			return gulp.src(config.global.src + currentResource + '/ts/*.ts')
 				.pipe(named())
-				.pipe(webpackStream(webpackConfig, webpackTS).on('error', function(err) {
-					gutil.log('Webpack TS', err);
-					this.emit('end');
-				}))
+				.pipe(webpackStream(webpackConfig, webpackTS).on('error', notify.onError((error) => {
+					return {
+						title: 'webpack:resources:ts',
+						message: error.message
+					};
+				})))
 				.pipe(gulp.dest(config.global.dev + currentResource + '/ts/'));
 		}));
 	} else {
-		gutil.log(gutil.colors.yellow('webpack:ts disabled'));
+		console.log(colors.yellow('webpack:ts disabled'));
 	}
-
 });
 
 gulp.task('webpack:components:ts', function() {
 	if (config.global.tasks.webpack) {
 		return mergeStream(config.global.resources.map( function(currentResource, index) {
-			let tmp = {};
+			const tmp = {};
+
 			return gulp.src(config.global.src + config.global.components[index] + '/**/*.ts')
 				.pipe(named())
 				.pipe(rename(function (path) {
 					tmp[path.basename] = path;
 				}))
-				.pipe(webpackStream(webpackConfig, webpackTS).on('error', function(err) {
-					gutil.log('Webpack TS', err);
-					this.emit('end');
-				}))
+				.pipe(webpackStream(webpackConfig, webpackTS).on('error', notify.onError((error) => {
+					return {
+						title: 'webpack:components:ts',
+						message: error.message
+					};
+				})))
 				.pipe(rename(function (path) {
 					for (key in tmp) {
 
@@ -70,7 +75,6 @@ gulp.task('watch:webpack:resources:ts', function () {
 			});
 		});
 	}
-
 });
 
 gulp.task('watch:webpack:components:ts', function () {
@@ -84,5 +88,4 @@ gulp.task('watch:webpack:components:ts', function () {
 			});
 		});
 	}
-
 });

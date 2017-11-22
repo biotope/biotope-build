@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const gutil = require('gulp-util');
+const colors = require('colors/safe');
 const path = require('path');
 const handlebars = require('gulp-handlebars');
 const wrap = require('gulp-wrap');
@@ -16,7 +16,6 @@ gulp.task('handlebars', function () {
 
 	if (config.global.tasks.handlebars) {
 		// Assume all partials start with an underscore
-
 		const partials = mergeStream(config.global.resources.map( function(currentResource, index) {
 			return gulp.src([
 				config.global.src + currentResource + '/hbs/**/_*.hbs',
@@ -58,7 +57,7 @@ gulp.task('handlebars', function () {
 			.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { <%= contents %> }));'))
 			.pipe(gulp.dest(config.global.dev + config.global.resources[0] + '/js/'));
 	} else {
-		gutil.log(gutil.colors.yellow('handlebars disabled'));
+		console.log(colors.yellow('handlebars disabled'));
 	}
 
 });
@@ -79,8 +78,5 @@ gulp.task('watch:handlebars', function () {
 		watch(watchFiles, config.watch, function () {
 			runSequence('handlebars');
 		});
-	} else {
-		gutil.log(gutil.colors.yellow('handlebars disabled'));
 	}
-
 });

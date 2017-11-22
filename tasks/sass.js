@@ -5,7 +5,7 @@ const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cached = require('gulp-cached');
 const watch = require('gulp-watch');
-const gutil = require('gulp-util');
+const colors = require('colors/safe');
 const runSequence = require('run-sequence');
 const mergeStream = require('merge-stream');
 const sourcemaps = require('gulp-sourcemaps');
@@ -28,7 +28,7 @@ gulp.task('resources:sass', function () {
 				.pipe(gulp.dest(config.global.dev + currentResource + '/css'));
 		}));
 	} else {
-		gutil.log(gutil.colors.yellow('sass disabled'));
+		console.log(colors.yellow('sass resources disabled'));
 	}
 });
 
@@ -54,7 +54,7 @@ gulp.task('components:sass', function () {
 				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index]));
 		}));
 	} else {
-		gutil.log(gutil.colors.yellow('sass disabled'));
+		console.log(colors.yellow('sass components disabled'));
 	}
 });
 

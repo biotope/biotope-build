@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const gutil = require('gulp-util');
+const colors = require('colors/safe');
 const jsonlint = require('gulp-jsonlint');
 const cached = require('gulp-cached');
 const watch = require('gulp-watch');
@@ -15,11 +15,9 @@ gulp.task('lint:json', function () {
 			.pipe(jsonlint())
 			.pipe(jsonlint.reporter());
 	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
+		console.log(colors.yellow('linting json disabled'));
 	}
-
 });
-
 
 gulp.task('watch:json', function () {
 
@@ -29,8 +27,5 @@ gulp.task('watch:json', function () {
 		], config.watch, function () {
 			runSequence('lint:json');
 		});
-	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
 	}
-
 });

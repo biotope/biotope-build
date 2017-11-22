@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const gutil = require('gulp-util');
+const colors = require('colors/safe');
 const mergeStream = require('merge-stream');
 const config = require('./../config');
 const image = require('gulp-imagemin');
@@ -23,7 +23,7 @@ gulp.task('image:resources:dist', function () {
 		}));
 
 	} else {
-		gutil.log(gutil.colors.yellow('image compressor disabled'));
+		console.log(colors.yellow('image compressor disabled'));
 	}
 });
 
