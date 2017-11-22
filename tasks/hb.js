@@ -1,10 +1,8 @@
-const cwd = process.cwd();
+const gulp = require('gulp');
 const frontMatter = require('gulp-front-matter');
 const fs = require('fs');
 const globule = require('globule');
-const gulp = require('gulp');
-const notify = require("gulp-notify");
-const packageData = require(cwd + '/package.json');
+const notify = require('gulp-notify');
 const path = require('path');
 const rename = require('gulp-rename');
 const runSequence = require('run-sequence');
@@ -14,6 +12,7 @@ const config = require('./../config');
 const hbsParser = require('./../lib/hbs-parser');
 const iconParser = require('./../lib/icon-parser');
 const jsonParser = require('./../lib/json-parser');
+const packageData = require(config.cwd + '/package.json');
 
 
 gulp.task('static:hb', function () {
