@@ -24,7 +24,7 @@ gulp.task('lint:json', function () {
 gulp.task('watch:json', function () {
 
 	if (config.global.tasks.linting) {
-		return watch([
+		watch([
 			config.global.src + '/**/*.json'
 		], config.watch, function () {
 			runSequence('lint:json');

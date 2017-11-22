@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const requireDir = require('require-dir');
-requireDir('./tasks', { recurse: true });
+requireDir('./tasks', {recurse: true});
 
 // Prevent errors caused by too many listeners in gulp-watch
 require('events').EventEmitter.defaultMaxListeners = 0;
@@ -123,12 +123,13 @@ gulp.task('serve', function (callback) {
 			'watch:webpack:resources:ts',
 			'watch:webpack:components:ts',
 			'watch:static:hb',
-			'watch:icons'
+			'watch:icons',
+			'watch:livereload'
 		],
 		'connect',
-		'livereload:init',
-		'livereload',
 		'connect:open',
+		// 'livereload:init',
+		// 'livereload',
 		callback
 	);
 });

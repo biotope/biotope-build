@@ -69,7 +69,7 @@ gulp.task('watch:icons', function() {
 
 	config.global.resources.map( function(currentResource) {
 
-		return watch(config.global.src + currentResource + '/icons/*.svg', config.watch, function () {
+		watch(config.global.src + currentResource + '/icons/*.svg', config.watch, function () {
 			runSequence(
 				'iconfont',
 				[

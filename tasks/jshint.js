@@ -50,7 +50,7 @@ gulp.task('watch:jshint:resources', function () {
 
 	if (config.global.tasks.linting) {
 		config.global.resources.forEach(function(currentResource) {
-			return watch([
+			watch([
 				config.global.src + currentResource + '/js/**/*.js',
 				'!' + config.global.src + currentResource + '/js/vendor/**/*.js',
 			], config.watch, function () {
@@ -67,7 +67,7 @@ gulp.task('watch:jshint:components', function () {
 
 	if (config.global.tasks.linting) {
 		config.global.components.forEach(function(currentComponent) {
-			return watch([
+			watch([
 				config.global.src + currentComponent + '/**/*.js',
 				'!' + config.global.src + currentComponent + '/**/vendor/**/*.js'
 			], config.watch, function () {

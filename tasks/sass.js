@@ -94,7 +94,7 @@ gulp.task('lint:components:sass', function () {
 gulp.task('watch:resources:sass', function () {
 	if (config.global.tasks.sass) {
 		config.global.resources.forEach(function(currentResource) {
-			return watch([
+			watch([
 				config.global.src + currentResource + '/scss/**/*.scss'
 			], config.watch, function() {
 				runSequence(
@@ -104,7 +104,7 @@ gulp.task('watch:resources:sass', function () {
 			});
 		});
 
-		return watch([
+		watch([
 			config.global.src + '../.iconfont' + '/*.scss'
 		], config.watch, function() {
 			runSequence(
@@ -125,7 +125,7 @@ gulp.task('watch:components:sass', function () {
 			components.push(config.global.src + currentComponent + '/**/*.scss');
 		});
 
-		return watch(components, config.watch, function() {
+		watch(components, config.watch, function() {
 			runSequence(
 				['lint:components:sass'],
 				['components:sass']
