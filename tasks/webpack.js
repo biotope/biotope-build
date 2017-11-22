@@ -5,7 +5,7 @@ const watch = require('gulp-watch');
 const colors = require('colors/safe');
 const rename = require('gulp-rename');
 const runSequence = require('run-sequence');
-const webpackTS = require('webpack');
+const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 
 const webpackConfig = require('./../webpack.config.js');
@@ -17,7 +17,7 @@ gulp.task('webpack:resources:ts', function() {
 		return mergeStream(config.global.resources.map( function(currentResource) {
 			return gulp.src(config.global.src + currentResource + '/ts/*.ts')
 				.pipe(named())
-				.pipe(webpackStream(webpackConfig, webpackTS).on('error', function(error) {
+				.pipe(webpackStream(webpackConfig, webpack).on('error', function() {
 					this.emit('end');
 				}))
 				.pipe(gulp.dest(config.global.dev + currentResource + '/ts/'));
@@ -37,7 +37,7 @@ gulp.task('webpack:components:ts', function() {
 				.pipe(rename(function (path) {
 					tmp[path.basename] = path;
 				}))
-				.pipe(webpackStream(webpackConfig, webpackTS).on('error', function(error) {
+				.pipe(webpackStream(webpackConfig, webpack).on('error', function() {
 					this.emit('end');
 				}))
 				.pipe(rename(function (path) {
