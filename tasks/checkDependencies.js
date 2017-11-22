@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const dependencies = require('check-dependencies');
 const gutil = require('gulp-util');
 const config = require('./../config');

@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const gutil = require('gulp-util');
 const iconfontCss = require('gulp-iconfont-css');
 const svgicons2svgfont = require('gulp-svgicons2svgfont');

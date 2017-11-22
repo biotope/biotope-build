@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const size = require('gulp-size');
 const cleanCss = require('gulp-clean-css');
 const mergeStream = require('merge-stream');

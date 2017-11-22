@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const modernizr = require('gulp-modernizr');
 const uglify = require('gulp-uglify');
 

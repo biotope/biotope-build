@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const useref = require('gulp-useref');
 const hb = require('gulp-hb');
 const filter = require('gulp-filter');

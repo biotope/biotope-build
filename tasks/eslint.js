@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const gutil = require('gulp-util');
 const eslint = require('gulp-eslint');
 const cached = require('gulp-cached');

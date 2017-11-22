@@ -1,17 +1,16 @@
-var gulp = require('index');
-var sass = require('gulp-sass');
-var sassLint = require('gulp-sass-lint');
-var postcss = require('gulp-postcss');
-var autoprefixer = require('autoprefixer');
-var cached = require('gulp-cached');
-var watch = require('gulp-watch');
-var gutil = require('gulp-util');
-var rename = require('gulp-rename');
-var runSequence = require('run-sequence');
-var mergeStream = require('merge-stream');
-var config = require('./../config');
-var sourcemaps = require('gulp-sourcemaps');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const sassLint = require('gulp-sass-lint');
+const postcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+const cached = require('gulp-cached');
+const watch = require('gulp-watch');
+const gutil = require('gulp-util');
+const runSequence = require('run-sequence');
+const mergeStream = require('merge-stream');
+const sourcemaps = require('gulp-sourcemaps');
 
+const config = require('./../config');
 
 gulp.task('resources:sass', function () {
 	if (config.global.tasks.sass) {

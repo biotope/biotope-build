@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const connect = require('gulp-connect');
 const opn = require('opn');
 const cached = require('gulp-cached');

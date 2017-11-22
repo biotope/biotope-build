@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const tap = require('gulp-tap');
 const gutil = require('gulp-util');
 const cssstats = require('gulp-cssstats');

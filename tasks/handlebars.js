@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const gutil = require('gulp-util');
 const path = require('path');
 const handlebars = require('gulp-handlebars');

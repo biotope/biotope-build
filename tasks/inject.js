@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const inject = require('gulp-inject');
 const config = require('./../config');
 

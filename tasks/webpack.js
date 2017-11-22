@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const named = require('vinyl-named');
 const mergeStream = require('merge-stream');
 const watch = require('gulp-watch');

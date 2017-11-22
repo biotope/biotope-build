@@ -1,4 +1,4 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const requireDir = require('require-dir');
 requireDir('./tasks', { recurse: true });

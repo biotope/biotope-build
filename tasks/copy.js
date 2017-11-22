@@ -1,6 +1,5 @@
-const gulp = require('index');
+const gulp = require('gulp');
 const mergeStream = require('merge-stream');
-const debug = require('gulp-debug');
 const filter = require('gulp-filter');
 const path = require('path');
 const watch = require('gulp-watch');
