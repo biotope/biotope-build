@@ -128,8 +128,6 @@ gulp.task('serve', function (callback) {
 		],
 		'connect',
 		'connect:open',
-		// 'livereload:init',
-		// 'livereload',
 		callback
 	);
 });
