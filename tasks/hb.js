@@ -1,5 +1,5 @@
 const cwd = process.cwd();
-const frontMatter = require('gulp- front-matter');
+const frontMatter = require('gulp-front-matter');
 const fs = require('fs');
 const globule = require('globule');
 const gulp = require('gulp');
