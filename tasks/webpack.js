@@ -3,7 +3,6 @@ const named = require('vinyl-named');
 const mergeStream = require('merge-stream');
 const watch = require('gulp-watch');
 const colors = require('colors/safe');
-const notify = require("gulp-notify");
 const rename = require('gulp-rename');
 const runSequence = require('run-sequence');
 const webpackTS = require('webpack');
@@ -18,12 +17,9 @@ gulp.task('webpack:resources:ts', function() {
 		return mergeStream(config.global.resources.map( function(currentResource) {
 			return gulp.src(config.global.src + currentResource + '/ts/*.ts')
 				.pipe(named())
-				.pipe(webpackStream(webpackConfig, webpackTS).on('error', notify.onError((error) => {
-					return {
-						title: 'webpack:resources:ts',
-						message: error.message
-					};
-				})))
+				.pipe(webpackStream(webpackConfig, webpackTS).on('error', function(error) {
+					this.emit('end');
+				}))
 				.pipe(gulp.dest(config.global.dev + currentResource + '/ts/'));
 		}));
 	} else {
@@ -41,12 +37,9 @@ gulp.task('webpack:components:ts', function() {
 				.pipe(rename(function (path) {
 					tmp[path.basename] = path;
 				}))
-				.pipe(webpackStream(webpackConfig, webpackTS).on('error', notify.onError((error) => {
-					return {
-						title: 'webpack:components:ts',
-						message: error.message
-					};
-				})))
+				.pipe(webpackStream(webpackConfig, webpackTS).on('error', function(error) {
+					this.emit('end');
+				}))
 				.pipe(rename(function (path) {
 					for (key in tmp) {
 
