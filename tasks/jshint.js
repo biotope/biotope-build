@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const gutil = require('gulp-util');
+const colors = require('colors/safe');
 const jshint = require('gulp-jshint');
 const stylish = require('jshint-stylish');
 const mergeStream = require('merge-stream');
@@ -22,9 +22,8 @@ gulp.task('jshint:resources', function () {
 				.pipe(jshint.reporter(stylish));
 		}));
 	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
+		console.log(colors.yellow('linting resources disabled'));
 	}
-
 });
 
 
@@ -41,9 +40,8 @@ gulp.task('jshint:components', function () {
 				.pipe(jshint.reporter(stylish));
 		}));
 	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
+		console.log(colors.yellow('linting components disabled'));
 	}
-
 });
 
 gulp.task('watch:jshint:resources', function () {
@@ -57,10 +55,7 @@ gulp.task('watch:jshint:resources', function () {
 				runSequence('jshint:resources');
 			});
 		});
-	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
 	}
-
 });
 
 gulp.task('watch:jshint:components', function () {
@@ -74,8 +69,5 @@ gulp.task('watch:jshint:components', function () {
 				runSequence('jshint:components');
 			});
 		});
-	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
 	}
-
 });

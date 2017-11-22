@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const gutil = require('gulp-util');
+const colors = require('colors/safe');
 const eslint = require('gulp-eslint');
 const cached = require('gulp-cached');
 const watch = require('gulp-watch');
@@ -22,9 +22,8 @@ gulp.task('eslint:resources', function () {
 				.pipe(eslint.failAfterError());
 		}));
 	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
+		console.log(colors.yellow('linting resources disabled'));
 	}
-
 });
 
 gulp.task('eslint:components', function () {
@@ -41,9 +40,8 @@ gulp.task('eslint:components', function () {
 				.pipe(eslint.failAfterError());
 		}));
 	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
+		console.log(colors.yellow('linting components disabled'));
 	}
-
 });
 
 gulp.task('watch:eslint:resources', function () {
@@ -57,10 +55,7 @@ gulp.task('watch:eslint:resources', function () {
 				runSequence('eslint:resources')
 			});
 		});
-	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
 	}
-
 });
 
 gulp.task('watch:eslint:components', function () {
@@ -74,8 +69,5 @@ gulp.task('watch:eslint:components', function () {
 				runSequence('eslint:components')
 			});
 		});
-	} else {
-		gutil.log(gutil.colors.yellow('linting disabled'));
 	}
-
 });
