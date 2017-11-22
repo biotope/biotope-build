@@ -20,7 +20,7 @@ gulp.task('cleanCss:resources:dist', function () {
 				.pipe(size({
 					title: 'minified',
 					showFiles: true
-				});
+				}));
 		}
 
 		stream.pipe(gulp.dest(config.global.dist + currentResource + '/css/'));
