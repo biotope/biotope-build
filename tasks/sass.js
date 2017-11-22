@@ -68,7 +68,7 @@ gulp.task('lint:resources:sass', function () {
 			return gulp.src([config.global.src + currentResource + '/scss/**/*.s+(a|c)ss',
 				'!' + config.global.src + currentResource + '/scss/**/_icons.s+(a|c)ss',
 			])
-				.pipe(cached('sass'))
+				.pipe(cached('sass', { optimizeMemory: true }))
 				.pipe(sassLint(config.global.sassLint))
 				.pipe(sassLint.format())
 				.pipe(sassLint.failOnError());
@@ -80,7 +80,7 @@ gulp.task('lint:components:sass', function () {
 	if (config.global.tasks.sass && config.global.tasks.linting && false) {
 		return mergeStream(config.global.components.map(function (currentComponent) {
 			return gulp.src(config.global.src + currentComponent + '/**/*.s+(a|c)ss')
-				.pipe(cached('sass'))
+				.pipe(cached('sass', { optimizeMemory: true }))
 				.pipe(sassLint())
 				.pipe(sassLint.format())
 				.pipe(sassLint.failOnError());

@@ -14,7 +14,7 @@ gulp.task('image:resources:dist', function () {
 
 	if (config.global.tasks.image) {
 		return mergeStream(config.global.resources.map( function(currentResource) {
-			return gulp.src(config.global.dist + currentResource + '/img/**')
+			return gulp.src(config.global.dist + currentResource + '/img/**/*.*')
 				.pipe(image(
 					imageOptimizers,
 					config.image
@@ -32,7 +32,7 @@ gulp.task('image:component:dist', function () {
 	if (config.global.tasks.image) {
 		return mergeStream(config.global.resources.map(function (currentResource) {
 			return mergeStream(config.global.components.map(function (currentComponent) {
-				return gulp.src(config.global.src + currentComponent + '/*/img/**')
+				return gulp.src(config.global.src + currentComponent + '/*/img/**/*.*')
 					.pipe(image(
 						imageOptimizers,
 						config.image

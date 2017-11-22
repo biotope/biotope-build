@@ -11,7 +11,7 @@ gulp.task('lint:json', function () {
 
 	if (config.global.tasks.linting) {
 		return gulp.src(config.global.src + "/**/*.json")
-			.pipe(cached('json'))
+			.pipe(cached('json', { optimizeMemory: true }))
 			.pipe(jsonlint())
 			.pipe(jsonlint.reporter());
 	} else {

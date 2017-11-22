@@ -54,7 +54,7 @@ module.exports = {
 	connect: {
 		port: 9000,
 		globs: [
-			dev + '/**/*',
+			dev + '/**/*.*',
 			src + '/resources/js/**/*.js',
 			src + '/resources/bower_components/**/*',
 			src + '/_mock/**/*',

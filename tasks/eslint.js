@@ -16,7 +16,7 @@ gulp.task('eslint:resources', function () {
 				config.global.src + currentResource + '/js/**/*.js',
 				'!' + config.global.src + currentResource + '/js/vendor/**/*.js'
 			])
-				.pipe(cached('eslint'))
+				.pipe(cached('eslint', { optimizeMemory: true }))
 				.pipe(eslint())
 				.pipe(eslint.format())
 				.pipe(eslint.failAfterError());
@@ -35,7 +35,7 @@ gulp.task('eslint:components', function () {
 				config.global.src + currentComponent + '/**/*.js',
 				'!' + config.global.src + currentComponent + '/**/vendor/**/*.js'
 			])
-				.pipe(cached('eslint'))
+				.pipe(cached('eslint', { optimizeMemory: true }))
 				.pipe(eslint())
 				.pipe(eslint.format())
 				.pipe(eslint.failAfterError());

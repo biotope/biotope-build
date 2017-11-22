@@ -17,7 +17,7 @@ gulp.task('jshint:resources', function () {
 				config.global.src + currentResource + '/js/**/*.js',
 				'!' + config.global.src + currentResource + '/js/vendor/**/*.js'
 			])
-				.pipe(cached('jshint'))
+				.pipe(cached('jshint', { optimizeMemory: true }))
 				.pipe(jshint())
 				.pipe(jshint.reporter(stylish));
 		}));
@@ -36,7 +36,7 @@ gulp.task('jshint:components', function () {
 				config.global.src + currentComponent + '/**/*.js',
 				'!' + config.global.src + currentComponent + '/**/vendor/**/*.js'
 			])
-				.pipe(cached('jshint'))
+				.pipe(cached('jshint', { optimizeMemory: true }))
 				.pipe(jshint())
 				.pipe(jshint.reporter(stylish));
 		}));
