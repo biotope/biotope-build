@@ -162,9 +162,8 @@ module.exports = {
 	},
 
 	uglify: {
-		preserveComments: 'license',
 		sourcemaps: false,
-		folders: ['js', 'ts', 'react'],
+		folders: ['js', 'ts'],
 		ignoreList: []
 	},
 
