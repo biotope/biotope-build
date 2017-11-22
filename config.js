@@ -6,7 +6,7 @@ const docs = 'documentation';
 const node = 'node_modules';
 
 const _ = require('lodash');
-const projectConfig = require(cwd + '/projectConfig.js');
+const projectConfig = require(cwd + '/projectConfig');
 const os = require('os');
 const isWin = /^win/.test(os.platform());
 

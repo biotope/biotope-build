@@ -53,16 +53,16 @@ gulp.task('copy:dist:ts', function () {
 });
 
 gulp.task('copy:dev:npm:js', function () {
-	let object = config.global.externalResources;
-	if (Object.keys(object).length === 0 && object.constructor === Object) return;
+	const resources = config.global.externalResources;
+	if (Object.keys(resources).length === 0 && resources.constructor === Object) return;
 
 	return mergeStream(config.global.resources.map( function(currentResource) {
-		return mergeStream(Object.keys(object).map(function(key, index) {
-			if( typeof object[key] === 'string' ) {
-				object[key] = [object [key]];
+		return mergeStream(Object.keys(resources).map(function(key, index) {
+			if( typeof resources[key] === 'string' ) {
+				resources[key] = [resources[key]];
 			}
 
-			return mergeStream(object[key].map(function(file) {
+			return mergeStream(resources[key].map(function(file) {
 				return gulp.src(config.global.node + '/' + key + '/' + file)
 					.pipe(filter('*.js'))
 					.pipe(gulp.dest(config.global.dev + currentResource + '/js/vendor/'));
@@ -73,16 +73,16 @@ gulp.task('copy:dev:npm:js', function () {
 });
 
 gulp.task('copy:dev:npm:css', function () {
-	let object = config.global.externalResources;
-	if (Object.keys(object).length === 0 && object.constructor === Object) return;
+	const resources = config.global.externalResources;
+	if (Object.keys(resources).length === 0 && resources.constructor === Object) return;
 
 	return mergeStream(config.global.resources.map( function(currentResource) {
-		return mergeStream(Object.keys(object).map(function(key, index) {
-			if( typeof object[key] === 'string' ) {
-				object[key] = [object [key]];
+		return mergeStream(Object.keys(resources).map(function(key, index) {
+			if( typeof resources[key] === 'string' ) {
+				resources[key] = [resources[key]];
 			}
 
-			return mergeStream(object[key].map(function(file) {
+			return mergeStream(resources[key].map(function(file) {
 				return gulp.src(config.global.node + '/' + key + '/' + file)
 					.pipe(filter('*.css', '*.scss'))
 					.pipe(gulp.dest(config.global.dev + currentResource + '/css/vendor/'));
