@@ -1,14 +1,17 @@
-var gulp = require('gulp');
-var useref = require('gulp-useref');
-var zetzer = require('gulp-zetzer');
-var filter = require('gulp-filter');
-var uglify = require('gulp-uglify');
-var cleanCss = require('gulp-clean-css');
-var config = require('./../config');
+const gulp = require('gulp');
+const useref = require('gulp-useref');
+const hb = require('gulp-hb');
+const filter = require('gulp-filter');
+const uglify = require('gulp-uglify');
+const cleanCss = require('gulp-clean-css');
+const lec = require('gulp-line-ending-corrector');
+
+const config = require('./../config');
 
 gulp.task('useref', function () {
 
 	return gulp.src(config.global.dev + '/*.html')
+		.pipe(lec(config.lec))
 		.pipe(useref({
 			noAssets: true
 		}))
@@ -19,11 +22,14 @@ gulp.task('useref', function () {
 
 gulp.task('useref:assets', function () {
 
-	var jsFilter = filter(['**/*.js'], {restore: true});
-	var cssFilter = filter(['**/*.css'], {restore: true});
+	const jsFilter = filter(['**/*.js'], {restore: true});
+	const cssFilter = filter(['**/*.css'], {restore: true});
+
+	let hbStream = hb().partials(config.global.src + '/**/*.hbs');
 
 	return gulp.src(config.global.src + '/resources/_useref.html')
-		.pipe(zetzer(config.zetzer))
+		.pipe(lec(config.lec))
+		.pipe(hbStream)
 		.pipe(useref())
 
 		.pipe(jsFilter)
@@ -37,5 +43,4 @@ gulp.task('useref:assets', function () {
 		.pipe(filter(['**', '!**/_useref.html']))
 
 		.pipe(gulp.dest(config.global.dist));
-
 });

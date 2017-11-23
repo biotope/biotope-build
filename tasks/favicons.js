@@ -1,6 +1,6 @@
-var gulp = require('gulp');
-var favicons = require("gulp-favicons");
-var config = require('./../config');
+const gulp = require('gulp');
+const favicons = require('gulp-favicons');
+const config = require('./../config');
 
 gulp.task("favicons", function () {
 	if (config.global.tasks.favicons) {

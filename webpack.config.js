@@ -9,8 +9,7 @@ var excludes = [
 var babelOptions = {
     babelrc: false,
     presets: [
-        'es2015',
-        'react'
+        'env'
     ]
 };
 
@@ -22,9 +21,7 @@ module.exports = {
     },
 
     externals: {
-        jquery: 'jQuery',
-        react: 'React',
-        'react-dom': 'ReactDOM'
+        jquery: 'jQuery'
     },
 
     devtool: 'source-map',
@@ -50,7 +47,7 @@ module.exports = {
                 test: /\.tsx$/,
                 use: [
                     {
-                        loader: 'ts-loader',
+                        loader: 'ts-loader'
                     }
                 ],
                 exclude: excludes
