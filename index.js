@@ -41,8 +41,7 @@ gulp.task('build:dev', function (callback) {
 		[
 			'resources:sass',
 			'components:sass',
-			'webpack:resources:ts',
-			'webpack:components:ts',
+			'webpack:ts',
 			'copy:dev:components:js'
 		],
 		[
