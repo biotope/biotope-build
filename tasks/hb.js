@@ -12,7 +12,7 @@ const config = require('./../config');
 const hbsParser = require('./../lib/hbs-parser');
 const iconParser = require('./../lib/icon-parser');
 const jsonParser = require('./../lib/json-parser');
-const packageData = require(config.cwd + '/package.json');
+const packageData = require(config.global.cwd + '/package.json');
 
 
 gulp.task('static:hb', function () {
