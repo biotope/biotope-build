@@ -1,13 +1,14 @@
-var fs = require('fs');
-var _ = require('lodash');
-var cwd = process.cwd();
-var projectConfig = require(cwd + '/projectConfig.json');
+const cwd = process.cwd();
+const src = 'src';
+const dev = '.tmp';
+const dist = 'dist';
+const docs = 'documentation';
+const node = 'node_modules';
 
-var src = 'app';
-var dev = '.tmp';
-var dist = 'dist';
-var docs = 'documentation';
-var node = 'node_modules';
+const _ = require('lodash');
+const projectConfig = require(cwd + '/projectConfig');
+const os = require('os');
+const isWin = /^win/.test(os.platform());
 
 module.exports = {
 	global: {
@@ -16,24 +17,27 @@ module.exports = {
 		dist: dist,
 		docs: docs,
 		node: node,
+		cwd: cwd,
+		isWin: isWin,
+		debug: false,
+		dataObject: 'data',
 		resources: ['/resources'],
+		components: ['/components'],
+		handlebarsHelper: '/js/handlebars.helper.js',
 		tasks: {
-			angular: true,
 			cleanCss: true,
 			cssStats: true,
 			sass: true,
-			less: false,
 			favicons: true,
 			handlebars: true,
 			iconfont: true,
 			image: true,
 			linting: true,
 			markdown: false,
-			typescript: true,
-			uglify: true,
-			webpack: true
+			uglify: true
 		},
 		externalResources: {},
+		bowerResources: {},
 		reactEntryPoints: []
 	},
 
@@ -50,12 +54,13 @@ module.exports = {
 	connect: {
 		port: 9000,
 		globs: [
-			dev + '/**/*',
+			dev + '/**/*.*',
 			src + '/resources/js/**/*.js',
 			src + '/resources/bower_components/**/*',
 			src + '/_mock/**/*',
-			src + '/_assets/**/*',
+			src + '/_config/**/*',
 			'!' + dev + '/_mock/**/*',
+			'!' + dev + '/_config/**/*',
 			'!' + dev + '/_assets/**/*',
 			'!' + dev + '/resources/js/vendor/**/*.js',
 			'!' + dev + '/resources/css/**/*.map',
@@ -90,7 +95,7 @@ module.exports = {
 	handlebars: {
 		templateWrap: 'Handlebars.template(<%= contents %>)',
 		partialWrap: 'Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));',
-		namespace: 'global.configuration.data.tpl',
+		namespace: 'ffglobal.configuration.data.tpl',
 		noRedeclare: true
 	},
 
@@ -121,13 +126,15 @@ module.exports = {
 		verbose: true
 	},
 
-	less: {},
+	lec: {
+		verbose: false,
+		eolc: 'LF',
+		encoding: 'utf8'
+	},
 
 	livereload: {
 		port: 35729
 	},
-
-	markdown: {},
 
 	modernizr: {
 		options: [
@@ -143,6 +150,8 @@ module.exports = {
 		includePaths: []
 	},
 
+	sassLint: {},
+
 	tslint: {
 		formatter: 'prose',
 		configuration: {
@@ -152,25 +161,16 @@ module.exports = {
 		}
 	},
 
-	typescript: {},
-
 	uglify: {
 		preserveComments: 'license',
 		sourcemaps: false,
-		folders: ['js', 'ts', 'react'],
+		folders: ['js', 'ts'],
 		ignoreList: []
 	},
 
-	zetzer: {
-		partials: src + '/_partials',
-		templates: src + '/_partials/layout',
-		dot_template_settings: {
-			strip: false,
-			varname: 'ftf'
-		},
-		env: require('./tasks/zetzerHelper')
+	watch: {
+		usePolling: isWin
 	}
-
 };
 
 if (projectConfig) {

@@ -1,6 +1,6 @@
-var gulp = require('gulp');
-var inject = require('gulp-inject');
-var config = require('./../config');
+const gulp = require('gulp');
+const inject = require('gulp-inject');
+const config = require('./../config');
 
 gulp.task('inject', function () {
 	if (config.global.tasks.favicons) {

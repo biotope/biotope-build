@@ -1,24 +1,26 @@
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var path = require('path');
-var handlebars = require('gulp-handlebars');
-var wrap = require('gulp-wrap');
-var declare = require('gulp-declare');
-var concat = require('gulp-concat');
-var mergeStream = require('merge-stream');
-var plumber = require('gulp-plumber');
-var watch = require('gulp-watch');
-var runSequence = require('run-sequence');
-var config = require('./../config');
+const gulp = require('gulp');
+const colors = require('colors/safe');
+const path = require('path');
+const handlebars = require('gulp-handlebars');
+const wrap = require('gulp-wrap');
+const declare = require('gulp-declare');
+const concat = require('gulp-concat');
+const mergeStream = require('merge-stream');
+const plumber = require('gulp-plumber');
+const watch = require('gulp-watch');
+const runSequence = require('run-sequence');
+
+const config = require('./../config');
 
 gulp.task('handlebars', function () {
 
 	if (config.global.tasks.handlebars) {
 		// Assume all partials start with an underscore
-
-		var partials = mergeStream(config.global.resources.map( function(currentResource) {
+		const partials = mergeStream(config.global.resources.map( function(currentResource, index) {
 			return gulp.src([
-				config.global.src + currentResource + '/hbs/**/_*.hbs'
+				config.global.src + currentResource + '/hbs/**/_*.hbs',
+				config.global.src + config.global.components[index] + '/**/hbs/**/_*.hbs',
+
 			])
 				.pipe(plumber())
 				.pipe(handlebars({
@@ -33,9 +35,10 @@ gulp.task('handlebars', function () {
 				}, {}));
 		}));
 
-		var templates =  mergeStream(config.global.resources.map( function(currentResource) {
+		const templates =  mergeStream(config.global.resources.map( function(currentResource, index) {
 			return gulp.src([
-				config.global.src + currentResource + '/hbs/**/[^_]*.hbs'
+				config.global.src + currentResource + '/hbs/**/[^_]*.hbs',
+				config.global.src + config.global.components[index] + '/**/hbs/**/[^_]*.hbs'
 			])
 				.pipe(plumber())
 				.pipe(handlebars({
@@ -54,7 +57,7 @@ gulp.task('handlebars', function () {
 			.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { <%= contents %> }));'))
 			.pipe(gulp.dest(config.global.dev + config.global.resources[0] + '/js/'));
 	} else {
-		gutil.log(gutil.colors.yellow('handlebars disabled'));
+		console.log(colors.yellow('handlebars disabled'));
 	}
 
 });
@@ -62,16 +65,18 @@ gulp.task('handlebars', function () {
 gulp.task('watch:handlebars', function () {
 
 	if (config.global.tasks.handlebars) {
+		let watchFiles = [];
 		config.global.resources.forEach(function (currentResource) {
-			watch([
-				config.global.src + currentResource + '/hbs/**/*.hbs',
-				config.global.src + currentResource + '/js/handlebars.helper.js'
-			], function () {
-				runSequence('handlebars');
-			});
+			watchFiles.push(config.global.src + currentResource + '/hbs/**/*.hbs');
+			watchFiles.push(config.global.src + currentResource + '/js/handlebars.helper.js');
 		});
-	} else {
-		gutil.log(gutil.colors.yellow('handlebars disabled'));
-	}
 
+		config.global.components.forEach(function (currentComponent) {
+			watchFiles.push(config.global.src + currentComponent + '/**/hbs/**/*.hbs');
+		});
+
+		watch(watchFiles, config.watch, function () {
+			runSequence('handlebars');
+		});
+	}
 });
