@@ -1,5 +1,5 @@
 const cwd = process.cwd();
-const src = 'app';
+const src = 'src';
 const dev = '.tmp';
 const dist = 'dist';
 const docs = 'documentation';
