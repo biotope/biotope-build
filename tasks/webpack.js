@@ -27,6 +27,10 @@ gulp.task('webpack:ts', function() {
 						relativePath = path.join(currentResourceParsed.name, relativePath);
 					}
 
+					if(relativePath.endsWith('.ts')) {
+						relativePath = relativePath.slice(0, -3);
+					}
+
 					return relativePath;
 				}))
 				.pipe(webpackStream(webpackConfig, webpack).on('error', function() {
@@ -41,26 +45,16 @@ gulp.task('webpack:ts', function() {
 	}
 });
 
-gulp.task('watch:webpack:resources:ts', function () {
+gulp.task('watch:webpack:ts', function () {
 
 	if (config.global.tasks.webpack) {
-		config.global.resources.forEach(function (currentResource) {
-			watch(config.global.src + currentResource + '/ts/**/*.ts', config.watch, function () {
+		config.global.resources.forEach(function (currentResource, index) {
+			watch([
+				config.global.src + currentResource + '/**/*.ts',
+				config.global.src + config.global.components[index] + '/**/*.ts'
+			], config.watch, function () {
 				runSequence(
-					['webpack:resources:ts']
-				);
-			});
-		});
-	}
-});
-
-gulp.task('watch:webpack:components:ts', function () {
-
-	if (config.global.tasks.webpack) {
-		config.global.components.map( function(currentComponent) {
-			watch(config.global.src + currentComponent + '/**/*.ts', config.watch, function () {
-				runSequence(
-					['webpack:components:ts']
+					['webpack:ts']
 				);
 			});
 		});
