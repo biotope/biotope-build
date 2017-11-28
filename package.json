@@ -1,6 +1,6 @@
 {
   "name": "build-framework",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "An advanced frontend build runtime based on gulp",
   "repository": {
     "type": "git",

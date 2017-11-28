@@ -113,8 +113,9 @@ gulp.task('static:hb:indexr', function () {
 
 	let hbStream = hbsParser.createHbsGulpStream(null, dataObject, null, config.global.debug);
 
-	return gulp.src(config.global.src + '/index.html')
+	return gulp.src(config.global.src + '/index.hbs')
 		.pipe(hbStream)
+		.pipe(rename({extname: ".html"}))
 		.pipe(gulp.dest(config.global.dev));
 
 });
