@@ -170,6 +170,10 @@ module.exports = {
 
 	watch: {
 		usePolling: isWin
+	},
+
+	webpack: {
+		ignoreList: []
 	}
 };
 

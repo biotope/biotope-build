@@ -15,10 +15,17 @@ gulp.task('webpack:ts', function() {
 	if (config.global.tasks.webpack) {
 
 		return mergeStream(config.global.resources.map( function(currentResource, index) {
-			return gulp.src([
+
+			const srcArray = [
 				config.global.src + currentResource + '/**/*.ts',
 				config.global.src + config.global.components[index] + '/**/*.ts'
-			], { base: path.join(config.global.cwd, config.global.src) })
+			];
+
+			config.webpack.ignoreList.forEach(function (ignorePath) {
+				srcArray.push('!' + path.join(config.global.src, ignorePath));
+			});
+
+			return gulp.src(srcArray, { base: path.join(config.global.cwd, config.global.src) })
 				.pipe(named(function(file) {
 					const currentResourceParsed = path.parse(currentResource);
 					let relativePath = path.relative(file.base, file.path);
