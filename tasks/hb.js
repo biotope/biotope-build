@@ -106,9 +106,13 @@ gulp.task('static:hb:indexr', function () {
 		}
 
 		//parse content data
-		let data = hbsParser.parsePartialData(content, { template: template }, null, config.global.debug);
+		let data = hbsParser.parsePartialData(content, { templateInfo: template }, config.global.debug);
 
 		dataObject.templates.push(data);
+	}
+
+	if (config.global.debug) {
+		console.log(colors.green(`dataObject: ${JSON.stringify(dataObject)}`));
 	}
 
 	let hbStream = hbsParser.createHbsGulpStream(null, dataObject, null, config.global.debug);
