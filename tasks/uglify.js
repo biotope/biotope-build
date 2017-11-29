@@ -62,7 +62,7 @@ gulp.task('uglify:components:dist', function () {
 			const srcArray = [config.global.dev + currentResource + config.global.components[index] + '/**/*.js'];
 
 			config.uglify.ignoreList.forEach(function (path) {
-				srcArray.push('!' + config.global.dev + currentComponent + path);
+				srcArray.push('!' + config.global.dev + path);
 			});
 
 			const stream = gulp.src(srcArray);
