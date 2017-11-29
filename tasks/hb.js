@@ -50,7 +50,7 @@ gulp.task('static:hb', function () {
 		.on('error', notify.onError(function (error) {
 			return {
 				title: 'static:hb',
-				message: error.message
+				message: `${error.message} in "${error.fileName}"`
 			};
 		}))
 		.pipe(rename({extname: ".html"}))
