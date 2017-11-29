@@ -93,20 +93,20 @@ gulp.task('static:hb:indexr', function () {
 	let lastCategory = '';
 	for (let index in filepaths) {
 		let content = fs.readFileSync(filepaths[index], 'utf8');
-		let template = {};
+		let templateInfo = {};
 
-		template.file = path.parse(filepaths[index]);
+		templateInfo.file = path.parse(filepaths[index]);
 
 		// check current category
-		let category = template.file.name.substring(2, template.file.name.indexOf('.'));
+		let category = templateInfo.file.name.substring(2, templateInfo.file.name.indexOf('.'));
 		if (lastCategory !== category) {
 			lastCategory = category;
-			template.category = category;
-			template.priority = template.file.name.substring(0, 2);
+			templateInfo.category = category;
+			templateInfo.priority = templateInfo.file.name.substring(0, 2);
 		}
 
 		//parse content data
-		let data = hbsParser.parsePartialData(content, { templateInfo: template }, config.global.debug);
+		let data = hbsParser.parsePartialData(content, { indexr: templateInfo }, config.global.debug);
 
 		dataObject.templates.push(data);
 	}
