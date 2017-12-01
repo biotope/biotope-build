@@ -6,6 +6,7 @@ const uglify = require('gulp-uglify');
 const cleanCss = require('gulp-clean-css');
 const lec = require('gulp-line-ending-corrector');
 
+const hbsParser = require('./../lib/hbs-parser');
 const config = require('./../config');
 
 gulp.task('useref', function () {
@@ -25,7 +26,13 @@ gulp.task('useref:assets', function () {
 	const jsFilter = filter(['**/*.js'], {restore: true});
 	const cssFilter = filter(['**/*.css'], {restore: true});
 
-	let hbStream = hb().partials(config.global.src + '/**/*.hbs');
+	let hbStream = hbsParser.createHbsGulpStream(
+		[
+			config.global.src + '/**/*.hbs',
+			'!' + config.global.src + '/pages/**'
+		],
+		null, null, config.global.debug
+	);
 
 	return gulp.src(config.global.src + '/resources/_useref.html')
 		.pipe(lec(config.lec))
