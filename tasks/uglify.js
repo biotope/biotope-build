@@ -45,7 +45,7 @@ gulp.task('uglify:resources:dist', function (cb) {
 });
 
 
-gulp.task('uglify:components:dist', function (cb();) {
+gulp.task('uglify:components:dist', function (cb) {
 
 	if (config.global.tasks.uglify) {
 
