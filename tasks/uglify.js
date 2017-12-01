@@ -25,14 +25,13 @@ gulp.task('uglify:resources:dist', function (cb) {
 				});
 
 				pump([
-						gulp.src(srcArray),
-						config.uglify.sourcemaps ? sourcemaps.init() : noop(),
-						uglify(),
-						size({ title: 'uglified', showFiles: true }),
-						config.uglify.sourcemaps ? sourcemaps.write() : noop(),
-						gulp.dest( path.join(config.global.dist, resource, folder) )
-					]
-				);
+					gulp.src(srcArray),
+					config.uglify.sourcemaps ? sourcemaps.init() : noop(),
+					uglify(),
+					size({ title: 'uglified', showFiles: true }),
+					config.uglify.sourcemaps ? sourcemaps.write() : noop(),
+					gulp.dest( path.join(config.global.dist, resource, folder) )
+				]);
 
 			});
 		});
@@ -60,14 +59,13 @@ gulp.task('uglify:components:dist', function (cb) {
 			});
 
 			pump([
-					gulp.src(srcArray),
-					config.uglify.sourcemaps ? sourcemaps.init() : noop(),
-					uglify(),
-					size({ title: 'uglified', showFiles: true }),
-					config.uglify.sourcemaps ? sourcemaps.write() : noop(),
-					gulp.dest( path.join(config.global.dist, resource, config.global.components[index]) )
-				]
-			);
+				gulp.src(srcArray),
+				config.uglify.sourcemaps ? sourcemaps.init() : noop(),
+				uglify(),
+				size({ title: 'uglified', showFiles: true }),
+				config.uglify.sourcemaps ? sourcemaps.write() : noop(),
+				gulp.dest( path.join(config.global.dist, resource, config.global.components[index]) )
+			]);
 
 		});
 
