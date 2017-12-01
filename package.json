@@ -1,6 +1,6 @@
 {
   "name": "build-framework",
-  "version": "5.0.6",
+  "version": "5.0.7-rc2",
   "description": "An advanced frontend build runtime based on gulp",
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
     "gulp-less": "3.3.2",
     "gulp-line-ending-corrector": "1.0.1",
     "gulp-modernizr": "1.0.0-alpha",
+    "gulp-noop": "^1.0.0",
     "gulp-notify": "3.0.0",
     "gulp-plumber": "1.1.0",
     "gulp-postcss": "7.0.0",
@@ -62,6 +63,7 @@
     "jshint-stylish": "2.2.1",
     "merge-stream": "1.0.1",
     "opn": "5.1.0",
+    "pump": "^2.0.0",
     "require-dir": "0.3.2",
     "run-sequence": "2.2.0",
     "ts-loader": "3.1.1",
