@@ -1,51 +1,43 @@
 const gulp = require('gulp');
 const size = require('gulp-size');
+const path = require('path');
 const uglify = require('gulp-uglify');
-const mergeStream = require('merge-stream');
-const notify = require('gulp-notify');
 const colors = require('colors/safe');
 const sourcemaps = require('gulp-sourcemaps');
+const pump = require('pump');
+const noop = require('gulp-noop');
 
 const config = require('./../config');
 
-gulp.task('uglify:resources:dist', function () {
+gulp.task('uglify:resources:dist', function (cb) {
 
 	if (config.global.tasks.uglify) {
 
-		return mergeStream(config.global.resources.map( function(currentResource) {
-			return mergeStream(config.uglify.folders.map( function(folder) {
+		config.global.resources.forEach((resource) => {
+			config.uglify.folders.forEach((folder) => {
 
-				const srcArray = [config.global.dev + currentResource + '/' + folder + '/**/*.js'];
+				const srcArray = [
+					path.join(config.global.dev, resource, folder, '/**/*.js')
+				];
 
-				config.uglify.ignoreList.forEach(function (path) {
-					srcArray.push('!' + config.global.dev + currentResource + path);
+				config.uglify.ignoreList.forEach(function (ignorePath) {
+					srcArray.push('!' + path.join(config.global.dev, ignorePath));
 				});
 
-				const stream = gulp.src(srcArray);
+				pump([
+						gulp.src(srcArray),
+						config.uglify.sourcemaps ? sourcemaps.init() : noop(),
+						uglify(),
+						size({ title: 'uglified', showFiles: true }),
+						config.uglify.sourcemaps ? sourcemaps.write() : noop(),
+						gulp.dest( path.join(config.global.dist, resource, folder) )
+					]
+				);
 
-				if(config.uglify.sourcemaps) {
-					stream.pipe(sourcemaps.init());
-				}
+			});
+		});
 
-				stream.pipe(uglify()).on('error', notify.onError((error) => {
-					return {
-						title: 'uglify:resources:dist',
-						message: error.message
-					};
-				}))
-					.pipe(size({
-						title: 'uglified',
-						showFiles: true
-					}));
-
-				if(config.uglify.sourcemaps) {
-					stream.pipe(sourcemaps.write());
-				}
-
-				stream.pipe(gulp.dest(config.global.dist + currentResource + '/' + folder + '/'));
-				return stream;
-			}));
-		}));
+		cb();
 
 	} else {
 		console.log(colors.yellow('uglify resources disabled'));
@@ -53,44 +45,35 @@ gulp.task('uglify:resources:dist', function () {
 });
 
 
-gulp.task('uglify:components:dist', function () {
+gulp.task('uglify:components:dist', function (cb();) {
 
 	if (config.global.tasks.uglify) {
 
-		return mergeStream(config.global.resources.map( function(currentResource, index) {
+		config.global.resources.forEach((resource, index) => {
 
-			const srcArray = [config.global.dev + currentResource + config.global.components[index] + '/**/*.js'];
+			const srcArray = [
+				path.join(config.global.dev, resource, config.global.components[index], '/**/*.js')
+			];
 
-			config.uglify.ignoreList.forEach(function (path) {
-				srcArray.push('!' + config.global.dev + path);
+			config.uglify.ignoreList.forEach(function (ignorePath) {
+				srcArray.push('!' + path.join(config.global.dev, ignorePath));
 			});
 
-			const stream = gulp.src(srcArray);
+			pump([
+					gulp.src(srcArray),
+					config.uglify.sourcemaps ? sourcemaps.init() : noop(),
+					uglify(),
+					size({ title: 'uglified', showFiles: true }),
+					config.uglify.sourcemaps ? sourcemaps.write() : noop(),
+					gulp.dest( path.join(config.global.dist, resource, config.global.components[index]) )
+				]
+			);
 
-			if(config.uglify.sourcemaps) {
-				stream.pipe(sourcemaps.init());
-			}
+		});
 
-			stream.pipe(uglify()).on('error', notify.onError((error) => {
-				return {
-					title: 'uglify:components:dist',
-					message: error.message
-				};
-			}))
-				.pipe(size({
-					title: 'uglified',
-					showFiles: true
-				}));
-
-			if(config.uglify.sourcemaps) {
-				stream.pipe(sourcemaps.write());
-			}
-
-			stream.pipe(gulp.dest(config.global.dist + currentResource + config.global.components[index]));
-			return stream;
-		}));
+		cb();
 
 	} else {
 		console.log(colors.yellow('uglify components disabled'));
 	}
-});
+})
