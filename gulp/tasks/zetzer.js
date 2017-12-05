@@ -9,7 +9,7 @@ var runSequence = require('run-sequence');
 var config = require('./../config');
 
 
-gulp.task('zetzer', ['indexr'], function () {
+gulp.task('zetzer', ['indexr', 'createBrowserMatrix'], function () {
 
 	// Load icons into zetzer environment
 	var zetzerConfig = config.zetzer;
@@ -24,6 +24,7 @@ gulp.task('zetzer', ['indexr'], function () {
 
 	return gulp.src([
 			config.global.src + '/*.html',
+			'!' + config.global.src + '/browserSupport.html',
 			'!' + config.global.src + '/index.html'
 		])
 		.pipe(zetzer(zetzerConfig))
@@ -47,6 +48,7 @@ gulp.task('indexr', function () {
 	// read all files
 	var filepaths = globule.find([
 		config.global.src + '/*.html',
+		'!' + config.global.src + '/browsermatrix.html',
 		'!' + config.global.src + '/index.html'
 	]);
 
@@ -81,6 +83,17 @@ gulp.task('indexr', function () {
 		.pipe(zetzer(config.zetzer))
 		.pipe(gulp.dest(config.global.dev));
 
+});
+
+gulp.task('createBrowserMatrix', function(){
+
+	var zetzerConfig = config.zetzer;
+	zetzerConfig.env = zetzerConfig.env || {};
+	zetzerConfig.env.browserMatrix = [];
+
+	gulp.src( config.global.src + '/browsermatrix.html' )
+		.pipe( zetzer( config.zetzer ) )
+		.pipe( gulp.dest( config.global.dev ) );
 });
 
 

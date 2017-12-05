@@ -7,6 +7,7 @@ module.exports = {
     template: gutil.env.template,
 
 	package: require(cwd + '/package.json'),
+	browserSupport: require(cwd + '/browserSupport.json'),
 
 	text: function (count, max) {
 		if (max !== 0 && typeof max !== 'undefined' && max > count) {
