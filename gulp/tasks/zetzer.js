@@ -23,10 +23,10 @@ gulp.task('zetzer', ['indexr', 'createBrowserMatrix'], function () {
 	}
 
 	return gulp.src([
-			config.global.src + '/*.html',
-			'!' + config.global.src + '/browserSupport.html',
-			'!' + config.global.src + '/index.html'
-		])
+		config.global.src + '/*.html',
+		'!' + config.global.src + '/browserSupport.html',
+		'!' + config.global.src + '/index.html'
+	])
 		.pipe(zetzer(zetzerConfig))
 		.on('error', notify.onError(function (error) {
 			return {
@@ -48,7 +48,7 @@ gulp.task('indexr', function () {
 	// read all files
 	var filepaths = globule.find([
 		config.global.src + '/*.html',
-		'!' + config.global.src + '/browsermatrix.html',
+		'!' + config.global.src + '/browserSupport.html',
 		'!' + config.global.src + '/index.html'
 	]);
 
@@ -89,9 +89,8 @@ gulp.task('createBrowserMatrix', function(){
 
 	var zetzerConfig = config.zetzer;
 	zetzerConfig.env = zetzerConfig.env || {};
-	zetzerConfig.env.browserMatrix = [];
 
-	gulp.src( config.global.src + '/browsermatrix.html' )
+	gulp.src( config.global.src + '/browserSupport.html' )
 		.pipe( zetzer( config.zetzer ) )
 		.pipe( gulp.dest( config.global.dev ) );
 });
