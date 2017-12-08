@@ -4,9 +4,16 @@ var cwd = process.cwd();
 
 module.exports = {
 
-    template: gutil.env.template,
+	template: gutil.env.template,
 
 	package: require(cwd + '/package.json'),
+	browserSupport: function () {
+		try {
+			return require(cwd + '/browserSupport.json');
+		} catch (e) {
+			return {"message": "Info: Please add a 'browserSupport.json' to your project root to display a browser matrix."};
+		}
+	},
 
 	text: function (count, max) {
 		if (max !== 0 && typeof max !== 'undefined' && max > count) {
