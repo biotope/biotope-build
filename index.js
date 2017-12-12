@@ -138,3 +138,5 @@ gulp.task('serve:dist', function (callback) {
 		callback
 	);
 });
+
+module.exports = gulp.tasks;
