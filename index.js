@@ -36,7 +36,8 @@ gulp.task('build:dev', function (callback) {
 		],
 		[
 			'static:hb',
-			'static:hb:indexr'
+			'static:hb:indexr',
+			'browserSupport'
 		],
 		[
 			'resources:sass',
@@ -108,6 +109,7 @@ gulp.task('serve', function (callback) {
 	runSequence(
 		'build:dev',
 		[
+			'watch:browserSupport',
 			'watch:static:hb:indexr',
 			'watch:components:js',
 			'watch:components:sass',

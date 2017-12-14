@@ -13,6 +13,7 @@ const hbsParser = require('./../lib/hbs-parser');
 const iconParser = require('./../lib/icon-parser');
 const jsonParser = require('./../lib/json-parser');
 const packageData = require(config.global.cwd + '/package.json');
+const browserSupportData = require(config.global.cwd + '/browserSupport.json');
 
 
 gulp.task('static:hb', function () {
@@ -82,8 +83,13 @@ gulp.task('static:hb:indexr', function () {
 
 	let dataObject = {
 		package: packageData,
-		templates: []
+		templates: [],
+		browserSupport: {}
 	};
+
+	if(config.global.tasks.browserSupport) {
+		dataObject.browserSupport = browserSupportData;
+	}
 
 	// read all files
 	let filepaths = globule.find([
