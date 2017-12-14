@@ -169,7 +169,8 @@ module.exports = {
 	},
 
 	watch: {
-		usePolling: isWin
+		usePolling: isWin,
+		interval: (isWin ? 250 : 100)
 	},
 
 	webpack: {
