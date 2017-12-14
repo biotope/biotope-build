@@ -36,9 +36,7 @@ gulp.task('build:dev', function (callback) {
 		],
 		[
 			'static:hb',
-			'static:hb:indexr'
-		],
-		[
+			'static:hb:indexr',
 			'browserSupport'
 		],
 		[

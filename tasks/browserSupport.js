@@ -13,7 +13,6 @@ const browserSupportData = require(config.global.cwd + '/browserSupport.json') |
  */
 gulp.task('browserSupport', function () {
 	if (config.global.tasks.browserSupport) {
-		console.log(config.global.tasks.browserSupport);
 		let dataObject = {
 			package: packageData,
 			browserSupport: browserSupportData
