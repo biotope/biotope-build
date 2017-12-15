@@ -11,11 +11,6 @@ const jsonParser = require('../lib/json-parser');
 const packageData = require(config.global.cwd + '/package.json');
 const browserSupportData = jsonParser.getBrowserSupportData();
 
-if(!browserSupportData) {
-	console.log(colors.red(`Missing browser support JSON file: ${config.browserSupport.file}`));
-}
-
-
 gulp.task('browserSupport', function () {
 	if (config.global.tasks.browserSupport && browserSupportData) {
 		let dataObject = {
@@ -33,6 +28,8 @@ gulp.task('browserSupport', function () {
 			.pipe(hbStream)
 			.pipe(rename({extname: ".html"}))
 			.pipe(gulp.dest(config.global.dev));
+	} else {
+		console.log(colors.yellow('browserSupport disabled'));
 	}
 });
 
