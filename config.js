@@ -25,15 +25,16 @@ module.exports = {
 		components: ['/components'],
 		handlebarsHelper: '/js/handlebars.helper.js',
 		tasks: {
+			browserSupport: true,
 			cleanCss: true,
 			cssStats: true,
-			sass: true,
 			favicons: true,
 			handlebars: true,
 			iconfont: true,
 			image: true,
 			linting: true,
 			markdown: false,
+			sass: true,
 			uglify: true
 		},
 		externalResources: {},
@@ -45,6 +46,10 @@ module.exports = {
 	autoprefixer: {
 		//browsers: ['last 3 versions', 'last 8 Chrome versions', 'last 8 Firefox versions' , 'Firefox ESR', 'ie 9', 'last 2 iOS versions', 'Android 4']
 		browsers: ['last 1 version']
+	},
+
+	browserSupport: {
+		file: cwd + '/browserSupport.json'
 	},
 
 	checkDependencies: {},
