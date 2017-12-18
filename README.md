@@ -86,6 +86,15 @@ autoprefixer: {
 },
 ```
 
+##### browserSupport
+Set the file path to the corresponding *.json file to create a browser support overview.
+
+```
+browserSupport: {
+	file: cwd + '/browserSupport.json'
+},
+```
+
 ##### checkDependencies
 Check dependencies only uses default options.
 Repo: https://github.com/mgol/check-dependencies
