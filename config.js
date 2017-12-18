@@ -2,7 +2,6 @@ const cwd = process.cwd();
 const src = 'src';
 const dev = '.tmp';
 const dist = 'dist';
-const docs = 'documentation';
 const node = 'node_modules';
 
 const _ = require('lodash');
@@ -15,7 +14,6 @@ module.exports = {
 		src: src,
 		dev: dev,
 		dist: dist,
-		docs: docs,
 		node: node,
 		cwd: cwd,
 		isWin: isWin,
@@ -33,12 +31,10 @@ module.exports = {
 			iconfont: true,
 			image: true,
 			linting: true,
-			markdown: false,
 			uglify: true
 		},
 		externalResources: {},
-		bowerResources: {},
-		reactEntryPoints: []
+		bowerResources: {}
 	},
 
 	//=== Plugins ===//
@@ -68,8 +64,6 @@ module.exports = {
 			'!' + dev + '/resources/js/handlebars.templates.js'
 		]
 	},
-
-	cssmin: {},
 
 	cssstats: {
 		exit: true
@@ -151,15 +145,6 @@ module.exports = {
 	},
 
 	sassLint: {},
-
-	tslint: {
-		formatter: 'prose',
-		configuration: {
-			rules: {
-				"quotemark": [true, "single"]
-			}
-		}
-	},
 
 	uglify: {
 		preserveComments: 'license',
