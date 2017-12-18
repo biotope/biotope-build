@@ -2,17 +2,17 @@ const gulp = require('gulp');
 const rename = require('gulp-rename');
 const runSequence = require('run-sequence');
 const watch = require('gulp-watch');
+const colors = require('colors/safe');
 
 const config = require('./../config');
 const hbsParser = require('./../lib/hbs-parser');
+const jsonParser = require('../lib/json-parser');
 
 const packageData = require(config.global.cwd + '/package.json');
-const browserSupportData = require(config.global.cwd + '/browserSupport.json') || {};
-/**
- * indexr creates the preview file index
- */
+const browserSupportData = jsonParser.getBrowserSupportData();
+
 gulp.task('browserSupport', function () {
-	if (config.global.tasks.browserSupport) {
+	if (config.global.tasks.browserSupport && browserSupportData) {
 		let dataObject = {
 			package: packageData,
 			browserSupport: browserSupportData
@@ -28,11 +28,13 @@ gulp.task('browserSupport', function () {
 			.pipe(hbStream)
 			.pipe(rename({extname: ".html"}))
 			.pipe(gulp.dest(config.global.dev));
+	} else {
+		console.log(colors.yellow('browserSupport disabled'));
 	}
 });
 
 gulp.task('watch:browserSupport', function () {
-	if (config.global.tasks.browserSupport) {
+	if (config.global.tasks.browserSupport && browserSupportData) {
 		watch(config.global.cwd + './browserSupport.json', config.watch, function () {
 			runSequence(
 				['browserSupport']

@@ -12,8 +12,9 @@ const config = require('./../config');
 const hbsParser = require('./../lib/hbs-parser');
 const iconParser = require('./../lib/icon-parser');
 const jsonParser = require('./../lib/json-parser');
+
 const packageData = require(config.global.cwd + '/package.json');
-const browserSupportData = require(config.global.cwd + '/browserSupport.json');
+const browserSupportData = jsonParser.getBrowserSupportData();
 
 
 gulp.task('static:hb', function () {
@@ -87,7 +88,7 @@ gulp.task('static:hb:indexr', function () {
 		browserSupport: {}
 	};
 
-	if(config.global.tasks.browserSupport) {
+	if(config.global.tasks.browserSupport && browserSupportData) {
 		dataObject.browserSupport = browserSupportData;
 	}
 
