@@ -1,91 +1,86 @@
-const gulp = require('gulp');
-const mergeStream = require('merge-stream');
-const filter = require('gulp-filter');
 const path = require('path');
-const watch = require('gulp-watch');
-const runSequence = require('run-sequence');
-
 const config = require('./../config');
+const $ = config.plugins;
 
-gulp.task('copy:dev:js', function () {
+$.gulp.task('copy:dev:js', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.src + currentResource + '/js/**/*.js')
-			.pipe(gulp.dest(config.global.dev + currentResource + '/js/'));
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src(config.global.src + currentResource + '/js/**/*.js')
+			.pipe($.gulp.dest(config.global.dev + currentResource + '/js/'));
 	}));
 
 });
 
-gulp.task('copy:dev:components:js', function () {
+$.gulp.task('copy:dev:components:js', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource, index) {
-		return gulp.src(config.global.src + config.global.components[index] + '/**/*.js')
-			.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index]));
+	return $.mergeStream(config.global.resources.map( function(currentResource, index) {
+		return $.gulp.src(config.global.src + config.global.components[index] + '/**/*.js')
+			.pipe($.gulp.dest(config.global.dev + currentResource + config.global.components[index]));
 	}));
 
 });
 
-gulp.task('copy:dist:js', function () {
+$.gulp.task('copy:dist:js', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.dev + currentResource + '/js/**/*.js')
-			.pipe(gulp.dest(config.global.dist + currentResource + '/js/'));
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src(config.global.dev + currentResource + '/js/**/*.js')
+			.pipe($.gulp.dest(config.global.dist + currentResource + '/js/'));
 	}));
 
 });
 
-gulp.task('copy:dist:react', function () {
+$.gulp.task('copy:dist:react', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.dev + currentResource + '/react/*.js')
-			.pipe(gulp.dest(config.global.dist + currentResource + '/react/'));
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src(config.global.dev + currentResource + '/react/*.js')
+			.pipe($.gulp.dest(config.global.dist + currentResource + '/react/'));
 	}));
 
 });
 
-gulp.task('copy:dist:ts', function () {
+$.gulp.task('copy:dist:ts', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.dev + currentResource + '/ts/*.js')
-			.pipe(gulp.dest(config.global.dist + currentResource + '/ts/'));
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src(config.global.dev + currentResource + '/ts/*.js')
+			.pipe($.gulp.dest(config.global.dist + currentResource + '/ts/'));
 	}));
 
 });
 
-gulp.task('copy:dev:npm:js', function () {
+$.gulp.task('copy:dev:npm:js', function () {
 	const resources = config.global.externalResources;
 	if (Object.keys(resources).length === 0 && resources.constructor === Object) return;
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return mergeStream(Object.keys(resources).map(function(key, index) {
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.mergeStream(Object.keys(resources).map(function(key, index) {
 			if( typeof resources[key] === 'string' ) {
 				resources[key] = [resources[key]];
 			}
 
-			return mergeStream(resources[key].map(function(file) {
-				return gulp.src(config.global.node + '/' + key + '/' + file)
-					.pipe(filter('*.js'))
-					.pipe(gulp.dest(config.global.dev + currentResource + '/js/vendor/'));
+			return $.mergeStream(resources[key].map(function(file) {
+				return $.gulp.src(config.global.node + '/' + key + '/' + file)
+					.pipe($.filter('*.js'))
+					.pipe($.gulp.dest(config.global.dev + currentResource + '/js/vendor/'));
 			}));
 		}));
 
 	}));
 });
 
-gulp.task('copy:dev:npm:css', function () {
+$.gulp.task('copy:dev:npm:css', function () {
 	const resources = config.global.externalResources;
 	if (Object.keys(resources).length === 0 && resources.constructor === Object) return;
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return mergeStream(Object.keys(resources).map(function(key, index) {
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.mergeStream(Object.keys(resources).map(function(key, index) {
 			if( typeof resources[key] === 'string' ) {
 				resources[key] = [resources[key]];
 			}
 
-			return mergeStream(resources[key].map(function(file) {
-				return gulp.src(config.global.node + '/' + key + '/' + file)
-					.pipe(filter('*.css', '*.scss'))
-					.pipe(gulp.dest(config.global.dev + currentResource + '/css/vendor/'));
+			return $.mergeStream(resources[key].map(function(file) {
+				return $.gulp.src(config.global.node + '/' + key + '/' + file)
+					.pipe($.filter('*.css', '*.scss'))
+					.pipe($.gulp.dest(config.global.dev + currentResource + '/css/vendor/'));
 			}));
 		}));
 
@@ -96,25 +91,25 @@ gulp.task('copy:dev:npm:css', function () {
  * backwards compatibility for bower components
  * dev copy task
  */
-gulp.task('copy:dev:npm:bower', function () {
+$.gulp.task('copy:dev:npm:bower', function () {
 	let object = config.global.bowerResources;
 
 	if (Object.keys(object).length === 0 && object.constructor === Object) return;
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return mergeStream(Object.keys(object).map(function(key, index) {
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.mergeStream(Object.keys(object).map(function(key, index) {
 			if( typeof object[key] === 'string' ) {
 				object[key] = [object [key]];
 			}
 
-			return mergeStream(object[key].map(function(file) {
+			return $.mergeStream(object[key].map(function(file) {
 				let paths = file.split('/');
 				paths.pop();
 
 				let filePath = path.join(key, ...paths);
 
-				return gulp.src(config.global.node + '/' + key + '/' + file)
-					.pipe(gulp.dest(config.global.dev + currentResource + '/bower_components/' + filePath));
+				return $.gulp.src(config.global.node + '/' + key + '/' + file)
+					.pipe($.gulp.dest(config.global.dev + currentResource + '/bower_components/' + filePath));
 			}));
 		}));
 	}));
@@ -124,95 +119,95 @@ gulp.task('copy:dev:npm:bower', function () {
  * backwards compatibility for bower
  * dist copy task
  */
-gulp.task('copy:dist:bower', function () {
+$.gulp.task('copy:dist:bower', function () {
 
-	return gulp.src(config.global.dev + '/resources/bower_components/**/*')
-		.pipe(gulp.dest(config.global.dist + '/resources/bower_components/'));
+	return $.gulp.src(config.global.dev + '/resources/bower_components/**/*')
+		.pipe($.gulp.dest(config.global.dist + '/resources/bower_components/'));
 
 });
 
-gulp.task('copy:dist:flash', function () {
+$.gulp.task('copy:dist:flash', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.src + currentResource + '/flash/**/*')
-			.pipe(gulp.dest(config.global.dist + currentResource + '/flash/'));
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src(config.global.src + currentResource + '/flash/**/*')
+			.pipe($.gulp.dest(config.global.dist + currentResource + '/flash/'));
 	}));
 
 });
 
-gulp.task('copy:dist:json', function () {
+$.gulp.task('copy:dist:json', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.src + currentResource + '/json/**/*')
-			.pipe(gulp.dest(config.global.dist + currentResource + '/json/'));
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src(config.global.src + currentResource + '/json/**/*')
+			.pipe($.gulp.dest(config.global.dist + currentResource + '/json/'));
 	}));
 
 });
 
-gulp.task('copy:dist:fonts', function () {
+$.gulp.task('copy:dist:fonts', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src([
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src([
 			config.global.src + currentResource + '/fonts/**/*',
 			config.global.dev + currentResource + '/fonts/**/*'
 		])
-			.pipe(gulp.dest(config.global.dist + currentResource + '/fonts/'));
+			.pipe($.gulp.dest(config.global.dist + currentResource + '/fonts/'));
 	}));
 
 });
 
-gulp.task('copy:dist:img', function () {
+$.gulp.task('copy:dist:img', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.src + currentResource + '/img/**/*')
-			.pipe(gulp.dest(config.global.dist + currentResource +  '/img/'));
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src(config.global.src + currentResource + '/img/**/*')
+			.pipe($.gulp.dest(config.global.dist + currentResource +  '/img/'));
 	}));
 
 });
 
-gulp.task('copy:dist:assets', function () {
+$.gulp.task('copy:dist:assets', function () {
 
-	return gulp.src(config.global.src + '/_assets/**/*')
-		.pipe(gulp.dest(config.global.dist + '/_assets/'));
+	return $.gulp.src(config.global.src + '/_assets/**/*')
+		.pipe($.gulp.dest(config.global.dist + '/_assets/'));
 
 });
 
-gulp.task('copy:dist:css', function () {
+$.gulp.task('copy:dist:css', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.src + currentResource + '/css/**/*.css')
-			.pipe(gulp.dest(config.global.dist + currentResource + '/css/'));
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src(config.global.src + currentResource + '/css/**/*.css')
+			.pipe($.gulp.dest(config.global.dist + currentResource + '/css/'));
 	}));
 
 });
 
-gulp.task('copy:dist:mock', function () {
+$.gulp.task('copy:dist:mock', function () {
 
-	return gulp.src(config.global.src + '/_mock/**/*')
-		.pipe(gulp.dest(config.global.dist + '/_mock/'));
-
-});
-
-gulp.task('copy:dist:config', function () {
-
-	return gulp.src(config.global.src + '/_config/**/*')
-		.pipe(gulp.dest(config.global.dist + '/_config/'));
+	return $.gulp.src(config.global.src + '/_mock/**/*')
+		.pipe($.gulp.dest(config.global.dist + '/_mock/'));
 
 });
 
-gulp.task('copy:dist:hbs', function () {
+$.gulp.task('copy:dist:config', function () {
 
-	return mergeStream(config.global.resources.map( function(currentResource) {
-		return gulp.src(config.global.src + currentResource + '/templates/**/*')
-			.pipe(gulp.dest(config.global.dist + currentResource + '/templates/'));
+	return $.gulp.src(config.global.src + '/_config/**/*')
+		.pipe($.gulp.dest(config.global.dist + '/_config/'));
+
+});
+
+$.gulp.task('copy:dist:hbs', function () {
+
+	return $.mergeStream(config.global.resources.map( function(currentResource) {
+		return $.gulp.src(config.global.src + currentResource + '/templates/**/*')
+			.pipe($.gulp.dest(config.global.dist + currentResource + '/templates/'));
 	}));
 
 });
 
-gulp.task('watch:components:js', function() {
+$.gulp.task('watch:components:js', function() {
 	config.global.components.forEach(function(currentComponent) {
-		watch(config.global.src + currentComponent +'/**/*.js', config.watch, function () {
-			runSequence(
+		$.watch(config.global.src + currentComponent +'/**/*.js', config.watch, function () {
+			$.runSequence(
 				['copy:dev:components:js']
 			);
 		});
