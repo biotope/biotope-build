@@ -8,6 +8,7 @@ const node = 'node_modules';
 const lazyPlugins = require('gulp-load-plugins')({
 	pattern: [
 		'autoprefixer',
+		'colors',
 		'gulp',
 		'lazypipe',
 		'lodash',
@@ -53,7 +54,8 @@ module.exports = {
 		},
 		externalResources: {},
 		bowerResources: {},
-		reactEntryPoints: []
+		reactEntryPoints: [],
+		packageData: require(cwd + '/package.json')
 	},
 
 	//=== Plugins ===//
