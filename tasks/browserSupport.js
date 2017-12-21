@@ -23,7 +23,7 @@ $.gulp.task('browserSupport', function () {
 			.pipe($.rename({extname: ".html"}))
 			.pipe($.gulp.dest(config.global.dev));
 	} else {
-		console.log($.colors.america('browserSupport disabled'));
+		console.log($.colors.yellow('browserSupport disabled'));
 	}
 });
 

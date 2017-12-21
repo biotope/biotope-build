@@ -8,6 +8,7 @@ const node = 'node_modules';
 const lazyPlugins = require('gulp-load-plugins')({
 	pattern: [
 		'autoprefixer',
+		'check-dependencies',
 		'colors',
 		'gulp',
 		'lazypipe',
