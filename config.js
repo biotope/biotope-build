@@ -9,6 +9,7 @@ const lazyPlugins = require('gulp-load-plugins')({
 	pattern: [
 		'autoprefixer',
 		'gulp',
+		'lazypipe',
 		'lodash',
 		'merge-stream',
 		'runSequence',

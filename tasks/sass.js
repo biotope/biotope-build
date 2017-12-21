@@ -3,19 +3,17 @@ const config = require('./../config');
 const $ = config.plugins;
 
 $.gulp.task('resources:sass', function () {
+
 	if (config.global.tasks.sass) {
+
+		const sassPipe = require('../pipes/sass');
 		return $.mergeStream(config.global.resources.map(function(currentResource) {
 
 			return $.gulp.src([
 				path.join(config.global.src, currentResource, 'scss', '**/*.scss'),
 				'!' + path.join(config.global.src, currentResource, 'scss', '**/_*.scss')
 			])
-				.pipe($.sourcemaps.init())
-				.pipe($.sass(config.sass).on('error', $.sass.logError))
-				.pipe($.postcss([
-					$.autoprefixer(config.autoprefixer)
-				]))
-				.pipe($.sourcemaps.write('.'))
+				.pipe(sassPipe())
 				.pipe($.gulp.dest(config.global.dev + currentResource + '/css'));
 
 		}));
@@ -32,17 +30,14 @@ $.gulp.task('resources:sass', function () {
 
 $.gulp.task('components:sass', function () {
 	if (config.global.tasks.sass) {
+
+		const sassPipe = require('../pipes/sass');
 		return $.mergeStream(config.global.resources.map(function (currentResource, index) {
 			return $.gulp.src([
 				config.global.src + config.global.components[index] + '/**/*.scss',
 				'!' + config.global.src + config.global.components[index] + '/**/_*.scss'
 			])
-				.pipe($.sourcemaps.init())
-				.pipe($.sass(config.sass).on('error', $.sass.logError))
-				.pipe($.postcss([
-					$.autoprefixer(config.autoprefixer)
-				]))
-				.pipe($.sourcemaps.write('.'))
+				.pipe(sassPipe())
 				.pipe($.gulp.dest(config.global.dev + currentResource + config.global.components[index]));
 		}));
 	} else {
