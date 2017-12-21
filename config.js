@@ -5,12 +5,28 @@ const dist = 'dist';
 const docs = 'documentation';
 const node = 'node_modules';
 
-const _ = require('lodash');
+const lazyPlugins = require('gulp-load-plugins')({
+	pattern: [
+		'autoprefixer',
+		'gulp',
+		'lodash',
+		'merge-stream',
+		'runSequence',
+		'path'
+	],
+	overridePattern: false
+});
+
+console.log(lazyPlugins);
+
 const projectConfig = require(cwd + '/projectConfig');
+
 const os = require('os');
 const isWin = /^win/.test(os.platform());
 
+
 module.exports = {
+	plugins: lazyPlugins,
 	global: {
 		src: src,
 		dev: dev,
@@ -184,5 +200,5 @@ module.exports = {
 };
 
 if (projectConfig) {
-	_.merge(module.exports, projectConfig);
+	lazyPlugins.lodash.merge(module.exports, projectConfig);
 }
