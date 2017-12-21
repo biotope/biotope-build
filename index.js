@@ -1,18 +1,22 @@
-const gulp = require('gulp');
-const runSequence = require('run-sequence');
-const requireDir = require('require-dir');
-requireDir('./tasks', {recurse: true});
+console.time('index');
 
 // Prevent errors caused by too many listeners in gulp-watch
 require('events').EventEmitter.defaultMaxListeners = 0;
 
-// configure default task
-gulp.task('default', ['serve']);
+// Load all tasks at once
+require('require-dir')('./tasks', {recurse: true});
 
+// Load config with lazy module plugin
+const config = require('./config');
+const $ = config.plugins;
+
+
+// configure default task
+$.gulp.task('default', ['serve']);
 
 // build templates for development
-gulp.task('build:dev', function (callback) {
-	runSequence(
+$.gulp.task('build:dev', function (callback) {
+	$.runSequence(
 		'checkDependencies',
 		[
 			'clean:dev',
@@ -53,10 +57,9 @@ gulp.task('build:dev', function (callback) {
 	);
 });
 
-
 // build templates for production
-gulp.task('build', function (callback) {
-	runSequence(
+$.gulp.task('build', function (callback) {
+	$.runSequence(
 		[
 			'clean:dist',
 			'build:dev'
@@ -103,10 +106,9 @@ gulp.task('build', function (callback) {
 	);
 });
 
-
 // serve development templates
-gulp.task('serve', function (callback) {
-	runSequence(
+$.gulp.task('serve', function (callback) {
+	$.runSequence(
 		'build:dev',
 		[
 			'watch:browserSupport',
@@ -132,13 +134,14 @@ gulp.task('serve', function (callback) {
 	);
 });
 
-
 // serve production templates
-gulp.task('serve:dist', function (callback) {
-	runSequence(
+$.gulp.task('serve:dist', function (callback) {
+	$.runSequence(
 		'build',
 		callback
 	);
 });
 
-module.exports = gulp.tasks;
+module.exports = $.gulp.tasks;
+
+console.timeEnd('index');

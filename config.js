@@ -12,16 +12,13 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'lazypipe',
 		'lodash',
 		'merge-stream',
-		'runSequence',
+		'run-sequence',
 		'path'
 	],
 	overridePattern: false
 });
 
-console.log(lazyPlugins);
-
 const projectConfig = require(cwd + '/projectConfig');
-
 const os = require('os');
 const isWin = /^win/.test(os.platform());
 
