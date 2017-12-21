@@ -10,6 +10,7 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'autoprefixer',
 		'check-dependencies',
 		'colors',
+		'del',
 		'gulp',
 		'lazypipe',
 		'lodash',
