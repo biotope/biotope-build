@@ -15,6 +15,7 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'lazypipe',
 		'lodash',
 		'merge-stream',
+		'opn',
 		'run-sequence',
 		'path'
 	],
