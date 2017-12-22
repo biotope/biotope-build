@@ -16,11 +16,14 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'lodash',
 		'merge-stream',
 		'opn',
+		'plumber',
 		'run-sequence',
 		'path'
 	],
 	overridePattern: false
 });
+
+console.log(lazyPlugins);
 
 const projectConfig = require(cwd + '/projectConfig');
 const os = require('os');
