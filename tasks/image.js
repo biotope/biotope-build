@@ -1,43 +1,48 @@
-const gulp = require('gulp');
-const colors = require('colors/safe');
-const mergeStream = require('merge-stream');
 const config = require('./../config');
-const image = require('gulp-imagemin');
-const imageOptimizers = [
-	image.gifsicle(),
-	image.jpegtran(),
-	image.optipng(),
-	image.svgo()
-];
+const $ = config.plugins;
 
-gulp.task('image:resources:dist', function () {
+$.gulp.task('image:resources:dist', function () {
 
 	if (config.global.tasks.image) {
-		return mergeStream(config.global.resources.map( function(currentResource) {
-			return gulp.src(config.global.dist + currentResource + '/img/**/*.*')
-				.pipe(image(
+		const imageOptimizers = [
+			$.imagemin.gifsicle(),
+			$.imagemin.jpegtran(),
+			$.imagemin.optipng(),
+			$.imagemin.svgo()
+		];
+
+		return $.mergeStream(config.global.resources.map( function(currentResource) {
+			return $.gulp.src(config.global.dist + currentResource + '/img/**/*.*')
+				.pipe($.imagemin(
 					imageOptimizers,
 					config.image
 				))
-				.pipe(gulp.dest(config.global.dist + currentResource + '/img/'));
+				.pipe($.gulp.dest(config.global.dist + currentResource + '/img/'));
 		}));
 
 	} else {
-		console.log(colors.yellow('image compressor disabled'));
+		console.log($.colors.yellow('image compressor disabled'));
 	}
 });
 
-gulp.task('image:component:dist', function () {
+$.gulp.task('image:component:dist', function () {
 
 	if (config.global.tasks.image) {
-		return mergeStream(config.global.resources.map(function (currentResource) {
-			return mergeStream(config.global.components.map(function (currentComponent) {
-				return gulp.src(config.global.src + currentComponent + '/*/img/**/*.*')
-					.pipe(image(
+		const imageOptimizers = [
+			$.imagemin.gifsicle(),
+			$.imagemin.jpegtran(),
+			$.imagemin.optipng(),
+			$.imagemin.svgo()
+		];
+
+		return $.mergeStream(config.global.resources.map(function (currentResource) {
+			return $.mergeStream(config.global.components.map(function (currentComponent) {
+				return $.gulp.src(config.global.src + currentComponent + '/*/img/**/*.*')
+					.pipe($.imagemin(
 						imageOptimizers,
 						config.image
 					))
-					.pipe(gulp.dest(config.global.dist + currentResource + currentComponent));
+					.pipe($.gulp.dest(config.global.dist + currentResource + currentComponent));
 			}));
 		}));
 	}
