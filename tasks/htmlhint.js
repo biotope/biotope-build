@@ -1,26 +1,21 @@
-const gulp = require('gulp');
-const htmlhint = require('gulp-htmlhint');
-const cached = require('gulp-cached');
-const watch = require('gulp-watch');
-const runSequence = require('run-sequence');
-
 const config = require('./../config');
+const $ = config.plugins;
 
-gulp.task('htmlhint', function () {
+$.gulp.task('htmlhint', function () {
 
-	return gulp.src(config.global.dev + '/*.html')
-		.pipe(cached('htmlhint', { optimizeMemory: true }))
-		.pipe(htmlhint('.htmlhintrc'))
-		.pipe(htmlhint.reporter('htmlhint-stylish'));
+	return $.gulp.src(config.global.dev + '/*.html')
+		.pipe($.cached('htmlhint', { optimizeMemory: true }))
+		.pipe($.htmlhint('.htmlhintrc'))
+		.pipe($.htmlhint.reporter('htmlhint-stylish'));
 
 });
 
-gulp.task('watch:html', function () {
+$.gulp.task('watch:html', function () {
 
-	watch([
+	$.watch([
 		config.global.dev + '/*.html'
 	], config.watch, function () {
-		runSequence('htmlhint')
+		$.runSequence('htmlhint')
 	});
 
 });
