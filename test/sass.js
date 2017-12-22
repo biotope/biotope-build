@@ -2,6 +2,7 @@ import test from 'ava';
 import {fromString} from './helpers/pipe';
 
 import sass from '../pipes/sass';
+import cleanCss from '../pipes/cleanCss';
 
 test('simple variable', t => {
     const input = '$foo: red; body { background: $foo; }';
@@ -63,6 +64,17 @@ test('empty input', t => {
     const expected = '\n/*# sourceMappingURL=style.css.map */\n';
 
     return fromString(input, 'style.scss', sass)
+        .then(output => {
+            const contents = output.contents.toString();
+            t.is(contents, expected, 'Sass compiled as expected');
+        });
+});
+
+test('minified css', t => {
+    const input = '$foo: red; body { background: $foo; }';
+    const expected = 'body{background:red}';
+
+    return fromString(input, 'style.scss', sass.pipe(cleanCss))
         .then(output => {
             const contents = output.contents.toString();
             t.is(contents, expected, 'Sass compiled as expected');
