@@ -28,7 +28,6 @@ const lazyPlugins = require('gulp-load-plugins')({
 	overridePattern: false
 });
 
-const projectConfig = require(cwd + '/projectConfig');
 const os = require('os');
 const isWin = /^win/.test(os.platform());
 
@@ -208,6 +207,11 @@ module.exports = {
 	}
 };
 
-if (projectConfig) {
-	lazyPlugins.lodash.merge(module.exports, projectConfig);
-}
+try {
+    const projectConfig = require(cwd + '/projectConfig');
+    if (projectConfig) {
+        lazyPlugins.lodash.merge(module.exports, projectConfig);
+    }
+} catch(e) {}
+
+
