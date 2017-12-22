@@ -11,11 +11,8 @@ $.gulp.task('cleanCss:resources:dist', function () {
 		const stream = $.gulp.src(config.global.dev + currentResource + '/css/**/*.css');
 
 		if (config.global.tasks.cleanCss) {
-			stream.pipe($.cleanCss(config.cleanCss))
-				.pipe($.size({
-					title: 'minified',
-					showFiles: true
-				}));
+			const cleanCssPipe = require('../pipes/cleanCss');
+			stream.pipe(cleanCssPipe());
 		}
 
 		stream.pipe($.gulp.dest(config.global.dist + currentResource + '/css/'));
@@ -33,11 +30,8 @@ $.gulp.task('cleanCss:components:dist', function () {
 		const stream = $.gulp.src(config.global.dev + currentResource + config.global.components[index] + '/**/*.css');
 
 		if (config.global.tasks.cleanCss) {
-			stream.pipe($.cleanCss(config.cleanCss))
-				.pipe($.size({
-					title: 'minified',
-					showFiles: true
-				}));
+			const cleanCssPipe = require('../pipes/cleanCss');
+			stream.pipe(cleanCssPipe());
 		}
 
 		stream.pipe($.gulp.dest(config.global.dist + currentResource + config.global.components[index]));
