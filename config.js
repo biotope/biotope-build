@@ -28,8 +28,6 @@ const lazyPlugins = require('gulp-load-plugins')({
 	overridePattern: false
 });
 
-console.log(lazyPlugins);
-
 const projectConfig = require(cwd + '/projectConfig');
 const os = require('os');
 const isWin = /^win/.test(os.platform());
