@@ -13,6 +13,7 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'del',
 		'globule',
 		'gulp',
+		'jshint-stylish',
 		'lazypipe',
 		'lodash',
 		'merge-stream',
