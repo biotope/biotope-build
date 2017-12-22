@@ -1,20 +1,12 @@
-const gulp = require('gulp');
-const named = require('vinyl-named');
-const mergeStream = require('merge-stream');
 const path = require('path');
-const watch = require('gulp-watch');
-const colors = require('colors/safe');
-const runSequence = require('run-sequence');
-const webpack = require('webpack');
-const webpackStream = require('webpack-stream');
-
 const webpackConfig = require('./../webpack.config.js');
 const config = require('./../config');
+const $ = config.plugins;
 
-gulp.task('webpack:ts', function() {
+$.gulp.task('webpack:ts', function() {
 	if (config.global.tasks.webpack) {
 
-		return mergeStream(config.global.resources.map( function(currentResource, index) {
+		return $.mergeStream(config.global.resources.map( function(currentResource, index) {
 
 			const srcArray = [
 				config.global.src + currentResource + '/**/*.ts',
@@ -25,8 +17,8 @@ gulp.task('webpack:ts', function() {
 				srcArray.push('!' + path.join(config.global.src, ignorePath));
 			});
 
-			return gulp.src(srcArray, { base: path.join(config.global.cwd, config.global.src) })
-				.pipe(named(function(file) {
+			return $.gulp.src(srcArray, { base: path.join(config.global.cwd, config.global.src) })
+				.pipe($.vinylNamed(function(file) {
 					const currentResourceParsed = path.parse(currentResource);
 					let relativePath = path.relative(file.base, file.path);
 
@@ -40,27 +32,27 @@ gulp.task('webpack:ts', function() {
 
 					return relativePath;
 				}))
-				.pipe(webpackStream(webpackConfig, webpack).on('error', function() {
+				.pipe($.webpackStream(webpackConfig, $.webpack).on('error', function() {
 					this.emit('end');
 				}))
-				.pipe(gulp.dest(config.global.dev));
+				.pipe($.gulp.dest(config.global.dev));
 
 		}));
 
 	} else {
-		console.log(colors.yellow('webpack:ts disabled'));
+		console.log($.colors.yellow('webpack:ts disabled'));
 	}
 });
 
-gulp.task('watch:webpack:ts', function () {
+$.gulp.task('watch:webpack:ts', function () {
 
 	if (config.global.tasks.webpack) {
 		config.global.resources.forEach(function (currentResource, index) {
-			watch([
+			$.watch([
 				config.global.src + currentResource + '/**/*.ts',
 				config.global.src + config.global.components[index] + '/**/*.ts'
 			], config.watch, function () {
-				runSequence(
+				$.runSequence(
 					['webpack:ts']
 				);
 			});

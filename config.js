@@ -21,7 +21,9 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'plumber',
 		'pump',
 		'run-sequence',
-		'path'
+		'vinyl-named',
+		'webpack',
+		'webpack-stream'
 	],
 	overridePattern: false
 });
