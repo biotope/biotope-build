@@ -19,6 +19,7 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'merge-stream',
 		'opn',
 		'plumber',
+		'pump',
 		'run-sequence',
 		'path'
 	],
