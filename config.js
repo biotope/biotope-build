@@ -11,6 +11,7 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'check-dependencies',
 		'colors',
 		'del',
+		'globule',
 		'gulp',
 		'lazypipe',
 		'lodash',
