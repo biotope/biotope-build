@@ -1,12 +1,9 @@
-const gulp = require('gulp');
-const modernizr = require('gulp-modernizr');
-const uglify = require('gulp-uglify');
-
 const config = require('./../config');
+const $ = config.plugins;
 
-gulp.task('modernizr', function () {
+$.gulp.task('modernizr', function () {
 
-	return gulp.src([
+	return $.gulp.src([
 			config.global.src + '/resources/js/**/*.js',
             config.global.src + '/resources/ts/**/*.+(t|j)s',
             config.global.src + '/resources/react/**/*.+(j|t)sx',
@@ -14,8 +11,8 @@ gulp.task('modernizr', function () {
 			config.global.dev + '/resources/css/**/*.css',
 			'!' + config.global.src + '/resources/js/vendor/*'
 		])
-		.pipe(modernizr(config.modernizr))
-		.pipe(uglify(config.uglify))
-		.pipe(gulp.dest(config.global.dev + '/resources/js/vendor/'));
+		.pipe($.modernizr(config.modernizr))
+		.pipe($.uglify(config.uglify))
+		.pipe($.gulp.dest(config.global.dev + '/resources/js/vendor/'));
 
 });
