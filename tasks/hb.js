@@ -110,7 +110,7 @@ $.gulp.task('static:hb:indexr', function () {
 	}
 
 	if (config.global.debug) {
-		console.log(colors.green(`dataObject: ${JSON.stringify(dataObject)}`));
+		console.log($.colors.green(`dataObject: ${JSON.stringify(dataObject)}`));
 	}
 
 	const hbStream = hbsParser.createHbsGulpStream(null, dataObject, null, config.global.debug);

@@ -43,7 +43,7 @@ module.exports = {
 		node: node,
 		cwd: cwd,
 		isWin: isWin,
-		debug: true,
+		debug: false,
 		dataObject: 'data',
 		resources: ['/resources'],
 		components: ['/components'],
