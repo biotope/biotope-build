@@ -11,7 +11,6 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'check-dependencies',
 		'colors',
 		'del',
-		'front-matter',
 		'globule',
 		'gulp',
 		'jshint-stylish',
@@ -19,7 +18,6 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'lodash',
 		'merge-stream',
 		'opn',
-		'plumber',
 		'pump',
 		'run-sequence',
 		'vinyl-named',
@@ -28,6 +26,8 @@ const lazyPlugins = require('gulp-load-plugins')({
 	],
 	overridePattern: false
 });
+
+console.log(lazyPlugins);
 
 const os = require('os');
 const isWin = /^win/.test(os.platform());
