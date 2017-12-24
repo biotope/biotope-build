@@ -79,7 +79,7 @@ $.gulp.task('copy:dev:npm:css', function () {
 
 			return $.mergeStream(resources[key].map(function(file) {
 				return $.gulp.src(config.global.node + '/' + key + '/' + file)
-					.pipe($.filter('*.css', '*.scss'))
+					.pipe($.filter(['*.css', '*.scss']))
 					.pipe($.gulp.dest(config.global.dev + currentResource + '/css/vendor/'));
 			}));
 		}));
