@@ -11,6 +11,7 @@ const lazyPlugins = require('gulp-load-plugins')({
 		'check-dependencies',
 		'colors',
 		'del',
+		'front-matter',
 		'globule',
 		'gulp',
 		'jshint-stylish',
