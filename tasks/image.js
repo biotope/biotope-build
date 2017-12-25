@@ -12,7 +12,10 @@ $.gulp.task('image:resources:dist', function () {
 		];
 
 		return $.mergeStream(config.global.resources.map( function(currentResource) {
-			return $.gulp.src(config.global.dist + currentResource + '/img/**/*.*')
+			return $.gulp.src([
+				config.global.dist + currentResource + '/img/**/*.*',
+				'!**/*.md',
+			])
 				.pipe($.imagemin(
 					imageOptimizers,
 					config.image
