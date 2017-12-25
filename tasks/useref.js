@@ -45,6 +45,10 @@ $.gulp.task('useref:assets', function () {
 
 		.pipe(cssFilter)
 		.pipe(cleanCssPipe())
+		.pipe($.size({
+			title: 'minified',
+			showFiles: true
+		}))
 		.pipe(cssFilter.restore)
 
 		.pipe($.filter(['**', '!**/_useref.html']))

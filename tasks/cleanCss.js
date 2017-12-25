@@ -17,7 +17,11 @@ $.gulp.task('cleanCss:resources:dist', function () {
 
 		if (config.global.tasks.cleanCss) {
 			const cleanCssPipe = require('../pipes/cleanCss');
-			stream.pipe(cleanCssPipe());
+			stream.pipe(cleanCssPipe())
+				.pipe($.size({
+					title: 'minified',
+					showFiles: true
+				}));
 		}
 
 		return stream.pipe($.gulp.dest(targetPath));
