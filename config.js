@@ -54,10 +54,12 @@ module.exports = {
 			handlebars: true,
 			iconfont: true,
 			image: true,
+			less: false,
 			linting: true,
 			markdown: false,
 			sass: true,
-			uglify: true
+			uglify: true,
+			webpack: true
 		},
 		externalResources: {},
 		bowerResources: {},
@@ -212,5 +214,3 @@ try {
         lazyPlugins.lodash.merge(module.exports, projectConfig);
     }
 } catch(e) {}
-
-
