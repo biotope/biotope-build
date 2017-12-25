@@ -18,7 +18,7 @@ $.gulp.task('browserSupport', function () {
 		}
 
 		const hbStream = hbsParser.createHbsGulpStream(null, dataObject, null, config.global.debug);
-		const sourcePaths = path.join(config.global.src, 'browserSupport.hbs');
+		const sourcePaths = path.join(config.global.cwd, config.global.src, 'browserSupport.hbs');
 
 		return $.gulp.src(sourcePaths)
 			.pipe(hbStream)

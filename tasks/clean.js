@@ -1,26 +1,27 @@
+const path = require('path');
 const config = require('./../config');
 const $ = config.plugins;
 
 $.gulp.task('clean:dev', function () {
 	return $.del([
-		config.global.dev + '/**/*'
+		path.join(config.global.cwd, config.global.dev)
 	]);
 });
 
 $.gulp.task('clean:dist', function () {
 	return $.del([
-		config.global.dist + '/**/*'
+		path.join(config.global.cwd, config.global.dist)
 	]);
 });
 
 $.gulp.task('clean:useref', function () {
 	return $.del([
-		config.global.dist + '/_useref.html'
+		path.join(config.global.cwd, config.global.dist, '_useref.html')
 	]);
 });
 
 $.gulp.task('clean:iconfont', function () {
 	return $.del([
-		'./iconfont'
+		path.join(config.global.cwd, '.iconfont')
 	]);
 });
