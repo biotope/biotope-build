@@ -1,3 +1,4 @@
+const path = require('path');
 const config = require('./../config');
 const $ = config.plugins;
 
@@ -8,15 +9,18 @@ $.gulp.task('cleanCss:resources:dist', function () {
 	}
 
 	return $.mergeStream(config.global.resources.map(function (currentResource) {
-		const stream = $.gulp.src(config.global.dev + currentResource + '/css/**/*.css');
+
+		const sourcePaths = path.join(config.global.cwd, config.global.dev, currentResource, 'css', '**', '*.css');
+		const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, 'css');
+
+		const stream = $.gulp.src(sourcePaths);
 
 		if (config.global.tasks.cleanCss) {
 			const cleanCssPipe = require('../pipes/cleanCss');
 			stream.pipe(cleanCssPipe());
 		}
 
-		stream.pipe($.gulp.dest(config.global.dist + currentResource + '/css/'));
-		return stream;
+		return stream.pipe($.gulp.dest(targetPath));
 	}));
 });
 
@@ -27,14 +31,17 @@ $.gulp.task('cleanCss:components:dist', function () {
 	}
 
 	return $.mergeStream(config.global.resources.map(function (currentResource, index) {
-		const stream = $.gulp.src(config.global.dev + currentResource + config.global.components[index] + '/**/*.css');
+
+		const sourcePaths = path.join(config.global.cwd, config.global.dev, currentResource, config.global.components[index], '**', '*.css');
+		const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, config.global.components[index]);
+
+		const stream = $.gulp.src(sourcePaths);
 
 		if (config.global.tasks.cleanCss) {
 			const cleanCssPipe = require('../pipes/cleanCss');
 			stream.pipe(cleanCssPipe());
 		}
 
-		stream.pipe($.gulp.dest(config.global.dist + currentResource + config.global.components[index]));
-		return stream;
+		return stream.pipe($.gulp.dest(targetPath));
 	}));
 });
