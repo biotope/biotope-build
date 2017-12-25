@@ -1,3 +1,4 @@
+const path = require('path');
 const config = require('./../config');
 const $ = config.plugins;
 
@@ -16,9 +17,10 @@ $.gulp.task('browserSupport', function () {
 			console.log($.colors.green(`dataObject: ${JSON.stringify(dataObject)}`));
 		}
 
-		let hbStream = hbsParser.createHbsGulpStream(null, dataObject, null, config.global.debug);
+		const hbStream = hbsParser.createHbsGulpStream(null, dataObject, null, config.global.debug);
+		const sourcePaths = path.join(config.global.src, 'browserSupport.hbs');
 
-		return $.gulp.src(config.global.src + '/browserSupport.hbs')
+		return $.gulp.src(sourcePaths)
 			.pipe(hbStream)
 			.pipe($.rename({extname: ".html"}))
 			.pipe($.gulp.dest(config.global.dev));
@@ -29,7 +31,9 @@ $.gulp.task('browserSupport', function () {
 
 $.gulp.task('watch:browserSupport', function () {
 	if (config.global.tasks.browserSupport && browserSupportData) {
-		$.watch(config.global.cwd + './browserSupport.json', config.watch, function () {
+
+		const sourcePaths = path.join(config.global.src, 'browserSupport.json');
+		$.watch(sourcePaths, config.watch, function () {
 			$.runSequence(
 				['browserSupport']
 			);
