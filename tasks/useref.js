@@ -1,15 +1,19 @@
+const path = require('path');
 const config = require('./../config');
 const $ = config.plugins;
 
 $.gulp.task('useref', function () {
 
-	return $.gulp.src(config.global.dev + '/*.html')
+	const sourcePaths = path.join(config.global.cwd, config.global.dev, '*.html');
+	const targetPath = path.join(config.global.cwd, config.global.dist);
+
+	return $.gulp.src(sourcePaths)
 		.pipe($.lineEndingCorrector(config.lec))
 		.pipe($.useref({
 			noAssets: true
 		}))
 		.pipe($.filter(['**/*.html']))
-		.pipe($.gulp.dest(config.global.dist));
+		.pipe($.gulp.dest(targetPath));
 
 });
 
@@ -21,13 +25,16 @@ $.gulp.task('useref:assets', function () {
 
 	let hbStream = hbsParser.createHbsGulpStream(
 		[
-			config.global.src + '/**/*.hbs',
-			'!' + config.global.src + '/pages/**'
+			path.join(config.global.cwd, config.global.src, '**', '*.hbs'),
+			'!' + path.join(config.global.cwd, config.global.src, 'pages', '**')
 		],
 		null, null, config.global.debug
 	);
 
-	return $.gulp.src(config.global.src + '/resources/_useref.html')
+	const sourcePaths = path.join(config.global.cwd, config.global.src, 'resources', '_useref.html');
+	const targetPath = path.join(config.global.cwd, config.global.dist);
+
+	return $.gulp.src(sourcePaths)
 		.pipe($.lineEndingCorrector(config.lec))
 		.pipe(hbStream)
 		.pipe($.useref())
@@ -42,5 +49,5 @@ $.gulp.task('useref:assets', function () {
 
 		.pipe($.filter(['**', '!**/_useref.html']))
 
-		.pipe($.gulp.dest(config.global.dist));
+		.pipe($.gulp.dest(targetPath));
 });
