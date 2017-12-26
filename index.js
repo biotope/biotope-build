@@ -69,7 +69,6 @@ $.gulp.task('build', function (callback) {
 		],
 		[
 			'copy:dist:js',
-			'copy:dist:react',
 			'copy:dist:ts',
 			'copy:dist:flash',
 			'copy:dist:json',
