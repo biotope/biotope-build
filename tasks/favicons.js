@@ -1,11 +1,16 @@
+const path = require('path');
 const config = require('./../config');
 const $ = config.plugins;
 
-$.gulp.task("favicons", function () {
+$.gulp.task('favicons', function () {
 	if (config.global.tasks.favicons) {
-		return $.gulp.src(config.global.src + '/resources/favicon.png')
+
+		const sourcePaths = path.join(config.global.cwd, config.global.src, 'resources', 'favicon.png');
+		const targetPath = path.join(config.global.cwd, config.global.dist, 'favicons');
+
+		return $.gulp.src(sourcePaths)
 			.pipe($.favicons(config.favicons))
-			.pipe($.gulp.dest(config.global.dist + '/favicons/'));
+			.pipe($.gulp.dest(targetPath));
 	}
 });
 
