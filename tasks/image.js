@@ -1,3 +1,4 @@
+const path = require('path');
 const config = require('./../config');
 const $ = config.plugins;
 
@@ -12,15 +13,19 @@ $.gulp.task('image:resources:dist', function () {
 		];
 
 		return $.mergeStream(config.global.resources.map( function(currentResource) {
-			return $.gulp.src([
-				config.global.dist + currentResource + '/img/**/*.*',
-				'!**/*.md',
-			])
+
+			const sourcePaths = [
+				path.join(config.global.cwd, config.global.dist, currentResource, 'img', '**', '*.*'),
+				'!**/*.md'
+			];
+			const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, 'img');
+
+			return $.gulp.src(sourcePaths)
 				.pipe($.imagemin(
 					imageOptimizers,
 					config.image
 				))
-				.pipe($.gulp.dest(config.global.dist + currentResource + '/img/'));
+				.pipe($.gulp.dest(targetPath));
 		}));
 
 	} else {
@@ -40,12 +45,16 @@ $.gulp.task('image:component:dist', function () {
 
 		return $.mergeStream(config.global.resources.map(function (currentResource) {
 			return $.mergeStream(config.global.components.map(function (currentComponent) {
-				return $.gulp.src(config.global.src + currentComponent + '/*/img/**/*.*')
+
+				const sourcePaths = path.join(config.global.cwd, config.global.src, currentComponent, '*', 'img', '**', '*.*');
+				const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, currentComponent);
+
+				return $.gulp.src(sourcePaths)
 					.pipe($.imagemin(
 						imageOptimizers,
 						config.image
 					))
-					.pipe($.gulp.dest(config.global.dist + currentResource + currentComponent));
+					.pipe($.gulp.dest(targetPath));
 			}));
 		}));
 	}
