@@ -9,7 +9,7 @@ $.gulp.task('static:hb', function () {
 	const jsonParser = require('./../lib/json-parser');
 	const hbsParser = require('./../lib/hbs-parser');
 	const iconParser = require('./../lib/icon-parser');
-	const iconNames = iconParser.getAllIconFileNamesLowerCase(config.global.src + '/resources/icons/*.svg');
+	const iconNames = iconParser.getAllIconFileNamesLowerCase(path.join(config.global.cwd, config.global.src, 'resources', 'icons', '*.svg'));
 	const preData = {};
 
 	preData[config.global.dataObject] = {
@@ -20,18 +20,17 @@ $.gulp.task('static:hb', function () {
 	const hbsData = jsonParser.getAllJSONData(config.global.src + '/**/*.json', preData[config.global.dataObject]);
 	const hbStream = hbsParser.createHbsGulpStream(
 		[
-			config.global.src + '/**/*.hbs',
-			'!' + config.global.src + '/pages/**'
+			path.join(config.global.cwd, config.global.src, '**', '*.hbs'),
+			'!' + path.join(config.global.cwd, config.global.src, 'pages', '**')
 		],
 		hbsData, null, config.global.debug
 	);
 
-	/**
-	 * reads from pages
-	 * puts files to .tmp
-	 */
+	const sourcePaths = path.join(config.global.cwd, config.global.src, 'pages', '**', '*.hbs');
+	const targetPath = path.join(config.global.cwd, config.global.dev);
+
 	return $.gulp
-		.src(config.global.src + '/pages/**/*.hbs')
+		.src(sourcePaths)
 		.pipe($.frontMatter({
 			property: 'data.frontMatter',
 			remove: true
@@ -44,19 +43,20 @@ $.gulp.task('static:hb', function () {
 			};
 		}))
 		.pipe($.rename({extname: ".html"}))
-		.pipe($.gulp.dest(config.global.dev));
+		.pipe($.gulp.dest(targetPath));
 
 });
 
 
 $.gulp.task('watch:static:hb', function () {
-	let files = [
-		config.global.src + '/**/*.hbs',
-		config.global.src + '/**/*.json',
-		'!' + config.global.src + '/pages/**'
+
+	const sourcePaths = [
+		path.join(config.global.cwd, config.global.src, '**', '*.hbs'),
+		path.join(config.global.cwd, config.global.src, '**', '*.json'),
+		'!' + path.join(config.global.cwd, config.global.src, 'pages', '**')
 	];
 
-	$.watch(files, config.watch, function () {
+	$.watch(sourcePaths, config.watch, function () {
 		$.runSequence(
 			['static:hb']
 		);
@@ -85,7 +85,7 @@ $.gulp.task('static:hb:indexr', function () {
 
 	// read all files
 	const filepaths = $.globule.find([
-		config.global.src + '/pages/*.hbs'
+		path.join(config.global.cwd, config.global.src, 'pages', '*.hbs')
 	]);
 
 	let lastCategory = '';
@@ -114,19 +114,26 @@ $.gulp.task('static:hb:indexr', function () {
 	}
 
 	const hbStream = hbsParser.createHbsGulpStream(null, dataObject, null, config.global.debug);
+	const sourcePaths = path.join(config.global.cwd, config.global.src, 'index.hbs');
+	const targetPath = path.join(config.global.cwd, config.global.dev);
 
-	return $.gulp.src(config.global.src + '/index.hbs')
+	return $.gulp.src(sourcePaths)
 		.pipe(hbStream)
 		.pipe($.rename({extname: ".html"}))
-		.pipe($.gulp.dest(config.global.dev));
+		.pipe($.gulp.dest(targetPath));
 
 });
 
 $.gulp.task('watch:static:hb:indexr', function () {
 
-	$.watch(config.global.src + '/pages/*.hbs', config.watch, function () {
+	const sourcePaths = path.join(config.global.cwd, config.global.src, 'pages', '*.hbs');
+
+	$.watch(sourcePaths, config.watch, function () {
 		$.runSequence(
-			['static:hb:indexr','static:hb']
+			[
+				'static:hb:indexr',
+				'static:hb'
+			]
 		);
 	});
 
