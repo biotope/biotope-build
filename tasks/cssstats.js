@@ -5,7 +5,7 @@ $.gulp.task('cssstats', function () {
 
 	if (config.global.tasks.cssStats) {
 
-		const sourcePaths = path.join(config.global.cwd, config.global.dist, 'resources', 'css', '**', '*.css',);
+		const sourcePaths = path.join(config.global.cwd, config.global.dist, 'resources', 'css', '**', '*.css');
 
 		return $.gulp.src(sourcePaths)
 			.pipe($.cssstats())

@@ -137,7 +137,7 @@ $.gulp.task('copy:dev:npm:bower', function () {
  */
 $.gulp.task('copy:dist:bower', function () {
 
-	const sourcePaths = path.join(config.global.cwd, config.global.dev, 'resources', 'bower_components', '**', '*',);
+	const sourcePaths = path.join(config.global.cwd, config.global.dev, 'resources', 'bower_components', '**', '*');
 	const targetPath = path.join(config.global.cwd, config.global.dist, 'resources', 'bower_components');
 
 	return $.gulp.src(sourcePaths)
@@ -149,7 +149,7 @@ $.gulp.task('copy:dist:flash', function () {
 
 	return $.mergeStream(config.global.resources.map( function(currentResource) {
 
-		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'flash', '**', '*',);
+		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'flash', '**', '*');
 		const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, 'flash');
 
 		return $.gulp.src(sourcePaths)
@@ -162,7 +162,7 @@ $.gulp.task('copy:dist:json', function () {
 
 	return $.mergeStream(config.global.resources.map( function(currentResource) {
 
-		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'json', '**', '*',);
+		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'json', '**', '*');
 		const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, 'json');
 
 		return $.gulp.src(sourcePaths)
@@ -176,8 +176,8 @@ $.gulp.task('copy:dist:fonts', function () {
 	return $.mergeStream(config.global.resources.map( function(currentResource) {
 
 		const sourcePaths = [
-			path.join(config.global.cwd, config.global.src, currentResource, 'fonts', '**', '*',),
-			path.join(config.global.cwd, config.global.dev, currentResource, 'fonts', '**', '*',)
+			path.join(config.global.cwd, config.global.src, currentResource, 'fonts', '**', '*'),
+			path.join(config.global.cwd, config.global.dev, currentResource, 'fonts', '**', '*')
 		];
 		const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, 'fonts');
 
@@ -191,7 +191,7 @@ $.gulp.task('copy:dist:img', function () {
 
 	return $.mergeStream(config.global.resources.map( function(currentResource) {
 
-		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'img', '**', '*',);
+		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'img', '**', '*');
 		const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, 'img');
 
 		return $.gulp.src(sourcePaths)
@@ -202,7 +202,7 @@ $.gulp.task('copy:dist:img', function () {
 
 $.gulp.task('copy:dist:assets', function () {
 
-	const sourcePaths = path.join(config.global.cwd, config.global.src, '_assets', '**', '*',);
+	const sourcePaths = path.join(config.global.cwd, config.global.src, '_assets', '**', '*');
 	const targetPath = path.join(config.global.cwd, config.global.dist, '_assets');
 
 	return $.gulp.src(sourcePaths)
@@ -214,7 +214,7 @@ $.gulp.task('copy:dist:css', function () {
 
 	return $.mergeStream(config.global.resources.map( function(currentResource) {
 
-		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'css', '**', '*.css',);
+		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'css', '**', '*.css');
 		const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, 'css');
 
 		return $.gulp.src(sourcePaths)
@@ -225,7 +225,7 @@ $.gulp.task('copy:dist:css', function () {
 
 $.gulp.task('copy:dist:mock', function () {
 
-	const sourcePaths = path.join(config.global.cwd, config.global.src, '_mock', '**', '*',);
+	const sourcePaths = path.join(config.global.cwd, config.global.src, '_mock', '**', '*');
 	const targetPath = path.join(config.global.cwd, config.global.dist, '_mock');
 
 	return $.gulp.src(sourcePaths)
@@ -235,7 +235,7 @@ $.gulp.task('copy:dist:mock', function () {
 
 $.gulp.task('copy:dist:config', function () {
 
-	const sourcePaths = path.join(config.global.cwd, config.global.src, '_config', '**', '*',);
+	const sourcePaths = path.join(config.global.cwd, config.global.src, '_config', '**', '*');
 	const targetPath = path.join(config.global.cwd, config.global.dist, '_config');
 
 	return $.gulp.src(sourcePaths)
@@ -247,7 +247,7 @@ $.gulp.task('copy:dist:hbs', function () {
 
 	return $.mergeStream(config.global.resources.map( function(currentResource) {
 
-		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'templates', '**', '*',);
+		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'templates', '**', '*');
 		const targetPath = path.join(config.global.cwd, config.global.dist, currentResource, 'templates');
 
 		return $.gulp.src(sourcePaths)
@@ -259,7 +259,7 @@ $.gulp.task('copy:dist:hbs', function () {
 $.gulp.task('watch:components:js', function() {
 	config.global.components.forEach(function(currentComponent) {
 
-		const sourcePaths = path.join(config.global.cwd, config.global.src, currentComponent, '**', '*.js',);
+		const sourcePaths = path.join(config.global.cwd, config.global.src, currentComponent, '**', '*.js');
 
 		$.watch(sourcePaths, config.watch, function () {
 			$.runSequence(
