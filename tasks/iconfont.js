@@ -1,3 +1,4 @@
+const path = require('path');
 const config = require('./../config');
 const $ = config.plugins;
 
@@ -27,12 +28,16 @@ $.gulp.task('convertIconsToTtf', function () {
 	}
 
 	return $.mergeStream(iconfontArray.map(function(currentIconResource) {
-		return $.mergeStream(config.global.resources.map( function(currentResource, index) {
-			return $.gulp.src(config.global.src + currentResource + '/icons/*.svg')
+		return $.mergeStream(config.global.resources.map( function(currentResource) {
+
+			const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'icons', '*.svg');
+			const targetPath = path.join(config.global.cwd, config.global.dev, currentResource, 'fonts', 'icons');
+
+			return $.gulp.src(sourcePaths)
 				.pipe($.iconfontCss(currentIconResource))
 				.pipe($.svgicons2svgfont(config.iconfont))
 				.pipe($.svg2ttf())
-				.pipe($.gulp.dest(config.global.dev + currentResource + '/fonts/icons/'));
+				.pipe($.gulp.dest(targetPath));
 		}));
 	}));
 
@@ -40,17 +45,23 @@ $.gulp.task('convertIconsToTtf', function () {
 
 $.gulp.task('convertTtfToEot', function () {
 
-	return $.gulp.src(config.global.dev + '/resources/fonts/icons/*.ttf')
+	const sourcePaths = path.join(config.global.cwd, config.global.dev, 'resources', 'fonts', 'icons', '*.ttf');
+	const targetPath = path.join(config.global.cwd, config.global.dev, 'resources', 'fonts', 'icons');
+
+	return $.gulp.src(sourcePaths)
 		.pipe($.ttf2eot())
-		.pipe($.gulp.dest(config.global.dev + '/resources/fonts/icons/'));
+		.pipe($.gulp.dest(targetPath));
 
 });
 
 $.gulp.task('convertTtfToWoff', function () {
 
-	return $.gulp.src(config.global.dev + '/resources/fonts/icons/*.ttf')
+	const sourcePaths = path.join(config.global.cwd, config.global.dev, 'resources', 'fonts', 'icons', '*.ttf');
+	const targetPath = path.join(config.global.cwd, config.global.dev, 'resources', 'fonts', 'icons');
+
+	return $.gulp.src(sourcePaths)
 		.pipe($.ttf2woff())
-		.pipe($.gulp.dest(config.global.dev + '/resources/fonts/icons/'));
+		.pipe($.gulp.dest(targetPath));
 
 });
 
@@ -58,7 +69,9 @@ $.gulp.task('watch:icons', function() {
 
 	config.global.resources.map( function(currentResource) {
 
-		$.watch(config.global.src + currentResource + '/icons/*.svg', config.watch, function () {
+		const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'icons', '*.svg');
+
+		$.watch(sourcePaths, config.watch, function () {
 			$.runSequence(
 				'iconfont',
 				[
