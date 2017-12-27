@@ -9,12 +9,15 @@ $.gulp.task('resources:sass', function () {
 		const sassPipe = require('../pipes/sass');
 		return $.mergeStream(config.global.resources.map(function(currentResource) {
 
-			return $.gulp.src([
-				path.join(config.global.src, currentResource, 'scss', '**/*.scss'),
-				'!' + path.join(config.global.src, currentResource, 'scss', '**/_*.scss')
-			])
+			const sourcePaths = [
+				path.join(config.global.src, currentResource, 'scss', '**', '*.scss'),
+				'!' + path.join(config.global.src, currentResource, 'scss', '**', '_*.scss')
+			];
+			const targetPath = path.join(config.global.cwd, config.global.dev, currentResource, 'css');
+
+			return $.gulp.src(sourcePaths)
 				.pipe(sassPipe())
-				.pipe($.gulp.dest(config.global.dev + currentResource + '/css'));
+				.pipe($.gulp.dest(targetPath));
 
 		}));
 	} else {
@@ -33,12 +36,16 @@ $.gulp.task('components:sass', function () {
 
 		const sassPipe = require('../pipes/sass');
 		return $.mergeStream(config.global.resources.map(function (currentResource, index) {
-			return $.gulp.src([
-				config.global.src + config.global.components[index] + '/**/*.scss',
-				'!' + config.global.src + config.global.components[index] + '/**/_*.scss'
-			])
+
+			const sourcePaths = [
+				path.join(config.global.cwd, config.global.src, config.global.components[index], '**', '*.scss'),
+				'!' + path.join(config.global.cwd, config.global.src, config.global.components[index], '**', '_*.scss')
+			];
+			const targetPath = path.join(config.global.cwd, config.global.dev, currentResource, config.global.components[index]);
+
+			return $.gulp.src(sourcePaths)
 				.pipe(sassPipe())
-				.pipe($.gulp.dest(config.global.dev + currentResource + config.global.components[index]));
+				.pipe($.gulp.dest(targetPath));
 		}));
 	} else {
 		console.log($.colors.yellow('sass components disabled'));
@@ -52,9 +59,13 @@ $.gulp.task('components:sass', function () {
 $.gulp.task('lint:resources:sass', function () {
 	if (config.global.tasks.sass && config.global.tasks.linting && false) {
 		return $.mergeStream(config.global.resources.map(function (currentResource) {
-			return $.gulp.src([config.global.src + currentResource + '/scss/**/*.s+(a|c)ss',
-				'!' + config.global.src + currentResource + '/scss/**/_icons.s+(a|c)ss',
-			])
+
+			const sourcePaths = [
+				path.join(config.global.cwd, config.global.src, currentResource, 'scss', '**', '*.s+(a|c)ss'),
+				'!' + path.join(config.global.cwd, config.global.src, currentResource, 'scss', '**', '_icons.s+(a|c)ss')
+			];
+
+			return $.gulp.src(sourcePaths)
 				.pipe($.cached('sass', { optimizeMemory: true }))
 				.pipe($.sassLint(config.global.sassLint))
 				.pipe($.sassLint.format())
@@ -66,7 +77,10 @@ $.gulp.task('lint:resources:sass', function () {
 $.gulp.task('lint:components:sass', function () {
 	if (config.global.tasks.sass && config.global.tasks.linting && false) {
 		return $.mergeStream(config.global.components.map(function (currentComponent) {
-			return $.gulp.src(config.global.src + currentComponent + '/**/*.s+(a|c)ss')
+
+			const sourcePaths = path.join(config.global.cwd, config.global.src, currentComponent, '**', '*.s+(a|c)ss');
+
+			return $.gulp.src(sourcePaths)
 				.pipe($.cached('sass', { optimizeMemory: true }))
 				.pipe($.sassLint())
 				.pipe($.sassLint.format())
@@ -81,9 +95,10 @@ $.gulp.task('lint:components:sass', function () {
 $.gulp.task('watch:resources:sass', function () {
 	if (config.global.tasks.sass) {
 		config.global.resources.forEach(function(currentResource) {
-			$.watch([
-				config.global.src + currentResource + '/scss/**/*.scss'
-			], config.watch, function() {
+
+			const sourcePaths = path.join(config.global.cwd, config.global.src, currentResource, 'scss', '**', '*.scss');
+
+			$.watch(sourcePaths, config.watch, function() {
 				$.runSequence(
 					['lint:resources:sass'],
 					['resources:sass']
@@ -91,9 +106,9 @@ $.gulp.task('watch:resources:sass', function () {
 			});
 		});
 
-		$.watch([
-			config.global.src + '../.iconfont' + '/*.scss'
-		], config.watch, function() {
+		const sourcePaths = path.join(config.global.cwd, '.iconfont', '*.scss');
+
+		$.watch(sourcePaths, config.watch, function() {
 			$.runSequence(
 				['lint:resources:sass'],
 				['resources:sass']
@@ -107,15 +122,17 @@ $.gulp.task('watch:resources:sass', function () {
  */
 $.gulp.task('watch:components:sass', function () {
 	if (config.global.tasks.sass) {
-		let components = [];
+
+		const sourcePaths = [];
 		config.global.components.map( function(currentComponent) {
-			components.push(config.global.src + currentComponent + '/**/*.scss');
+			const sourcePath = path.join(config.global.cwd, config.global.src, currentComponent, '**', '*.scss');
+			sourcePaths.push(sourcePath);
 		});
 
-		$.watch(components, config.watch, function() {
+		$.watch(sourcePaths, config.watch, function() {
 			$.runSequence(
-				['lint:components:sass'],
-				['components:sass']
+				'lint:components:sass',
+				'components:sass'
 			);
 		});
 	}
