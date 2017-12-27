@@ -8,16 +8,17 @@ $.gulp.task('webpack:ts', function() {
 
 		return $.mergeStream(config.global.resources.map( function(currentResource, index) {
 
-			const srcArray = [
-				config.global.src + currentResource + '/**/*.ts',
-				config.global.src + config.global.components[index] + '/**/*.ts'
+			const sourcePaths = [
+				path.join(config.global.cwd, config.global.src, currentResource, '**', '*.ts'),
+				path.join(config.global.cwd, config.global.src, config.global.components[index], '**', '*.ts')
 			];
+			const targetPath = path.join(config.global.cwd, config.global.dev);
 
 			config.webpack.ignoreList.forEach(function (ignorePath) {
-				srcArray.push('!' + path.join(config.global.src, ignorePath));
+				sourcePaths.push('!' + path.join(config.global.cwd, config.global.src, ignorePath));
 			});
 
-			return $.gulp.src(srcArray, { base: path.join(config.global.cwd, config.global.src) })
+			return $.gulp.src(sourcePaths, { base: path.join(config.global.cwd, config.global.src) })
 				.pipe($.vinylNamed(function(file) {
 					const currentResourceParsed = path.parse(currentResource);
 					let relativePath = path.relative(file.base, file.path);
@@ -35,7 +36,7 @@ $.gulp.task('webpack:ts', function() {
 				.pipe($.webpackStream(webpackConfig, $.webpack).on('error', function() {
 					this.emit('end');
 				}))
-				.pipe($.gulp.dest(config.global.dev));
+				.pipe($.gulp.dest(targetPath));
 
 		}));
 
@@ -48,12 +49,15 @@ $.gulp.task('watch:webpack:ts', function () {
 
 	if (config.global.tasks.webpack) {
 		config.global.resources.forEach(function (currentResource, index) {
-			$.watch([
-				config.global.src + currentResource + '/**/*.ts',
-				config.global.src + config.global.components[index] + '/**/*.ts'
-			], config.watch, function () {
+
+			const sourcePaths = [
+				path.join(config.global.cwd, config.global.src, currentResource, '**', '*.ts'),
+				path.join(config.global.cwd, config.global.src, config.global.components[index], '**', '*.ts')
+			];
+
+			$.watch(sourcePaths, config.watch, function () {
 				$.runSequence(
-					['webpack:ts']
+					'webpack:ts'
 				);
 			});
 		});
