@@ -14,8 +14,7 @@ $.gulp.task('uglify:resources:dist', function (cb) {
 				];
 
 				config.uglify.ignoreList.forEach(function (ignorePath) {
-					const ignorePath = '!' + path.join(config.global.cwd, config.global.dev, ignorePath)
-					sourcePaths.push(ignorePath);
+					sourcePaths.push('!' + path.join(config.global.cwd, config.global.dev, ignorePath));
 				});
 
 				$.pump([
@@ -49,8 +48,7 @@ $.gulp.task('uglify:components:dist', function (cb) {
 			];
 
 			config.uglify.ignoreList.forEach(function (ignorePath) {
-				const ignorePath = '!' + path.join(config.global.cwd, config.global.dev, ignorePath);
-				sourcePaths.push(ignorePath);
+				sourcePaths.push('!' + path.join(config.global.cwd, config.global.dev, ignorePath));
 			});
 
 			$.pump([
