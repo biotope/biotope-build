@@ -9,21 +9,22 @@ $.gulp.task('uglify:resources:dist', function (cb) {
 		config.global.resources.forEach((resource) => {
 			config.uglify.folders.forEach((folder) => {
 
-				const srcArray = [
-					path.join(config.global.dev, resource, folder, '/**/*.js')
+				const sourcePaths = [
+					path.join(config.global.cwd, config.global.dev, resource, folder, '**', '*.js')
 				];
 
 				config.uglify.ignoreList.forEach(function (ignorePath) {
-					srcArray.push('!' + path.join(config.global.dev, ignorePath));
+					const ignorePath = '!' + path.join(config.global.cwd, config.global.dev, ignorePath)
+					sourcePaths.push(ignorePath);
 				});
 
 				$.pump([
-					$.gulp.src(srcArray),
+					$.gulp.src(sourcePaths),
 					config.uglify.sourcemaps ? $.sourcemaps.init() : $.noop(),
 					$.uglify(),
 					$.size({ title: 'uglified', showFiles: true }),
 					config.uglify.sourcemaps ? $.sourcemaps.write() : $.noop(),
-					$.gulp.dest( path.join(config.global.dist, resource, folder) )
+					$.gulp.dest( path.join(config.global.cwd, config.global.dist, resource, folder) )
 				]);
 
 			});
@@ -43,21 +44,22 @@ $.gulp.task('uglify:components:dist', function (cb) {
 
 		config.global.resources.forEach((resource, index) => {
 
-			const srcArray = [
-				path.join(config.global.dev, resource, config.global.components[index], '/**/*.js')
+			const sourcePaths = [
+				path.join(config.global.cwd, config.global.dev, resource, config.global.components[index], '**', '*.js')
 			];
 
 			config.uglify.ignoreList.forEach(function (ignorePath) {
-				srcArray.push('!' + path.join(config.global.dev, ignorePath));
+				const ignorePath = '!' + path.join(config.global.cwd, config.global.dev, ignorePath);
+				sourcePaths.push(ignorePath);
 			});
 
 			$.pump([
-				$.gulp.src(srcArray),
+				$.gulp.src(sourcePaths),
 				config.uglify.sourcemaps ? $.sourcemaps.init() : $.noop(),
 				$.uglify(),
 				$.size({ title: 'uglified', showFiles: true }),
 				config.uglify.sourcemaps ? $.sourcemaps.write() : $.noop(),
-				$.gulp.dest( path.join(config.global.dist, resource, config.global.components[index]) )
+				$.gulp.dest( path.join(config.global.cwd, config.global.dist, resource, config.global.components[index]) )
 			]);
 
 		});
