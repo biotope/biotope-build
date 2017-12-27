@@ -54,7 +54,9 @@ module.exports = {
 
 	checkDependencies: {},
 
-	cleanCss: {},
+	cleanCss: {
+		rebase: false
+	},
 
 	connect: {
 		port: 9000,
