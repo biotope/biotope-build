@@ -1,3 +1,4 @@
+const path = require('path');
 const config = require('./../config');
 const $ = config.plugins;
 
@@ -5,10 +6,13 @@ $.gulp.task('jshint:resources', function () {
 
 	if (config.global.tasks.linting) {
 		return $.mergeStream(config.global.resources.map(function (currentResource) {
-			return $.gulp.src([
-				config.global.src + currentResource + '/js/**/*.js',
-				'!' + config.global.src + currentResource + '/js/vendor/**/*.js'
-			])
+
+			const sourcePaths = [
+				path.join(config.global.cwd, config.global.src, currentResource, 'js', '**', '*.js'),
+				'!' + path.join(config.global.cwd, config.global.src, currentResource, 'js', 'vendor', '**', '*.js')
+			];
+
+			return $.gulp.src(sourcePaths)
 				.pipe($.cached('jshint', { optimizeMemory: true }))
 				.pipe($.jshint())
 				.pipe($.jshint.reporter($.jshintStylish));
@@ -23,10 +27,13 @@ $.gulp.task('jshint:components', function () {
 
 	if (config.global.tasks.linting) {
 		return $.mergeStream(config.global.components.map(function (currentComponent) {
-			return $.gulp.src([
-				config.global.src + currentComponent + '/**/*.js',
-				'!' + config.global.src + currentComponent + '/**/vendor/**/*.js'
-			])
+
+			const sourcePaths = [
+				path.join(config.global.cwd, config.global.src, currentComponent, '**', '*.js'),
+				'!' + path.join(config.global.cwd, config.global.src, currentComponent, '**', 'vendor', '**', '*.js')
+			];
+
+			return $.gulp.src(sourcePaths)
 				.pipe($.cached('jshint', { optimizeMemory: true }))
 				.pipe($.jshint())
 				.pipe($.jshint.reporter($.jshintStylish));
@@ -40,10 +47,13 @@ $.gulp.task('watch:jshint:resources', function () {
 
 	if (config.global.tasks.linting) {
 		config.global.resources.forEach(function(currentResource) {
-			$.watch([
-				config.global.src + currentResource + '/js/**/*.js',
-				'!' + config.global.src + currentResource + '/js/vendor/**/*.js',
-			], config.watch, function () {
+
+			const sourcePaths = [
+				path.join(config.global.cwd, config.global.src, currentResource, 'js', '**', '*.js'),
+				'!' + path.join(config.global.cwd, config.global.src, currentResource, 'js', 'vendor', '**', '*.js')
+			];
+
+			$.watch(sourcePaths, config.watch, function () {
 				$.runSequence('jshint:resources');
 			});
 		});
