@@ -1,10 +1,13 @@
+const path = require('path');
 const config = require('./../config');
 const $ = config.plugins;
 
 $.gulp.task('lint:json', function () {
 
 	if (config.global.tasks.linting) {
-		return $.gulp.src(config.global.src + "/**/*.json")
+		const sourcePaths = path.join(config.global.cwd, config.global.src, '**', '*.json');
+
+		return $.gulp.src(sourcePaths)
 			.pipe($.cached('json', { optimizeMemory: true }))
 			.pipe($.jsonlint())
 			.pipe($.jsonlint.reporter());
@@ -16,9 +19,9 @@ $.gulp.task('lint:json', function () {
 $.gulp.task('watch:json', function () {
 
 	if (config.global.tasks.linting) {
-		$.watch([
-			config.global.src + '/**/*.json'
-		], config.watch, function () {
+		const sourcePaths = path.join(config.global.cwd, config.global.src, '**', '*.json');
+
+		$.watch(sourcePaths, config.watch, function () {
 			$.runSequence('lint:json');
 		});
 	}
