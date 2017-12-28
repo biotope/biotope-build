@@ -30,9 +30,11 @@ module.exports = {
 			handlebars: true,
 			iconfont: true,
 			image: true,
+			less: false,
 			linting: true,
 			sass: true,
-			uglify: true
+			uglify: true,
+			webpack: true
 		},
 		externalResources: {},
 		bowerResources: {}
@@ -50,7 +52,9 @@ module.exports = {
 
 	checkDependencies: {},
 
-	cleanCss: {},
+	cleanCss: {
+		rebase: false
+	},
 
 	connect: {
 		port: 9000,
