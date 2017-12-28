@@ -30,7 +30,6 @@ module.exports = {
 			handlebars: true,
 			iconfont: true,
 			image: true,
-			less: false,
 			linting: true,
 			sass: true,
 			uglify: true,
