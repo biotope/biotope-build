@@ -44,16 +44,17 @@ You can toggle certain task in the build-framework. Every Task can be configurat
 This list shows the configurable tasks as well as a brief description about what they do.
 ```
 {
+	browserSupport: true, //creates an overview of the support browser from a *.json file
 	cleanCss: true, //minify CSS files for build
 	cssStats: true, //checks the maximum selectors in each css file, fails if there are more than 4096 (IE 9 issue)
-	sass: true, //disables the sass compiler, disabled if you use vanilla css
 	favicons: true, //creates and embeds the favicons as well as the mobile icons from an image, default image root is '/resources/'
 	handlebars: true, //creates dynamic handlebar templates from hbs files, static page generation is handled in a seperate task
 	iconfont: true, //creates the iconfont from svg images, default icon path is '/resources/icons'
 	image: true, //compress images stores in '/resources/img'
 	linting: true, //linting of js/ts/scss files
-	uglify: true //uglifies js files in the build 
-	  
+	sass: true, //disables the sass compiler, disabled if you use vanilla css
+	uglify: true, //uglifies js files in the build 
+	webpack: true //compiles typescript and transpiles ES6 Code in *.ts files
 }
 ```
 ###### externalResources
@@ -100,9 +101,14 @@ Check dependencies only uses default options.
 Repo: https://github.com/mgol/check-dependencies
 
 ##### cleanCss
-Clean CSS only uses default options.
+Clean CSS uses default options with rebase set to false to prevent rewriting file paths.
 Repo: https://www.npmjs.com/package/gulp-clean-css
 Repo: https://github.com/jakubpawlowicz/clean-css
+```
+cleanCss: {
+	rebase: false
+},
+```
 
 ##### cssStats
 cssStats exits on error in order to break the build process.
