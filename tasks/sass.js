@@ -17,6 +17,10 @@ $.gulp.task('resources:sass', function () {
 
 			return $.gulp.src(sourcePaths)
 				.pipe(sassPipe())
+				.on('error', $.notify.onError({
+					message: "<%= error.message %>",
+					title: "SASS Plugin"
+				}))
 				.pipe($.gulp.dest(targetPath));
 
 		}));
