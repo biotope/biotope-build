@@ -87,7 +87,6 @@
   },
   "devDependencies": {
     "ava": "0.24.0",
-    "backstopjs": "3.0.37",
     "map-stream": "0.0.7",
     "vinyl-string": "1.0.2"
   }
