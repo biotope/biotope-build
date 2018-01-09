@@ -1,4 +1,4 @@
-console.time('index');
+const timeInMs = Date.now();
 
 // Prevent errors caused by too many listeners in gulp-watch
 require('events').EventEmitter.defaultMaxListeners = 0;
@@ -143,4 +143,4 @@ $.gulp.task('serve:dist', function (callback) {
 
 module.exports = $.gulp.tasks;
 
-console.timeEnd('index');
+console.log($.colors.green(`Build Framework v${config.global.packageData.version} (loaded in ${Date.now() - timeInMs}ms)`));

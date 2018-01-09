@@ -3560,7 +3560,7 @@ front-matter@2.1.2:
   dependencies:
     js-yaml "^3.4.6"
 
-front-matter@^2.0.0, front-matter@^2.3.0:
+front-matter@2.3.0, front-matter@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/front-matter/-/front-matter-2.3.0.tgz#7203af896ce357ee04e2aa45169ea91ed7f67504"
   dependencies:
