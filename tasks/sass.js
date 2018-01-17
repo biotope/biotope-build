@@ -128,7 +128,8 @@ gulp.task('watch:components:sass', function () {
 		watch(components, config.watch, function() {
 			runSequence(
 				['lint:components:sass'],
-				['components:sass']
+				['components:sass'],
+				['resources:sass']
 			);
 		});
 	}
