@@ -149,7 +149,7 @@ module.exports = {
 	},
 
 	sass: {
-		includePaths: []
+		includePaths: ['node_modules']
 	},
 
 	sassLint: {},
