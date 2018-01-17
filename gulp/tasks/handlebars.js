@@ -49,10 +49,13 @@ gulp.task('handlebars', function () {
 		}));
 
 		// Output both the partials and the templates
-		return mergeStream(partials, templates)
-			.pipe(concat('handlebars.templates.js'))
-			.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { <%= contents %> }));'))
-			.pipe(gulp.dest(config.global.dev + config.global.resources[0] + '/js/'));
+		return mergeStream(config.global.resources.map( function(currentResource) {
+			return mergeStream(partials, templates)
+				.pipe(concat('handlebars.templates.js'))
+				.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { <%= contents %> }));'))
+				.pipe(gulp.dest(config.global.dev + currentResource + '/js/'));
+		}));
+
 	} else {
 		gutil.log(gutil.colors.yellow('handlebars disabled'));
 	}
