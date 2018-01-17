@@ -87,12 +87,15 @@ gulp.task('indexr', function () {
 
 gulp.task('createBrowserMatrix', function(){
 
-	var zetzerConfig = config.zetzer;
-	zetzerConfig.env = zetzerConfig.env || {};
+	if(config.global.tasks.browserSupport) {
+		var zetzerConfig = config.zetzer;
+		zetzerConfig.env = zetzerConfig.env || {};
 
-	gulp.src( config.global.src + '/browserSupport.html' )
-		.pipe( zetzer( config.zetzer ) )
-		.pipe( gulp.dest( config.global.dev ) );
+		return gulp.src( config.global.src + '/browserSupport.html' )
+			.pipe( zetzer( config.zetzer ) )
+			.pipe( gulp.dest( config.global.dev ) );
+	}
+
 });
 
 

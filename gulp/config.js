@@ -19,6 +19,7 @@ module.exports = {
 		resources: ['/resources'],
 		tasks: {
 			angular: true,
+			browserSupport: false,
 			cleanCss: true,
 			cssStats: true,
 			sass: true,
