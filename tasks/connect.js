@@ -10,21 +10,21 @@ const config = require('./../config');
 
 gulp.task('watch:livereload', function () {
 
-	watch(config.connect.globs, config.watch, function() {
+	watch(config.connect.globs, config.watch, function () {
 		runSequence(
 			['livereload']
 		);
 	});
 
 	return gulp.src(config.connect.globs)
-		.pipe(cached('livereload', { optimizeMemory: true }));
+		.pipe(cached('livereload', {optimizeMemory: true}));
 
 });
 
 gulp.task('livereload', function () {
 
 	return gulp.src(config.connect.globs)
-		.pipe(cached('livereload', { optimizeMemory: true }))
+		.pipe(cached('livereload', {optimizeMemory: true}))
 		// .pipe(debug({title: 'livereload:'}))
 		.pipe(connect.reload());
 
@@ -44,6 +44,16 @@ gulp.task('connect', function () {
 			config.global.src
 		],
 		port: config.connect.port,
+		middleware: function (connect, opt) {
+			return [
+				function (req, res, next) {
+					if(req.method.toUpperCase() === 'POST') {
+						req.method = 'GET';
+					}
+					return next();
+				}
+			];
+		},
 		livereload: config.livereload
 	});
 
