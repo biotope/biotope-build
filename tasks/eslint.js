@@ -44,7 +44,10 @@ gulp.task('watch:eslint:resources', function () {
 			config.global.src + config.global.resources + '/**/js/**/*.js',
 			'!' + config.global.src + config.global.resources + '/js/vendor/**/*.js',
 		], config.watch, function () {
-			runSequence('eslint:resources')
+			runSequence(
+				['eslint:resources'],
+				['livereload']
+			)
 		});
 	}
 });
@@ -55,7 +58,10 @@ gulp.task('watch:eslint:components', function () {
 			config.global.src + config.global.components + '/**/*.js',
 			'!' + config.global.src + config.global.components + '/**/vendor/**/*.js'
 		], config.watch, function () {
-			runSequence('eslint:components')
+			runSequence(
+				['eslint:components'],
+				['livereload']
+			)
 		});
 	}
 });

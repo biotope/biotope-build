@@ -8,24 +8,23 @@ const runSequence = require('run-sequence');
 
 const config = require('./../config');
 
-gulp.task('watch:livereload', function () {
-
-	watch(config.connect.globs, config.watch, function () {
-		runSequence(
-			['livereload']
-		);
-	});
-
-	return gulp.src(config.connect.globs)
-		.pipe(cached('livereload', {optimizeMemory: true}));
-
-});
+// gulp.task('watch:livereload', function () {
+//
+// 	watch(config.connect.globs, config.watch, function () {
+// 		runSequence(
+// 			['livereload']
+// 		);
+// 	});
+//
+// 	return gulp.src(config.connect.globs)
+// 		.pipe(cached('livereload', {optimizeMemory: true}));
+//
+// });
 
 gulp.task('livereload', function () {
 
 	return gulp.src(config.connect.globs)
 		.pipe(cached('livereload', {optimizeMemory: true}))
-		// .pipe(debug({title: 'livereload:'}))
 		.pipe(connect.reload());
 
 });

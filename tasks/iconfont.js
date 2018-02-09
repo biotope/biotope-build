@@ -72,7 +72,8 @@ gulp.task('watch:icons', function() {
 				[
 					'static:hb',
 					'resources:sass'
-				]
+				],
+				['livereload']
 			);
 		});
 });

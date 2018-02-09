@@ -154,11 +154,9 @@ gulp.task('copy:dist:hbs', function () {
 });
 
 gulp.task('watch:components:js', function() {
-	config.global.components.forEach(function(currentComponent) {
-		watch(config.global.src + currentComponent +'/**/*.js', config.watch, function () {
-			runSequence(
-				['copy:dev:components:js']
-			);
-		});
+	watch(config.global.src + config.global.components +'/**/*.js', config.watch, function () {
+		runSequence(
+			['copy:dev:components:js']
+		);
 	});
 });

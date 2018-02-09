@@ -55,7 +55,8 @@ gulp.task('watch:webpack:ts', function () {
 			config.global.src + config.global.components + '/**/*.ts'
 		], config.watch, function () {
 			runSequence(
-				['webpack:ts']
+				['webpack:ts'],
+				['livereload']
 			);
 		});
 	}

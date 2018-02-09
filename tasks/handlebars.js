@@ -67,7 +67,10 @@ gulp.task('watch:handlebars', function () {
 		watchFiles.push(config.global.src + config.global.components + '/**/hbs/**/*.hbs');
 
 		watch(watchFiles, config.watch, function () {
-			runSequence('handlebars');
+			runSequence(
+				['handlebars'],
+				['livereload']
+			);
 		});
 	}
 });
