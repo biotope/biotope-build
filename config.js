@@ -19,8 +19,8 @@ module.exports = {
 		isWin: isWin,
 		debug: false,
 		dataObject: 'data',
-		resources: ['/resources'],
-		components: ['/components'],
+		resources: '/resources',
+		components: '/components',
 		handlebarsHelper: '/js/handlebars.helper.js',
 		tasks: {
 			browserSupport: true,
