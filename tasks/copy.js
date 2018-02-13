@@ -57,12 +57,14 @@ gulp.task('copy:dev:npm:js', function () {
 	if (Object.keys(resources).length === 0 && resources.constructor === Object) return;
 
 	return mergeStream(config.global.resources.map( function(currentResource) {
-		return mergeStream(Object.keys(resources).map(function(key, index) {
-			if( typeof resources[key] === 'string' ) {
-				resources[key] = [resources[key]];
+		const externalResources = resources[currentResource];
+
+		return mergeStream(Object.keys(externalResources).map(function(key, index) {
+			if( typeof externalResources[key] === 'string' ) {
+				externalResources[key] = [externalResources[key]];
 			}
 
-			return mergeStream(resources[key].map(function(file) {
+			return mergeStream(externalResources[key].map(function(file) {
 				return gulp.src(config.global.node + '/' + key + '/' + file)
 					.pipe(filter('*.js'))
 					.pipe(gulp.dest(config.global.dev + currentResource + '/js/vendor/'));
@@ -77,12 +79,14 @@ gulp.task('copy:dev:npm:css', function () {
 	if (Object.keys(resources).length === 0 && resources.constructor === Object) return;
 
 	return mergeStream(config.global.resources.map( function(currentResource) {
-		return mergeStream(Object.keys(resources).map(function(key, index) {
-			if( typeof resources[key] === 'string' ) {
-				resources[key] = [resources[key]];
+		const externalResources = resources[currentResource];
+
+		return mergeStream(Object.keys(externalResources).map(function(key, index) {
+			if( typeof externalResources[key] === 'string' ) {
+				externalResources[key] = [externalResources[key]];
 			}
 
-			return mergeStream(resources[key].map(function(file) {
+			return mergeStream(externalResources[key].map(function(file) {
 				return gulp.src(config.global.node + '/' + key + '/' + file)
 					.pipe(filter('*.css', '*.scss'))
 					.pipe(gulp.dest(config.global.dev + currentResource + '/css/vendor/'));
