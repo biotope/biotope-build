@@ -1,11 +1,8 @@
 const gulp = require('gulp');
-const mergeStream = require('merge-stream');
-const filter = require('gulp-filter');
-const path = require('path');
-const watch = require('gulp-watch');
-const runSequence = require('run-sequence');
-
 const config = require('./../config');
+
+
+
 
 gulp.task('copy:dev:js', function () {
 	return gulp.src(config.global.src + config.global.resources + '/js/**/*.js')
@@ -33,7 +30,10 @@ gulp.task('copy:dist:ts', function () {
 });
 
 gulp.task('copy:dev:npm:js', function () {
+	const mergeStream = require('merge-stream');
+	const filter = require('gulp-filter');
 	const resources = config.global.externalResources;
+
 	if (Object.keys(resources).length === 0 && resources.constructor === Object) return;
 
 	return mergeStream(Object.keys(resources).map(function(key, index) {
@@ -52,7 +52,10 @@ gulp.task('copy:dev:npm:js', function () {
 });
 
 gulp.task('copy:dev:npm:css', function () {
+	const mergeStream = require('merge-stream');
+	const filter = require('gulp-filter');
 	const resources = config.global.externalResources;
+
 	if (Object.keys(resources).length === 0 && resources.constructor === Object) return;
 
 	return mergeStream(Object.keys(resources).map(function(key, index) {
@@ -74,17 +77,18 @@ gulp.task('copy:dev:npm:css', function () {
  * dev copy task
  */
 gulp.task('copy:dev:npm:bower', function () {
-	let object = config.global.bowerResources;
+	const mergeStream = require('merge-stream');
+	const path = require('path');
+	let bowerResources = config.global.bowerResources;
 
-	if (Object.keys(object).length === 0 && object.constructor === Object) return;
+	if (Object.keys(bowerResources).length === 0 && bowerResources.constructor === Object) return;
 
-
-	return mergeStream(Object.keys(object).map(function(key, index) {
-		if( typeof object[key] === 'string' ) {
-			object[key] = [object [key]];
+	return mergeStream(Object.keys(bowerResources).map(function(key, index) {
+		if( typeof bowerResources[key] === 'string' ) {
+			bowerResources[key] = [bowerResources [key]];
 		}
 
-		return mergeStream(object[key].map(function(file) {
+		return mergeStream(bowerResources[key].map(function(file) {
 			let paths = file.split('/');
 			paths.pop();
 
@@ -154,6 +158,9 @@ gulp.task('copy:dist:hbs', function () {
 });
 
 gulp.task('watch:components:js', function() {
+	const watch = require('gulp-watch');
+	const runSequence = require('run-sequence');
+
 	watch(config.global.src + config.global.components +'/**/*.js', config.watch, function () {
 		runSequence(
 			['copy:dev:components:js']
