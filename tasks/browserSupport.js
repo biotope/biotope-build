@@ -1,21 +1,16 @@
 const gulp = require('gulp');
-const rename = require('gulp-rename');
-const runSequence = require('run-sequence');
-const watch = require('gulp-watch');
-const colors = require('colors/safe');
-
 const config = require('./../config');
-const hbsParser = require('./../lib/hbs-parser');
-const jsonParser = require('../lib/json-parser');
-
-const packageData = require(config.global.cwd + '/package.json');
-const browserSupportData = jsonParser.getBrowserSupportData();
 
 gulp.task('browserSupport', function () {
+	const colors = require('colors/safe');
+	const rename = require('gulp-rename');
+	const hbsParser = require('./../lib/hbs-parser');
+	const jsonParser = require('../lib/json-parser');
+
 	if (config.global.tasks.browserSupport && browserSupportData) {
 		let dataObject = {
-			package: packageData,
-			browserSupport: browserSupportData
+			package: require(config.global.cwd + '/package.json'),
+			browserSupport: jsonParser.getBrowserSupportData()
 		};
 
 		if (config.global.debug) {
@@ -35,6 +30,9 @@ gulp.task('browserSupport', function () {
 
 gulp.task('watch:browserSupport', function () {
 	if (config.global.tasks.browserSupport && browserSupportData) {
+		const watch = require('gulp-watch');
+		const runSequence = require('run-sequence');
+
 		watch(config.global.cwd + './browserSupport.json', config.watch, function () {
 			runSequence(
 				['browserSupport']
