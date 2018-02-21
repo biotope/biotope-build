@@ -1,17 +1,16 @@
 const gulp = require('gulp');
-const size = require('gulp-size');
-const path = require('path');
-const uglify = require('gulp-uglify');
-const colors = require('colors/safe');
-const sourcemaps = require('gulp-sourcemaps');
-const pump = require('pump');
-const noop = require('gulp-noop');
-
 const config = require('./../config');
 
 gulp.task('uglify:resources:dist', function (cb) {
 
 	if (config.global.tasks.uglify) {
+		const size = require('gulp-size');
+		const path = require('path');
+		const uglify = require('gulp-uglify');
+		const sourcemaps = require('gulp-sourcemaps');
+		const pump = require('pump');
+		const noop = require('gulp-noop');
+
 		config.uglify.folders.forEach((folder) => {
 			const srcArray = [
 				path.join(config.global.dev, config.global.resources, folder, '/**/*.js')
@@ -35,6 +34,7 @@ gulp.task('uglify:resources:dist', function (cb) {
 		cb();
 
 	} else {
+		const colors = require('colors/safe');
 		console.log(colors.yellow('uglify resources disabled'));
 	}
 });
@@ -43,6 +43,12 @@ gulp.task('uglify:resources:dist', function (cb) {
 gulp.task('uglify:components:dist', function (cb) {
 
 	if (config.global.tasks.uglify) {
+		const size = require('gulp-size');
+		const path = require('path');
+		const uglify = require('gulp-uglify');
+		const sourcemaps = require('gulp-sourcemaps');
+		const pump = require('pump');
+		const noop = require('gulp-noop');
 		const srcArray = [
 			path.join(config.global.dev, config.global.resources, config.global.components, '/**/*.js')
 		];
@@ -64,6 +70,7 @@ gulp.task('uglify:components:dist', function (cb) {
 		cb();
 
 	} else {
+		const colors = require('colors/safe');
 		console.log(colors.yellow('uglify components disabled'));
 	}
-})
+});

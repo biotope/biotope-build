@@ -1,18 +1,13 @@
 const gulp = require('gulp');
-const named = require('vinyl-named');
-const mergeStream = require('merge-stream');
-const path = require('path');
-const watch = require('gulp-watch');
-const colors = require('colors/safe');
-const runSequence = require('run-sequence');
-const webpack = require('webpack');
-const webpackStream = require('webpack-stream');
-
-const webpackConfig = require('./../webpack.config.js');
 const config = require('./../config');
 
 gulp.task('webpack:ts', function() {
 	if (config.global.tasks.webpack) {
+		const named = require('vinyl-named');
+		const path = require('path');
+		const webpack = require('webpack');
+		const webpackStream = require('webpack-stream');
+		const webpackConfig = require('./../webpack.config.js');
 		const srcArray = [
 			config.global.src + config.global.resources + '/**/*.ts',
 			config.global.src + config.global.components + '/**/*.ts'
@@ -44,12 +39,16 @@ gulp.task('webpack:ts', function() {
 
 
 	} else {
+		const colors = require('colors/safe');
 		console.log(colors.yellow('webpack:ts disabled'));
 	}
 });
 
 gulp.task('watch:webpack:ts', function () {
 	if (config.global.tasks.webpack) {
+		const watch = require('gulp-watch');
+		const runSequence = require('run-sequence');
+
 		watch([
 			config.global.src + config.global.resources + '/**/*.ts',
 			config.global.src + config.global.components + '/**/*.ts'
