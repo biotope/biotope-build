@@ -1,11 +1,12 @@
 const gulp = require('gulp');
-const dependencies = require('check-dependencies');
-const colors = require('colors/safe');
 const config = require('./../config');
 
 
 gulp.task('checkDependencies', function () {
+	const colors = require('colors/safe');
+	const dependencies = require('check-dependencies');
 	const output = dependencies.sync(config.checkDependencies);
+
 	if (output.status === 1) {
 
 		if (output.error.length > 0) {

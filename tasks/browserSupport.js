@@ -3,12 +3,11 @@ const config = require('./../config');
 
 gulp.task('browserSupport', function () {
 	const colors = require('colors/safe');
-	const rename = require('gulp-rename');
-	const hbsParser = require('./../lib/hbs-parser');
-	const jsonParser = require('../lib/json-parser');
 
 	if (config.global.tasks.browserSupport && browserSupportData) {
-		let dataObject = {
+		const rename = require('gulp-rename');
+		const jsonParser = require('../lib/json-parser');
+		const dataObject = {
 			package: require(config.global.cwd + '/package.json'),
 			browserSupport: jsonParser.getBrowserSupportData()
 		};
@@ -17,7 +16,8 @@ gulp.task('browserSupport', function () {
 			console.log(colors.green(`dataObject: ${JSON.stringify(dataObject)}`));
 		}
 
-		let hbStream = hbsParser.createHbsGulpStream(null, dataObject, null, config.global.debug);
+		const hbsParser = require('./../lib/hbs-parser');
+		const hbStream = hbsParser.createHbsGulpStream(null, dataObject, null, config.global.debug);
 
 		return gulp.src(config.global.src + '/browserSupport.hbs')
 			.pipe(hbStream)
