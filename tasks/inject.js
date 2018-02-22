@@ -1,9 +1,10 @@
 const gulp = require('gulp');
-const inject = require('gulp-inject');
 const config = require('./../config');
 
 gulp.task('inject', function () {
 	if (config.global.tasks.favicons) {
+		const inject = require('gulp-inject');
+
 		return gulp.src(config.global.dist + '/*.html')
 			.pipe(inject(gulp.src([config.global.dist + '/favicons/htmlhead.favicons.html']), {
 				starttag: '<!-- inject:head:{{ext}} -->',

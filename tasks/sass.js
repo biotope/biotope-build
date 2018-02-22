@@ -1,19 +1,13 @@
 const gulp = require('gulp');
-const sass = require('gulp-sass');
-const sassLint = require('gulp-sass-lint');
-const postcss = require('gulp-postcss');
-const autoprefixer = require('autoprefixer');
-const cached = require('gulp-cached');
-const watch = require('gulp-watch');
-const colors = require('colors/safe');
-const runSequence = require('run-sequence');
-const mergeStream = require('merge-stream');
-const sourcemaps = require('gulp-sourcemaps');
-
 const config = require('./../config');
 
 gulp.task('resources:sass', function () {
 	if (config.global.tasks.sass) {
+		const sass = require('gulp-sass');
+		const postcss = require('gulp-postcss');
+		const autoprefixer = require('autoprefixer');
+		const sourcemaps = require('gulp-sourcemaps');
+
 		return gulp.src([
 			config.global.src + config.global.resources + '/scss/**/*.scss',
 			'!' + config.global.src + config.global.resources + '/scss/**/_*.scss'
@@ -26,6 +20,7 @@ gulp.task('resources:sass', function () {
 			.pipe(sourcemaps.write('.'))
 			.pipe(gulp.dest(config.global.dev + config.global.resources + '/css'));
 	} else {
+		const colors = require('colors/safe');
 		console.log(colors.yellow('sass resources disabled'));
 	}
 });
@@ -38,6 +33,11 @@ gulp.task('resources:sass', function () {
 
 gulp.task('components:sass', function () {
 	if (config.global.tasks.sass) {
+		const sass = require('gulp-sass');
+		const postcss = require('gulp-postcss');
+		const autoprefixer = require('autoprefixer');
+		const sourcemaps = require('gulp-sourcemaps');
+
 		return gulp.src([
 			config.global.src + config.global.components + '/**/*.scss',
 			'!' + config.global.src + config.global.components + '/**/_*.scss'
@@ -50,6 +50,7 @@ gulp.task('components:sass', function () {
 			.pipe(sourcemaps.write('.'))
 			.pipe(gulp.dest(config.global.dev + config.global.resources + config.global.components));
 	} else {
+		const colors = require('colors/safe');
 		console.log(colors.yellow('sass components disabled'));
 	}
 });
@@ -60,6 +61,9 @@ gulp.task('components:sass', function () {
  */
 gulp.task('lint:resources:sass', function () {
 	if (config.global.tasks.sass && config.global.tasks.linting && false) {
+		const sassLint = require('gulp-sass-lint');
+		const cached = require('gulp-cached');
+
 		return gulp.src([config.global.src + config.global.resources + '/scss/**/*.s+(a|c)ss',
 			'!' + config.global.src + config.global.resources + '/scss/**/_icons.s+(a|c)ss',
 		])
@@ -72,6 +76,9 @@ gulp.task('lint:resources:sass', function () {
 
 gulp.task('lint:components:sass', function () {
 	if (config.global.tasks.sass && config.global.tasks.linting && false) {
+		const sassLint = require('gulp-sass-lint');
+		const cached = require('gulp-cached');
+
 		return gulp.src(config.global.src + config.global.components + '/**/*.s+(a|c)ss')
 			.pipe(cached('sass', { optimizeMemory: true }))
 			.pipe(sassLint())
@@ -85,6 +92,9 @@ gulp.task('lint:components:sass', function () {
  */
 gulp.task('watch:resources:sass', function () {
 	if (config.global.tasks.sass) {
+		const watch = require('gulp-watch');
+		const runSequence = require('run-sequence');
+
 		watch([
 			config.global.src + config.global.resources + '/scss/**/*.scss'
 		], config.watch, function() {
@@ -112,7 +122,9 @@ gulp.task('watch:resources:sass', function () {
  */
 gulp.task('watch:components:sass', function () {
 	if (config.global.tasks.sass) {
-		let components = [];
+		const watch = require('gulp-watch');
+		const runSequence = require('run-sequence');
+		const components = [];
 		components.push(config.global.src + config.global.components + '/**/*.scss');
 
 		watch(components, config.watch, function() {
