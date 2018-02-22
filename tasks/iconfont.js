@@ -38,13 +38,11 @@ gulp.task('convertIconsToTtf', function () {
 	}
 
 	return mergeStream(iconfontArray.map(function(currentIconResource) {
-		return mergeStream(config.global.resources.map( function(currentResource, index) {
-			return gulp.src(config.global.src + currentResource + '/icons/*.svg')
-				.pipe(iconfontCss(currentIconResource))
-				.pipe(svgicons2svgfont(config.iconfont))
-				.pipe(svg2ttf())
-				.pipe(gulp.dest(config.global.dev + currentResource + '/fonts/icons/'));
-		}));
+		return gulp.src(config.global.src + config.global.resources + '/icons/*.svg')
+			.pipe(iconfontCss(currentIconResource))
+			.pipe(svgicons2svgfont(config.iconfont))
+			.pipe(svg2ttf())
+			.pipe(gulp.dest(config.global.dev + config.global.resources + '/fonts/icons/'));
 	}));
 
 });
