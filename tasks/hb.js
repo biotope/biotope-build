@@ -1,31 +1,21 @@
 const gulp = require('gulp');
-const frontMatter = require('gulp-front-matter');
-const fs = require('fs');
-const globule = require('globule');
-const notify = require('gulp-notify');
-const path = require('path');
-const rename = require('gulp-rename');
-const runSequence = require('run-sequence');
-const watch = require('gulp-watch');
-
 const config = require('./../config');
-const hbsParser = require('./../lib/hbs-parser');
-const iconParser = require('./../lib/icon-parser');
-const jsonParser = require('./../lib/json-parser');
-
-const packageData = require(config.global.cwd + '/package.json');
-const browserSupportData = jsonParser.getBrowserSupportData();
-
 
 gulp.task('static:hb', function () {
+	const iconParser = require('./../lib/icon-parser');
+	const jsonParser = require('./../lib/json-parser');
+	const hbsParser = require('./../lib/hbs-parser');
+	const frontMatter = require('gulp-front-matter');
+	const notify = require('gulp-notify');
+	const rename = require('gulp-rename');
 
 	//icon data, only used for demo...
-	let iconNames = iconParser.getAllIconFileNamesLowerCase(config.global.src + '/resources/icons/*.svg');
-	let preData = {};
+	const iconNames = iconParser.getAllIconFileNamesLowerCase(config.global.src + '/resources/icons/*.svg');
+	const preData = {};
 
 	preData[config.global.dataObject] = {
 		'icons': iconNames,
-		'package': packageData
+		'package': require(config.global.cwd + '/package.json')
 	};
 
 	let hbsData = jsonParser.getAllJSONData(config.global.src + '/**/*.json', preData[config.global.dataObject]);
@@ -62,7 +52,9 @@ gulp.task('static:hb', function () {
 
 
 gulp.task('watch:static:hb', function () {
-	let files = [
+	const runSequence = require('run-sequence');
+	const watch = require('gulp-watch');
+	const files = [
 		config.global.src + '/**/*.hbs',
 		config.global.src + '/**/*.json',
 		'!' + config.global.src + '/pages/**'
@@ -70,7 +62,8 @@ gulp.task('watch:static:hb', function () {
 
 	watch(files, config.watch, function () {
 		runSequence(
-			['static:hb']
+			['static:hb'],
+			['livereload']
 		);
 	});
 
@@ -81,9 +74,15 @@ gulp.task('watch:static:hb', function () {
  * indexr creates the preview file index
  */
 gulp.task('static:hb:indexr', function () {
-
-	let dataObject = {
-		package: packageData,
+	const jsonParser = require('./../lib/json-parser');
+	const hbsParser = require('./../lib/hbs-parser');
+	const fs = require('fs');
+	const globule = require('globule');
+	const path = require('path');
+	const rename = require('gulp-rename');
+	const browserSupportData = jsonParser.getBrowserSupportData();
+	const dataObject = {
+		package: require(config.global.cwd + '/package.json'),
 		templates: [],
 		browserSupport: {}
 	};
@@ -93,7 +92,7 @@ gulp.task('static:hb:indexr', function () {
 	}
 
 	// read all files
-	let filepaths = globule.find([
+	const filepaths = globule.find([
 		config.global.src + '/pages/*.hbs'
 	]);
 
@@ -119,6 +118,7 @@ gulp.task('static:hb:indexr', function () {
 	}
 
 	if (config.global.debug) {
+		const colors = require('colors/safe');
 		console.log(colors.green(`dataObject: ${JSON.stringify(dataObject)}`));
 	}
 
@@ -132,10 +132,13 @@ gulp.task('static:hb:indexr', function () {
 });
 
 gulp.task('watch:static:hb:indexr', function () {
+	const runSequence = require('run-sequence');
+	const watch = require('gulp-watch');
 
 	watch(config.global.src + '/pages/*.hbs', config.watch, function () {
 		runSequence(
-			['static:hb:indexr','static:hb']
+			['static:hb:indexr','static:hb'],
+			['livereload']
 		);
 	});
 

@@ -1,15 +1,10 @@
 const gulp = require('gulp');
-const useref = require('gulp-useref');
-const hb = require('gulp-hb');
-const filter = require('gulp-filter');
-const uglify = require('gulp-uglify');
-const cleanCss = require('gulp-clean-css');
-const lec = require('gulp-line-ending-corrector');
-
-const hbsParser = require('./../lib/hbs-parser');
 const config = require('./../config');
 
 gulp.task('useref', function () {
+	const useref = require('gulp-useref');
+	const lec = require('gulp-line-ending-corrector');
+	const filter = require('gulp-filter');
 
 	return gulp.src(config.global.dev + '/*.html')
 		.pipe(lec(config.lec))
@@ -22,11 +17,17 @@ gulp.task('useref', function () {
 });
 
 gulp.task('useref:assets', function () {
+	const filter = require('gulp-filter');
+	const useref = require('gulp-useref');
+	const lec = require('gulp-line-ending-corrector');
+	const uglify = require('gulp-uglify');
+	const cleanCss = require('gulp-clean-css');
 
 	const jsFilter = filter(['**/*.js'], {restore: true});
 	const cssFilter = filter(['**/*.css'], {restore: true});
 
-	let hbStream = hbsParser.createHbsGulpStream(
+	const hbsParser = require('./../lib/hbs-parser');
+	const hbStream = hbsParser.createHbsGulpStream(
 		[
 			config.global.src + '/**/*.hbs',
 			'!' + config.global.src + '/pages/**'
