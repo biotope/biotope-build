@@ -1,15 +1,17 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const jsonParser = require('../lib/json-parser');
+const browserSupportData = jsonParser.getBrowserSupportData();
 
 gulp.task('browserSupport', function () {
 	const colors = require('colors/safe');
 
 	if (config.global.tasks.browserSupport && browserSupportData) {
 		const rename = require('gulp-rename');
-		const jsonParser = require('../lib/json-parser');
+
 		const dataObject = {
 			package: require(config.global.cwd + '/package.json'),
-			browserSupport: jsonParser.getBrowserSupportData()
+			browserSupport: browserSupportData
 		};
 
 		if (config.global.debug) {
