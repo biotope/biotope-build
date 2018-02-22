@@ -1,10 +1,9 @@
 const gulp = require('gulp');
-const modernizr = require('gulp-modernizr');
-const uglify = require('gulp-uglify');
-
 const config = require('./../config');
 
 gulp.task('modernizr', function () {
+	const modernizr = require('gulp-modernizr');
+	const uglify = require('gulp-uglify');
 
 	return gulp.src([
 			config.global.src + '/resources/js/**/*.js',

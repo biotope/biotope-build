@@ -1,11 +1,5 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
-const opn = require('opn');
-const cached = require('gulp-cached');
-// const debug = require('gulp-debug');
-const watch = require('gulp-watch');
-const runSequence = require('run-sequence');
-
 const config = require('./../config');
 
 // gulp.task('watch:livereload', function () {
@@ -22,17 +16,16 @@ const config = require('./../config');
 // });
 
 gulp.task('livereload', function () {
+	const cached = require('gulp-cached');
 
 	return gulp.src(config.connect.globs)
 		.pipe(cached('livereload', {optimizeMemory: true}))
 		.pipe(connect.reload());
-
 });
 
 gulp.task('connect:open', function () {
-
+	const opn = require('opn');
 	return opn('http://localhost:' + config.connect.port);
-
 });
 
 gulp.task('connect', function () {

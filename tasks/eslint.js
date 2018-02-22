@@ -1,15 +1,13 @@
 const gulp = require('gulp');
-const colors = require('colors/safe');
-const eslint = require('gulp-eslint');
-const cached = require('gulp-cached');
-const watch = require('gulp-watch');
-const mergeStream = require('merge-stream');
-const runSequence = require('run-sequence');
-
 const config = require('./../config');
 
 gulp.task('eslint:resources', function () {
+	const colors = require('colors/safe');
+
 	if (config.global.tasks.linting) {
+		const eslint = require('gulp-eslint');
+		const cached = require('gulp-cached');
+
 		return gulp.src([
 			config.global.src + config.global.resources + '/js/**/*.js',
 			'!' + config.global.src + config.global.resources + '/js/vendor/**/*.js'
@@ -24,7 +22,12 @@ gulp.task('eslint:resources', function () {
 });
 
 gulp.task('eslint:components', function () {
+	const colors = require('colors/safe');
+
 	if (config.global.tasks.linting) {
+		const eslint = require('gulp-eslint');
+		const cached = require('gulp-cached');
+
 		return gulp.src([
 			config.global.src + config.global.components + '/**/*.js',
 			'!' + config.global.src + config.global.components + '/**/vendor/**/*.js'
@@ -40,6 +43,9 @@ gulp.task('eslint:components', function () {
 
 gulp.task('watch:eslint:resources', function () {
 	if (config.global.tasks.linting) {
+		const watch = require('gulp-watch');
+		const runSequence = require('run-sequence');
+
 		watch([
 			config.global.src + config.global.resources + '/**/js/**/*.js',
 			'!' + config.global.src + config.global.resources + '/js/vendor/**/*.js',
@@ -54,6 +60,9 @@ gulp.task('watch:eslint:resources', function () {
 
 gulp.task('watch:eslint:components', function () {
 	if (config.global.tasks.linting) {
+		const watch = require('gulp-watch');
+		const runSequence = require('run-sequence');
+
 		watch([
 			config.global.src + config.global.components + '/**/*.js',
 			'!' + config.global.src + config.global.components + '/**/vendor/**/*.js'
