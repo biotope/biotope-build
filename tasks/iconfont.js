@@ -66,18 +66,14 @@ gulp.task('convertTtfToWoff', function () {
 });
 
 gulp.task('watch:icons', function() {
-
-	config.global.resources.map( function(currentResource) {
-
-		watch(config.global.src + currentResource + '/icons/*.svg', config.watch, function () {
+		watch(config.global.src + config.global.resources + '/icons/*.svg', config.watch, function () {
 			runSequence(
 				'iconfont',
 				[
 					'static:hb',
 					'resources:sass'
-				]
+				],
+				['livereload']
 			);
 		});
-	});
-
 });

@@ -12,20 +12,18 @@ gulp.task('cleanCss:resources:dist', function () {
 		console.log(colors.yellow('cleanCss disabled'));
 	}
 
-	return mergeStream(config.global.resources.map(function (currentResource) {
-		const stream = gulp.src(config.global.dev + currentResource + '/css/**/*.css');
+	const stream = gulp.src(config.global.dev + config.global.resources + '/css/**/*.css');
 
-		if (config.global.tasks.cleanCss) {
-			stream.pipe(cleanCss(config.cleanCss))
-				.pipe(size({
-					title: 'minified',
-					showFiles: true
-				}));
-		}
+	if (config.global.tasks.cleanCss) {
+		stream.pipe(cleanCss(config.cleanCss))
+			.pipe(size({
+				title: 'minified',
+				showFiles: true
+			}));
+	}
 
-		stream.pipe(gulp.dest(config.global.dist + currentResource + '/css/'));
-		return stream;
-	}));
+	stream.pipe(gulp.dest(config.global.dist + config.global.resources + '/css/'));
+	return stream;
 });
 
 gulp.task('cleanCss:components:dist', function () {
@@ -34,18 +32,16 @@ gulp.task('cleanCss:components:dist', function () {
 		console.log(colors.yellow('cleanCss disabled'));
 	}
 
-	return mergeStream(config.global.resources.map(function (currentResource, index) {
-		const stream = gulp.src(config.global.dev + currentResource + config.global.components[index] + '/**/*.css');
+	const stream = gulp.src(config.global.dev + config.global.resources + config.global.components + '/**/*.css');
 
-		if (config.global.tasks.cleanCss) {
-			stream.pipe(cleanCss(config.cleanCss))
-				.pipe(size({
-					title: 'minified',
-					showFiles: true
-				}));
-		}
+	if (config.global.tasks.cleanCss) {
+		stream.pipe(cleanCss(config.cleanCss))
+			.pipe(size({
+				title: 'minified',
+				showFiles: true
+			}));
+	}
 
-		stream.pipe(gulp.dest(config.global.dist + currentResource + config.global.components[index]));
-		return stream;
-	}));
+	stream.pipe(gulp.dest(config.global.dist + config.global.resources + config.global.components));
+	return stream;
 });

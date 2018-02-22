@@ -13,14 +13,12 @@ const imageOptimizers = [
 gulp.task('image:resources:dist', function () {
 
 	if (config.global.tasks.image) {
-		return mergeStream(config.global.resources.map( function(currentResource) {
-			return gulp.src(config.global.dist + currentResource + '/img/**/*.*')
-				.pipe(image(
-					imageOptimizers,
-					config.image
-				))
-				.pipe(gulp.dest(config.global.dist + currentResource + '/img/'));
-		}));
+		return gulp.src(config.global.dist + config.global.resources + '/img/**/*.*')
+			.pipe(image(
+				imageOptimizers,
+				config.image
+			))
+			.pipe(gulp.dest(config.global.dist + config.global.resources + '/img/'));
 
 	} else {
 		console.log(colors.yellow('image compressor disabled'));
@@ -30,15 +28,12 @@ gulp.task('image:resources:dist', function () {
 gulp.task('image:component:dist', function () {
 
 	if (config.global.tasks.image) {
-		return mergeStream(config.global.resources.map(function (currentResource) {
-			return mergeStream(config.global.components.map(function (currentComponent) {
-				return gulp.src(config.global.src + currentComponent + '/*/img/**/*.*')
-					.pipe(image(
-						imageOptimizers,
-						config.image
-					))
-					.pipe(gulp.dest(config.global.dist + currentResource + currentComponent));
-			}));
-		}));
+		return gulp.src(config.global.src + config.global.components + '/*/img/**/*.*')
+			.pipe(image(
+				imageOptimizers,
+				config.image
+			))
+			.pipe(gulp.dest(config.global.dist + config.global.resources + config.global.components));
+
 	}
 });
