@@ -1,8 +1,8 @@
-# Changelog for build-framework
+# Changelog
 
 <details>
   <summary>
-	Placeholder section for future releases. Make no changes here.
+	Placeholder section to be used for future releases. Make no changes here.
   </summary>
 
 ## [Unreleased] - YYYY-MM-DD
@@ -21,6 +21,6 @@
 
 ## [5.2.0] - 2018-MM-DD
 ### Changed
- - Prefixed all handlebars helper functions with "bio", for example the helper "include" is now named "bioInclude". This reduces chance of naming collision with variables [issue](https://github.com/biotope/build-framework/issues/27)
+ - Prefixed all handlebars helper functions with "bio", for example the helper "include" is now named "bioInclude". This reduces chance of naming collision with variables [(see issue)](https://github.com/biotope/build-framework/issues/27)
 
 ## [5.1.8] - 2018-01-30
