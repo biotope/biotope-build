@@ -16,7 +16,8 @@
 - for now removed features.
 ### Fixed
 - for any bug fixes.
-</detail>
+
+</details>
 
 ## [5.2.0] - 2018-MM-DD
 ### Changed
