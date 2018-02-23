@@ -1,13 +1,13 @@
 const gulp = require('gulp');
-const tap = require('gulp-tap');
-const colors = require('colors/safe');
-const cssstats = require('gulp-cssstats');
-
 const config = require('./../config');
 
 gulp.task('cssstats', function () {
+	const colors = require('colors/safe');
 
 	if (config.global.tasks.cssStats) {
+		const tap = require('gulp-tap');
+		const cssstats = require('gulp-cssstats');
+
 		return gulp.src([
 			config.global.dist + '/resources/css/**/*.css'
 		])
