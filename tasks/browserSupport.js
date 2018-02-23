@@ -1,9 +1,9 @@
 const gulp = require('gulp');
 const config = require('./../config');
-const jsonParser = require('../lib/json-parser');
-const browserSupportData = jsonParser.getBrowserSupportData();
 
 gulp.task('browserSupport', function () {
+	const jsonParser = require('../lib/json-parser');
+	const browserSupportData = jsonParser.getBrowserSupportData();
 	const colors = require('colors/safe');
 
 	if (config.global.tasks.browserSupport && browserSupportData) {
@@ -31,6 +31,9 @@ gulp.task('browserSupport', function () {
 });
 
 gulp.task('watch:browserSupport', function () {
+	const jsonParser = require('../lib/json-parser');
+	const browserSupportData = jsonParser.getBrowserSupportData();
+	
 	if (config.global.tasks.browserSupport && browserSupportData) {
 		const watch = require('gulp-watch');
 		const runSequence = require('run-sequence');
