@@ -1,7 +1,7 @@
 {
   "name": "build-framework",
-  "version": "5.1.8",
-  "description": "An advanced frontend build runtime based on gulp",
+  "version": "5.2.0-rc5",
+  "description": "An advanced developent and build runtime to create frontent ecosystems",
   "repository": {
     "type": "git",
     "url": "https://github.com/frontend-framework/build-framework.git"
@@ -73,7 +73,7 @@
     "webpack-stream": "4.0.0"
   },
   "engines": {
-    "node": ">=6.12.0",
+    "node": ">=8.9.0",
     "yarn": ">=1.0.0"
   }
 }
