@@ -19,8 +19,17 @@
 
 </details>
 
-## [5.2.0] - 2018-MM-DD
+## [5.2.0] - 2018-02-25
 ### Changed
- - Prefixed all handlebars helper functions with "bio", for example the helper "include" is now named "bioInclude". This reduces chance of naming collision with variables [(see issue)](https://github.com/biotope/build-framework/issues/27)
-
-## [5.1.8] - 2018-01-30
+ - BREAKING: Repository name changed to github.com/biotope/biotope-build. Adjust your package.json 
+ - BREAKING: Prefixed all handlebars helper functions with "bio", for example the helper "include" is now named "bioInclude". This reduces chance of naming collision with variables [(see)](https://github.com/biotope/biotope-build/pull/45/files)
+ - BREAKING: "resources" and "components" in projectConfig.json have now to be strings instead of arrays [(see)](https://github.com/biotope/biotope-build/pull/40/commits/3cde1073237241db1fc0749ca24b3a9ec41e4521)
+ ### Added
+- support for customizable hbs helper file added (add handlebarsHelper: "pathToHelperFile" to your project config). with that it is now possible to use same helper file for static and dynamic hbs rendering. [(see issue)](https://github.com/biotope/biotope-build/issues/4)
+- handlebars bioImg helper added. [(#36)](https://github.com/biotope/biotope-build/issues/36)
+- handlebars for-loop helper added.
+ ### Deprecated
+- iconfont eot file generation is deprecated with this release and will be removed in 5.3.0 (all supported browsers can handle woff or ttf)
+### Fixed
+- livereload triggered multiple times fixes
+- gulp startup performance improvements
