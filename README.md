@@ -1,21 +1,21 @@
-# build-framework
+# biotope-build
 
 ## Options
 
-All build framework options can be set in local /projectConfig.js (<5.x /projectConfig.json)
+All biotope-build options can be set in local /projectConfig.js (<5.x /projectConfig.json)
 
-Description will follow soon, see default config: <https://github.com/frontend-framework/build-framework/blob/master/config.js> 
+Description will follow soon, see default config: <https://github.com/biotope/biotope-build/blob/master/config.js> 
 
 ## Migration checklists
 
-* <https://github.com/frontend-framework/frontend-framework/wiki/Migration-Checklist-3.x-to-4.x>
-* <https://github.com/frontend-framework/frontend-framework/wiki/Migration-Checklist-4.x-to-5.x>
+* <https://github.com/biotope/biotope-build/wiki/Migration-Checklist-3.x-to-4.x>
+* <https://github.com/biotope/biotope-build/wiki/Migration-Checklist-4.x-to-5.x>
 
 ## Config.js defaults
 
 config.js is the default configuration for all gulp tasks. The following is an overview of the default settings used in this framework.
 
-All configurations can be overwritten via a projectConfig.js inside the root folder of the project using this build-framework.  
+All configurations can be overwritten via a projectConfig.js inside the root folder of the project using this biotope-build.  
 
 ### framework internals
 
@@ -39,7 +39,7 @@ All configurations can be overwritten via a projectConfig.js inside the root fol
 }
 ```
 ###### tasks
-You can toggle certain task in the build-framework. Every Task can be configurated with a boolean. 
+You can toggle certain task in biotope-build. Every Task can be configurated with a boolean. 
 
 This list shows the configurable tasks as well as a brief description about what they do.
 ```
