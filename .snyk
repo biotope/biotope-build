@@ -1,0 +1,71 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.10.2
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - gulp-connect > connect > express-session > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > morgan > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > serve-index > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > tiny-lr > body-parser > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > body-parser > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-favicons > favicons > node-rest-client > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > compression > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > connect-timeout > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > serve-static > send > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > tiny-lr > debug:
+        patched: '2018-03-03T08:30:13.788Z'
+  'npm:minimatch:20160620':
+    - gulp > vinyl-fs > glob-stream > minimatch:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-modernizr > customizr > glob > minimatch:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-htmlhint > htmlhint > jshint > cli > glob > minimatch:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp > vinyl-fs > glob-watcher > gaze > globule > minimatch:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp > vinyl-fs > glob-watcher > gaze > globule > glob > minimatch:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-htmlhint > htmlhint > jshint > minimatch:
+        patched: '2018-03-03T08:30:13.788Z'
+  'npm:ms:20170412':
+    - gulp-connect > connect > connect-timeout > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > express-session > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > body-parser > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > morgan > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > serve-index > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > tiny-lr > body-parser > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > tiny-lr > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-favicons > favicons > node-rest-client > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > compression > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > connect-timeout > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > serve-static > send > debug > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > serve-static > send > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > serve-favicon > ms:
+        patched: '2018-03-03T08:30:13.788Z'
+  'npm:negotiator:20160616':
+    - gulp-connect > connect > compression > accepts > negotiator:
+        patched: '2018-03-03T08:30:13.788Z'
+    - gulp-connect > connect > serve-index > accepts > negotiator:
+        patched: '2018-03-03T08:30:13.788Z'
