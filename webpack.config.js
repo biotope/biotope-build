@@ -3,7 +3,8 @@ var excludes = [
     '/patterns/',
     '/dist/',
     '/test/',
-    '/.tmp/'
+    '/.tmp/',
+    '**/*.spec.ts'
 ];
 
 var babelOptions = {
