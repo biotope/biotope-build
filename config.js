@@ -167,7 +167,7 @@ module.exports = {
 	},
 
 	webpack: {
-		ignoreList: []
+		ignoreList: ['/**/*.spec.ts']
 	}
 };
 
