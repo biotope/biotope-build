@@ -33,6 +33,7 @@ module.exports = {
 			linting: true,
 			sass: true,
 			uglify: true,
+			version: true,
 			webpack: true
 		},
 		externalResources: {},

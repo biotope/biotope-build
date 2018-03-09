@@ -97,7 +97,8 @@ gulp.task('build', function (callback) {
 		[
 			'inject',
 			'clean:useref',
-			'cssstats'
+			'cssstats',
+			'version'
 		],
 		callback
 	);
