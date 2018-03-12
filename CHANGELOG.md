@@ -19,6 +19,10 @@
 
 </details>
 
+## [5.2.1] - 2018-xx-xx
+### Added
+- Writes version specified in package.json to resources/VERSION
+
 ## [5.2.0] - 2018-02-25
 ### Changed
  - BREAKING: Repository name changed to github.com/biotope/biotope-build. Adjust your package.json 
