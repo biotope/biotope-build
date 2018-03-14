@@ -147,6 +147,11 @@ gulp.task('copy:dist:mock', function () {
 		.pipe(gulp.dest(config.global.dist + '/_mock/'));
 });
 
+gulp.task('copy:dist:component:mock', function () {
+	return gulp.src(config.global.src + config.global.components + '/**/_mock/**/*')
+		.pipe(gulp.dest(config.global.dist + config.global.components));
+});
+
 gulp.task('copy:dist:config', function () {
 	return gulp.src(config.global.src + '/_config/**/*')
 		.pipe(gulp.dest(config.global.dist + '/_config/'));
