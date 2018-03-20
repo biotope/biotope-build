@@ -71,7 +71,8 @@
     "typescript": "2.6.2",
     "vinyl-named": "1.1.0",
     "webpack": "3.8.1",
-    "webpack-stream": "4.0.0"
+    "webpack-stream": "4.0.0",
+    "connect-history-api-fallback": "^1.5.0"
   },
   "engines": {
     "node": ">=8.9.0",

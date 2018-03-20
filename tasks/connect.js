@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const config = require('./../config');
+const history = require('connect-history-api-fallback');
 
 // gulp.task('watch:livereload', function () {
 //
@@ -39,11 +40,14 @@ gulp.task('connect', function () {
 		middleware: function (connect, opt) {
 			return [
 				function (req, res, next) {
-					if(req.method.toUpperCase() === 'POST') {
+					if (req.method.toUpperCase() === 'POST') {
 						req.method = 'GET';
 					}
 					return next();
-				}
+				},
+				history({
+					index: config.connect.historyFallbackIndex
+				})
 			];
 		},
 		livereload: config.livereload
