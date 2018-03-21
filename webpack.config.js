@@ -17,10 +17,10 @@ module.exports = {
     watch: false,
 
     resolve: {
-        extensions: ['.js', '.ts', '.tsx', '.jsx']
-    },
+        extensions: ['.js', '.ts', '.tsx', '.jsx', '.scss']
+	},
 
-    externals: {
+	externals: {
         jquery: 'jQuery'
     },
 
@@ -28,12 +28,26 @@ module.exports = {
 
     module: {
         rules: [
-            {
+			{
+				test: /\.scss$/,
+				use: [
+					{
+						loader: "style-loader"
+					},
+					{
+						loader: "css-loader"
+					},
+					{
+						loader: "sass-loader"
+					}
+				]
+			},
+			{
                 test: /\.ts$/,
                 loader: 'ts-loader',
                 exclude: excludes
             },
-            {
+			{
                 test: /\.jsx$/,
                 use: [
                     {
@@ -43,7 +57,7 @@ module.exports = {
                 ],
                 exclude: excludes
             },
-            {
+			{
                 test: /\.tsx$/,
                 use: [
                     {

@@ -10,7 +10,7 @@ gulp.task('webpack:ts', function() {
 		const webpackConfig = require('./../webpack.config.js');
 		const srcArray = [
 			config.global.src + config.global.resources + '/**/*.ts',
-			config.global.src + config.global.components + '/**/*.ts'
+			config.global.src + config.global.components + '/**/index.ts'
 		];
 
 		config.webpack.ignoreList.forEach(function (ignorePath) {
@@ -51,7 +51,9 @@ gulp.task('watch:webpack:ts', function () {
 
 		watch([
 			config.global.src + config.global.resources + '/**/*.ts',
-			config.global.src + config.global.components + '/**/*.ts'
+			config.global.src + config.global.components + '/**/*.ts',
+			config.global.src + config.global.components + '/**/*.tsx',
+			config.global.src + config.global.components + '/**/*.scss'
 		], config.watch, function () {
 			runSequence(
 				['webpack:ts'],
