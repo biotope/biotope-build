@@ -36,6 +36,8 @@ gulp.task('uglify:resources:dist', function (cb) {
 	} else {
 		const colors = require('colors/safe');
 		console.log(colors.yellow('uglify resources disabled'));
+
+		cb();
 	}
 });
 
@@ -72,5 +74,7 @@ gulp.task('uglify:components:dist', function (cb) {
 	} else {
 		const colors = require('colors/safe');
 		console.log(colors.yellow('uglify components disabled'));
+
+		cb();
 	}
 });
