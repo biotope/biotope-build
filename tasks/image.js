@@ -42,8 +42,8 @@ gulp.task('image:component:dist', function () {
 		];
 
 		return gulp.src([
-				path.join(config.global.dist, config.global.resources, config.global.components, '*', 'img', '**', '*.*'),
-				'!' + path.join(config.global.dist, config.global.resources, config.global.components, '*', 'img', '**', '*.svg')
+				path.join(config.global.dist, config.global.resources, config.global.components, '**', 'img', '**', '*.*'),
+				'!' + path.join(config.global.dist, config.global.resources, config.global.components, '**', 'img', '**', '*.svg')
 			])
 			.pipe(image(
 				imageOptimizers,
