@@ -127,9 +127,14 @@ gulp.task('copy:dist:fonts', function () {
 		.pipe(gulp.dest(config.global.dist + config.global.resources + '/fonts/'));
 });
 
-gulp.task('copy:dist:img', function () {
+gulp.task('copy:dist:resources:img', function () {
 	return gulp.src(config.global.src + config.global.resources + '/img/**/*')
 		.pipe(gulp.dest(config.global.dist + config.global.resources +  '/img/'));
+});
+
+gulp.task('copy:dist:components:img', function () {
+	return gulp.src(config.global.src + config.global.components + '/*/img/**/*')
+		.pipe(gulp.dest(config.global.dist + config.global.resources + config.global.components));
 });
 
 gulp.task('copy:dist:assets', function () {
