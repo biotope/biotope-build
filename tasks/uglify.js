@@ -11,6 +11,8 @@ gulp.task('uglify:resources:dist', function (cb) {
 		const pump = require('pump');
 		const noop = require('gulp-noop');
 
+		const promises = [];
+
 		config.uglify.folders.forEach((folder) => {
 			const srcArray = [
 				path.join(config.global.dev, config.global.resources, folder, '/**/*.js')
@@ -20,18 +22,27 @@ gulp.task('uglify:resources:dist', function (cb) {
 				srcArray.push('!' + path.join(config.global.dev, ignorePath));
 			});
 
-			pump([
-				gulp.src(srcArray),
-				config.uglify.sourcemaps ? sourcemaps.init() : noop(),
-				uglify(),
-				size({ title: 'uglified', showFiles: true }),
-				config.uglify.sourcemaps ? sourcemaps.write() : noop(),
-				gulp.dest( path.join(config.global.dist, config.global.resources, folder) )
-			]);
-
+			promises.push(new Promise((resolve, reject) => {
+				pump([
+					gulp.src(srcArray),
+					config.uglify.sourcemaps ? sourcemaps.init() : noop(),
+					uglify(),
+					size({ title: 'uglified', showFiles: true }),
+					config.uglify.sourcemaps ? sourcemaps.write() : noop(),
+					gulp.dest( path.join(config.global.dist, config.global.resources, folder) )
+				], function(err) {
+					if(!err){
+						resolve();
+					}else{
+						reject(err);
+					}
+				});
+			}));
 		});
 
-		cb();
+		Promise.all(promises).then(() => {
+			cb();
+		});
 
 	} else {
 		const colors = require('colors/safe');
@@ -74,3 +85,4 @@ gulp.task('uglify:components:dist', function (cb) {
 		console.log(colors.yellow('uglify components disabled'));
 	}
 });
+
