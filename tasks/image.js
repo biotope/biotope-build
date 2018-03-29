@@ -4,20 +4,25 @@ const config = require('./../config');
 gulp.task('image:resources:dist', function () {
 
 	if (config.global.tasks.image) {
+		const path = require('path');
 		const image = require('gulp-imagemin');
 		const imageOptimizers = [
 			image.gifsicle(),
 			image.jpegtran(),
-			image.optipng(),
-			image.svgo()
+			image.optipng()
 		];
 
-		return gulp.src(config.global.dist + config.global.resources + '/img/**/*.*')
+		return gulp.src([
+			path.join(config.global.dist, config.global.resources, 'img', '**', '*.*'),
+			'!' + path.join(config.global.dist, config.global.resources, 'img', '**', '*.svg')
+		])
 			.pipe(image(
 				imageOptimizers,
 				config.image
 			))
-			.pipe(gulp.dest(config.global.dist + config.global.resources + '/img/'));
+			.pipe(gulp.dest(
+				path.join(config.global.dist, config.global.resources, 'img')
+			));
 
 	} else {
 		const colors = require('colors/safe');
@@ -28,20 +33,25 @@ gulp.task('image:resources:dist', function () {
 gulp.task('image:component:dist', function () {
 
 	if (config.global.tasks.image) {
+		const path = require('path');
 		const image = require('gulp-imagemin');
 		const imageOptimizers = [
 			image.gifsicle(),
 			image.jpegtran(),
-			image.optipng(),
-			image.svgo()
+			image.optipng()
 		];
 
-		return gulp.src(config.global.src + config.global.components + '/*/img/**/*.*')
+		return gulp.src([
+				path.join(config.global.dist, config.global.resources, config.global.components, '*', 'img', '**', '*.*'),
+				'!' + path.join(config.global.dist, config.global.resources, config.global.components, '*', 'img', '**', '*.svg')
+			])
 			.pipe(image(
 				imageOptimizers,
 				config.image
 			))
-			.pipe(gulp.dest(config.global.dist + config.global.resources + config.global.components));
+			.pipe(gulp.dest(
+				path.join(config.global.dist, config.global.resources, config.global.components)
+			));
 
 	}
 });
