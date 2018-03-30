@@ -102,6 +102,11 @@ module.exports = {
 		noRedeclare: true
 	},
 
+	frontMatter: {
+		property: 'data.frontMatter',
+		remove: true
+	},
+
 	iconfont: {
 		fontName: 'Icons',
 		prependUnicode: true,
