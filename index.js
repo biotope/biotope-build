@@ -29,15 +29,17 @@ gulp.task('build:dev', function (callback) {
 			'iconfont',
 			'copy:dev:npm:js',
 			'copy:dev:npm:css',
-			'copy:dev:npm:bower'
+			'copy:dev:npm:bower',
+			'init:hb2'
 		],
 		[
 			'handlebars'
 		],
 		[
-			'static:hb',
-			'static:hb:indexr',
-			'browserSupport'
+            'static:hb2'
+			// 'static:hb',
+			// 'static:hb:indexr',
+			// 'browserSupport'
 		],
 		[
 			'resources:sass',
