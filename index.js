@@ -36,10 +36,10 @@ gulp.task('build:dev', function (callback) {
 			'handlebars'
 		],
 		[
-            'static:hb2'
+            'static:hb2',
 			// 'static:hb',
-			// 'static:hb:indexr',
-			// 'browserSupport'
+			'static:hb:indexr',
+			'browserSupport'
 		],
 		[
 			'resources:sass',
@@ -114,6 +114,10 @@ gulp.task('serve', function (callback) {
 		[
 			'watch:browserSupport',
 			'watch:static:hb:indexr',
+            'watch:templates:hb2',
+            'watch:partials:hb2',
+            'watch:jsons:hb2',
+            'watch:icons:hb2',
 			'watch:components:js',
 			'watch:components:sass',
 			'watch:resources:sass',
