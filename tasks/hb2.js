@@ -13,7 +13,7 @@ const config = require('./../config');
 const globule = require('globule');
 const fs = require('fs-extra');
 const path = require('path');
-const nestedProp = require("nested-property");
+const nestedProp = require('nested-property');
 const camelCase = require('camelcase');
 
 const handlebars = require('handlebars');
@@ -40,30 +40,6 @@ const jsonGlobPatterns = [
 const iconGlobPatterns = [
     path.join(config.global.cwd, config.global.src, 'resources', 'icons', '*.svg')
 ];
-
-
-
-
-
-const getRelativePathToCwdSource = (filePath) => {
-    const cwdSourcePath = path.join(config.global.cwd, config.global.src);
-    return path.relative(cwdSourcePath, filePath);
-};
-
-const removeExtensionFromPath = (filePath) => {
-    const parsedPath = path.parse(filePath);
-    return path.join(parsedPath.dir, parsedPath.name);
-};
-
-const transformCwdPathToPartialName = (filePath) => {
-    const pathWithoutExtension = removeExtensionFromPath(filePath);
-    return getRelativePathToCwdSource(pathWithoutExtension);
-};
-
-const transformCwdFilePathToObjectPropertyPath = (filePath) => {
-    const partialFilePath = transformCwdPathToPartialName(filePath);
-    return partialFilePath.split('/').map(folder => camelCase(folder)).join('.');
-};
 
 
 
@@ -115,6 +91,7 @@ const removePartial = (filePath) => {
 };
 
 
+
 const loadHelpers = () => {
     const bioHelpers = require('./../lib/hb2-helpers');
     bioHelpers(handlebars);
@@ -133,6 +110,7 @@ const loadHelpers = () => {
 };
 
 
+
 const loadJsonData = () => {
 
     // load package.json
@@ -146,6 +124,8 @@ const loadJsonData = () => {
         loadJsonFile(filePath);
     }
 };
+
+
 
 const loadJsonFile = (filePath) => {
     try {
@@ -161,6 +141,8 @@ const loadJsonFile = (filePath) => {
     }
 };
 
+
+
 const loadIconData = () => {
     const iconFiles = globule.find(iconGlobPatterns);
     const iconData = [];
@@ -172,6 +154,8 @@ const loadIconData = () => {
 
     nestedProp.set(globalData, [config.global.dataObject, 'icons'].join('.'), iconData);
 };
+
+
 
 const renderTemplate = (templatePath) => {
     const templateContent = templates[templatePath];
@@ -198,7 +182,6 @@ const renderTemplate = (templatePath) => {
         console.log(colors.red(`hbs:error "${templatePath}": "${e.message}"`));
     }
 };
-
 
 
 
@@ -295,3 +278,27 @@ gulp.task('watch:icons:hb2', () => {
         );
     });
 });
+
+
+
+
+const getRelativePathToCwdSource = (filePath) => {
+    const cwdSourcePath = path.join(config.global.cwd, config.global.src);
+    return path.relative(cwdSourcePath, filePath);
+};
+
+const removeExtensionFromPath = (filePath) => {
+    const parsedPath = path.parse(filePath);
+    return path.join(parsedPath.dir, parsedPath.name);
+};
+
+const transformCwdPathToPartialName = (filePath) => {
+    const pathWithoutExtension = removeExtensionFromPath(filePath);
+    return getRelativePathToCwdSource(pathWithoutExtension);
+};
+
+const transformCwdFilePathToObjectPropertyPath = (filePath) => {
+    const partialFilePath = transformCwdPathToPartialName(filePath);
+    return partialFilePath.split('/').map(folder => camelCase(folder)).join('.');
+};
+
