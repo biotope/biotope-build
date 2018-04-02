@@ -98,12 +98,12 @@ module.exports = {
 	handlebars: {
 		templateWrap: 'Handlebars.template(<%= contents %>)',
 		partialWrap: 'Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));',
-		namespace: 'ffglobal.configuration.data.tpl',
+		namespace: 'biotope.configuration.data.tpl',
 		noRedeclare: true
 	},
 
 	frontMatter: {
-		property: 'data.frontMatter',
+		property: 'frontMatter',
 		remove: true
 	},
 

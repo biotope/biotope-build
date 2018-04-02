@@ -4,7 +4,7 @@
  - remove gulp-front-matter
  - check precompiled hbs task
  - cleanup tasks in index.js
- -
+ - check legacy handlebars helper file
 
  */
 
@@ -13,10 +13,15 @@ const config = require('./../config');
 const globule = require('globule');
 const fs = require('fs-extra');
 const path = require('path');
+const nestedProp = require("nested-property");
+const camelCase = require('camelcase');
 
 const handlebars = require('handlebars');
 const bioHelpers = require('./../lib/hb2-helpers');
 const templates = {};
+const globalData = {};
+
+
 
 const templateGlobPatterns = [
     path.join(config.global.cwd, config.global.src, 'pages', '**', '*.hbs')
@@ -29,29 +34,60 @@ const partialGlobPatterns = [
     '!' + path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
 ];
 
+const jsonGlobPatterns = [
+    path.join(config.global.cwd, config.global.src, '**', '*.json')
+];
 
-const transformPathToPartialName = (filePath) => {
-    const parsedPath = path.parse(filePath);
-    const pathWithoutExtension = path.join(parsedPath.dir, parsedPath.name);
-    return path.relative(config.global.src, pathWithoutExtension);
+const iconGlobPatterns = [
+    path.join(config.global.cwd, config.global.src, 'resources', 'icons', '*.svg')
+];
+
+
+
+
+
+const getRelativePathToCwdSource = (filePath) => {
+    const cwdSourcePath = path.join(config.global.cwd, config.global.src);
+    return path.relative(cwdSourcePath, filePath);
 };
+
+const removeExtensionFromPath = (filePath) => {
+    const parsedPath = path.parse(filePath);
+    return path.join(parsedPath.dir, parsedPath.name);
+};
+
+const transformCwdPathToPartialName = (filePath) => {
+    const pathWithoutExtension = removeExtensionFromPath(filePath);
+    return getRelativePathToCwdSource(pathWithoutExtension);
+};
+
+const transformCwdFilePathToObjectPropertyPath = (filePath) => {
+    const partialFilePath = transformCwdPathToPartialName(filePath);
+    return partialFilePath.split('/').map(folder => camelCase(folder)).join('.');
+};
+
+
+
+const loadHelpers = () => {
+    bioHelpers(handlebars);
+};
+
 
 const loadPartials = () => {
     const paths = globule.find(partialGlobPatterns);
 
     for(let filePath of paths) {
-        const partial = handlebars.compile(fs.readFileSync(filePath, 'utf8'));
-        handlebars.registerPartial(
-            transformPathToPartialName(filePath),
-            partial
-        );
+        loadPartial(filePath);
     }
 };
 
-const loadTemplate = (filePath) => {
-    const frontMatter = require('front-matter');
-    templates[filePath] = frontMatter(fs.readFileSync(filePath, 'utf8'));
+const loadPartial = (filePath) => {
+    handlebars.registerPartial(
+        transformCwdPathToPartialName(filePath),
+        handlebars.compile(fs.readFileSync(filePath, 'utf8'))
+    );
 };
+
 
 const loadTemplates = () => {
     const paths = globule.find(templateGlobPatterns);
@@ -62,26 +98,89 @@ const loadTemplates = () => {
     }
 };
 
-// const loadHelpers = (helpers) => {
-//     for(let helper in bioHelpers) {
-//         console.log('register helper', helper);
-//         handlebars.registerHelper(helper, bioHelpers[helper]);
-//     }
-// };
+const loadTemplate = (filePath) => {
+    const frontMatter = require('front-matter');
+    templates[filePath] = frontMatter(fs.readFileSync(filePath, 'utf8'));
 
-// const loadData = () => {};
-// const loadIcons = () => {};
+    // TODO add pages frontMatter to globalData
+};
+
+
+const loadJsonData = () => {
+
+    // package.json
+    const packagePath = path.join(config.global.cwd, 'package.json');
+    const packageData = require(packagePath);
+    nestedProp.set(globalData, [config.global.dataObject, 'package'].join('.'), packageData);
+
+    // JSON files
+    const jsonFiles = globule.find(jsonGlobPatterns);
+    for(let filePath of jsonFiles) {
+        // TODO add error handling for defect json files
+        const jsonContent = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const objectPropertyPath = transformCwdFilePathToObjectPropertyPath(filePath);
+
+        nestedProp.set(globalData, [config.global.dataObject, objectPropertyPath].join('.'), jsonContent);
+    }
+
+    // TODO refactor json import
+    // see https://davidwalsh.name/nested-objects
+    // const filepaths = globule.find(dataGlobPatterns);
+    // for (let index in filepaths) {
+    //     // read contents
+    //     const content = JSON.parse(fs.readFileSync(filepaths[index], 'utf8'));
+    //
+    //     // normalize path and file name
+    //     const file = path.parse(filepaths[index]);
+    //     const dirs = file.dir.split('/');
+    //     dirs.push(file.name);
+    //     dirs.forEach(function(currentDir, index) {
+    //         if (currentDir !== config.global.src) {
+    //             let objectName = camelCase(currentDir);
+    //
+    //             dirs[index] = objectName;
+    //         } else {
+    //             dirs.splice(index, 1);
+    //         }
+    //     });
+    //
+    //     // modfiy object
+    //     modifyObject(globalData[config.global.dataObject], dirs, content);
+    // }
+};
+
+const loadIconData = () => {
+    const iconFiles = globule.find(iconGlobPatterns);
+    const iconData = [];
+
+    for(let iconPath of iconFiles) {
+        let parsedIconPath = path.parse(iconPath);
+        iconData.push(parsedIconPath.name.toLowerCase());
+    }
+
+    nestedProp.set(globalData, [config.global.dataObject, 'icons'].join('.'), iconData);
+};
 
 gulp.task('init:hb2', (cb) => {
-    bioHelpers(handlebars);
+    loadHelpers();
     loadTemplates();
     loadPartials();
+    loadJsonData();
+    loadIconData();
     cb();
 });
 
 gulp.task('static:hb2', (cb) => {
     for(let templatePath in templates) {
-        const content = handlebars.compile(templates[templatePath].body)();
+        const templateContent = templates[templatePath];
+
+        // Extend global data with site specific data
+        nestedProp.set(globalData, [config.global.dataObject, config.frontMatter.property].join('.'), templateContent.attributes);
+
+        // console.log(templatePath);
+        // console.log(JSON.stringify(globalData, null, 2));
+
+        const content = handlebars.compile(templateContent.body)(globalData);
 
         const parsedPath = path.parse(templatePath);
         const targetPath = path.join(config.global.cwd, config.global.dist, `${parsedPath.name}.html`);
@@ -90,33 +189,9 @@ gulp.task('static:hb2', (cb) => {
 
         fs.ensureDirSync(path.parse(targetPath).dir);
         fs.writeFileSync(targetPath, content);
-
-        // TODO do something with frontMatter data
-        // content.attributes // data
-        // console.log(`frontMatter in ${filePath}`, content);
     }
 
     cb();
-
-    // var path = '/some/dir/file.hbs';
-    // var newPath = replaceExt(path, '.html');
-
-
-    // return gulp
-    //     .src(config.global.src + '/pages/**/*.hbs')
-    //     .pipe(frontMatter({
-    //         property: 'data.frontMatter',
-    //         remove: true
-    //     }))
-    //     .pipe(hbStream)
-    //     .on('error', notify.onError(function (error) {
-    //         return {
-    //             title: 'static:hb',
-    //             message: `${error.message} in "${error.fileName}"`
-    //         };
-    //     }))
-    //     .pipe(rename({extname: ".html"}))
-    //     .pipe(gulp.dest(config.global.dev));
 });
 
 gulp.task('watch:data:hb2', () => {});
