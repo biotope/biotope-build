@@ -79,8 +79,7 @@ const loadTemplates = () => {
 };
 
 const loadTemplate = (filePath) => {
-    console.log(`static:hb2 load template file ${filePath}`);
-
+    // console.log(`static:hb2 load template file ${filePath}`);
     const frontMatter = require('front-matter');
     templates[filePath] = frontMatter(fs.readFileSync(filePath, 'utf8'));
 
@@ -104,7 +103,7 @@ const loadPartials = () => {
 };
 
 const loadPartial = (filePath) => {
-    console.log(`static:hb2 load HBS partial ${filePath}`);
+    // console.log(`static:hb2 load HBS partial ${filePath}`);
 
     handlebars.registerPartial(
         transformCwdPathToPartialName(filePath),
@@ -132,14 +131,13 @@ const loadJsonData = () => {
     // load JSON files
     const jsonFiles = globule.find(jsonGlobPatterns);
     for(let filePath of jsonFiles) {
-        console.log(``);
         loadJsonFile(filePath);
     }
 };
 
 const loadJsonFile = (filePath) => {
     try {
-        console.log(`static:hb2 load JSON file ${filePath}`);
+        // console.log(`static:hb2 load JSON file ${filePath}`);
 
         const jsonContent = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         const objectPropertyPath = transformCwdFilePathToObjectPropertyPath(filePath);
@@ -178,7 +176,7 @@ const renderTemplate = (templatePath) => {
         const parsedPath = path.parse(templatePath);
         const targetPath = path.join(config.global.cwd, config.global.dev, `${parsedPath.name}.html`);
 
-        console.log(`static:hb2 write template to ${targetPath}`);
+        // console.log(`static:hb2 write template to ${targetPath}`);
 
         fs.ensureDirSync(path.parse(targetPath).dir);
         fs.writeFileSync(targetPath, content);
