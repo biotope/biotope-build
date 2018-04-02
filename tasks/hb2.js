@@ -17,7 +17,6 @@ const nestedProp = require("nested-property");
 const camelCase = require('camelcase');
 
 const handlebars = require('handlebars');
-const bioHelpers = require('./../lib/hb2-helpers');
 const templates = {};
 const globalData = {};
 
@@ -117,7 +116,20 @@ const removePartial = (filePath) => {
 
 
 const loadHelpers = () => {
+    const bioHelpers = require('./../lib/hb2-helpers');
     bioHelpers(handlebars);
+
+    if(config.global.handlebarsHelper) {
+        const projectHbsHelpersPath = path.join(config.global.cwd, config.global.src, config.global.resources, config.global.handlebarsHelper);
+
+        try {
+            const projectHelpers = require(projectHbsHelpersPath);
+            projectHelpers(handlebars);
+        } catch(e) {
+            const colors = require('colors/safe');
+            console.log(colors.yellow(`static:hb: Trying to load "${projectHbsHelpersPath}" into helpers.\n${e.message}\nSee global.handlebarsHelper property in https://github.com/biotope/biotope-build/blob/master/config.js`));
+        }
+    }
 };
 
 
