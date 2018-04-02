@@ -176,7 +176,7 @@ const renderTemplate = (templatePath) => {
 
         const content = handlebars.compile(templateContent.body)(globalData);
         const parsedPath = path.parse(templatePath);
-        const targetPath = path.join(config.global.cwd, config.global.dist, `${parsedPath.name}.html`);
+        const targetPath = path.join(config.global.cwd, config.global.dev, `${parsedPath.name}.html`);
 
         console.log(`static:hb2 write template to ${targetPath}`);
 
@@ -185,7 +185,7 @@ const renderTemplate = (templatePath) => {
 
     } catch(e) {
         const colors = require('colors/safe');
-        console.log(colors.red(`hbs:error "${vinyl.path}": "${e.message}"`));
+        console.log(colors.red(`hbs:error "${templatePath}": "${e.message}"`));
     }
 };
 
