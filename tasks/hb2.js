@@ -294,11 +294,11 @@ const removeExtensionFromPath = (filePath) => {
 
 const transformCwdPathToPartialName = (filePath) => {
     const pathWithoutExtension = removeExtensionFromPath(filePath);
-    return getRelativePathToCwdSource(pathWithoutExtension).replace('\\', '/');
+    return getRelativePathToCwdSource(pathWithoutExtension).replace(/\\/g, '/');
 };
 
 const transformCwdFilePathToObjectPropertyPath = (filePath) => {
     const partialFilePath = transformCwdPathToPartialName(filePath);
-    return partialFilePath.split('/').map(folder => camelCase(folder)).join('.');
+    return partialFilePath.replace(/\\/g, '/').split('/').map(folder => camelCase(folder)).join('.');
 };
 
