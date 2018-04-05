@@ -78,7 +78,7 @@ const loadPartials = () => {
 };
 
 const loadPartial = (filePath) => {
-    console.log(`static:hb2 load HBS partial ${filePath} to ${transformCwdPathToPartialName(filePath)}`);
+    // console.log(`static:hb2 load HBS partial ${filePath} to ${transformCwdPathToPartialName(filePath)}`);
 
     handlebars.registerPartial(
         transformCwdPathToPartialName(filePath),
@@ -217,8 +217,8 @@ gulp.task('watch:templates:hb2', () => {
         }
 
         runSequence(
-            ['static:hb2'],
-            ['livereload']
+            'static:hb2',
+            'livereload'
         );
     });
 });
@@ -238,8 +238,8 @@ gulp.task('watch:partials:hb2', () => {
         }
 
         runSequence(
-            ['static:hb2'],
-            ['livereload']
+            'static:hb2',
+            'livereload'
         );
     });
 });
@@ -260,8 +260,8 @@ gulp.task('watch:jsons:hb2', () => {
         }
 
         runSequence(
-            ['static:hb2'],
-            ['livereload']
+            'static:hb2',
+            'livereload'
         );
     });
 });
@@ -273,8 +273,8 @@ gulp.task('watch:icons:hb2', () => {
     watch(iconGlobPatterns, config.watch, function (vinyl) {
         loadIconData();
         runSequence(
-            ['static:hb2'],
-            ['livereload']
+            'static:hb2',
+            'livereload'
         );
     });
 });
