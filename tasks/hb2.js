@@ -78,7 +78,7 @@ const loadPartials = () => {
 };
 
 const loadPartial = (filePath) => {
-    // console.log(`static:hb2 load HBS partial ${filePath}`);
+    console.log(`static:hb2 load HBS partial ${filePath} to ${transformCwdPathToPartialName(filePath)}`);
 
     handlebars.registerPartial(
         transformCwdPathToPartialName(filePath),
@@ -294,7 +294,7 @@ const removeExtensionFromPath = (filePath) => {
 
 const transformCwdPathToPartialName = (filePath) => {
     const pathWithoutExtension = removeExtensionFromPath(filePath);
-    return getRelativePathToCwdSource(pathWithoutExtension);
+    return getRelativePathToCwdSource(pathWithoutExtension).replace('\\', '/');
 };
 
 const transformCwdFilePathToObjectPropertyPath = (filePath) => {
