@@ -5,7 +5,6 @@ const dist = 'dist';
 const node = 'node_modules';
 
 const _ = require('lodash');
-const projectConfig = require(cwd + '/projectConfig');
 const os = require('os');
 const isWin = /^win/.test(os.platform());
 
@@ -156,8 +155,11 @@ module.exports = {
 	sassLint: {},
 
 	uglify: {
-		preserveComments: 'license',
-		sourcemaps: false,
+		options: {
+			output: {
+				comments: /^!|@preserve|@license|@cc_on/i
+			}
+		},
 		folders: ['js', 'ts'],
 		ignoreList: []
 	},
@@ -172,6 +174,9 @@ module.exports = {
 	}
 };
 
-if (projectConfig) {
-	_.merge(module.exports, projectConfig);
-}
+try {
+    const projectConfig = require(cwd + '/projectConfig');
+    if (projectConfig) {
+        _.merge(module.exports, projectConfig);
+    }
+} catch(e) {}

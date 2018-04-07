@@ -8,6 +8,9 @@
   },
   "author": "Biotope",
   "license": "MIT",
+  "scripts": {
+    "test": "ava tests --verbose"
+  },
   "dependencies": {
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
@@ -79,5 +82,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "map-stream": "^0.0.7",
+    "vinyl-string": "^1.0.2"
   }
 }
