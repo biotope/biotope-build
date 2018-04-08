@@ -66,7 +66,7 @@ gulp.task('uglify:components:dist', function (cb) {
         uglifyPump.unshift(gulp.src(srcArray));
         uglifyPump.push(gulp.dest(targetPath));
 
-		pump(uglifyPump, cb());
+		pump(uglifyPump, cb);
 
 	} else {
 		const colors = require('colors/safe');
