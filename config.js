@@ -103,7 +103,7 @@ module.exports = {
 	},
 
 	frontMatter: {
-		property: 'frontMatter',
+		property: 'data.frontMatter',
 		remove: true
 	},
 

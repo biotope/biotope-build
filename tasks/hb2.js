@@ -164,7 +164,8 @@ const renderTemplate = (templatePath) => {
     nestedProp.set(globalData, [config.global.dataObject, config.frontMatter.property].join('.'), templateContent.attributes);
 
     // console.log(templatePath);
-    // console.log(JSON.stringify(globalData, null, 2));
+    // console.log(`data: ${config.global.dataObject}.${config.frontMatter.property}`);
+    // console.log(JSON.stringify(globalData[config.global.dataObject][config.frontMatter.property], null, 2));
 
     try {
 
@@ -270,7 +271,7 @@ gulp.task('watch:icons:hb2', () => {
     const runSequence = require('run-sequence');
     const watch = require('gulp-watch');
 
-    watch(iconGlobPatterns, config.watch, function (vinyl) {
+    watch(iconGlobPatterns, config.watch, function () {
         loadIconData();
         runSequence(
             'static:hb2',
