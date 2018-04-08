@@ -160,6 +160,7 @@ module.exports = {
 				comments: /^!|@preserve|@license|@cc_on/i
 			}
 		},
+		sourcemaps: true,
 		folders: ['js', 'ts'],
 		ignoreList: []
 	},

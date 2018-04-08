@@ -7,7 +7,7 @@ module.exports = {
         return [
             config.uglify.sourcemaps ? sourcemaps.init() : noop(),
             uglify(config.uglify.options),
-            config.uglify.sourcemaps ? sourcemaps.write() : noop()
+            config.uglify.sourcemaps ? sourcemaps.write('./') : noop()
         ];
     }
 };
