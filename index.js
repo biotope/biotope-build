@@ -129,7 +129,7 @@ gulp.task('serve', function (callback) {
 			'watch:json',
 			'watch:html',
 			'watch:webpack:ts',
-			'watch:static:hb',
+			// 'watch:static:hb',
 			'watch:icons'
 			// 'watch:livereload'
 		],
