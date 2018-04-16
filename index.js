@@ -34,8 +34,7 @@ gulp.task('build:dev', function (callback) {
 			'handlebars'
 		],
 		[
-            'static:hb2',
-			'browserSupport'
+            'static:hb2'
 		],
 		[
 			'resources:sass',
