@@ -127,15 +127,15 @@ const loadIconData = () => {
 	nestedProp.set(globalData, [config.global.dataObject, 'icons'].join('.'), iconData);
 };
 
+const loadIndexrData = () => {
+	nestedProp.set(globalData, [config.global.dataObject, 'indexr'].join('.'), prepareTemplateDataForIndexr());
+};
+
 const renderTemplate = (templatePath) => {
 	const templateContent = templates[templatePath];
 
 	// Extend global data with site specific data
 	nestedProp.set(globalData, [config.global.dataObject, config.frontMatter.property].join('.'), templateContent.attributes);
-
-	if (templateContent.attributes.title === 'index') {
-		nestedProp.set(globalData, [config.global.dataObject, 'indexr'].join('.'), prepareTemplateDataForIndexr());
-	}
 
 	try {
 		const content = handlebars.compile(templateContent.body)(globalData);
@@ -156,6 +156,7 @@ gulp.task('init:hb2', (cb) => {
 	loadPartials();
 	loadJsonData();
 	loadIconData();
+	loadIndexrData();
 	cb();
 });
 
@@ -187,6 +188,7 @@ gulp.task('watch:templates:hb2', () => {
 				loadTemplate(path);
 		}
 
+		loadIndexrData();
 		runSequence(
 			'static:hb2',
 			'livereload'
