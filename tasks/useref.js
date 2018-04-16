@@ -16,6 +16,11 @@ gulp.task('useref', function () {
 
 });
 
+/**
+ * ToDo: Refactor useref:assets to NOT use hbsParser.createHbsGulpStream
+ * This function should be removed completely, it is too heavy implemented for its usage in this task.
+ * */
+
 gulp.task('useref:assets', function () {
 	const filter = require('gulp-filter');
 	const useref = require('gulp-useref');

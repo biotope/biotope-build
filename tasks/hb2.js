@@ -1,13 +1,3 @@
-/*
-
- TODOs:
- - remove gulp-front-matter
- - check precompiled hbs task
- - cleanup tasks in index.js
- - check legacy handlebars helper file
-
- */
-
 const gulp = require('gulp');
 const config = require('./../config');
 const globule = require('globule');
@@ -22,7 +12,8 @@ const globalData = {};
 
 const templateGlobPatterns = [
 	path.join(config.global.cwd, config.global.src, 'pages', '**', '*.hbs'),
-	path.join(config.global.cwd, config.global.src, 'index.hbs')
+	path.join(config.global.cwd, config.global.src, 'index.hbs'),
+	path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
 ];
 
 const partialGlobPatterns = [
@@ -101,6 +92,11 @@ const loadJsonData = () => {
 	const packageData = require(packagePath);
 	nestedProp.set(globalData, [config.global.dataObject, 'package'].join('.'), packageData);
 
+	// load browser support data
+	const jsonParser = require('../lib/json-parser');
+	const browserSupportData = jsonParser.getBrowserSupportData();
+	nestedProp.set(globalData, config.browserSupport.property, browserSupportData);
+
 	// load JSON files
 	const jsonFiles = globule.find(jsonGlobPatterns);
 	for(let filePath of jsonFiles) {
@@ -138,7 +134,7 @@ const renderTemplate = (templatePath) => {
 	nestedProp.set(globalData, [config.global.dataObject, config.frontMatter.property].join('.'), templateContent.attributes);
 
 	if (templateContent.attributes.title === 'index') {
-		nestedProp.set(globalData, [config.global.dataObject,'indexr'].join('.'), prepareTemplateDataForIndexr());
+		nestedProp.set(globalData, [config.global.dataObject, 'indexr'].join('.'), prepareTemplateDataForIndexr());
 	}
 
 	try {
@@ -280,8 +276,16 @@ const normalizeWinPath = (filePath) => {
 
 const prepareTemplateDataForIndexr = () => {
 	const sortedTemplates = [];
+	const blacklistedTemplates = [
+		path.join(config.global.cwd, config.global.src, 'index.hbs'),
+		path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
+	];
 
-	for (template in templates) {
+	for (let template in templates) {
+		if(blacklistedTemplates.indexOf(template) !== -1) {
+			continue;
+		}
+
 		templates[template].filePath = template;
 		templates[template].parsedFile = path.parse(template);
 		templates[template].currentCategory = templates[template].parsedFile.name.substring(2, templates[template].parsedFile.name.indexOf('.'));

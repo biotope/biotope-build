@@ -5,6 +5,7 @@ const dist = 'dist';
 const node = 'node_modules';
 
 const _ = require('lodash');
+const path = require('path');
 const projectConfig = require(cwd + '/projectConfig');
 const os = require('os');
 const isWin = /^win/.test(os.platform());
@@ -47,7 +48,8 @@ module.exports = {
 	},
 
 	browserSupport: {
-		file: cwd + '/browserSupport.json'
+		file: path.join(cwd, 'browserSupport.json'),
+		property: 'data.browserSupport'
 	},
 
 	checkDependencies: {},
@@ -103,7 +105,7 @@ module.exports = {
 	},
 
 	frontMatter: {
-		property: 'data.frontMatter',
+		property: 'frontMatter',
 		remove: true
 	},
 
