@@ -107,7 +107,6 @@ gulp.task('serve', function (callback) {
 	runSequence(
 		'build:dev',
 		[
-			'watch:browserSupport',
             'watch:templates:hb2',
             'watch:partials:hb2',
             'watch:jsons:hb2',
