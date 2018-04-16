@@ -279,8 +279,8 @@ const normalizeWinPath = (filePath) => {
 const prepareTemplateDataForIndexr = () => {
 	const sortedTemplates = [];
 	const blacklistedTemplates = [
-		path.join(config.global.cwd, config.global.src, 'index.hbs'),
-		path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
+		normalizeWinPath(path.join(config.global.cwd, config.global.src, 'index.hbs')),
+		normalizeWinPath(path.join(config.global.cwd, config.global.src, 'browserSupport.hbs'))
 	];
 
 	for (let template in templates) {
