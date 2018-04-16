@@ -42,6 +42,7 @@ const loadTemplates = () => {
 const loadTemplate = (filePath) => {
 	const frontMatter = require('front-matter');
 	templates[filePath] = frontMatter(fs.readFileSync(filePath, 'utf8'));
+	templates[filePath].precompiled = handlebars.compile(templates[filePath].body);
 };
 
 const removeTemplate = (filePath) => {
@@ -138,7 +139,7 @@ const renderTemplate = (templatePath) => {
 	nestedProp.set(globalData, [config.global.dataObject, config.frontMatter.property].join('.'), templateContent.attributes);
 
 	try {
-		const content = handlebars.compile(templateContent.body)(globalData);
+		const content = templateContent.precompiled(globalData);
 		const parsedPath = path.parse(templatePath);
 		const targetPath = path.join(config.global.cwd, config.global.dev, `${parsedPath.name}.html`);
 
