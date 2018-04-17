@@ -4,21 +4,19 @@ const config = require('./../config');
 const cleanCssTask = (source, target) => {
 	const size = require('gulp-size');
 	const cleanCss = require('gulp-clean-css');
-	const stream = gulp.src(source);
 
 	if (config.global.tasks.cleanCss) {
-		stream.pipe(cleanCss(config.cleanCss))
+		return gulp.src(source)
+			.pipe(cleanCss(config.cleanCss))
 			.pipe(size({
 				title: 'minified',
 				showFiles: true
-			}));
+			}))
+			.pipe(gulp.dest(target));
 	} else {
 		const colors = require('colors/safe');
 		console.log(colors.yellow('cleanCss disabled'));
 	}
-
-	stream.pipe(gulp.dest(target));
-	return stream;
 };
 
 

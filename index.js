@@ -68,10 +68,12 @@ gulp.task('build', function (callback) {
 			'copy:dist:flash',
 			'copy:dist:json',
 			'copy:dist:fonts',
-			'copy:dist:img',
+			'copy:dist:resources:img',
+			'copy:dist:components:img',
 			'copy:dist:assets',
 			'copy:dist:css',
 			'copy:dist:mock',
+			'copy:dist:component:mock',
 			'copy:dist:config',
 			'copy:dist:hbs',
 			'copy:dist:bower'

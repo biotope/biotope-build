@@ -163,8 +163,12 @@ module.exports = {
 	sassLint: {},
 
 	uglify: {
-		preserveComments: 'license',
-		sourcemaps: false,
+		options: {
+			output: {
+				comments: /^!|@preserve|@license|@cc_on/i
+			}
+		},
+		sourcemaps: true,
 		folders: ['js', 'ts'],
 		ignoreList: []
 	},
@@ -175,10 +179,13 @@ module.exports = {
 	},
 
 	webpack: {
-		ignoreList: []
+		ignoreList: ['/**/*.spec.ts']
 	}
 };
 
-if (projectConfig) {
-	_.merge(module.exports, projectConfig);
-}
+try {
+    const projectConfig = require(cwd + '/projectConfig');
+    if (projectConfig) {
+        _.merge(module.exports, projectConfig);
+    }
+} catch(e) {}
