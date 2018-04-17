@@ -1,30 +1,38 @@
 const gulp = require('gulp');
 const config = require('./../config');
 
-gulp.task('clean:dev', function () {
+gulp.task('clean:dev', function (cb) {
 	const del = require('del');
-	return del([
+	del.sync([
 		config.global.dev + '/**/*'
 	]);
+
+	cb();
 });
 
-gulp.task('clean:dist', function () {
+gulp.task('clean:dist', function (cb) {
 	const del = require('del');
-	return del([
+	del.sync([
 		config.global.dist + '/**/*'
 	]);
+
+	cb();
 });
 
-gulp.task('clean:useref', function () {
+gulp.task('clean:useref', function (cb) {
 	const del = require('del');
-	return del([
+	del.sync([
 		config.global.dist + '/_useref.html'
 	]);
+
+	cb();
 });
 
-gulp.task('clean:iconfont', function () {
+gulp.task('clean:iconfont', function (cb) {
 	const del = require('del');
-	return del([
+	del.sync([
 		'./iconfont'
 	]);
+
+	cb();
 });

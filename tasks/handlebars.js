@@ -12,6 +12,7 @@ gulp.task('handlebars', function () {
 		const concat = require('gulp-concat');
 		const mergeStream = require('merge-stream');
 		const plumber = require('gulp-plumber');
+		const bioHelpers = require('./../lib/hb2-helpers');
 
 		// Assume all partials start with an underscore
 		const partials = gulp.src([
@@ -48,7 +49,7 @@ gulp.task('handlebars', function () {
 		// Output both the partials and the templates
 		return mergeStream(partials, templates)
 			.pipe(concat('handlebars.templates.js'))
-			.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { <%= contents %> }));'))
+			.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { (<%= data.bioHelpers %>)(Handlebars); <%= data.contents %> }))' , { bioHelpers: bioHelpers }, { variable: 'data' }))
 			.pipe(gulp.dest(config.global.dev + config.global.resources + '/js/'));
 	} else {
 		console.log(colors.yellow('handlebars disabled'));

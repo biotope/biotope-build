@@ -22,22 +22,19 @@ gulp.task('build:dev', function (callback) {
 			'lint:resources:sass',
 			'lint:components:sass',
 			'lint:json',
-			// 'jshint:resources',
-			// 'jshint:components',
 			'eslint:resources',
 			'eslint:components',
 			'iconfont',
 			'copy:dev:npm:js',
 			'copy:dev:npm:css',
-			'copy:dev:npm:bower'
+			'copy:dev:npm:bower',
+			'init:hb2'
 		],
 		[
 			'handlebars'
 		],
 		[
-			'static:hb',
-			'static:hb:indexr',
-			'browserSupport'
+            'static:hb2'
 		],
 		[
 			'resources:sass',
@@ -112,22 +109,20 @@ gulp.task('serve', function (callback) {
 	runSequence(
 		'build:dev',
 		[
-			'watch:browserSupport',
-			'watch:static:hb:indexr',
+            'watch:templates:hb2',
+            'watch:partials:hb2',
+            'watch:jsons:hb2',
+            'watch:icons:hb2',
 			'watch:components:js',
 			'watch:components:sass',
 			'watch:resources:sass',
-			// 'watch:jshint:components',
-			// 'watch:jshint:resources',
 			'watch:eslint:components',
 			'watch:eslint:resources',
 			'watch:handlebars',
 			'watch:json',
 			'watch:html',
 			'watch:webpack:ts',
-			'watch:static:hb',
 			'watch:icons'
-			// 'watch:livereload'
 		],
 		'connect',
 		'connect:open',
