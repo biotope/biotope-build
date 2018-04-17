@@ -91,8 +91,5 @@
     "ava": "^0.25.0",
     "map-stream": "^0.0.7",
     "vinyl-string": "^1.0.2"
-  },
-  "resolutions": {
-    "gulp-sass/node-sass": "4.7.2"
   }
 }
