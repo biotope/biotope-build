@@ -22,23 +22,22 @@ gulp.task('useref', function () {
  * */
 
 gulp.task('useref:assets', function () {
+	const hb = require('gulp-hb');
 	const filter = require('gulp-filter');
 	const useref = require('gulp-useref');
 	const lec = require('gulp-line-ending-corrector');
 	const uglify = require('gulp-uglify');
 	const cleanCss = require('gulp-clean-css');
+	const path = require('path');
 
 	const jsFilter = filter(['**/*.js'], {restore: true});
 	const cssFilter = filter(['**/*.css'], {restore: true});
 
-	const hbsParser = require('./../lib/hbs-parser');
-	const hbStream = hbsParser.createHbsGulpStream(
-		[
-			config.global.src + '/**/*.hbs',
-			'!' + config.global.src + '/pages/**'
-		],
-		null, null, config.global.debug
-	);
+	const hbStream = hb({debug: config.global.debug})
+		.partials([
+			path.join(config.global.cwd, config.global.src, '**', '*.hbs'),
+			'!' + path.join(config.global.cwd, config.global.src, 'pages', '**')
+		]);
 
 	return gulp.src(config.global.src + '/resources/_useref.html')
 		.pipe(lec(config.lec))
@@ -46,7 +45,7 @@ gulp.task('useref:assets', function () {
 		.pipe(useref())
 
 		.pipe(jsFilter)
-		.pipe(uglify(config.uglify))
+		.pipe(uglify(config.uglify.options))
 		.pipe(jsFilter.restore)
 
 		.pipe(cssFilter)
