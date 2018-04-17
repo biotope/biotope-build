@@ -4,9 +4,7 @@ const dev = '.tmp';
 const dist = 'dist';
 const node = 'node_modules';
 
-const _ = require('lodash');
 const path = require('path');
-const projectConfig = require(cwd + '/projectConfig');
 const os = require('os');
 const isWin = /^win/.test(os.platform());
 
@@ -184,8 +182,9 @@ module.exports = {
 };
 
 try {
-    const projectConfig = require(cwd + '/projectConfig');
+    const projectConfig = require(path.join(cwd, 'projectConfig.js'));
     if (projectConfig) {
+		const _ = require('lodash');
         _.merge(module.exports, projectConfig);
     }
 } catch(e) {}
