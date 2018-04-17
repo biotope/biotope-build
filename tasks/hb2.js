@@ -94,9 +94,12 @@ const loadJsonData = () => {
 	nestedProp.set(globalData, [config.global.dataObject, 'package'].join('.'), packageData);
 
 	// load browser support data
-	const jsonParser = require('../lib/json-parser');
-	const browserSupportData = jsonParser.getBrowserSupportData();
-	nestedProp.set(globalData, config.browserSupport.property, browserSupportData);
+	if(config.browserSupport.file) {
+		try {
+			const browserSupportData = require(config.browserSupport.file);
+			nestedProp.set(globalData, config.browserSupport.property, browserSupportData);
+		} catch(e) {}
+	}
 
 	// load JSON files
 	const jsonFiles = globule.find(jsonGlobPatterns);
