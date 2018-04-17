@@ -49,7 +49,7 @@ gulp.task('handlebars', function () {
 		// Output both the partials and the templates
 		return mergeStream(partials, templates)
 			.pipe(concat('handlebars.templates.js'))
-			.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { (<%= data.bioHelpers %>)(Handlebars); <%= data.contents %> }))' , { bioHelpers: bioHelpers }, { variable: 'data' }))
+			.pipe(wrap('(function (root, factory) {if (typeof module === \'object\' && module.exports) {module.exports = factory(require(\'handlebars\'));} else {factory(root.Handlebars);}}(this, function (Handlebars) { (<%= data.bioHelpers %>)(Handlebars); <%= data.contents %> }));' , { bioHelpers: bioHelpers }, { variable: 'data' }))
 			.pipe(gulp.dest(config.global.dev + config.global.resources + '/js/'));
 	} else {
 		console.log(colors.yellow('handlebars disabled'));
