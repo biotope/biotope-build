@@ -19,7 +19,7 @@
 
 </details>
 
-## [5.2.1] - 2018-xx-xx
+## [5.2.1] - 2018-03-14
 ### Added
 - Copies "_mock" folders inside components to dist during build
 - Writes version specified in package.json to resources/VERSION
