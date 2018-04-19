@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const runSequence = require('run-sequence');
 
 gulp.task('uglify:resources:dist', function (cb) {
 
