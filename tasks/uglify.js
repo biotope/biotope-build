@@ -39,6 +39,9 @@ gulp.task('uglify:resources:dist', function (cb) {
 		});
 
 	} else {
+		runSequence(
+			['copy:dist:components:js']
+		);
 		const colors = require('colors/safe');
 		console.log(colors.yellow('uglify resources disabled'));
         cb();
@@ -69,6 +72,9 @@ gulp.task('uglify:components:dist', function (cb) {
 		pump(uglifyPump, cb);
 
 	} else {
+		runSequence(
+			['copy:dist:components:js']
+		);
 		const colors = require('colors/safe');
 		console.log(colors.yellow('uglify components disabled'));
         cb();

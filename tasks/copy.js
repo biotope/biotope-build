@@ -14,6 +14,11 @@ gulp.task('copy:dev:components:js', function () {
 		.pipe(gulp.dest(config.global.dev + config.global.resources + config.global.components));
 });
 
+gulp.task('copy:dist:components:js', function () {
+	return gulp.src(config.global.dev + config.global.resources + config.global.components + '/**/*.js')
+		.pipe(gulp.dest(config.global.dist + config.global.resources + config.global.components));
+});
+
 gulp.task('copy:dist:js', function () {
 	return gulp.src(config.global.dev + config.global.resources + '/js/**/*.js')
 		.pipe(gulp.dest(config.global.dist + config.global.resources + '/js/'));
