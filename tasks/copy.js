@@ -1,8 +1,6 @@
 const gulp = require('gulp');
 const config = require('./../config');
-
-
-
+const runSequence = require('run-sequence');
 
 gulp.task('copy:dev:js', function () {
 	return gulp.src(config.global.src + config.global.resources + '/js/**/*.js')
