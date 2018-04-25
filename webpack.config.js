@@ -43,25 +43,16 @@ module.exports = {
 				]
 			},
 			{
-                test: /\.ts$/,
-                loader: 'ts-loader',
-                exclude: excludes
-            },
+				test: /\.(ts|tsx)$/,
+				loader: 'ts-loader',
+				exclude: excludes
+			},
 			{
-                test: /\.jsx$/,
+                test: /\.(js|jsx)$/,
                 use: [
                     {
                         loader: 'babel-loader',
                         options: babelOptions
-                    }
-                ],
-                exclude: excludes
-            },
-			{
-                test: /\.tsx$/,
-                use: [
-                    {
-                        loader: 'ts-loader'
                     }
                 ],
                 exclude: excludes

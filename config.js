@@ -4,8 +4,7 @@ const dev = '.tmp';
 const dist = 'dist';
 const node = 'node_modules';
 
-const _ = require('lodash');
-const projectConfig = require(cwd + '/projectConfig');
+const path = require('path');
 const os = require('os');
 const isWin = /^win/.test(os.platform());
 
@@ -47,7 +46,8 @@ module.exports = {
 	},
 
 	browserSupport: {
-		file: cwd + '/browserSupport.json'
+		file: path.join(cwd, 'browserSupport.json'),
+		property: 'data.browserSupport'
 	},
 
 	checkDependencies: {},
@@ -98,8 +98,13 @@ module.exports = {
 	handlebars: {
 		templateWrap: 'Handlebars.template(<%= contents %>)',
 		partialWrap: 'Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));',
-		namespace: 'ffglobal.configuration.data.tpl',
+		namespace: 'biotope.configuration.data.tpl',
 		noRedeclare: true
+	},
+
+	frontMatter: {
+		property: 'frontMatter',
+		remove: true
 	},
 
 	iconfont: {
@@ -156,8 +161,12 @@ module.exports = {
 	sassLint: {},
 
 	uglify: {
-		preserveComments: 'license',
-		sourcemaps: false,
+		options: {
+			output: {
+				comments: /^!|@preserve|@license|@cc_on/i
+			}
+		},
+		sourcemaps: true,
 		folders: ['js', 'ts'],
 		ignoreList: []
 	},
@@ -172,6 +181,10 @@ module.exports = {
 	}
 };
 
-if (projectConfig) {
-	_.merge(module.exports, projectConfig);
-}
+try {
+    const projectConfig = require(path.join(cwd, 'projectConfig.js'));
+    if (projectConfig) {
+		const _ = require('lodash');
+        _.merge(module.exports, projectConfig);
+    }
+} catch(e) {}
