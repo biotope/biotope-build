@@ -57,7 +57,11 @@ gulp.task('useref:assets', function () {
 		.pipe(cleanCss(config.cleanCss))
 		.pipe(cssFilter.restore)
 
-		.pipe(filter(['**', '!**/_useref.html']))
+		.pipe(filter([
+			'**',
+			'!**/_useref.html',
+			'!**/_useref.hbs'
+		]))
 
 		.pipe(gulp.dest(config.global.dist));
 });

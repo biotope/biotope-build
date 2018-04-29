@@ -22,7 +22,8 @@ gulp.task('clean:dist', function (cb) {
 gulp.task('clean:useref', function (cb) {
 	const del = require('del');
 	del.sync([
-		config.global.dist + '/_useref.html'
+		config.global.dist + '/_useref.html',
+        config.global.dist + '/_useref.hbs'
 	]);
 
 	cb();
