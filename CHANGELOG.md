@@ -19,6 +19,11 @@
 
 </details>
 
+## [5.3.3] - TBD
+### Fixed
+- Useref task now handles html and hbs extension
+- Useref task now uses bioHelpers   
+
 ## [5.3.2] - 2018-04-24
 ### Fixed
 - Webpack now loads JS and JSX files with babel loader 
