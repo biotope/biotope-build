@@ -29,17 +29,22 @@ gulp.task('useref:assets', function () {
 	const uglify = require('gulp-uglify');
 	const cleanCss = require('gulp-clean-css');
 	const path = require('path');
+    const bioHelpers = require('./../lib/hb2-helpers');
 
 	const jsFilter = filter(['**/*.js'], {restore: true});
 	const cssFilter = filter(['**/*.css'], {restore: true});
 
 	const hbStream = hb({debug: config.global.debug})
+		.helpers(bioHelpers)
 		.partials([
 			path.join(config.global.cwd, config.global.src, '**', '*.hbs'),
 			'!' + path.join(config.global.cwd, config.global.src, 'pages', '**')
 		]);
 
-	return gulp.src(config.global.src + '/resources/_useref.html')
+	return gulp.src([
+		path.join(config.global.cwd, config.global.src, 'resources', '_useref.html'),
+        path.join(config.global.cwd, config.global.src, 'resources', '_useref.hbs')
+	])
 		.pipe(lec(config.lec))
 		.pipe(hbStream)
 		.pipe(useref())
