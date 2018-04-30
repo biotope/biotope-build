@@ -1,5 +1,9 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const {
+	getComponentPathSrc,
+	getComponentPathDev
+} = require('../helper/getComponentPath');
 
 gulp.task('resources:sass', function () {
 	if (config.global.tasks.sass) {
@@ -39,8 +43,8 @@ gulp.task('components:sass', function () {
 		const sourcemaps = require('gulp-sourcemaps');
 
 		return gulp.src([
-			config.global.src + config.global.components + '/**/*.scss',
-			'!' + config.global.src + config.global.components + '/**/_*.scss'
+			getComponentPathSrc() + '/**/*.scss',
+			'!' + getComponentPathSrc() + '/**/_*.scss'
 		])
 			.pipe(sourcemaps.init())
 			.pipe(sass(config.sass).on('error', sass.logError))
@@ -48,7 +52,7 @@ gulp.task('components:sass', function () {
 				autoprefixer(config.autoprefixer)
 			]))
 			.pipe(sourcemaps.write('.'))
-			.pipe(gulp.dest(config.global.dev + config.global.resources + config.global.components));
+			.pipe(gulp.dest(getComponentPathDev()));
 	} else {
 		const colors = require('colors/safe');
 		console.log(colors.yellow('sass components disabled'));
@@ -79,7 +83,7 @@ gulp.task('lint:components:sass', function () {
 		const sassLint = require('gulp-sass-lint');
 		const cached = require('gulp-cached');
 
-		return gulp.src(config.global.src + config.global.components + '/**/*.s+(a|c)ss')
+		return gulp.src(getComponentPathSrc() + '/**/*.s+(a|c)ss')
 			.pipe(cached('sass', { optimizeMemory: true }))
 			.pipe(sassLint())
 			.pipe(sassLint.format())
@@ -125,7 +129,7 @@ gulp.task('watch:components:sass', function () {
 		const watch = require('gulp-watch');
 		const runSequence = require('run-sequence');
 		const components = [];
-		components.push(config.global.src + config.global.components + '/**/*.scss');
+		components.push(getComponentPathSrc() + '/**/*.scss');
 
 		watch(components, config.watch, function() {
 			runSequence(

@@ -1,5 +1,8 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const {
+	getComponentPathSrc,
+} = require('../helper/getComponentPath');
 
 gulp.task('eslint:resources', function () {
 	const colors = require('colors/safe');
@@ -29,8 +32,8 @@ gulp.task('eslint:components', function () {
 		const cached = require('gulp-cached');
 
 		return gulp.src([
-			config.global.src + config.global.components + '/**/*.js',
-			'!' + config.global.src + config.global.components + '/**/vendor/**/*.js'
+			getComponentPathSrc() + '/**/*.js',
+			'!' + getComponentPathSrc() + '/**/vendor/**/*.js'
 		])
 			.pipe(cached('eslint', { optimizeMemory: true }))
 			.pipe(eslint())
@@ -64,8 +67,8 @@ gulp.task('watch:eslint:components', function () {
 		const runSequence = require('run-sequence');
 
 		watch([
-			config.global.src + config.global.components + '/**/*.js',
-			'!' + config.global.src + config.global.components + '/**/vendor/**/*.js'
+			getComponentPathSrc() + '/**/*.js',
+			'!' + getComponentPathSrc() + '/**/vendor/**/*.js'
 		], config.watch, function () {
 			runSequence(
 				['eslint:components'],

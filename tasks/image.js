@@ -1,5 +1,8 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const {
+	getComponentPathDist
+} = require('../helper/getComponentPath');
 
 gulp.task('image:resources:dist', function () {
 
@@ -42,15 +45,15 @@ gulp.task('image:component:dist', function () {
 		];
 
 		return gulp.src([
-				path.join(config.global.dist, config.global.resources, config.global.components, '**', 'img', '**', '*.*'),
-				'!' + path.join(config.global.dist, config.global.resources, config.global.components, '**', 'img', '**', '*.svg')
+				path.join(getComponentPathDist(), '**', 'img', '**', '*.*'),
+				'!' + path.join(getComponentPathDist(), '**', 'img', '**', '*.svg')
 			])
 			.pipe(image(
 				imageOptimizers,
 				config.image
 			))
 			.pipe(gulp.dest(
-				path.join(config.global.dist, config.global.resources, config.global.components)
+				path.join(getComponentPathDist())
 			));
 
 	}

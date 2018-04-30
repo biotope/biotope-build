@@ -1,5 +1,8 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const {
+	getComponentPathSrc
+} = require('../helper/getComponentPath');
 
 gulp.task('jshint:resources', function () {
 	if (config.global.tasks.linting) {
@@ -27,8 +30,8 @@ gulp.task('jshint:components', function () {
 		const cached = require('gulp-cached');
 
 		return gulp.src([
-			config.global.src + config.global.components + '/**/*.js',
-			'!' + config.global.src + config.global.components + '/**/vendor/**/*.js'
+			getComponentPathSrc() + '/**/*.js',
+			'!' + getComponentPathSrc() + '/**/vendor/**/*.js'
 		])
 			.pipe(cached('jshint', { optimizeMemory: true }))
 			.pipe(jshint())
@@ -59,8 +62,8 @@ gulp.task('watch:jshint:components', function () {
 		const runSequence = require('run-sequence');
 
 		watch([
-			config.global.src + config.global.components + '/**/*.js',
-			'!' + config.global.src + config.global.components + '/**/vendor/**/*.js'
+			getComponentPathSrc() + '/**/*.js',
+			'!' + getComponentPathSrc() + '/**/vendor/**/*.js'
 		], config.watch, function () {
 			runSequence('jshint:components');
 		});
