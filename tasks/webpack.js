@@ -5,6 +5,10 @@ const webpackSourcePatterns = [
     path.join(config.global.cwd, config.global.src, config.global.resources, '**', '*.ts'),
     path.join(config.global.cwd, config.global.src, config.global.components, '**', '*.ts')
 ];
+const webpackWatchPatterns = [
+	...webpackSourcePatterns,
+	path.join(config.global.cwd, config.global.src, config.global.components, '**', '*.scss')
+];
 
 gulp.task('webpack:ts', function (cb) {
     if (config.global.tasks.webpack) {
@@ -72,7 +76,7 @@ gulp.task('watch:webpack:ts', function () {
         const watch = require('gulp-watch');
         const runSequence = require('run-sequence');
 
-        watch(webpackSourcePatterns, config.watch, function () {
+        watch(webpackWatchPatterns, config.watch, function () {
             runSequence('webpack:ts', 'livereload');
         });
     }
