@@ -3,8 +3,7 @@ const config = require('./../config');
 const path = require('path');
 const webpackSourcePatterns = [
     path.join(config.global.cwd, config.global.src, config.global.resources, '**', '*.ts'),
-    path.join(config.global.cwd, config.global.src, config.global.components, '**', '*.ts'),
-	path.join(config.global.cwd, config.global.src, config.global.components, '**', '*.scss')
+    path.join(config.global.cwd, config.global.src, config.global.components, '**', '*.ts')
 ];
 const webpackWatchPatterns = [
 	...webpackSourcePatterns,
