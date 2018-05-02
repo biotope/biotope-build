@@ -1,5 +1,8 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const {
+	getComponentPathSrc
+} = require('../helper/getComponentPath');
 
 gulp.task('handlebars', function () {
 	const colors = require('colors/safe');
@@ -17,7 +20,7 @@ gulp.task('handlebars', function () {
 		// Assume all partials start with an underscore
 		const partials = gulp.src([
 			config.global.src + config.global.resources + '/hbs/**/_*.hbs',
-			config.global.src + config.global.components + '/**/hbs/**/_*.hbs',
+			getComponentPathSrc() + '/**/hbs/**/_*.hbs',
 
 		])
 		.pipe(plumber())
@@ -34,7 +37,7 @@ gulp.task('handlebars', function () {
 
 		const templates = gulp.src([
 			config.global.src + config.global.resources + '/hbs/**/[^_]*.hbs',
-			config.global.src + config.global.components + '/**/hbs/**/[^_]*.hbs'
+			getComponentPathSrc() + '/**/hbs/**/[^_]*.hbs'
 		])
 		.pipe(plumber())
 		.pipe(handlebars({
@@ -62,11 +65,11 @@ gulp.task('watch:handlebars', function () {
 	if (config.global.tasks.handlebars) {
 		const watch = require('gulp-watch');
 		const runSequence = require('run-sequence');
-		const watchFiles = [];
-
-		watchFiles.push(config.global.src + config.global.resources + '/hbs/**/*.hbs');
-		watchFiles.push(config.global.src + config.global.resources + '/js/handlebars.helper.js');
-		watchFiles.push(config.global.src + config.global.components + '/**/hbs/**/*.hbs');
+		const watchFiles = [
+			config.global.src + config.global.resources + '/hbs/**/*.hbs',
+			config.global.src + config.global.resources + '/js/handlebars.helper.js',
+			getComponentPathSrc() + '/**/hbs/**/*.hbs'
+		];
 
 		watch(watchFiles, config.watch, function () {
 			runSequence(

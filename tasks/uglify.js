@@ -1,5 +1,9 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const {
+	getComponentPathDev,
+	getComponentPathDist
+} = require('../helper/getComponentPath');
 
 gulp.task('uglify:resources:dist', function (cb) {
 
@@ -54,14 +58,14 @@ gulp.task('uglify:components:dist', function (cb) {
         const uglifyConfig = require('./../pumps/uglify');
 
 		const srcArray = [
-			path.join(config.global.dev, config.global.resources, config.global.components, '/**/*.js')
+			path.join(getComponentPathDev(), '/**/*.js')
 		];
 
 		config.uglify.ignoreList.forEach((ignorePath) => {
 			srcArray.push('!' + path.join(config.global.dev, ignorePath));
 		});
 
-        const targetPath = path.join(config.global.dist, config.global.resources, config.global.components);
+        const targetPath = getComponentPathDist();
         const uglifyPump = uglifyConfig.defaultPump(config);
         uglifyPump.unshift(gulp.src(srcArray));
         uglifyPump.push(gulp.dest(targetPath));

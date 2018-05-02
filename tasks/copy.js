@@ -1,5 +1,10 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const {
+	getComponentPathSrc,
+	getComponentPathDev,
+	getComponentPathDist
+} = require('../helper/getComponentPath');
 
 
 
@@ -10,8 +15,8 @@ gulp.task('copy:dev:js', function () {
 });
 
 gulp.task('copy:dev:components:js', function () {
-	return gulp.src(config.global.src + config.global.components + '/**/*.js')
-		.pipe(gulp.dest(config.global.dev + config.global.resources + config.global.components));
+	return gulp.src(getComponentPathSrc() + '/**/*.js')
+		.pipe(gulp.dest(getComponentPathDev()));
 });
 
 gulp.task('copy:dist:js', function () {
@@ -133,8 +138,8 @@ gulp.task('copy:dist:resources:img', function () {
 });
 
 gulp.task('copy:dist:components:img', function () {
-	return gulp.src(config.global.src + config.global.components + '/**/img/**/*')
-		.pipe(gulp.dest(config.global.dist + config.global.resources + config.global.components));
+	return gulp.src(getComponentPathSrc() + '/**/img/**/*')
+		.pipe(gulp.dest(getComponentPathDist()));
 });
 
 gulp.task('copy:dist:assets', function () {
@@ -153,8 +158,8 @@ gulp.task('copy:dist:mock', function () {
 });
 
 gulp.task('copy:dist:component:mock', function () {
-	return gulp.src(config.global.src + config.global.components + '/**/_mock/**/*')
-		.pipe(gulp.dest(config.global.dist + config.global.components));
+	return gulp.src(getComponentPathSrc() + '/**/_mock/**/*')
+		.pipe(gulp.dest(getComponentPathDist()));
 });
 
 gulp.task('copy:dist:config', function () {
@@ -171,7 +176,7 @@ gulp.task('watch:components:js', function() {
 	const watch = require('gulp-watch');
 	const runSequence = require('run-sequence');
 
-	watch(config.global.src + config.global.components +'/**/*.js', config.watch, function () {
+	watch(getComponentPathSrc() +'/**/*.js', config.watch, function () {
 		runSequence(
 			['copy:dev:components:js']
 		);

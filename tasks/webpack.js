@@ -1,9 +1,12 @@
 const gulp = require('gulp');
 const config = require('./../config');
 const path = require('path');
+const {
+	getComponentPathSrc,
+} = require('../helper/getComponentPath');
 const webpackSourcePatterns = [
     path.join(config.global.cwd, config.global.src, config.global.resources, '**', '*.ts'),
-    path.join(config.global.cwd, config.global.src, config.global.components, '**', '*.ts')
+    path.join(config.global.cwd, getComponentPathSrc(), '**', '*.ts')
 ];
 const webpackWatchPatterns = [
 	...webpackSourcePatterns,

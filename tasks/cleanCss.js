@@ -1,5 +1,9 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const {
+	getComponentPathDev,
+	getComponentPathDist
+} = require('../helper/getComponentPath');
 
 const cleanCssTask = (source, target) => {
 	const size = require('gulp-size');
@@ -29,7 +33,7 @@ gulp.task('cleanCss:resources:dist', function () {
 
 gulp.task('cleanCss:components:dist', function () {
 	return cleanCssTask(
-		config.global.dev + config.global.resources + config.global.components + '/**/*.css',
-		config.global.dist + config.global.resources + config.global.components
+		getComponentPathDev() + '/**/*.css',
+		getComponentPathDist()
 	);
 });
