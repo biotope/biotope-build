@@ -53,8 +53,8 @@ This list shows the configurable tasks as well as a brief description about what
 	image: true, //compress images stores in '/resources/img'
 	linting: true, //linting of js/ts/scss files
 	sass: true, //disables the sass compiler, disabled if you use vanilla css
+	typescript: true //compiles typescript and transpiles ES6 Code in *.ts files
 	uglify: true, //uglifies js files in the build 
-	webpack: true //compiles typescript and transpiles ES6 Code in *.ts files
 }
 ```
 ###### externalResources
@@ -296,11 +296,11 @@ watch: {
 },
 ```
 
-##### webpack
-Add files to an ignoreList, set path relative to src path. Webpack settings are set via webpack.config.js
-Repo: https://github.com/webpack/webpack
+##### typescript
+Add files to an ignoreList, set path relative to src path. Uses rollup.
+Repo: https://github.com/rollup/rollup
 ```
-webpack: {
+typescript: {
 	ignoreList: []
 }
 ```
