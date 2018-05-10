@@ -31,9 +31,9 @@ module.exports = {
 			image: true,
 			linting: true,
 			sass: true,
+			typescript: true,
 			uglify: true,
 			version: true,
-			webpack: true
 		},
 		externalResources: {},
 		bowerResources: {}
@@ -160,6 +160,10 @@ module.exports = {
 
 	sassLint: {},
 
+	typescript: {
+		ignoreList: ['/**/*.spec.ts']
+	},
+
 	uglify: {
 		options: {
 			output: {
@@ -174,10 +178,6 @@ module.exports = {
 	watch: {
 		usePolling: isWin,
 		interval: (isWin ? 250 : 100)
-	},
-
-	webpack: {
-		ignoreList: ['/**/*.spec.ts']
 	}
 };
 
