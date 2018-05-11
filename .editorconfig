@@ -22,4 +22,4 @@ trim_trailing_whitespace = false
 
 [package.json]
 indent_style = space
-indent_size = 4
+indent_size = 2

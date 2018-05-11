@@ -1,20 +1,20 @@
-const gulp = require("gulp");
-const config = require("./../config");
-const path = require("path");
+const gulp = require('gulp');
+const config = require('./../config');
+const path = require('path');
 const webpackSourcePatterns = [
 	path.join(
 		config.global.cwd,
 		config.global.src,
 		config.global.resources,
-		"**",
-		"*.ts"
+		'**',
+		'*.ts'
 	),
 	path.join(
 		config.global.cwd,
 		config.global.src,
 		config.global.components,
-		"**",
-		"*.ts"
+		'**',
+		'*.ts'
 	)
 ];
 const webpackWatchPatterns = [
@@ -23,22 +23,22 @@ const webpackWatchPatterns = [
 		config.global.cwd,
 		config.global.src,
 		config.global.components,
-		"**",
-		"*.scss"
+		'**',
+		'*.scss'
 	)
 ];
 
-gulp.task("webpack:ts", function(cb) {
+gulp.task('webpack:ts', function(cb) {
 	if (config.global.tasks.webpack) {
-		const named = require("vinyl-named");
-		const plumber = require("gulp-plumber");
-		const webpack = require("webpack");
-		const webpackStream = require("webpack-stream");
-		const webpackConfig = require("./../webpack.config.js");
+		const named = require('vinyl-named');
+		const plumber = require('gulp-plumber');
+		const webpack = require('webpack');
+		const webpackStream = require('webpack-stream');
+		const webpackConfig = require('./../webpack.config.js');
 
 		config.webpack.ignoreList.forEach(ignorePath => {
 			webpackSourcePatterns.push(
-				"!" +
+				'!' +
 					path.join(config.global.cwd, config.global.src, ignorePath)
 			);
 		});
@@ -84,7 +84,7 @@ gulp.task("webpack:ts", function(cb) {
 						);
 					}
 
-					if (relativePath.endsWith(".ts")) {
+					if (relativePath.endsWith('.ts')) {
 						relativePath = relativePath.slice(0, -3);
 					}
 
@@ -94,19 +94,19 @@ gulp.task("webpack:ts", function(cb) {
 			.pipe(webpackStream(webpackConfig, webpack))
 			.pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
 	} else {
-		const colors = require("colors/safe");
-		console.log(colors.yellow("webpack:ts disabled"));
+		const colors = require('colors/safe');
+		console.log(colors.yellow('webpack:ts disabled'));
 		cb();
 	}
 });
 
-gulp.task("watch:webpack:ts", function() {
+gulp.task('watch:webpack:ts', function() {
 	if (config.global.tasks.webpack) {
-		const watch = require("gulp-watch");
-		const runSequence = require("run-sequence");
+		const watch = require('gulp-watch');
+		const runSequence = require('run-sequence');
 
 		watch(webpackWatchPatterns, config.watch, function() {
-			runSequence("webpack:ts", "livereload");
+			runSequence('webpack:ts', 'livereload');
 		});
 	}
 });

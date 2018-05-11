@@ -1,21 +1,21 @@
-var excludes = ["/node_modules/", "/patterns/", "/dist/", "/test/", "/.tmp/"];
+var excludes = ['/node_modules/', '/patterns/', '/dist/', '/test/', '/.tmp/'];
 
 var babelOptions = {
 	babelrc: false,
-	presets: ["env"]
+	presets: ['env']
 };
 
 module.exports = {
 	watch: false,
 
-	mode: "production",
+	mode: 'production',
 
 	resolve: {
-		extensions: [".js", ".ts", ".tsx", ".jsx", ".scss"]
+		extensions: ['.js', '.ts', '.tsx', '.jsx', '.scss']
 	},
 
 	externals: {
-		jquery: "jQuery"
+		jquery: 'jQuery'
 	},
 
 	// devtool: 'source-map',
@@ -26,26 +26,26 @@ module.exports = {
 				test: /\.scss$/,
 				use: [
 					{
-						loader: "style-loader"
+						loader: 'style-loader'
 					},
 					{
-						loader: "css-loader"
+						loader: 'css-loader'
 					},
 					{
-						loader: "sass-loader"
+						loader: 'sass-loader'
 					}
 				]
 			},
 			{
 				test: /\.(ts|tsx)$/,
-				loader: "ts-loader",
+				loader: 'ts-loader',
 				exclude: excludes
 			},
 			{
 				test: /\.(js|jsx)$/,
 				use: [
 					{
-						loader: "babel-loader",
+						loader: 'babel-loader',
 						options: babelOptions
 					}
 				],
