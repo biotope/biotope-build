@@ -16,6 +16,8 @@ var babelOptions = {
 module.exports = {
     watch: false,
 
+	mode: 'development',
+
     resolve: {
         extensions: ['.js', '.ts', '.tsx', '.jsx', '.scss']
 	},
@@ -43,20 +45,30 @@ module.exports = {
 				]
 			},
 			{
-				test: /\.(ts|tsx)$/,
+				test: /\.tsx?$/,
 				loader: 'ts-loader',
 				exclude: excludes
 			},
 			{
-                test: /\.(js|jsx)$/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: babelOptions
-                    }
-                ],
+                test: /\.jsx?$/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: babelOptions
+					}
+				],
                 exclude: excludes
             }
         ]
-    }
+    },
+
+	optimization: {
+		namedModules: true, // NamedModulesPlugin()
+		// splitChunks: { // CommonsChunkPlugin()
+		// 	name: 'vendor',
+		// 	minChunks: 2
+		// },
+		noEmitOnErrors: true, // NoEmitOnErrorsPlugin
+		concatenateModules: true //ModuleConcatenationPlugin
+	}
 };
