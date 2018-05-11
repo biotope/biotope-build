@@ -1,7 +1,8 @@
 {
   "name": "@biotope/build",
   "version": "5.3.2",
-  "description": "An advanced developent and build runtime to create frontent ecosystems",
+  "description":
+    "An advanced developent and build runtime to create frontent ecosystems",
   "repository": {
     "type": "git",
     "url": "https://github.com/biotope/biotope-build.git"
@@ -9,7 +10,9 @@
   "author": "Biotope",
   "license": "MIT",
   "scripts": {
-    "test": "ava tests --verbose"
+    "test": "ava tests --verbose",
+    "eslint:lint": "eslint --ignore-path .gitignore .",
+    "eslint:fix": "eslint --fix --ignore-path .gitignore ."
   },
   "dependencies": {
     "autoprefixer": "7.1.6",
@@ -21,6 +24,7 @@
     "colors": "1.2.1",
     "css-loader": "^0.28.11",
     "del": "3.0.0",
+    "eslint": "^4.19.1",
     "front-matter": "2.3.0",
     "fs-extra": "5.0.0",
     "globule": "1.2.0",
@@ -72,6 +76,8 @@
     "merge-stream": "1.0.1",
     "nested-property": "0.0.7",
     "opn": "5.1.0",
+    "prettier": "^1.12.1",
+    "prettier-eslint": "^8.8.1",
     "pump": "2.0.0",
     "require-dir": "0.3.2",
     "run-sequence": "2.2.1",

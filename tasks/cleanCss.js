@@ -2,34 +2,39 @@ const gulp = require('gulp');
 const config = require('./../config');
 
 const cleanCssTask = (source, target) => {
-	const size = require('gulp-size');
-	const cleanCss = require('gulp-clean-css');
+  const size = require('gulp-size');
+  const cleanCss = require('gulp-clean-css');
 
-	if (config.global.tasks.cleanCss) {
-		return gulp.src(source)
-			.pipe(cleanCss(config.cleanCss))
-			.pipe(size({
-				title: 'minified',
-				showFiles: true
-			}))
-			.pipe(gulp.dest(target));
-	} else {
-		const colors = require('colors/safe');
-		console.log(colors.yellow('cleanCss disabled'));
-	}
+  if (config.global.tasks.cleanCss) {
+    return gulp
+      .src(source)
+      .pipe(cleanCss(config.cleanCss))
+      .pipe(
+        size({
+          title: 'minified',
+          showFiles: true
+        })
+      )
+      .pipe(gulp.dest(target));
+  } else {
+    const colors = require('colors/safe');
+    console.log(colors.yellow('cleanCss disabled'));
+  }
 };
 
-
-gulp.task('cleanCss:resources:dist', function () {
-	return cleanCssTask(
-		config.global.dev + config.global.resources + '/css/**/*.css',
-		config.global.dist + config.global.resources + '/css/'
-	);
+gulp.task('cleanCss:resources:dist', function() {
+  return cleanCssTask(
+    config.global.dev + config.global.resources + '/css/**/*.css',
+    config.global.dist + config.global.resources + '/css/'
+  );
 });
 
-gulp.task('cleanCss:components:dist', function () {
-	return cleanCssTask(
-		config.global.dev + config.global.resources + config.global.components + '/**/*.css',
-		config.global.dist + config.global.resources + config.global.components
-	);
+gulp.task('cleanCss:components:dist', function() {
+  return cleanCssTask(
+    config.global.dev +
+      config.global.resources +
+      config.global.components +
+      '/**/*.css',
+    config.global.dist + config.global.resources + config.global.components
+  );
 });
