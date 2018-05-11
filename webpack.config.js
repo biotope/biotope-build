@@ -8,7 +8,7 @@ var babelOptions = {
 module.exports = {
 	watch: false,
 
-	mode: "development",
+	mode: "production",
 
 	resolve: {
 		extensions: [".js", ".ts", ".tsx", ".jsx", ".scss"]
