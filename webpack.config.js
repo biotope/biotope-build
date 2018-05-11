@@ -1,33 +1,27 @@
-var excludes = [
-    '/node_modules/',
-    '/patterns/',
-    '/dist/',
-    '/test/',
-    '/.tmp/'
-];
+var excludes = ["/node_modules/", "/patterns/", "/dist/", "/test/", "/.tmp/"];
 
 var babelOptions = {
-    babelrc: false,
-    presets: [
-        'env'
-    ]
+	babelrc: false,
+	presets: ["env"]
 };
 
 module.exports = {
-    watch: false,
+	watch: false,
 
-    resolve: {
-        extensions: ['.js', '.ts', '.tsx', '.jsx', '.scss']
+	mode: "development",
+
+	resolve: {
+		extensions: [".js", ".ts", ".tsx", ".jsx", ".scss"]
 	},
 
 	externals: {
-        jquery: 'jQuery'
-    },
+		jquery: "jQuery"
+	},
 
-    // devtool: 'source-map',
+	// devtool: 'source-map',
 
-    module: {
-        rules: [
+	module: {
+		rules: [
 			{
 				test: /\.scss$/,
 				use: [
@@ -44,19 +38,19 @@ module.exports = {
 			},
 			{
 				test: /\.(ts|tsx)$/,
-				loader: 'ts-loader',
+				loader: "ts-loader",
 				exclude: excludes
 			},
 			{
-                test: /\.(js|jsx)$/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: babelOptions
-                    }
-                ],
-                exclude: excludes
-            }
-        ]
-    }
+				test: /\.(js|jsx)$/,
+				use: [
+					{
+						loader: "babel-loader",
+						options: babelOptions
+					}
+				],
+				exclude: excludes
+			}
+		]
+	}
 };
