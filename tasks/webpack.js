@@ -28,13 +28,13 @@ const webpackWatchPatterns = [
 	)
 ];
 
-gulp.task('webpack:ts', function(cb) {
-	if (config.global.tasks.webpack) {
-		const named = require('vinyl-named');
-		const plumber = require('gulp-plumber');
-		const webpack = require('webpack');
-		const webpackStream = require('webpack-stream');
-		const webpackConfig = require('./../webpack.config.js');
+gulp.task('webpack:ts', function (cb) {
+    if (config.global.tasks.webpack) {
+        const globule = require('globule');
+        const plumber = require('gulp-plumber');
+        const webpack = require('webpack');
+        const webpackStream = require('webpack-stream');
+        const webpackConfig = require('./../webpack.config.js');
 
 		config.webpack.ignoreList.forEach(ignorePath => {
 			webpackSourcePatterns.push(
@@ -65,39 +65,56 @@ gulp.task('webpack:ts', function(cb) {
 		// 	gulp.dest( path.join(config.global.cwd, config.global.dev) )
 		// ], cb);
 
-		return gulp
-			.src(webpackSourcePatterns, {
-				base: path.join(config.global.cwd, config.global.src)
-			})
-			.pipe(plumber())
-			.pipe(
-				named(file => {
-					const currentResourceParsed = path.parse(
-						config.global.resources
-					);
-					let relativePath = path.relative(file.base, file.path);
+        // const stream = gulp.src(webpackSourcePatterns, {base: path.join(config.global.cwd, config.global.src)})
+        //     .pipe(plumber())
+        //     .pipe(named((file) => {
+        //         const currentResourceParsed = path.parse(config.global.resources);
+        //         let relativePath = path.relative(file.base, file.path);
+        //
+        //         if (!relativePath.startsWith(currentResourceParsed.name)) {
+        //             relativePath = path.join(currentResourceParsed.name, relativePath);
+        //         }
+        //
+        //         if (relativePath.endsWith('.ts')) {
+        //             relativePath = relativePath.slice(0, -3);
+        //         }
+        //
+        //         return relativePath;
+        //     }))
+        //     .pipe(webpackStream(webpackConfig, webpack))
+        //     .pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
 
-					if (!relativePath.startsWith(currentResourceParsed.name)) {
-						relativePath = path.join(
-							currentResourceParsed.name,
-							relativePath
-						);
-					}
+        const entryPoints = globule.find(webpackSourcePatterns);
+        webpackConfig.entry = {};
+        webpackConfig.output = {
+            filename: '[name].js'
+        };
 
-					if (relativePath.endsWith('.ts')) {
-						relativePath = relativePath.slice(0, -3);
-					}
+        for(let entryPoint of entryPoints) {
+            const currentResourceParsed = path.parse(config.global.resources);
+            let relativePath = path.relative(path.join(config.global.cwd, config.global.src), entryPoint);
 
-					return relativePath;
-				})
-			)
-			.pipe(webpackStream(webpackConfig, webpack))
-			.pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
-	} else {
-		const colors = require('colors/safe');
-		console.log(colors.yellow('webpack:ts disabled'));
-		cb();
-	}
+            if (!relativePath.startsWith(currentResourceParsed.name)) {
+                relativePath = path.join(currentResourceParsed.name, relativePath);
+            }
+
+            if (relativePath.endsWith('.ts')) {
+                relativePath = relativePath.slice(0, -3);
+            }
+
+            webpackConfig.entry[relativePath] = entryPoint;
+        }
+
+        return gulp.src(path.join(config.global.cwd, 'gulpfile.js'), {read: false})
+            .pipe(plumber())
+            .pipe(webpackStream(webpackConfig, webpack))
+            .pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
+
+    } else {
+        const colors = require('colors/safe');
+        console.log(colors.yellow('webpack:ts disabled'));
+        cb();
+    }
 });
 
 gulp.task('watch:webpack:ts', function() {
