@@ -82,7 +82,10 @@
     "typescript": "2.8.3",
     "vinyl-named": "1.1.0",
     "webpack": "4.8.1",
-    "webpack-stream": "https://github.com/jurekbarth/webpack-stream"
+    "webpack-stream": "4.0.3"
+  },
+  "resolutions": {
+    "webpack-stream/webpack": "^4.8.1"
   },
   "engines": {
     "node": ">=8.9.0",
