@@ -1,14 +1,14 @@
-var excludes = ['/node_modules/', '/patterns/', '/dist/', '/test/', '/.tmp/'];
+const path = require('path');
+const cwd = process.cwd();
 
-var babelOptions = {
-  babelrc: false,
-  presets: ['env']
-};
+const generalIncludePaths = [
+  path.resolve(cwd, 'src')
+];
 
 module.exports = {
   watch: false,
 
-  mode: 'production',
+  mode: 'development',
 
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.jsx', '.scss']
@@ -22,7 +22,18 @@ module.exports = {
     jquery: 'jQuery'
   },
 
-  // devtool: 'source-map',
+  devtool: 'source-map',
+
+  stats: {
+    assets: true,
+    chunks: false,
+    chunkModules: false,
+    colors: true,
+    entrypoints: false,
+    hash: false,
+    timings: false,
+    version: true,
+  },
 
   module: {
     rules: [
@@ -38,28 +49,31 @@ module.exports = {
           {
             loader: 'sass-loader'
           }
-        ]
+        ],
+        include: generalIncludePaths
       },
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: excludes
+        include: generalIncludePaths
       },
       {
         test: /\.jsx?$/,
         use: [
           {
             loader: 'babel-loader',
-            options: babelOptions
+            options: {
+              babelrc: false,
+              presets: ['env']
+            }
           }
         ],
-        exclude: excludes
+        include: generalIncludePaths
       }
     ]
   },
 
   optimization: {
-    namedModules: true,
     noEmitOnErrors: true,
     concatenateModules: true
   }
