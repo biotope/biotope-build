@@ -1,4 +1,3 @@
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const path = require('path');
 const cwd = process.cwd();
 
@@ -73,10 +72,6 @@ module.exports = {
       }
     ]
   },
-
-  plugins: [
-    new HardSourceWebpackPlugin()
-  ],
 
   optimization: {
     noEmitOnErrors: true,
