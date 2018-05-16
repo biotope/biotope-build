@@ -9,8 +9,11 @@
   "author": "Biotope",
   "license": "MIT",
   "scripts": {
-    "test": "ava tests --verbose"
+    "test": "ava tests --verbose",
+    "eslint:lint": "eslint --ignore-path .gitignore .",
+    "eslint:fix": "eslint --fix --ignore-path .gitignore ."
   },
+  "pre-commit": "eslint:lint",
   "dependencies": {
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.3",
@@ -21,6 +24,7 @@
     "colors": "1.2.5",
     "css-loader": "0.28.11",
     "del": "3.0.0",
+    "eslint": "^4.19.1",
     "front-matter": "2.3.0",
     "fs-extra": "5.0.0",
     "globule": "1.2.0",
@@ -73,6 +77,8 @@
     "merge-stream": "1.0.1",
     "nested-property": "0.0.7",
     "opn": "5.1.0",
+    "prettier": "1.12.1",
+    "prettier-eslint": "8.8.1",
     "pump": "2.0.0",
     "require-dir": "0.3.2",
     "run-sequence": "2.2.1",
@@ -97,6 +103,7 @@
   "devDependencies": {
     "ava": "0.25.0",
     "map-stream": "0.0.7",
+    "pre-commit": "1.2.2",
     "vinyl-string": "1.0.2"
   }
 }
