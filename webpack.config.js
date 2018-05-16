@@ -32,7 +32,7 @@ module.exports = {
     entrypoints: false,
     hash: false,
     timings: false,
-    version: true,
+    version: true
   },
 
   module: {

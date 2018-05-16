@@ -2,83 +2,83 @@ const gulp = require('gulp');
 const config = require('./../config');
 const path = require('path');
 const webpackSourcePatterns = [
-	path.join(
-		config.global.cwd,
-		config.global.src,
-		config.global.resources,
-		'**',
-		'*.ts'
-	),
-	path.join(
-		config.global.cwd,
-		config.global.src,
-		config.global.components,
-		'**',
-		'*.ts'
-	)
+  path.join(
+    config.global.cwd,
+    config.global.src,
+    config.global.resources,
+    '**',
+    '*.ts'
+  ),
+  path.join(
+    config.global.cwd,
+    config.global.src,
+    config.global.components,
+    '**',
+    '*.ts'
+  )
 ];
 const webpackWatchPatterns = [
-	...webpackSourcePatterns,
-	path.join(
-		config.global.cwd,
-		config.global.src,
-		config.global.components,
-		'**',
-		'*.scss'
-	)
+  ...webpackSourcePatterns,
+  path.join(
+    config.global.cwd,
+    config.global.src,
+    config.global.components,
+    '**',
+    '*.scss'
+  )
 ];
 
 gulp.task('webpack:ts', function (cb) {
-	if (config.global.tasks.webpack) {
-		const globule = require('globule');
-		const plumber = require('gulp-plumber');
-		const webpack = require('webpack');
-		const webpackStream = require('webpack-stream');
-		const webpackConfig = require('./../webpack.config.js');
+  if (config.global.tasks.webpack) {
+    const globule = require('globule');
+    const plumber = require('gulp-plumber');
+    const webpack = require('webpack');
+    const webpackStream = require('webpack-stream');
+    const webpackConfig = require('./../webpack.config.js');
 
-		config.webpack.ignoreList.forEach(ignorePath => {
-			webpackSourcePatterns.push(
-				`!${path.join(config.global.cwd, config.global.src, ignorePath)}`
-			);
-		});
+    config.webpack.ignoreList.forEach(ignorePath => {
+      webpackSourcePatterns.push(
+        `!${path.join(config.global.cwd, config.global.src, ignorePath)}`
+      );
+    });
 
-		const entryPoints = globule.find(webpackSourcePatterns);
-		webpackConfig.entry = {};
+    const entryPoints = globule.find(webpackSourcePatterns);
+    webpackConfig.entry = {};
 
-		for (let entryPoint of entryPoints) {
-			const currentResourceParsed = path.parse(config.global.resources);
-			let relativePath = path.relative(path.join(config.global.cwd, config.global.src), entryPoint);
+    for (const entryPoint of entryPoints) {
+      const currentResourceParsed = path.parse(config.global.resources);
+      let relativePath = path.relative(path.join(config.global.cwd, config.global.src), entryPoint);
 
-			if (!relativePath.startsWith(currentResourceParsed.name)) {
-				relativePath = path.join(currentResourceParsed.name, relativePath);
-			}
+      if (!relativePath.startsWith(currentResourceParsed.name)) {
+        relativePath = path.join(currentResourceParsed.name, relativePath);
+      }
 
-			if (relativePath.endsWith('.ts')) {
-				relativePath = relativePath.slice(0, -3);
-			}
+      if (relativePath.endsWith('.ts')) {
+        relativePath = relativePath.slice(0, -3);
+      }
 
-			webpackConfig.entry[relativePath] = entryPoint;
-		}
+      webpackConfig.entry[relativePath] = entryPoint;
+    }
 
-		return gulp.src(path.join(config.global.cwd, 'gulpfile.js'), {read: false})
-			.pipe(plumber())
-			.pipe(webpackStream(webpackConfig, webpack))
-			.pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
+    return gulp.src(path.join(config.global.cwd, 'gulpfile.js'), {read: false})
+      .pipe(plumber())
+      .pipe(webpackStream(webpackConfig, webpack))
+      .pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
 
-	} else {
-		const colors = require('colors/safe');
-		console.log(colors.yellow('webpack:ts disabled'));
-		cb();
-	}
+  } else {
+    const colors = require('colors/safe');
+    console.log(colors.yellow('webpack:ts disabled'));
+    cb();
+  }
 });
 
 gulp.task('watch:webpack:ts', function () {
-	if (config.global.tasks.webpack) {
-		const watch = require('gulp-watch');
-		const runSequence = require('run-sequence');
+  if (config.global.tasks.webpack) {
+    const watch = require('gulp-watch');
+    const runSequence = require('run-sequence');
 
-		watch(webpackWatchPatterns, config.watch, function () {
-			runSequence('webpack:ts', 'livereload');
-		});
-	}
+    watch(webpackWatchPatterns, config.watch, function () {
+      runSequence('webpack:ts', 'livereload');
+    });
+  }
 });
