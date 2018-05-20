@@ -1,15 +1,58 @@
+const fs = require('fs');
 const gulp = require('gulp');
 const config = require('./../config');
 
-gulp.task('iconfont', function(callback) {
+const checkFilePaths = (arr, cb) => {
+  let iconfontArray = config.iconfontCss;
+  if (!Array.isArray(iconfontArray)) {
+    iconfontArray = [iconfontArray];
+  }
+  const promises = [];
+  for (const iconfont of iconfontArray) {
+    const p = new Promise((res, _) => {
+      fs.access(iconfont.path, fs.constants.F_OK, err => {
+        if (err) {
+          res({
+            error: 'file does not exist',
+            path: iconfont.path
+          });
+        } else {
+          res({ error: '', path: iconfont.path });
+        }
+      });
+    });
+    promises.push(p);
+  }
+  Promise.all(promises).then(errors => {
+    cb(errors);
+  });
+};
+
+gulp.task('iconfont', callback => {
   const runSequence = require('run-sequence');
 
   if (config.global.tasks.iconfont) {
-    runSequence(
-      'convertIconsToTtf',
-      ['convertTtfToEot', 'convertTtfToWoff'],
-      callback
-    );
+    checkFilePaths(config.iconfontCss, errors => {
+      if (errors.length > 0) {
+        const colors = require('colors/safe');
+        for (const err of errors) {
+          console.log(
+            colors.red(
+              `🛑 Error in IconFont task: ${err.error}, ${
+                err.path
+              }`
+            )
+          );
+        }
+        callback();
+      } else {
+        runSequence(
+          'convertIconsToTtf',
+          ['convertTtfToEot', 'convertTtfToWoff'],
+          callback
+        );
+      }
+    });
   } else {
     const colors = require('colors/safe');
     console.log(colors.yellow('iconfont disabled'));
