@@ -24,7 +24,7 @@ const checkFilePaths = (arr, cb) => {
     promises.push(p);
   }
   Promise.all(promises).then(errors => {
-    cb(errors);
+    cb(errors.filter(e => e.error !== ''));
   });
 };
 
