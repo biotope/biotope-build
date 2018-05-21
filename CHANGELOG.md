@@ -19,10 +19,18 @@
 
 </details>
 
-## [5.3.3] - TBD
+## [5.3.4] - 2018-05-20 
+### Removed
+- Iconfont path checker
+
+## [5.3.3] - 2018-05-20
+### Changed
+- Webpack4 Update - also added entry points support instead of piping vinyl files to webpack
 ### Fixed
 - Useref task now handles html and hbs extension
 - Useref task now uses bioHelpers   
+### Added
+- Iconfont path checker
 
 ## [5.3.2] - 2018-04-24
 ### Fixed
