@@ -37,8 +37,8 @@ gulp.task('iconfont', callback => {
         const colors = require('colors/safe');
         for (const err of errors) {
           console.log(
-            colors.red(
-              `🛑 Error in IconFont task: ${err.error}, ${
+            colors.yellow(
+              `⚠️ Warning in IconFont task: ${err.error}, ${
                 err.path
               }`
             )
