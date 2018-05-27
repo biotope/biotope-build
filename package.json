@@ -50,7 +50,7 @@
     "gulp-jsonlint": "1.2.1",
     "gulp-less": "3.3.2",
     "gulp-line-ending-corrector": "1.0.2",
-    "gulp-modernizr": "1.0.0-alpha",
+    "gulp-modernizr": "2.0.1",
     "gulp-noop": "1.0.0",
     "gulp-notify": "3.0.0",
     "gulp-plumber": "1.1.0",
