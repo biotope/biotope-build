@@ -16,6 +16,7 @@
   "pre-commit": "eslint:lint",
   "dependencies": {
     "autoprefixer": "7.1.6",
+    "awesome-typescript-loader": "^5.0.0",
     "babel-core": "6.26.3",
     "babel-loader": "7.1.4",
     "babel-preset-env": "1.7.0",
@@ -83,7 +84,6 @@
     "run-sequence": "2.2.1",
     "sass-loader": "6.0.7",
     "style-loader": "0.20.3",
-    "ts-loader": "4.3.0",
     "typescript": "2.8.3",
     "vinyl-named": "1.1.0",
     "webpack": "4.8.3",
