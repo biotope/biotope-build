@@ -1,6 +1,12 @@
 const gulp = require('gulp');
 const config = require('./../config');
 const path = require('path');
+const globule = require('globule');
+const plumber = require('gulp-plumber');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
+const webpackConfig = require('./../webpack.config.js');
+
 const webpackSourcePatterns = [
   path.join(
     config.global.cwd,
@@ -30,11 +36,6 @@ const webpackWatchPatterns = [
 
 gulp.task('webpack:ts', function (cb) {
   if (config.global.tasks.webpack) {
-    const globule = require('globule');
-    const plumber = require('gulp-plumber');
-    const webpack = require('webpack');
-    const webpackStream = require('webpack-stream');
-    const webpackConfig = require('./../webpack.config.js');
 
     config.webpack.ignoreList.forEach(ignorePath => {
       webpackSourcePatterns.push(

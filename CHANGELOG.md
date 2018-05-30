@@ -19,6 +19,20 @@
 
 </details>
 
+## [5.3.5] - 2018-05-30 
+### Fixed
+- Heap out of memory bug (https://github.com/biotope/biotope-build/issues/48)
+### Changed
+- Local tsconfig.json needs update:
+```
+	"awesomeTypescriptLoaderOptions": {
+		"useCache": true,
+		"reportFiles": [
+			"src/**/*.{ts,tsx}"
+		]
+	},
+```
+
 ## [5.3.4] - 2018-05-20 
 ### Removed
 - Iconfont path checker
