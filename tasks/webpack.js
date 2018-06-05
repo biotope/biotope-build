@@ -44,27 +44,35 @@ gulp.task('webpack:ts', function (cb) {
     });
 
     const entryPoints = globule.find(webpackSourcePatterns);
-    webpackConfig.entry = {};
 
-    for (const entryPoint of entryPoints) {
-      const currentResourceParsed = path.parse(config.global.resources);
-      let relativePath = path.relative(path.join(config.global.cwd, config.global.src), entryPoint);
+    if(entryPoints.length) {
+      webpackConfig.entry = {};
 
-      if (!relativePath.startsWith(currentResourceParsed.name)) {
-        relativePath = path.join(currentResourceParsed.name, relativePath);
+      for (const entryPoint of entryPoints) {
+        const currentResourceParsed = path.parse(config.global.resources);
+        let relativePath = path.relative(path.join(config.global.cwd, config.global.src), entryPoint);
+
+        if (!relativePath.startsWith(currentResourceParsed.name)) {
+          relativePath = path.join(currentResourceParsed.name, relativePath);
+        }
+
+        if (relativePath.endsWith('.ts')) {
+          relativePath = relativePath.slice(0, -3);
+        }
+
+        webpackConfig.entry[relativePath] = entryPoint;
       }
 
-      if (relativePath.endsWith('.ts')) {
-        relativePath = relativePath.slice(0, -3);
-      }
+      return gulp.src(path.join(config.global.cwd, 'gulpfile.js'), {read: false})
+        .pipe(plumber())
+        .pipe(webpackStream(webpackConfig, webpack))
+        .pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
 
-      webpackConfig.entry[relativePath] = entryPoint;
+    } else {
+      const colors = require('colors/safe');
+      console.log(colors.yellow('webpack: no entry points found - skipping this task'));
+      cb();
     }
-
-    return gulp.src(path.join(config.global.cwd, 'gulpfile.js'), {read: false})
-      .pipe(plumber())
-      .pipe(webpackStream(webpackConfig, webpack))
-      .pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
 
   } else {
     const colors = require('colors/safe');
