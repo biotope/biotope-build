@@ -1,57 +1,80 @@
-var excludes = [
-    '/node_modules/',
-    '/patterns/',
-    '/dist/',
-    '/test/',
-    '/.tmp/'
+const path = require('path');
+const cwd = process.cwd();
+
+const generalIncludePaths = [
+  path.resolve(cwd, 'src')
 ];
 
-var babelOptions = {
-    babelrc: false,
-    presets: [
-        'env'
-    ]
-};
-
 module.exports = {
-    watch: false,
+  watch: false,
 
-    resolve: {
-        extensions: ['.js', '.ts', '.tsx', '.jsx']
-    },
+  mode: 'development',
 
-    externals: {
-        jquery: 'jQuery'
-    },
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx', '.jsx', '.scss']
+  },
 
-    // devtool: 'source-map',
+  output: {
+    filename: '[name].js'
+  },
 
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                loader: 'ts-loader',
-                exclude: excludes
-            },
-            {
-                test: /\.jsx$/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: babelOptions
-                    }
-                ],
-                exclude: excludes
-            },
-            {
-                test: /\.tsx$/,
-                use: [
-                    {
-                        loader: 'ts-loader'
-                    }
-                ],
-                exclude: excludes
+  externals: {
+    jquery: 'jQuery'
+  },
+
+  devtool: 'source-map',
+
+  stats: {
+    assets: true,
+    chunks: false,
+    chunkModules: false,
+    colors: true,
+    entrypoints: false,
+    hash: false,
+    timings: false,
+    version: true
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'sass-loader'
+          }
+        ],
+        include: generalIncludePaths
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'awesome-typescript-loader',
+        include: generalIncludePaths
+      },
+      {
+        test: /\.jsx?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              babelrc: false,
+              presets: ['env']
             }
-        ]
-    }
+          }
+        ],
+        include: generalIncludePaths
+      }
+    ]
+  },
+
+  optimization: {
+    noEmitOnErrors: true,
+    concatenateModules: true
+  }
 };

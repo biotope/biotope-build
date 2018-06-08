@@ -1,54 +1,76 @@
 const gulp = require('gulp');
 const config = require('./../config');
 
-gulp.task('useref', function () {
-	const useref = require('gulp-useref');
-	const lec = require('gulp-line-ending-corrector');
-	const filter = require('gulp-filter');
+gulp.task('useref', function() {
+  const useref = require('gulp-useref');
+  const lec = require('gulp-line-ending-corrector');
+  const filter = require('gulp-filter');
 
-	return gulp.src(config.global.dev + '/*.html')
-		.pipe(lec(config.lec))
-		.pipe(useref({
-			noAssets: true
-		}))
-		.pipe(filter(['**/*.html']))
-		.pipe(gulp.dest(config.global.dist));
-
+  return gulp
+    .src(config.global.dev + '/*.html')
+    .pipe(lec(config.lec))
+    .pipe(
+      useref({
+        noAssets: true
+      })
+    )
+    .pipe(filter(['**/*.html']))
+    .pipe(gulp.dest(config.global.dist));
 });
 
-gulp.task('useref:assets', function () {
-	const filter = require('gulp-filter');
-	const useref = require('gulp-useref');
-	const lec = require('gulp-line-ending-corrector');
-	const uglify = require('gulp-uglify');
-	const cleanCss = require('gulp-clean-css');
+/**
+ * ToDo: Refactor useref:assets to NOT use hbsParser.createHbsGulpStream
+ * This function should be removed completely, it is too heavy implemented for its usage in this task.
+ * */
 
-	const jsFilter = filter(['**/*.js'], {restore: true});
-	const cssFilter = filter(['**/*.css'], {restore: true});
+gulp.task('useref:assets', function() {
+  const hb = require('gulp-hb');
+  const filter = require('gulp-filter');
+  const useref = require('gulp-useref');
+  const lec = require('gulp-line-ending-corrector');
+  const uglify = require('gulp-uglify');
+  const cleanCss = require('gulp-clean-css');
+  const path = require('path');
+  const bioHelpers = require('./../lib/hb2-helpers');
 
-	const hbsParser = require('./../lib/hbs-parser');
-	const hbStream = hbsParser.createHbsGulpStream(
-		[
-			config.global.src + '/**/*.hbs',
-			'!' + config.global.src + '/pages/**'
-		],
-		null, null, config.global.debug
-	);
+  const jsFilter = filter(['**/*.js'], { restore: true });
+  const cssFilter = filter(['**/*.css'], { restore: true });
 
-	return gulp.src(config.global.src + '/resources/_useref.html')
-		.pipe(lec(config.lec))
-		.pipe(hbStream)
-		.pipe(useref())
+  const hbStream = hb({ debug: config.global.debug })
+    .helpers(bioHelpers)
+    .partials([
+      path.join(config.global.cwd, config.global.src, '**', '*.hbs'),
+      '!' + path.join(config.global.cwd, config.global.src, 'pages', '**')
+    ]);
 
-		.pipe(jsFilter)
-		.pipe(uglify(config.uglify))
-		.pipe(jsFilter.restore)
+  return gulp
+    .src([
+      path.join(
+        config.global.cwd,
+        config.global.src,
+        'resources',
+        '_useref.html'
+      ),
+      path.join(
+        config.global.cwd,
+        config.global.src,
+        'resources',
+        '_useref.hbs'
+      )
+    ])
+    .pipe(lec(config.lec))
+    .pipe(hbStream)
+    .pipe(useref())
 
-		.pipe(cssFilter)
-		.pipe(cleanCss(config.cleanCss))
-		.pipe(cssFilter.restore)
+    .pipe(jsFilter)
+    .pipe(uglify(config.uglify.options))
+    .pipe(jsFilter.restore)
 
-		.pipe(filter(['**', '!**/_useref.html']))
+    .pipe(cssFilter)
+    .pipe(cleanCss(config.cleanCss))
+    .pipe(cssFilter.restore)
 
-		.pipe(gulp.dest(config.global.dist));
+    .pipe(filter(['**', '!**/_useref.html', '!**/_useref.hbs']))
+
+    .pipe(gulp.dest(config.global.dist));
 });

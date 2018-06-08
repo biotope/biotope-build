@@ -3,30 +3,18 @@ const connect = require('gulp-connect');
 const config = require('./../config');
 const history = require('connect-history-api-fallback');
 
-// gulp.task('watch:livereload', function () {
-//
-// 	watch(config.connect.globs, config.watch, function () {
-// 		runSequence(
-// 			['livereload']
-// 		);
-// 	});
-//
-// 	return gulp.src(config.connect.globs)
-// 		.pipe(cached('livereload', {optimizeMemory: true}));
-//
-// });
+gulp.task('livereload', function() {
+  const cached = require('gulp-cached');
 
-gulp.task('livereload', function () {
-	const cached = require('gulp-cached');
-
-	return gulp.src(config.connect.globs)
-		.pipe(cached('livereload', {optimizeMemory: true}))
-		.pipe(connect.reload());
+  return gulp
+    .src(config.connect.globs)
+    .pipe(cached('livereload', { optimizeMemory: true }))
+    .pipe(connect.reload());
 });
 
-gulp.task('connect:open', function () {
-	const opn = require('opn');
-	return opn('http://localhost:' + config.connect.port);
+gulp.task('connect:open', function() {
+  const opn = require('opn');
+  return opn('http://localhost:' + config.connect.port);
 });
 
 gulp.task('connect', function () {
@@ -54,4 +42,3 @@ gulp.task('connect', function () {
 	});
 
 });
-

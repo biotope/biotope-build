@@ -8,8 +8,8 @@ Description will follow soon, see default config: <https://github.com/biotope/bi
 
 ## Migration checklists
 
-* <https://github.com/biotope/biotope-build/wiki/Migration-Checklist-3.x-to-4.x>
-* <https://github.com/biotope/biotope-build/wiki/Migration-Checklist-4.x-to-5.x>
+* <https://github.com/biotope/biotope/wiki/Migration-Checklist-3.x-to-4.x>
+* <https://github.com/biotope/biotope/wiki/Migration-Checklist-4.x-to-5.x>
 
 ## Config.js defaults
 

@@ -1,62 +1,93 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const path = require('path');
+const globule = require('globule');
+const plumber = require('gulp-plumber');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
+const webpackConfig = require('./../webpack.config.js');
 
-gulp.task('webpack:ts', function() {
-	if (config.global.tasks.webpack) {
-		const named = require('vinyl-named');
-		const path = require('path');
-		const webpack = require('webpack');
-		const webpackStream = require('webpack-stream');
-		const webpackConfig = require('./../webpack.config.js');
-		const srcArray = [
-			config.global.src + config.global.resources + '/**/*.ts',
-			config.global.src + config.global.components + '/**/*.ts'
-		];
+const webpackSourcePatterns = [
+  path.join(
+    config.global.cwd,
+    config.global.src,
+    config.global.resources,
+    '**',
+    '*.ts'
+  ),
+  path.join(
+    config.global.cwd,
+    config.global.src,
+    config.global.components,
+    '**',
+    '*.ts'
+  )
+];
+const webpackWatchPatterns = [
+  ...webpackSourcePatterns,
+  path.join(
+    config.global.cwd,
+    config.global.src,
+    config.global.components,
+    '**',
+    '*.scss'
+  )
+];
 
-		config.webpack.ignoreList.forEach(function (ignorePath) {
-			srcArray.push('!' + path.join(config.global.src, ignorePath));
-		});
+gulp.task('webpack:ts', function (cb) {
+  if (config.global.tasks.webpack) {
 
-		return gulp.src(srcArray, { base: path.join(config.global.cwd, config.global.src) })
-			.pipe(named(function(file) {
-				const currentResourceParsed = path.parse(config.global.resources);
-				let relativePath = path.relative(file.base, file.path);
+    config.webpack.ignoreList.forEach(ignorePath => {
+      webpackSourcePatterns.push(
+        `!${path.join(config.global.cwd, config.global.src, ignorePath)}`
+      );
+    });
 
-				if(!relativePath.startsWith(currentResourceParsed.name)) {
-					relativePath = path.join(currentResourceParsed.name, relativePath);
-				}
+    const entryPoints = globule.find(webpackSourcePatterns);
 
-				if(relativePath.endsWith('.ts')) {
-					relativePath = relativePath.slice(0, -3);
-				}
+    if(entryPoints.length) {
+      webpackConfig.entry = {};
 
-				return relativePath;
-			}))
-			.pipe(webpackStream(webpackConfig, webpack).on('error', function() {
-				this.emit('end');
-			}))
-			.pipe(gulp.dest(config.global.dev));
+      for (const entryPoint of entryPoints) {
+        const currentResourceParsed = path.parse(config.global.resources);
+        let relativePath = path.relative(path.join(config.global.cwd, config.global.src), entryPoint);
 
+        if (!relativePath.startsWith(currentResourceParsed.name)) {
+          relativePath = path.join(currentResourceParsed.name, relativePath);
+        }
 
-	} else {
-		const colors = require('colors/safe');
-		console.log(colors.yellow('webpack:ts disabled'));
-	}
+        if (relativePath.endsWith('.ts')) {
+          relativePath = relativePath.slice(0, -3);
+        }
+
+        webpackConfig.entry[relativePath] = entryPoint;
+      }
+
+      return gulp.src(path.join(config.global.cwd, 'gulpfile.js'), {read: false})
+        .pipe(plumber())
+        .pipe(webpackStream(webpackConfig, webpack))
+        .pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
+
+    } else {
+      const colors = require('colors/safe');
+      console.log(colors.yellow('webpack: no entry points found - skipping this task'));
+      cb();
+    }
+
+  } else {
+    const colors = require('colors/safe');
+    console.log(colors.yellow('webpack:ts disabled'));
+    cb();
+  }
 });
 
 gulp.task('watch:webpack:ts', function () {
-	if (config.global.tasks.webpack) {
-		const watch = require('gulp-watch');
-		const runSequence = require('run-sequence');
+  if (config.global.tasks.webpack) {
+    const watch = require('gulp-watch');
+    const runSequence = require('run-sequence');
 
-		watch([
-			config.global.src + config.global.resources + '/**/*.ts',
-			config.global.src + config.global.components + '/**/*.ts'
-		], config.watch, function () {
-			runSequence(
-				['webpack:ts'],
-				['livereload']
-			);
-		});
-	}
+    watch(webpackWatchPatterns, config.watch, function () {
+      runSequence('webpack:ts', 'livereload');
+    });
+  }
 });
