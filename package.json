@@ -105,6 +105,7 @@
     "ava": "0.25.0",
     "map-stream": "0.0.7",
     "pre-commit": "1.2.2",
-    "vinyl-string": "1.0.2"
+    "vinyl-string": "1.0.2",
+    "lodash": "latest"
   }
 }
