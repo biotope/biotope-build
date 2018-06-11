@@ -19,6 +19,10 @@
 
 </details>
 
+## [5.3.6] - 2018-06-05 
+### Fixed
+- Webpack tasks is broken when no TS files are available
+
 ## [5.3.5] - 2018-05-30 
 ### Fixed
 - Heap out of memory bug (https://github.com/biotope/biotope-build/issues/48)
