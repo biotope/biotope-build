@@ -163,7 +163,7 @@ module.exports = {
   uglify: {
     options: {
       output: {
-        comments: /^!|@preserve|@license|@cc_on/i
+        comments: () => require('uglify-save-license')
       }
     },
     sourcemaps: true,
