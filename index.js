@@ -79,12 +79,6 @@ gulp.task('build', function (callback) {
       'copy:dist:bower'
     ],
     [
-      'uglify:resources:dist',
-      'uglify:components:dist',
-      'cleanCss:resources:dist',
-      'cleanCss:components:dist'
-    ],
-    [
       'useref'
     ],
     [
@@ -92,6 +86,12 @@ gulp.task('build', function (callback) {
       'image:resources:dist',
       'image:component:dist',
       'favicons'
+    ],
+    [
+      'uglify:resources:dist',
+      'uglify:components:dist',
+      'cleanCss:resources:dist',
+      'cleanCss:components:dist'
     ],
     [
       'inject',
