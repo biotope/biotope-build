@@ -85,7 +85,6 @@
     "sass-loader": "6.0.7",
     "style-loader": "0.20.3",
     "typescript": "2.8.3",
-    "uglify-save-license": "0.4.1",
     "vinyl-named": "1.1.0",
     "webpack": "4.8.3",
     "webpack-stream": "4.0.3"
