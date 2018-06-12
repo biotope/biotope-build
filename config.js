@@ -187,4 +187,7 @@ try {
     const _ = require('lodash');
     _.merge(module.exports, projectConfig);
   }
-} catch(e) {}
+} catch(e) {
+    const colors = require('colors/safe');
+    console.log(colors.red('Error: ', e));
+}
