@@ -23,6 +23,7 @@ const cleanCssTask = (source, target) => {
 };
 
 gulp.task('cleanCss:resources:dist', function() {
+  const path = require('path');
   return cleanCssTask(
     path.join(
       config.global.cwd,
@@ -42,6 +43,7 @@ gulp.task('cleanCss:resources:dist', function() {
 });
 
 gulp.task('cleanCss:components:dist', function() {
+  const path = require('path');
   return cleanCssTask(
     path.join(
       config.global.cwd,
