@@ -102,6 +102,24 @@ gulp.task('copy:dist:ts', function () {
   return copyFiles(from, to);
 });
 
+gulp.task('copy:dist:components', function () {
+  const from = path.join(
+    config.global.cwd,
+    config.global.dev,
+    config.global.components,
+    '**',
+    '*'
+  );
+  const to = path.join(
+    config.global.cwd,
+    config.global.dist,
+    config.global.resources,
+    config.global.components
+  );
+
+  return copyFiles(from, to);
+});
+
 gulp.task('copy:dev:npm:js', function () {
   const mergeStream = require('merge-stream');
   const filter = require('gulp-filter');

@@ -76,7 +76,8 @@ gulp.task('build', function (callback) {
       'copy:dist:component:mock',
       'copy:dist:config',
       'copy:dist:hbs',
-      'copy:dist:bower'
+      'copy:dist:bower',
+      'copy:dist:components'
     ],
     [
       'useref'
