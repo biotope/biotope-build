@@ -24,17 +24,38 @@ const cleanCssTask = (source, target) => {
 
 gulp.task('cleanCss:resources:dist', function() {
   return cleanCssTask(
-    config.global.dev + config.global.resources + '/css/**/*.css',
-    config.global.dist + config.global.resources + '/css/'
+    path.join(
+      config.global.cwd,
+      config.global.dist,
+      config.global.resources,
+      'css',
+      '**',
+      '*.css'
+    ),
+    path.join(
+      config.global.cwd,
+      config.global.dist,
+      config.global.resources,
+      'css'
+    )
   );
 });
 
 gulp.task('cleanCss:components:dist', function() {
   return cleanCssTask(
-    config.global.dev +
-      config.global.resources +
-      config.global.components +
-      '/**/*.css',
-    config.global.dist + config.global.resources + config.global.components
+    path.join(
+      config.global.cwd,
+      config.global.dist,
+      config.global.resources,
+      config.global.components,
+      '**',
+      '*.css'
+    ),
+    path.join(
+      config.global.cwd,
+      config.global.dist,
+      config.global.resources,
+      config.global.components
+    )
   );
 });
