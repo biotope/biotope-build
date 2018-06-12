@@ -70,6 +70,7 @@ gulp.task('copy:dist:react', function () {
     config.global.dev,
     config.global.resources,
     'react',
+    '**',
     '*.js'
   );
   const to = path.join(
@@ -88,6 +89,7 @@ gulp.task('copy:dist:ts', function () {
     config.global.dev,
     config.global.resources,
     'ts',
+    '**',
     '*.js'
   );
   const to = path.join(
