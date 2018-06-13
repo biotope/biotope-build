@@ -106,6 +106,7 @@ gulp.task('copy:dist:components', function () {
   const from = path.join(
     config.global.cwd,
     config.global.dev,
+    config.global.resources,
     config.global.components,
     '**',
     '*'
