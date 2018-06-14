@@ -25,7 +25,7 @@ test('whitespace', t => {
   });
 });
 
-test('variablen', t => {
+test('variables', t => {
   const input = 'var t = function(test) { console.log(test) };';
   const expected = 'var t=function(o){console.log(o)};';
   const uglifyPump = uglifyTasks.defaultPump(config);
@@ -48,8 +48,57 @@ test('license comments', t => {
   });
 });
 
-test('invalid code', t => {
+test('license multiline comments', t => {
+  const input = '/** \n test \n @preserve Multiline comment\n */ var test = "foo";';
+  const expected = '/** \n test \n @preserve Multiline comment\n */var test="foo";';
+
+  const uglifyPump = uglifyTasks.defaultPump(config);
+
+  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+    const contents = output.contents.toString();
+    t.is(contents, expected, 'Sass compiled as expected');
+  });
+});
+
+test('removed comment 1', t => {
+  const input = '/* normal comment */ var test = "foo";';
+  const expected = 'var test="foo";';
+
+  const uglifyPump = uglifyTasks.defaultPump(config);
+
+  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+    const contents = output.contents.toString();
+    t.is(contents, expected, 'Sass compiled as expected');
+  });
+});
+
+test('removed comment 2', t => {
+  const input = '/*! important but removed comment */ var test = "foo";';
+  const expected = 'var test="foo";';
+
+  const uglifyPump = uglifyTasks.defaultPump(config);
+
+  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+    const contents = output.contents.toString();
+    t.is(contents, expected, 'Sass compiled as expected');
+  });
+});
+
+test('invalid code should fail', t => {
   const input = 'foo => bar';
+  const uglifyPump = uglifyTasks.defaultPump(config);
+
+  return pumpFromString(input, 'style.scss', uglifyPump)
+    .then(() => {
+      t.fail();
+    })
+    .catch(() => {
+      t.pass();
+    });
+});
+
+test('es6 code should fail', t => {
+  const input = 'const foo = 123;';
   const uglifyPump = uglifyTasks.defaultPump(config);
 
   return pumpFromString(input, 'style.scss', uglifyPump)
