@@ -1,3 +1,7 @@
+const localPackage = require('./package.json');
+const log = require('console-emoji');
+log(`:sparkles: Starting Biotope Build (v${localPackage.version}) with :sparkling_heart:for Frontend Developers around the world :sparkles:\n`, 'green');
+
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const requireDir = require('require-dir');
