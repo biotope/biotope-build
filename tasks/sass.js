@@ -1,35 +1,27 @@
 const gulp = require('gulp');
-const sass = require('gulp-sass');
-const sassLint = require('gulp-sass-lint');
-const postcss = require('gulp-postcss');
-const autoprefixer = require('autoprefixer');
-const cached = require('gulp-cached');
-const watch = require('gulp-watch');
-const colors = require('colors/safe');
-const runSequence = require('run-sequence');
-const mergeStream = require('merge-stream');
-const sourcemaps = require('gulp-sourcemaps');
-
 const config = require('./../config');
 
-gulp.task('resources:sass', function () {
-	if (config.global.tasks.sass) {
-		return mergeStream(config.global.resources.map(function(currentResource) {
-			return gulp.src([
-				config.global.src + currentResource + '/scss/**/*.scss',
-				'!' + config.global.src + currentResource + '/scss/**/_*.scss'
-			])
-				.pipe(sourcemaps.init())
-				.pipe(sass(config.sass).on('error', sass.logError))
-				.pipe(postcss([
-					autoprefixer(config.autoprefixer)
-				]))
-				.pipe(sourcemaps.write('.'))
-				.pipe(gulp.dest(config.global.dev + currentResource + '/css'));
-		}));
-	} else {
-		console.log(colors.yellow('sass resources disabled'));
-	}
+gulp.task('resources:sass', function() {
+  if (config.global.tasks.sass) {
+    const sass = require('gulp-sass');
+    const postcss = require('gulp-postcss');
+    const autoprefixer = require('autoprefixer');
+    const sourcemaps = require('gulp-sourcemaps');
+
+    return gulp
+      .src([
+        config.global.src + config.global.resources + '/scss/**/*.scss',
+        '!' + config.global.src + config.global.resources + '/scss/**/_*.scss'
+      ])
+      .pipe(sourcemaps.init())
+      .pipe(sass(config.sass).on('error', sass.logError))
+      .pipe(postcss([autoprefixer(config.autoprefixer)]))
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(config.global.dev + config.global.resources + '/css'));
+  } else {
+    const colors = require('colors/safe');
+    console.log(colors.yellow('sass resources disabled'));
+  }
 });
 
 /**
@@ -38,98 +30,124 @@ gulp.task('resources:sass', function () {
  * to .tmp/resources/components/css/
  */
 
-gulp.task('components:sass', function () {
-	if (config.global.tasks.sass) {
-		return mergeStream(config.global.resources.map(function (currentResource, index) {
-			return gulp.src([
-				config.global.src + config.global.components[index] + '/**/*.scss',
-				'!' + config.global.src + config.global.components[index] + '/**/_*.scss'
-			])
-				.pipe(sourcemaps.init())
-				.pipe(sass(config.sass).on('error', sass.logError))
-				.pipe(postcss([
-					autoprefixer(config.autoprefixer)
-				]))
-				.pipe(sourcemaps.write('.'))
-				.pipe(gulp.dest(config.global.dev + currentResource + config.global.components[index]));
-		}));
-	} else {
-		console.log(colors.yellow('sass components disabled'));
-	}
+gulp.task('components:sass', function() {
+  if (config.global.tasks.sass) {
+    const sass = require('gulp-sass');
+    const postcss = require('gulp-postcss');
+    const autoprefixer = require('autoprefixer');
+    const sourcemaps = require('gulp-sourcemaps');
+
+    return gulp
+      .src([
+        config.global.src + config.global.components + '/**/*.scss',
+        '!' + config.global.src + config.global.components + '/**/_*.scss'
+      ])
+      .pipe(sourcemaps.init())
+      .pipe(sass(config.sass).on('error', sass.logError))
+      .pipe(postcss([autoprefixer(config.autoprefixer)]))
+      .pipe(sourcemaps.write('.'))
+      .pipe(
+        gulp.dest(
+          config.global.dev + config.global.resources + config.global.components
+        )
+      );
+  } else {
+    const colors = require('colors/safe');
+    console.log(colors.yellow('sass components disabled'));
+  }
 });
 
 /**
  * scss file liniting
  * @TODO throws warnings now, define linting rules
  */
-gulp.task('lint:resources:sass', function () {
-	if (config.global.tasks.sass && config.global.tasks.linting && false) {
-		return mergeStream(config.global.resources.map(function (currentResource) {
-			return gulp.src([config.global.src + currentResource + '/scss/**/*.s+(a|c)ss',
-				'!' + config.global.src + currentResource + '/scss/**/_icons.s+(a|c)ss',
-			])
-				.pipe(cached('sass', { optimizeMemory: true }))
-				.pipe(sassLint(config.global.sassLint))
-				.pipe(sassLint.format())
-				.pipe(sassLint.failOnError());
-		}));
-	}
+gulp.task('lint:resources:sass', function() {
+  if (config.global.tasks.sass && config.global.tasks.linting && false) {
+    const sassLint = require('gulp-sass-lint');
+    const cached = require('gulp-cached');
+
+    return gulp
+      .src([
+        config.global.src + config.global.resources + '/scss/**/*.s+(a|c)ss',
+        '!' +
+          config.global.src +
+          config.global.resources +
+          '/scss/**/_icons.s+(a|c)ss'
+      ])
+      .pipe(cached('sass', { optimizeMemory: true }))
+      .pipe(sassLint(config.global.sassLint))
+      .pipe(sassLint.format())
+      .pipe(sassLint.failOnError());
+  }
 });
 
-gulp.task('lint:components:sass', function () {
-	if (config.global.tasks.sass && config.global.tasks.linting && false) {
-		return mergeStream(config.global.components.map(function (currentComponent) {
-			return gulp.src(config.global.src + currentComponent + '/**/*.s+(a|c)ss')
-				.pipe(cached('sass', { optimizeMemory: true }))
-				.pipe(sassLint())
-				.pipe(sassLint.format())
-				.pipe(sassLint.failOnError());
-		}));
-	}
+gulp.task('lint:components:sass', function() {
+  if (config.global.tasks.sass && config.global.tasks.linting && false) {
+    const sassLint = require('gulp-sass-lint');
+    const cached = require('gulp-cached');
+
+    return gulp
+      .src(config.global.src + config.global.components + '/**/*.s+(a|c)ss')
+      .pipe(cached('sass', { optimizeMemory: true }))
+      .pipe(sassLint())
+      .pipe(sassLint.format())
+      .pipe(sassLint.failOnError());
+  }
 });
 
 /**
  * watches global scss files for any changes
  */
-gulp.task('watch:resources:sass', function () {
-	if (config.global.tasks.sass) {
-		config.global.resources.forEach(function(currentResource) {
-			watch([
-				config.global.src + currentResource + '/scss/**/*.scss'
-			], config.watch, function() {
-				runSequence(
-					['lint:resources:sass'],
-					['resources:sass']
-				);
-			});
-		});
+gulp.task('watch:resources:sass', function() {
+  if (config.global.tasks.sass) {
+    const watch = require('gulp-watch');
+    const runSequence = require('run-sequence');
 
-		watch([
-			config.global.src + '../.iconfont' + '/*.scss'
-		], config.watch, function() {
-			runSequence(
-				['lint:resources:sass'],
-				['resources:sass']
-			);
-		});
-	}
+    watch(
+      [config.global.src + config.global.resources + '/scss/**/*.scss'],
+      config.watch,
+      function() {
+        runSequence(
+          ['lint:resources:sass'],
+          ['resources:sass'],
+          ['livereload']
+        );
+      }
+    );
+
+    watch(
+      [config.global.src + '../.iconfont' + '/*.scss'],
+      config.watch,
+      function() {
+        runSequence(
+          ['lint:resources:sass'],
+          ['resources:sass'],
+          ['livereload']
+        );
+      }
+    );
+  }
 });
 
 /**
  * watches component scss files for any changes
  */
-gulp.task('watch:components:sass', function () {
-	if (config.global.tasks.sass) {
-		let components = [];
-		config.global.components.map( function(currentComponent) {
-			components.push(config.global.src + currentComponent + '/**/*.scss');
-		});
+gulp.task('watch:components:sass', function() {
+  if (config.global.tasks.sass) {
+    const watch = require('gulp-watch');
+    const runSequence = require('run-sequence');
+    const components = [];
+    components.push(
+      config.global.src + config.global.components + '/**/*.scss'
+    );
 
-		watch(components, config.watch, function() {
-			runSequence(
-				['lint:components:sass'],
-				['components:sass']
-			);
-		});
-	}
+    watch(components, config.watch, function() {
+      runSequence(
+        ['lint:components:sass'],
+        ['components:sass'],
+        ['resources:sass'],
+        ['livereload']
+      );
+    });
+  }
 });
