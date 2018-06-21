@@ -345,6 +345,12 @@ ansi-gray@^0.1.1:
   dependencies:
     ansi-wrap "0.1.0"
 
+ansi-green@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/ansi-green/-/ansi-green-0.1.1.tgz#8a5d9a979e458d57c40e33580b37390b8e10d0f7"
+  dependencies:
+    ansi-wrap "0.1.0"
+
 ansi-red@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ansi-red/-/ansi-red-0.1.1.tgz#8c638f9d1080800a353c9c28c8a81ca4705d946c"
@@ -1877,12 +1883,11 @@ cli-boxes@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/cli-boxes/-/cli-boxes-1.0.0.tgz#4fa917c3e59c94a004cd61f8ee509da651687143"
 
-cli-columns@^1.0.6:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/cli-columns/-/cli-columns-1.1.0.tgz#3c7b34c05e6c374d93b18b24cd674eb83376a994"
+cli-columns@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/cli-columns/-/cli-columns-3.1.2.tgz#6732d972979efc2ae444a1f08e08fa139c96a18e"
   dependencies:
-    object-assign "^4.1.1"
-    string-width "^1.0.2"
+    string-width "^2.0.0"
     strip-ansi "^3.0.1"
 
 cli-cursor@^1.0.1:
@@ -4402,15 +4407,17 @@ gulp-handlebars@5.0.2:
     replace-ext "^1.0.0"
     through2 "^2.0.3"
 
-gulp-hb@6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/gulp-hb/-/gulp-hb-6.0.2.tgz#130c797bd11fedf38b5ef12ea243ece7db7c3dcf"
+gulp-hb@7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/gulp-hb/-/gulp-hb-7.0.1.tgz#ffebce7fbae2cc388072f0e4026e276bcea1e6c5"
   dependencies:
-    cli-columns "^1.0.6"
-    gulp-util "^3.0.8"
-    handlebars "^4.0.6"
-    handlebars-wax "^5.0.0"
+    ansi-gray "^0.1.1"
+    ansi-green "^0.1.1"
+    cli-columns "^3.1.2"
+    handlebars "^4.0.11"
+    handlebars-wax "^6.1.0"
     object-assign "^4.1.1"
+    plugin-error "^0.1.2"
     through2 "^2.0.3"
 
 gulp-htmlhint@1.0.0:
@@ -4798,14 +4805,14 @@ gzip-size@^3.0.0:
   dependencies:
     duplexer "^0.1.1"
 
-handlebars-wax@^5.0.0:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/handlebars-wax/-/handlebars-wax-5.1.1.tgz#43198019fa5ae3d291aa8a319c2afb4d75edb683"
+handlebars-wax@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/handlebars-wax/-/handlebars-wax-6.1.0.tgz#9d9a899e6c67b946c7742ce1b7d1bf58f2ba1722"
   dependencies:
     object-assign "^4.1.1"
     require-glob "^3.2.0"
 
-handlebars@4.0.11, handlebars@^4.0.0, handlebars@^4.0.6:
+handlebars@4.0.11, handlebars@^4.0.0, handlebars@^4.0.11:
   version "4.0.11"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.0.11.tgz#630a35dfe0294bc281edae6ffc5d329fc7982dcc"
   dependencies:
