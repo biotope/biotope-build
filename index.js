@@ -80,13 +80,8 @@ gulp.task('build', function (callback) {
       'copy:dist:component:mock',
       'copy:dist:config',
       'copy:dist:hbs',
-      'copy:dist:bower'
-    ],
-    [
-      'uglify:resources:dist',
-      'uglify:components:dist',
-      'cleanCss:resources:dist',
-      'cleanCss:components:dist'
+      'copy:dist:bower',
+      'copy:dist:components'
     ],
     [
       'useref'
@@ -96,6 +91,12 @@ gulp.task('build', function (callback) {
       'image:resources:dist',
       'image:component:dist',
       'favicons'
+    ],
+    [
+      'uglify:resources:dist',
+      'uglify:components:dist',
+      'cleanCss:resources:dist',
+      'cleanCss:components:dist'
     ],
     [
       'inject',

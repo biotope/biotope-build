@@ -15,6 +15,5 @@ gulp.task('modernizr', function() {
       '!' + config.global.src + '/resources/js/vendor/*'
     ])
     .pipe(modernizr(config.modernizr))
-    .pipe(uglify(config.uglify))
     .pipe(gulp.dest(config.global.dev + '/resources/js/vendor/'));
 });
