@@ -163,7 +163,7 @@ module.exports = {
   uglify: {
     options: {
       output: {
-        comments: /^!|@preserve|@license|@cc_on/i
+        comments: /@preserve|@license|@cc_on/i
       }
     },
     sourcemaps: true,
@@ -184,7 +184,10 @@ module.exports = {
 try {
   const projectConfig = require(path.join(cwd, 'projectConfig.js'));
   if (projectConfig) {
-    const _ = require('lodash');
-    _.merge(module.exports, projectConfig);
+    const merge = require('lodash.merge');
+    merge(module.exports, projectConfig);
   }
-} catch(e) {}
+} catch (e) {
+  const colors = require('colors/safe');
+  console.log(colors.red('Error: ', e));
+}
