@@ -28,6 +28,7 @@ module.exports = {
       favicons: true,
       handlebars: true,
       iconfont: true,
+      svgSprite: true,
       image: true,
       linting: true,
       sass: true,
