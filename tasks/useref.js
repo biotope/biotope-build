@@ -4,7 +4,6 @@ const config = require('./../config');
 gulp.task('useref', function() {
   const useref = require('gulp-useref');
   const lec = require('gulp-line-ending-corrector');
-  const filter = require('gulp-filter');
 
   return gulp
     .src(config.global.dev + '/*.html')
@@ -14,7 +13,6 @@ gulp.task('useref', function() {
         noAssets: true
       })
     )
-    .pipe(filter(['**/*.html']))
     .pipe(gulp.dest(config.global.dist));
 });
 
