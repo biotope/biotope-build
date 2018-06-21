@@ -140,7 +140,7 @@ gulp.task('copy:dev:npm:js', function () {
         resources[key].map(function (file) {
           return gulp
             .src(config.global.node + '/' + key + '/' + file)
-            .pipe(filter('**/*.js'))
+            .pipe(filter('*.js'))
             .pipe(
               gulp.dest(
                 config.global.dev + config.global.resources + '/js/vendor/'
@@ -171,7 +171,7 @@ gulp.task('copy:dev:npm:css', function () {
         resources[key].map(function (file) {
           return gulp
             .src(config.global.node + '/' + key + '/' + file)
-            .pipe(filter('**/*.css', '**/*.scss'))
+            .pipe(filter('*.css', '*.scss'))
             .pipe(
               gulp.dest(
                 config.global.dev + config.global.resources + '/css/vendor/'

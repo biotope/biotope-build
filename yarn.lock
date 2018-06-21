@@ -4350,12 +4350,12 @@ gulp-favicons@2.2.7:
   dependencies:
     favicons "^4.6.1"
 
-gulp-filter@5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/gulp-filter/-/gulp-filter-5.1.0.tgz#a05e11affb07cf7dcf41a7de1cb7b63ac3783e73"
+gulp-filter@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/gulp-filter/-/gulp-filter-3.0.1.tgz#7c6ffce5b563e89de7a90dfceff16ec8a8cb1562"
   dependencies:
+    gulp-util "^3.0.6"
     multimatch "^2.0.0"
-    plugin-error "^0.1.2"
     streamfilter "^1.0.5"
 
 gulp-handlebars@5.0.2:
