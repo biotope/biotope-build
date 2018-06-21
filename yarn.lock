@@ -4665,7 +4665,7 @@ gulp-useref@3.1.5:
     useref "^1.4.1"
     vinyl-fs "^3.0.2"
 
-gulp-util@^3.0.0, gulp-util@^3.0.1, gulp-util@^3.0.3, gulp-util@^3.0.6, gulp-util@^3.0.7:
+gulp-util@^3.0.0, gulp-util@^3.0.1, gulp-util@^3.0.6, gulp-util@^3.0.7:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/gulp-util/-/gulp-util-3.0.8.tgz#0054e1e744502e27c04c187c3ecc505dd54bbb4f"
   dependencies:
@@ -4703,17 +4703,17 @@ gulp-watch@5.0.0:
     vinyl "^2.1.0"
     vinyl-file "^2.0.0"
 
-gulp-wrap@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/gulp-wrap/-/gulp-wrap-0.13.0.tgz#90fb0b4a27a266433832ff7c6122db5c1ee894c6"
+gulp-wrap@0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/gulp-wrap/-/gulp-wrap-0.14.0.tgz#15a5c2048e2721e70539a61baf1c34a0bc5f2729"
   dependencies:
     consolidate "^0.14.1"
     es6-promise "^3.1.2"
     fs-readfile-promise "^2.0.1"
-    gulp-util "^3.0.3"
     js-yaml "^3.2.6"
     lodash "^4.11.1"
     node.extend "^1.1.2"
+    plugin-error "^0.1.2"
     through2 "^2.0.1"
     tryit "^1.0.1"
     vinyl-bufferstream "^1.0.1"
@@ -8074,9 +8074,9 @@ public-encrypt@^4.0.0:
     parse-asn1 "^5.0.0"
     randombytes "^2.0.1"
 
-pump@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/pump/-/pump-2.0.0.tgz#7946da1c8d622b098e2ceb2d3476582470829c9d"
+pump@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/pump/-/pump-3.0.0.tgz#b4a2116815bde2f4e1ea602354e8c75565107a64"
   dependencies:
     end-of-stream "^1.1.0"
     once "^1.3.1"
