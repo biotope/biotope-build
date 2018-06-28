@@ -27,7 +27,7 @@ gulp.task('cleanCss:resources:dist', function() {
   return cleanCssTask(
     path.join(
       config.global.cwd,
-      config.global.dist,
+      config.global.dev,
       config.global.resources,
       'css',
       '**',
@@ -47,7 +47,7 @@ gulp.task('cleanCss:components:dist', function() {
   return cleanCssTask(
     path.join(
       config.global.cwd,
-      config.global.dist,
+      config.global.dev,
       config.global.resources,
       config.global.components,
       '**',
