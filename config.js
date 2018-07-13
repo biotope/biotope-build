@@ -58,6 +58,7 @@ module.exports = {
 
   connect: {
     port: 9000,
+    historyFallbackIndex: '/index.html',
     globs: [
       dev + '/**/*.*',
       src + '/resources/js/**/*.js',
