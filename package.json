@@ -75,7 +75,6 @@
     "handlebars": "4.0.11",
     "htmlhint-stylish": "1.0.3",
     "jshint-stylish": "2.2.1",
-    "lodash": "^4.17.10",
     "lodash.merge": "4.6.1",
     "merge-stream": "1.0.1",
     "nested-property": "0.0.7",
