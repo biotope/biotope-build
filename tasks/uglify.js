@@ -45,6 +45,7 @@ gulp.task('uglify:resources:dist', function(cb) {
             if (!err) {
               resolve();
             } else {
+              console.log(err);
               reject(err);
             }
           });
