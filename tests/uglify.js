@@ -8,9 +8,9 @@ test('simple variable', t => {
   const expected = 'var test="123";';
   const uglifyPump = uglifyTasks.defaultPump(config);
 
-  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+  return pumpFromString(input, 'script.scss', uglifyPump).then(output => {
     const contents = output.contents.toString();
-    t.is(contents, expected, 'Sass compiled as expected');
+    t.is(contents, expected, 'Should not change');
   });
 });
 
@@ -19,9 +19,9 @@ test('whitespace', t => {
   const expected = 'var test=!0;';
   const uglifyPump = uglifyTasks.defaultPump(config);
 
-  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+  return pumpFromString(input, 'script.scss', uglifyPump).then(output => {
     const contents = output.contents.toString();
-    t.is(contents, expected, 'Sass compiled as expected');
+    t.is(contents, expected, 'Should strip whitespace');
   });
 });
 
@@ -30,9 +30,9 @@ test('variables', t => {
   const expected = 'var t=function(o){console.log(o)};';
   const uglifyPump = uglifyTasks.defaultPump(config);
 
-  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+  return pumpFromString(input, 'script.scss', uglifyPump).then(output => {
     const contents = output.contents.toString();
-    t.is(contents, expected, 'Sass compiled as expected');
+    t.is(contents, expected, 'Should minify arguments');
   });
 });
 
@@ -42,21 +42,29 @@ test('license comments', t => {
 
   const uglifyPump = uglifyTasks.defaultPump(config);
 
-  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+  return pumpFromString(input, 'script.scss', uglifyPump).then(output => {
     const contents = output.contents.toString();
-    t.is(contents, expected, 'Sass compiled as expected');
+    t.is(contents, expected, 'Should preserve comments');
   });
 });
 
 test('license multiline comments', t => {
-  const input = '/** \n test \n @preserve Multiline comment\n */ var test = "foo";';
-  const expected = '/** \n test \n @preserve Multiline comment\n */var test="foo";';
+  const input = `/**
+test
+@preserve Multiline comment
+*/
+var test = "foo";`;
+  const expected = `/**
+test
+@preserve Multiline comment
+*/
+var test="foo";`;
 
   const uglifyPump = uglifyTasks.defaultPump(config);
 
-  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+  return pumpFromString(input, 'script.scss', uglifyPump).then(output => {
     const contents = output.contents.toString();
-    t.is(contents, expected, 'Sass compiled as expected');
+    t.is(contents, expected, 'Should preserve multiline comments');
   });
 });
 
@@ -66,9 +74,9 @@ test('removed comment 1', t => {
 
   const uglifyPump = uglifyTasks.defaultPump(config);
 
-  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+  return pumpFromString(input, 'script.scss', uglifyPump).then(output => {
     const contents = output.contents.toString();
-    t.is(contents, expected, 'Sass compiled as expected');
+    t.is(contents, expected, 'Should remove comment');
   });
 });
 
@@ -78,17 +86,17 @@ test('removed comment 2', t => {
 
   const uglifyPump = uglifyTasks.defaultPump(config);
 
-  return pumpFromString(input, 'style.scss', uglifyPump).then(output => {
+  return pumpFromString(input, 'script.scss', uglifyPump).then(output => {
     const contents = output.contents.toString();
-    t.is(contents, expected, 'Sass compiled as expected');
+    t.is(contents, expected, 'Should remove comment');
   });
 });
 
 test('invalid code should fail', t => {
-  const input = 'foo => bar';
+  const input = 'foo; => bar';
   const uglifyPump = uglifyTasks.defaultPump(config);
 
-  return pumpFromString(input, 'style.scss', uglifyPump)
+  return pumpFromString(input, 'script.scss', uglifyPump)
     .then(() => {
       t.fail();
     })
@@ -97,15 +105,14 @@ test('invalid code should fail', t => {
     });
 });
 
-test('es6 code should fail', t => {
+test('es6 code should compile', t => {
   const input = 'const foo = 123;';
   const uglifyPump = uglifyTasks.defaultPump(config);
-
   return pumpFromString(input, 'style.scss', uglifyPump)
     .then(() => {
-      t.fail();
+      t.pass();
     })
     .catch(() => {
-      t.pass();
+      t.fail();
     });
 });
