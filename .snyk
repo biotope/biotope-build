@@ -1,0 +1,57 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.12.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - gulp-connect > send > debug:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-connect > tiny-lr > debug:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-favicons > favicons > node-rest-client > debug:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-connect > tiny-lr > body-parser > debug:
+        patched: '2018-08-15T12:14:53.767Z'
+  'npm:lodash:20180130':
+    - gulp-iconfont-css > lodash:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-favicons > favicons > cheerio > lodash:
+        patched: '2018-08-15T12:14:53.767Z'
+  'npm:mime:20170907':
+    - gulp-connect > send > mime:
+        patched: '2018-08-15T12:14:53.767Z'
+  'npm:minimatch:20160620':
+    - gulp > vinyl-fs > glob-stream > minimatch:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-htmlhint > htmlhint > jshint > minimatch:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp > vinyl-fs > glob-watcher > gaze > globule > minimatch:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp > vinyl-fs > glob-watcher > gaze > globule > glob > minimatch:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-htmlhint > htmlhint > jshint > cli > glob > minimatch:
+        patched: '2018-08-15T12:14:53.767Z'
+  'npm:ms:20170412':
+    - gulp-connect > send > ms:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-connect > tiny-lr > debug > ms:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-connect > tiny-lr > body-parser > debug > ms:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-favicons > favicons > node-rest-client > debug > ms:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-connect > send > debug > ms:
+        patched: '2018-08-15T12:14:53.767Z'
+  'npm:tunnel-agent:20170305':
+    - gulp-imagemin > imagemin-optipng > optipng-bin > bin-wrapper > download > caw > tunnel-agent:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-imagemin > imagemin-jpegtran > jpegtran-bin > bin-build > download > caw > tunnel-agent:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-imagemin > imagemin-optipng > optipng-bin > bin-build > download > caw > tunnel-agent:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-imagemin > imagemin-gifsicle > gifsicle > bin-wrapper > download > caw > tunnel-agent:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-imagemin > imagemin-jpegtran > jpegtran-bin > bin-wrapper > download > caw > tunnel-agent:
+        patched: '2018-08-15T12:14:53.767Z'
+    - gulp-imagemin > imagemin-gifsicle > gifsicle > bin-build > download > caw > tunnel-agent:
+        patched: '2018-08-15T12:14:53.767Z'

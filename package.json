@@ -11,7 +11,9 @@
   "scripts": {
     "test": "ava tests --verbose",
     "eslint:lint": "eslint --ignore-path .gitignore .",
-    "eslint:fix": "eslint --fix --ignore-path .gitignore ."
+    "eslint:fix": "eslint --fix --ignore-path .gitignore .",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "pre-commit": "eslint:lint",
   "dependencies": {
@@ -30,7 +32,7 @@
     "front-matter": "2.3.0",
     "fs-extra": "6.0.1",
     "globule": "1.2.1",
-    "gulp": "3.9.1",
+    "gulp": "4.0.0",
     "gulp-cached": "1.1.1",
     "gulp-clean-css": "3.9.4",
     "gulp-concat": "2.6.1",
@@ -89,7 +91,8 @@
     "uglify-es": "^3.3.9",
     "vinyl-named": "1.1.0",
     "webpack": "4.12.0",
-    "webpack-stream": "4.0.3"
+    "webpack-stream": "4.0.3",
+    "snyk": "^1.90.2"
   },
   "resolutions": {
     "webpack-stream/webpack": "4.12.0"
@@ -106,5 +109,6 @@
     "map-stream": "0.0.7",
     "pre-commit": "1.2.2",
     "vinyl-string": "1.0.2"
-  }
+  },
+  "snyk": true
 }
