@@ -28,6 +28,7 @@ module.exports = {
       favicons: true,
       handlebars: true,
       iconfont: true,
+      svgSprite: true,
       image: true,
       linting: true,
       sass: true,
@@ -118,7 +119,7 @@ module.exports = {
   iconfontCss: [
     {
       fontName: 'Icons',
-      path: src + '/resources/scss/fonts/iconfont/_icons.scss',
+      path: src + '/resources/scss/fonts/iconfont/_icons.tpl',
       targetPath: '../../../../.iconfont/_icons.scss',
       fontPath: '../fonts/icons/',
       cssClass: 'icon'
