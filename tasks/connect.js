@@ -18,14 +18,13 @@ gulp.task('connect:open', function () {
 });
 
 gulp.task('connect', function () {
-
   connect.server({
     root: [
       config.global.dev,
       config.global.src
     ],
-    host: '0.0.0.0',
     port: config.connect.port,
+    host: '0.0.0.0',
     middleware: function (connect, opt) {
       return [
         function (req, res, next) {
@@ -41,5 +40,4 @@ gulp.task('connect', function () {
     },
     livereload: config.livereload
   });
-
 });
