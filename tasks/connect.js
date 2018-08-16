@@ -19,6 +19,7 @@ gulp.task('connect:open', function() {
 gulp.task('connect', function() {
   connect.server({
     root: [config.global.dev, config.global.src],
+    host: '0.0.0.0',
     port: config.connect.port,
     middleware: function(connect, opt) {
       return [

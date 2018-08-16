@@ -19,6 +19,17 @@
 
 </details>
 
+## [5.3.9] - 2018-06-27 
+### Updated
+- Updated all node modules to newest versions
+
+## [5.3.8] - 2018-06-21 
+### Fixed
+- Disabled Uglify task prevents components from being copied (https://github.com/biotope/biotope-build/issues/73)
+### Added
+- Welcome message in biotope console output :sparkles:
+- Added error message log for missing local projectConfig.js   
+
 ## [5.3.6] - 2018-06-05 
 ### Fixed
 - Webpack tasks is broken when no TS files are available
