@@ -1,8 +1,9 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const config = require('./../config');
+const history = require('connect-history-api-fallback');
 
-gulp.task('livereload', function() {
+gulp.task('livereload', function () {
   const cached = require('gulp-cached');
 
   return gulp
@@ -11,24 +12,30 @@ gulp.task('livereload', function() {
     .pipe(connect.reload());
 });
 
-gulp.task('connect:open', function() {
+gulp.task('connect:open', function () {
   const opn = require('opn');
   return opn('http://localhost:' + config.connect.port);
 });
 
-gulp.task('connect', function() {
+gulp.task('connect', function () {
   connect.server({
-    root: [config.global.dev, config.global.src],
-    host: '0.0.0.0',
+    root: [
+      config.global.dev,
+      config.global.src
+    ],
     port: config.connect.port,
-    middleware: function(connect, opt) {
+    host: '0.0.0.0',
+    middleware: function (connect, opt) {
       return [
-        function(req, res, next) {
+        function (req, res, next) {
           if (req.method.toUpperCase() === 'POST') {
             req.method = 'GET';
           }
           return next();
-        }
+        },
+        history({
+          index: config.connect.historyFallbackIndex
+        })
       ];
     },
     livereload: config.livereload
