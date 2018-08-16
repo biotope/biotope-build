@@ -1,9 +1,16 @@
 const path = require('path');
 const cwd = process.cwd();
+const webpack = require('webpack');
+const setupEnvVars = require('./lib/env-helper');
 
 const generalIncludePaths = [
   path.resolve(cwd, 'src')
 ];
+
+console.log('#################################################################');
+console.log(`Build mode: ${process.env.NODE_ENV}`);
+const environmentVariables = setupEnvVars();
+console.log('#################################################################');
 
 module.exports = {
   watch: false,
@@ -72,6 +79,10 @@ module.exports = {
       }
     ]
   },
+
+  plugins: [
+    new webpack.DefinePlugin(environmentVariables)
+  ],
 
   optimization: {
     noEmitOnErrors: true,

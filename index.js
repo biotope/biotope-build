@@ -20,7 +20,8 @@ gulp.task('build:dev', function (callback) {
     'checkDependencies',
     [
       'clean:dev',
-      'clean:iconfont'
+      'clean:iconfont',
+      'clean:svgSprite'
     ],
     [
       'lint:resources:sass',
@@ -29,6 +30,7 @@ gulp.task('build:dev', function (callback) {
       'eslint:resources',
       'eslint:components',
       'iconfont',
+      'svgSprite',
       'copy:dev:npm:js',
       'copy:dev:npm:css',
       'copy:dev:npm:bower',

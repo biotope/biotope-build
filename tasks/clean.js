@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const path = require('path');
 
 gulp.task('clean:dev', function(cb) {
   const del = require('del');
@@ -30,4 +31,11 @@ gulp.task('clean:iconfont', function(cb) {
   del.sync(['./iconfont']);
 
   cb();
+});
+
+gulp.task('clean:svgSprite', function (ob) {
+  const del = require('del');
+  del.sync([path.join(config.global.dev, 'resources', 'svg')]);
+
+  ob();
 });
