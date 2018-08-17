@@ -26,9 +26,6 @@
 ### Added
 - Support for env files added
 - support for svg sprites added
-
-## [5.3.10] - 2018-08-10 
-### Added
 - Support for ES6 added (uglifyjs)
 
 ## [5.3.9] - 2018-06-27 
