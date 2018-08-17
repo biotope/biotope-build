@@ -19,6 +19,18 @@
 
 </details>
 
+
+## [5.4.0] - 2018-08-17 
+### Changed
+- BREAKING: After updateing to 5.4.0 rename resources/scss/fonts/iconfont/_icons.scss → src/resources/scss/fonts/iconfont/_icons.tpl
+### Added
+- Support for env files added
+- support for svg sprites added
+
+## [5.3.10] - 2018-08-10 
+### Added
+- Support for ES6 added (uglifyjs)
+
 ## [5.3.9] - 2018-06-27 
 ### Updated
 - Updated all node modules to newest versions
