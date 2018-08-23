@@ -72,11 +72,11 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               babelrc: false,
-              presets: ['env']
+              presets: ['@babel/preset-env'],
+              plugins: [require('@babel/plugin-transform-classes').default]
             }
           }
-        ],
-        include: generalIncludePaths
+        ]
       }
     ]
   },
