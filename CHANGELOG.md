@@ -19,6 +19,9 @@
 
 </details>
 
+## [5.4.1] - 2018-08-30 
+### Fixed
+- ES6 modules from node_modules are now transpiled by Webpack (https://github.com/biotope/biotope-build/issues/129) 
 
 ## [5.4.0] - 2018-08-17 
 ### Changed
