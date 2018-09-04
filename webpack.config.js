@@ -71,8 +71,8 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               babelrc: false,
-              presets: ['@babel/preset-env'],
-              plugins: [require('@babel/plugin-transform-classes').default]
+              presets: [['@babel/preset-env']],
+              plugins: [[require('@babel/plugin-transform-classes').default, { loose: true }]]
             }
           }
         ]
