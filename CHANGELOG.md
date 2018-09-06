@@ -19,6 +19,11 @@
 
 </details>
 
+## [5.4.2] - 2018-09-07 
+### Added
+- Merge env data into handlebars global data object under `data.env`
+- Add support for `cross-env`
+
 ## [5.4.1] - 2018-08-30 
 ### Fixed
 - ES6 modules from node_modules are now transpiled by Webpack (https://github.com/biotope/biotope-build/issues/129) 
