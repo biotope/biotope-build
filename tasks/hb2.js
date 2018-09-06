@@ -174,11 +174,17 @@ const loadIndexrData = () => {
 
 const loadEnvData = () => {
   const setupEnvVars = require('../lib/env-helper');
+  const pathToEnvObject = [config.global.dataObject, 'env'].join('.');
+  const existingEnvData = nestedProp.get(
+    globalData,
+    pathToEnvObject
+  ) || {};
+  const envData = Object.assign({}, existingEnvData, setupEnvVars());
 
   nestedProp.set(
     globalData,
-    'env',
-    setupEnvVars()
+    pathToEnvObject,
+    envData
   );
 };
 
