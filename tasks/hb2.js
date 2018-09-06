@@ -172,6 +172,16 @@ const loadIndexrData = () => {
   );
 };
 
+const loadEnvData = () => {
+  const setupEnvVars = require('../lib/env-helper');
+
+  nestedProp.set(
+    globalData,
+    'env',
+    setupEnvVars()
+  );
+};
+
 const renderTemplate = templatePath => {
   const templateContent = templates[templatePath];
 
@@ -206,6 +216,7 @@ gulp.task('init:hb2', cb => {
   loadJsonData();
   loadIconData();
   loadIndexrData();
+  loadEnvData();
   cb();
 });
 
