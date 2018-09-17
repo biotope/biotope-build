@@ -80,6 +80,14 @@ module.exports = {
     exit: true
   },
 
+  env: {
+    files: {
+      production: 'prodvars.env',
+      staging: 'stagingvars.env',
+      development: 'devvars.env'
+    }
+  },
+
   favicons: {
     appName: 'gulp-frontend-boilerplate',
     background: '#020307',

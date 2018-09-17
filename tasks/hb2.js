@@ -119,7 +119,7 @@ const loadJsonData = () => {
         config.browserSupport.property,
         browserSupportData
       );
-    } catch (e) {}
+    } catch (e) { }
   }
 
   // load JSON files
@@ -172,6 +172,22 @@ const loadIndexrData = () => {
   );
 };
 
+const loadEnvData = () => {
+  const setupEnvVars = require('../lib/env-helper');
+  const pathToEnvObject = [config.global.dataObject, 'env'].join('.');
+  const existingEnvData = nestedProp.get(
+    globalData,
+    pathToEnvObject
+  ) || {};
+  const envData = Object.assign({}, existingEnvData, setupEnvVars(false));
+
+  nestedProp.set(
+    globalData,
+    pathToEnvObject,
+    envData
+  );
+};
+
 const renderTemplate = templatePath => {
   const templateContent = templates[templatePath];
 
@@ -206,6 +222,7 @@ gulp.task('init:hb2', cb => {
   loadJsonData();
   loadIconData();
   loadIndexrData();
+  loadEnvData();
   cb();
 });
 
@@ -221,7 +238,7 @@ gulp.task('watch:templates:hb2', () => {
   const runSequence = require('run-sequence');
   const watch = require('gulp-watch');
 
-  watch(templateGlobPatterns, config.watch, function(vinyl) {
+  watch(templateGlobPatterns, config.watch, function (vinyl) {
     let path = vinyl.path;
 
     if (config.global.isWin) {
@@ -246,7 +263,7 @@ gulp.task('watch:partials:hb2', () => {
   const runSequence = require('run-sequence');
   const watch = require('gulp-watch');
 
-  watch(partialGlobPatterns, config.watch, function(vinyl) {
+  watch(partialGlobPatterns, config.watch, function (vinyl) {
     switch (vinyl.event) {
     case 'unlink':
       removePartial(vinyl.path);
@@ -264,7 +281,7 @@ gulp.task('watch:jsons:hb2', () => {
   const runSequence = require('run-sequence');
   const watch = require('gulp-watch');
 
-  watch(jsonGlobPatterns, config.watch, function(vinyl) {
+  watch(jsonGlobPatterns, config.watch, function (vinyl) {
     switch (vinyl.event) {
     case 'unlink':
       const colors = require('colors/safe');
@@ -289,7 +306,7 @@ gulp.task('watch:icons:hb2', () => {
   const runSequence = require('run-sequence');
   const watch = require('gulp-watch');
 
-  watch(iconGlobPatterns, config.watch, function() {
+  watch(iconGlobPatterns, config.watch, function () {
     loadIconData();
     runSequence('static:hb2', 'livereload');
   });
