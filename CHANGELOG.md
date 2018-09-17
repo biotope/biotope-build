@@ -19,7 +19,7 @@
 
 </details>
 
-## [5.4.2] - 2018-09-07 
+## [5.4.2] - 2018-09-17 
 ### Added
 - Merge env data into handlebars global data object under `data.env`
 - Add support for `cross-env`
