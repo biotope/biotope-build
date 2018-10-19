@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "5.4.2",
+  "version": "5.4.3",
   "description": "An advanced developent and build runtime to create frontent ecosystems",
   "repository": {
     "type": "git",
