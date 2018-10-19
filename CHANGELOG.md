@@ -19,6 +19,10 @@
 
 </details>
 
+## [5.4.3] - 2018-10-19
+### Fixed
+- changing a sass files triggers compilation of all sass files -> now only compiles the changed file
+
 ## [5.4.2] - 2018-09-17 
 ### Added
 - Merge env data into handlebars global data object under `data.env`
