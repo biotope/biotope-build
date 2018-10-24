@@ -83,7 +83,8 @@ gulp.task('build', function (callback) {
       'copy:dist:config',
       'copy:dist:hbs',
       'copy:dist:bower',
-      'copy:dist:components'
+      'copy:dist:components',
+      'copy:dist:svgSprite'
     ],
     [
       'useref'
