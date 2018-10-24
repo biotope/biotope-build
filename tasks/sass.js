@@ -12,8 +12,7 @@ gulp.task('resources:sass', function() {
 
     return gulp
       .src([
-        config.global.src + config.global.resources + '/scss/**/*.scss',
-        '!' + config.global.src + config.global.resources + '/scss/**/_*.scss'
+        config.global.src + config.global.resources + '/scss/**/*.scss'
       ])
       .pipe(cached('resourcesSass'))
       .pipe(dependents())
@@ -45,8 +44,7 @@ gulp.task('components:sass', function() {
 
     return gulp
       .src([
-        config.global.src + config.global.components + '/**/*.scss',
-        '!' + config.global.src + config.global.components + '/**/_*.scss'
+        config.global.src + config.global.components + '/**/*.scss'
       ])
       .pipe(cached('componentsSass'))
       .pipe(dependents())
