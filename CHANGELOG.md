@@ -19,6 +19,18 @@
 
 </details>
 
+## [5.4.3] - 2018-10-19
+### Fixed
+- changing a sass files triggers compilation of all sass files -> now only compiles the changed file
+
+## [5.4.2] - 2018-09-17 
+### Added
+- Merge env data into handlebars global data object under `data.env`
+- Add support for `cross-env`
+
+## [5.4.1] - 2018-08-30 
+### Fixed
+- ES6 modules from node_modules are now transpiled by Webpack (https://github.com/biotope/biotope-build/issues/129) 
 
 ## [5.4.0] - 2018-08-17 
 ### Changed

@@ -4,7 +4,8 @@ const webpack = require('webpack');
 const setupEnvVars = require('./lib/env-helper');
 
 const generalIncludePaths = [
-  path.resolve(cwd, 'src')
+  path.resolve(cwd, 'src'),
+  path.resolve(cwd, 'node_modules')
 ];
 
 console.log('#################################################################');

@@ -7,12 +7,14 @@ gulp.task('resources:sass', function() {
     const postcss = require('gulp-postcss');
     const autoprefixer = require('autoprefixer');
     const sourcemaps = require('gulp-sourcemaps');
+    const cached = require('gulp-cached');
 
     return gulp
       .src([
         config.global.src + config.global.resources + '/scss/**/*.scss',
         '!' + config.global.src + config.global.resources + '/scss/**/_*.scss'
       ])
+      .pipe(cached('resourcesSass'))
       .pipe(sourcemaps.init())
       .pipe(sass(config.sass).on('error', sass.logError))
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
@@ -36,12 +38,14 @@ gulp.task('components:sass', function() {
     const postcss = require('gulp-postcss');
     const autoprefixer = require('autoprefixer');
     const sourcemaps = require('gulp-sourcemaps');
+    const cached = require('gulp-cached');
 
     return gulp
       .src([
         config.global.src + config.global.components + '/**/*.scss',
         '!' + config.global.src + config.global.components + '/**/_*.scss'
       ])
+      .pipe(cached('componentsSass'))
       .pipe(sourcemaps.init())
       .pipe(sass(config.sass).on('error', sass.logError))
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
