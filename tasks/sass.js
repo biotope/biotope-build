@@ -8,6 +8,7 @@ gulp.task('resources:sass', function() {
     const autoprefixer = require('autoprefixer');
     const sourcemaps = require('gulp-sourcemaps');
     const cached = require('gulp-cached');
+    const dependents = require('gulp-dependents');
 
     return gulp
       .src([
@@ -15,6 +16,7 @@ gulp.task('resources:sass', function() {
         '!' + config.global.src + config.global.resources + '/scss/**/_*.scss'
       ])
       .pipe(cached('resourcesSass'))
+      .pipe(dependents())
       .pipe(sourcemaps.init())
       .pipe(sass(config.sass).on('error', sass.logError))
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
@@ -39,6 +41,7 @@ gulp.task('components:sass', function() {
     const autoprefixer = require('autoprefixer');
     const sourcemaps = require('gulp-sourcemaps');
     const cached = require('gulp-cached');
+    const dependents = require('gulp-dependents');
 
     return gulp
       .src([
@@ -46,6 +49,7 @@ gulp.task('components:sass', function() {
         '!' + config.global.src + config.global.components + '/**/_*.scss'
       ])
       .pipe(cached('componentsSass'))
+      .pipe(dependents())
       .pipe(sourcemaps.init())
       .pipe(sass(config.sass).on('error', sass.logError))
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
@@ -148,8 +152,7 @@ gulp.task('watch:components:sass', function() {
     watch(components, config.watch, function() {
       runSequence(
         ['lint:components:sass'],
-        ['components:sass'],
-        ['resources:sass'],
+        ['components:sass', 'resources:sass'],
         ['livereload']
       );
     });
