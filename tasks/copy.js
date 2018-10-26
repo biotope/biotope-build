@@ -464,6 +464,35 @@ gulp.task('copy:dist:hbs', function () {
   return copyFiles(from, to);
 });
 
+gulp.task('copy:dist:svgSprite', function () {
+  const from = [
+    path.join(
+      config.global.cwd,
+      config.global.src,
+      config.global.resources,
+      'svg',
+      '**',
+      '*'
+    ),
+    path.join(
+      config.global.cwd,
+      config.global.dev,
+      config.global.resources,
+      'svg',
+      '**',
+      '*'
+    )
+  ];
+  const to = path.join(
+    config.global.cwd,
+    config.global.dist,
+    config.global.resources,
+    'svg'
+  );
+
+  return copyFiles(from, to);
+});
+
 gulp.task('watch:components:js', function () {
   const watch = require('gulp-watch');
   const runSequence = require('run-sequence');
