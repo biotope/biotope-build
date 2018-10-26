@@ -187,7 +187,8 @@ module.exports = {
   },
 
   webpack: {
-    ignoreList: ['/**/*.spec.ts']
+    ignoreList: ['/**/*.spec.ts'],
+    watchScss: false
   }
 };
 

@@ -24,15 +24,20 @@ const webpackSourcePatterns = [
   )
 ];
 const webpackWatchPatterns = [
-  ...webpackSourcePatterns,
-  path.join(
-    config.global.cwd,
-    config.global.src,
-    config.global.components,
-    '**',
-    '*.scss'
-  )
+  ...webpackSourcePatterns
 ];
+
+if (config.webpack.watchScss) {
+  webpackWatchPatterns.push(
+    path.join(
+      config.global.cwd,
+      config.global.src,
+      config.global.components,
+      '**',
+      '*.scss'
+    )
+  );
+}
 
 gulp.task('webpack:ts', function (cb) {
   if (config.global.tasks.webpack) {
