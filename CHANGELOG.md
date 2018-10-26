@@ -19,6 +19,12 @@
 
 </details>
 
+## [5.4.4] - 2018-10-26
+### Fixed
+- fixed changing sass partials not triggering recompile
+### Changed
+- added configuration to webpack to enable sass entry points - default is false
+
 ## [5.4.3] - 2018-10-19
 ### Fixed
 - changing a sass files triggers compilation of all sass files -> now only compiles the changed file
