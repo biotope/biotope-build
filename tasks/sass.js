@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const config = require('./../config');
 const path = require('path');
 
-gulp.task('sass', function() {
+gulp.task('sass', function () {
   if (config.global.tasks.sass) {
     const sass = require('gulp-sass');
     const postcss = require('gulp-postcss');
@@ -14,7 +14,7 @@ gulp.task('sass', function() {
 
     const componentsFolderName = config.global.components.slice(1);
     const resourcesFolderName = config.global.resources.slice(1);
-    const scssResourcesFolderName = resourcesFolderName + '\\scss';
+    const scssResourcesFolderName = path.join(resourcesFolderName, 'scss');
 
     return gulp
       .src([
@@ -26,13 +26,13 @@ gulp.task('sass', function() {
       .pipe(sass(config.sass).on('error', sass.logError))
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
       .pipe(sourcemaps.write('.'))
-      .pipe(rename(function(currentFile) {
-          if (currentFile.dirname.indexOf(componentsFolderName) === 0 ) {
-            currentFile.dirname = path.join(config.global.resources,currentFile.dirname);
-          }
-          if (currentFile.dirname.indexOf(resourcesFolderName) === 0) {
-            currentFile.dirname = path.join(config.global.resources, 'css', currentFile.dirname.replace(scssResourcesFolderName, ''));
-          }
+      .pipe(rename(function (currentFile) {
+        if (currentFile.dirname.indexOf(componentsFolderName) === 0) {
+          currentFile.dirname = path.join(config.global.resources, currentFile.dirname);
+        }
+        if (currentFile.dirname.indexOf(resourcesFolderName) === 0) {
+          currentFile.dirname = path.join(config.global.resources, 'css', currentFile.dirname.replace(scssResourcesFolderName, ''));
+        }
       }))
       .pipe(gulp.dest(config.global.dev));
   } else {
@@ -45,7 +45,7 @@ gulp.task('sass', function() {
  * scss file liniting
  * @TODO throws warnings now, define linting rules, remove && false
  */
-gulp.task('lint:sass', function() {
+gulp.task('lint:sass', function () {
   if (config.global.tasks.sass && config.global.tasks.linting && false) {
     const sassLint = require('gulp-sass-lint');
     const cached = require('gulp-cached');
@@ -63,7 +63,7 @@ gulp.task('lint:sass', function() {
   }
 });
 
-gulp.task('watch:sass', function() {
+gulp.task('watch:sass', function () {
   if (config.global.tasks.sass) {
     const watch = require('gulp-watch');
     const runSequence = require('run-sequence');
@@ -71,7 +71,7 @@ gulp.task('watch:sass', function() {
     watch(
       [config.global.src + '/**/*.s+(a|c)ss'],
       config.watch,
-      function() {
+      function () {
         runSequence(
           ['lint:sass'],
           ['sass'],
@@ -83,7 +83,7 @@ gulp.task('watch:sass', function() {
     watch(
       [config.global.src + '../.iconfont' + '/*.scss'],
       config.watch,
-      function() {
+      function () {
         runSequence(
           ['lint:sass'],
           ['sass'],
