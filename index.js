@@ -5,7 +5,7 @@ log(`:sparkles: Starting Biotope Build (v${localPackage.version}) with :sparklin
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const requireDir = require('require-dir');
-requireDir('./tasks', {recurse: true});
+requireDir('./tasks', { recurse: true });
 
 // Prevent errors caused by too many listeners in gulp-watch
 require('events').EventEmitter.defaultMaxListeners = 0;
@@ -68,6 +68,15 @@ gulp.task('build', function (callback) {
       'copy:dev:js'
     ],
     [
+      'useref'
+    ],
+    [
+      'useref:assets',
+      'image:resources:dist',
+      'image:component:dist',
+      'favicons'
+    ],
+    [
       'copy:dist:js',
       'copy:dist:react',
       'copy:dist:ts',
@@ -85,15 +94,6 @@ gulp.task('build', function (callback) {
       'copy:dist:bower',
       'copy:dist:components',
       'copy:dist:svgSprite'
-    ],
-    [
-      'useref'
-    ],
-    [
-      'useref:assets',
-      'image:resources:dist',
-      'image:component:dist',
-      'favicons'
     ],
     [
       'uglify:resources:dist',
