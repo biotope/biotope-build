@@ -11,7 +11,6 @@ gulp.task('sass', function() {
     const cached = require('gulp-cached');
     const dependents = require('gulp-dependents');
     const rename = require('gulp-rename');
-    const debug = require('gulp-debug');
 
     const componentsFolderName = config.global.components.slice(1);
     const resourcesFolderName = config.global.resources.slice(1);
@@ -21,24 +20,20 @@ gulp.task('sass', function() {
       .src([
         config.global.src + '/**/*.s+(a|c)ss'
       ])
-      .pipe(debug())
       .pipe(cached('resourcesSass'))
-      .pipe(debug())
       .pipe(dependents())
-      .pipe(debug())
       .pipe(sourcemaps.init())
       .pipe(sass(config.sass).on('error', sass.logError))
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
       .pipe(sourcemaps.write('.'))
       .pipe(rename(function(currentFile) {
-          if (currentFile.dirname.indexOf(config.global.components.slice(1)) === 0 ) {
+          if (currentFile.dirname.indexOf(componentsFolderName) === 0 ) {
             currentFile.dirname = path.join(config.global.resources,currentFile.dirname);
           }
-          if (currentFile.dirname.indexOf(config.global.resources.slice(1)) === 0) {
+          if (currentFile.dirname.indexOf(resourcesFolderName) === 0) {
             currentFile.dirname = path.join(config.global.resources, 'css', currentFile.dirname.replace(scssResourcesFolderName, ''));
           }
       }))
-      .pipe(debug())
       .pipe(gulp.dest(config.global.dev));
   } else {
     const colors = require('colors/safe');
