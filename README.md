@@ -301,7 +301,7 @@ webpack: {
 There are other tasks in use, but they can not be modified via a projectConfig.js file. If this is needed please open an issue or send a pull request.
 
 ## Local development
-1. Clone biotope-boilerplate repository
+1. Clone [biotope-boilerplate repository](https://github.com/biotope/biotope-boilerplate)
 2. Install locally with `yarn`
 3. Clone biotope-build repository
 4. Install dependencies in biotope-buid with `yarn`
