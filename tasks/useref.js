@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const config = require('./../config');
 
-gulp.task('useref', function() {
+gulp.task('useref', function () {
   const useref = require('gulp-useref');
   const lec = require('gulp-line-ending-corrector');
 
@@ -16,7 +16,7 @@ gulp.task('useref', function() {
     .pipe(gulp.dest(config.global.dist));
 });
 
-gulp.task('useref:assets', function() {
+gulp.task('useref:assets', function () {
   const hb = require('gulp-hb');
   const filter = require('gulp-filter');
   const useref = require('gulp-useref');
@@ -62,6 +62,6 @@ gulp.task('useref:assets', function() {
     .pipe(filter(['**', '!**/_useref.html', '!**/_useref.hbs']))
     .pipe(gulp.dest(path.join(
       config.global.cwd,
-      config.global.dist
+      config.global.dev
     )));
 });
