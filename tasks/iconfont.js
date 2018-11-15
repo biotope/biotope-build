@@ -2,7 +2,7 @@ const fs = require('fs');
 const gulp = require('gulp');
 const config = require('./../config');
 
-const checkFilePaths = (arr, cb) => {
+const checkFilePaths = (_, cb) => {
   let iconfontArray = config.iconfontCss;
   if (!Array.isArray(iconfontArray)) {
     iconfontArray = [iconfontArray];
@@ -48,7 +48,7 @@ gulp.task('iconfont', callback => {
       } else {
         runSequence(
           'convertIconsToTtf',
-          ['convertTtfToEot', 'convertTtfToWoff'],
+          'convertTtfToWoff',
           callback
         );
       }
@@ -87,15 +87,6 @@ gulp.task('convertIconsToTtf', function() {
         );
     })
   );
-});
-
-gulp.task('convertTtfToEot', function() {
-  const ttf2eot = require('gulp-ttf2eot');
-
-  return gulp
-    .src(config.global.dev + '/resources/fonts/icons/*.ttf')
-    .pipe(ttf2eot())
-    .pipe(gulp.dest(config.global.dev + '/resources/fonts/icons/'));
 });
 
 gulp.task('convertTtfToWoff', function() {
