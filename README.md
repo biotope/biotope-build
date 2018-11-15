@@ -297,11 +297,25 @@ webpack: {
 }
 ```
 
-### others
+## others
 There are other tasks in use, but they can not be modified via a projectConfig.js file. If this is needed please open an issue or send a pull request.
 
-### Troubleshooting, Bugs & Issues
-#### Knows issues
+## Local development
+1. Clone biotope-boilerplate repository
+2. Install locally with `yarn`
+3. Clone biotope-build repository
+4. Install dependencies in biotope-buid with `yarn`
+5. Run `yarn link` in @biotope/build repo
+6. Run `yarn link @biotope/build` in biotope-boilerplate repo
+7. Happy developing 👋
+
+### Undo local dev changes
+1. Run `yarn unlink` in @biotope/build repo
+2. Run `yarn unlink @biotope/build` in biotope-boilerplate repo
+3. Run `yarn` in biotope-boilerplate repo
+
+## Troubleshooting, Bugs & Issues
+### Knows issues
 - Missing documentation (on the roadmap)
 - Poor performance (on the roadmap)
 
