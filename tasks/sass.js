@@ -1,7 +1,8 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const path = require('path');
 
-gulp.task('resources:sass', function() {
+gulp.task('sass', function () {
   if (config.global.tasks.sass) {
     const sass = require('gulp-sass');
     const postcss = require('gulp-postcss');
@@ -9,10 +10,15 @@ gulp.task('resources:sass', function() {
     const sourcemaps = require('gulp-sourcemaps');
     const cached = require('gulp-cached');
     const dependents = require('gulp-dependents');
+    const rename = require('gulp-rename');
+
+    const componentsFolderName = config.global.components.slice(1);
+    const resourcesFolderName = config.global.resources.slice(1);
+    const scssResourcesFolderName = path.join(resourcesFolderName, 'scss');
 
     return gulp
       .src([
-        config.global.src + config.global.resources + '/scss/**/*.scss'
+        config.global.src + '/**/*.s+(a|c)ss'
       ])
       .pipe(cached('resourcesSass'))
       .pipe(dependents())
@@ -20,7 +26,15 @@ gulp.task('resources:sass', function() {
       .pipe(sass(config.sass).on('error', sass.logError))
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
       .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest(config.global.dev + config.global.resources + '/css'));
+      .pipe(rename(function (currentFile) {
+        if (currentFile.dirname.indexOf(componentsFolderName) === 0) {
+          currentFile.dirname = path.join(config.global.resources, currentFile.dirname);
+        }
+        if (currentFile.dirname.indexOf(resourcesFolderName) === 0) {
+          currentFile.dirname = path.join(config.global.resources, 'css', currentFile.dirname.replace(scssResourcesFolderName, ''));
+        }
+      }))
+      .pipe(gulp.dest(config.global.dev));
   } else {
     const colors = require('colors/safe');
     console.log(colors.yellow('sass resources disabled'));
@@ -28,57 +42,19 @@ gulp.task('resources:sass', function() {
 });
 
 /**
- * compiles scss files
- * from app/partials/components/../
- * to .tmp/resources/components/css/
- */
-
-gulp.task('components:sass', function() {
-  if (config.global.tasks.sass) {
-    const sass = require('gulp-sass');
-    const postcss = require('gulp-postcss');
-    const autoprefixer = require('autoprefixer');
-    const sourcemaps = require('gulp-sourcemaps');
-    const cached = require('gulp-cached');
-    const dependents = require('gulp-dependents');
-
-    return gulp
-      .src([
-        config.global.src + config.global.components + '/**/*.scss'
-      ])
-      .pipe(cached('componentsSass'))
-      .pipe(dependents())
-      .pipe(sourcemaps.init())
-      .pipe(sass(config.sass).on('error', sass.logError))
-      .pipe(postcss([autoprefixer(config.autoprefixer)]))
-      .pipe(sourcemaps.write('.'))
-      .pipe(
-        gulp.dest(
-          config.global.dev + config.global.resources + config.global.components
-        )
-      );
-  } else {
-    const colors = require('colors/safe');
-    console.log(colors.yellow('sass components disabled'));
-  }
-});
-
-/**
  * scss file liniting
- * @TODO throws warnings now, define linting rules
+ * @TODO throws warnings now, define linting rules, remove && false
  */
-gulp.task('lint:resources:sass', function() {
+gulp.task('lint:sass', function () {
   if (config.global.tasks.sass && config.global.tasks.linting && false) {
     const sassLint = require('gulp-sass-lint');
     const cached = require('gulp-cached');
 
     return gulp
       .src([
-        config.global.src + config.global.resources + '/scss/**/*.s+(a|c)ss',
-        '!' +
-          config.global.src +
-          config.global.resources +
-          '/scss/**/_icons.s+(a|c)ss'
+        config.global.src + '/**/*.s+(a|c)ss',
+        '!' + config.global.src + '**/_icons.s+(a|c)ss',
+        '!' + config.global.src + '**/_iconClasses.s+(a|c)ss'
       ])
       .pipe(cached('sass', { optimizeMemory: true }))
       .pipe(sassLint(config.global.sassLint))
@@ -87,35 +63,18 @@ gulp.task('lint:resources:sass', function() {
   }
 });
 
-gulp.task('lint:components:sass', function() {
-  if (config.global.tasks.sass && config.global.tasks.linting && false) {
-    const sassLint = require('gulp-sass-lint');
-    const cached = require('gulp-cached');
-
-    return gulp
-      .src(config.global.src + config.global.components + '/**/*.s+(a|c)ss')
-      .pipe(cached('sass', { optimizeMemory: true }))
-      .pipe(sassLint())
-      .pipe(sassLint.format())
-      .pipe(sassLint.failOnError());
-  }
-});
-
-/**
- * watches global scss files for any changes
- */
-gulp.task('watch:resources:sass', function() {
+gulp.task('watch:sass', function () {
   if (config.global.tasks.sass) {
     const watch = require('gulp-watch');
     const runSequence = require('run-sequence');
 
     watch(
-      [config.global.src + config.global.resources + '/scss/**/*.scss'],
+      [config.global.src + '/**/*.s+(a|c)ss'],
       config.watch,
-      function() {
+      function () {
         runSequence(
-          ['lint:resources:sass'],
-          ['resources:sass'],
+          ['lint:sass'],
+          ['sass'],
           ['livereload']
         );
       }
@@ -124,35 +83,13 @@ gulp.task('watch:resources:sass', function() {
     watch(
       [config.global.src + '../.iconfont' + '/*.scss'],
       config.watch,
-      function() {
+      function () {
         runSequence(
-          ['lint:resources:sass'],
-          ['resources:sass'],
+          ['lint:sass'],
+          ['sass'],
           ['livereload']
         );
       }
     );
-  }
-});
-
-/**
- * watches component scss files for any changes
- */
-gulp.task('watch:components:sass', function() {
-  if (config.global.tasks.sass) {
-    const watch = require('gulp-watch');
-    const runSequence = require('run-sequence');
-    const components = [];
-    components.push(
-      config.global.src + config.global.components + '/**/*.scss'
-    );
-
-    watch(components, config.watch, function() {
-      runSequence(
-        ['lint:components:sass'],
-        ['components:sass', 'resources:sass'],
-        ['livereload']
-      );
-    });
   }
 });

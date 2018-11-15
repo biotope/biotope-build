@@ -24,8 +24,7 @@ gulp.task('build:dev', function (callback) {
       'clean:svgSprite'
     ],
     [
-      'lint:resources:sass',
-      'lint:components:sass',
+      'lint:sass',
       'lint:json',
       'eslint:resources',
       'eslint:components',
@@ -43,8 +42,7 @@ gulp.task('build:dev', function (callback) {
       'static:hb2'
     ],
     [
-      'resources:sass',
-      'components:sass',
+      'sass',
       'webpack:ts',
       'copy:dev:components:js'
     ],
@@ -122,8 +120,7 @@ gulp.task('serve', function (callback) {
       'watch:jsons:hb2',
       'watch:icons:hb2',
       'watch:components:js',
-      'watch:components:sass',
-      'watch:resources:sass',
+      'watch:sass',
       'watch:eslint:components',
       'watch:eslint:resources',
       'watch:handlebars',
