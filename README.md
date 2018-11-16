@@ -30,8 +30,8 @@ See default config: <https://github.com/biotope/biotope-build/blob/master/config
    <boolean> isWin: isWin, //checks the os and sets the variable to true if running on a windows system
    <boolean> debug: false, //toggle debbuging prompts from the tasks (static:hb, browserConfig, partialHelper), default is false
    <String> dataObject: 'data' //name of the global data object, which can be used in static handlebars templates via {{data.key}}
-   <String> resources: '/resources', //resource folders inside the src folder, needed to run multiple tasks, can contain multiple different folders
-   <String> components: '/components' //component folders corresponding to the resource folders
+   <String> resources: '/resources', //resource folder inside the src folder, needed to run multiple tasks
+   <String> components: '/components' //component folder corresponding to the resource folder
    <String> handlebarsHelper: '/js/handlebars.helper.js', //path to dynamic handlebar helpers relative to the resources folder
    <Object> tasks: {}, //see tasks
    <Object> externalResources: {} //see external resources
