@@ -1,25 +1,25 @@
 # biotope-build
+Build Package for biotope-boilerplate.
 
-## Options
+## Features
+- Typescript + Babel
+- ES6 unglify
+- SCSS
+- Autoprefixer
+- Icon Font
+- SVG Sprite generation
+- HBS for templating
+- ESLint
+- Dev Servers
+
+## Options & Settings
 
 All biotope-build options can be set in local /projectConfig.js (<5.x /projectConfig.json)
 
-Description will follow soon, see default config: <https://github.com/biotope/biotope-build/blob/master/config.js> 
-
-## Migration checklists
-
-* <https://github.com/biotope/biotope/wiki/Migration-Checklist-3.x-to-4.x>
-* <https://github.com/biotope/biotope/wiki/Migration-Checklist-4.x-to-5.x>
-
-## Config.js defaults
-
-config.js is the default configuration for all gulp tasks. The following is an overview of the default settings used in this framework.
-
-All configurations can be overwritten via a projectConfig.js inside the root folder of the project using this biotope-build.  
+See default config: <https://github.com/biotope/biotope-build/blob/master/config.js>
 
 ### framework internals
-
-###### global
+#### global settings
 ```
 {
    <String> src: src, //base folder for all the project files, defaults to 'src'
@@ -30,16 +30,16 @@ All configurations can be overwritten via a projectConfig.js inside the root fol
    <boolean> isWin: isWin, //checks the os and sets the variable to true if running on a windows system
    <boolean> debug: false, //toggle debbuging prompts from the tasks (static:hb, browserConfig, partialHelper), default is false
    <String> dataObject: 'data' //name of the global data object, which can be used in static handlebars templates via {{data.key}}
-   Array<String> resources: ['/resources'], //resource folders inside the src folder, needed to run multiple tasks, can contain multiple different folders
-   Array<String> components: ['/components'] //component folders corresponding to the resource folders   
+   <String> resources: '/resources', //resource folders inside the src folder, needed to run multiple tasks, can contain multiple different folders
+   <String> components: '/components' //component folders corresponding to the resource folders
    <String> handlebarsHelper: '/js/handlebars.helper.js', //path to dynamic handlebar helpers relative to the resources folder
    <Object> tasks: {}, //see tasks
-   <Object> externalResources: {} //see external resources   
+   <Object> externalResources: {} //see external resources
    <Object> bowerResources: {} //see bower resources
 }
 ```
-###### tasks
-You can toggle certain task in biotope-build. Every Task can be configurated with a boolean. 
+#### tasks settings
+You can toggle certain task in biotope-build. Every Task can be configurated with a boolean.
 
 This list shows the configurable tasks as well as a brief description about what they do.
 ```
@@ -53,31 +53,23 @@ This list shows the configurable tasks as well as a brief description about what
 	image: true, //compress images stores in '/resources/img'
 	linting: true, //linting of js/ts/scss files
 	sass: true, //disables the sass compiler, disabled if you use vanilla css
-	uglify: true, //uglifies js files in the build 
+	uglify: true, //uglifies js files in the build
 	webpack: true //compiles typescript and transpiles ES6 Code in *.ts files
 }
 ```
-###### externalResources
+#### externalResources
 If you use external resources for the final build you can add those with this object. The module name references the module inside the node_modules folder. The file name needs to be relative to the module.
 
-JS files then get copied to '.tmp/resources/js/vendor/', CSS files to '.tmp/resources/css/vendor/'. When using scss files, reference the node_modules folder directly from there. 
+JS files then get copied to '.tmp/resources/js/vendor/', CSS files to '.tmp/resources/css/vendor/'. When using scss files, reference the node_modules folder directly from there.
 ```
 {
 	'moduleName': 'singleFile.ext',
 	'otherModuleName': ['firstFile.ext', 'folder/secondFile.ext2'],
 }
 ```
-###### bowerResources
-To maintain backwards compatibility when using bower resources in conditional loader. Files get copied to "/resources/bower_components/moduleName/filePath".   
-```
-{
-	'moduleName': 'singleFile.ext',
-	'otherModuleName': ['firstFile.ext', 'folder/secondFile.ext2'],
-}
-```
-	
+
 ### plugin defaults
-###### autoprefixer
+#### autoprefixer
 Autoprefixer uses the default options, with the last browser versions.
 Repo: https://github.com/postcss/autoprefixer#options
 
@@ -87,7 +79,7 @@ autoprefixer: {
 },
 ```
 
-##### browserSupport
+#### browserSupport
 Set the file path to the corresponding *.json file to create a browser support overview.
 
 ```
@@ -96,11 +88,11 @@ browserSupport: {
 },
 ```
 
-##### checkDependencies
+#### checkDependencies
 Check dependencies only uses default options.
 Repo: https://github.com/mgol/check-dependencies
 
-##### cleanCss
+#### cleanCss
 Clean CSS uses default options with rebase set to false to prevent rewriting file paths.
 Repo: https://www.npmjs.com/package/gulp-clean-css
 Repo: https://github.com/jakubpawlowicz/clean-css
@@ -110,17 +102,17 @@ cleanCss: {
 },
 ```
 
-##### cssStats
+#### cssStats
 cssStats exits on error in order to break the build process.
 Repo: https://github.com/cssstats/gulp-cssstats
- 
+
 ```
 cssstats: {
 	exit: true
 },
 ```
 
-##### connect
+#### connect
 Set the port and the folders being watch for connect/livereload.
 Repo: https://github.com/avevlad/gulp-connect
 
@@ -144,8 +136,8 @@ connect: {
 	},
 ```
 
-##### favicons
-This creates all the favicons and a manifest.json from an image file. 
+#### favicons
+This creates all the favicons and a manifest.json from an image file.
 Repo: https://github.com/evilebottnawi/favicons
 
 ```
@@ -167,9 +159,9 @@ favicons: {
 },
 ```
 
-##### handlebars
+#### handlebars
 Dynamic handlebar templates and partials get created and added to a namespace.
-Repo: https://github.com/lazd/gulp-handlebars  
+Repo: https://github.com/lazd/gulp-handlebars
 
 ```
 handlebars: {
@@ -180,9 +172,9 @@ handlebars: {
 },
 ```
 
-##### iconfont
+#### iconfont
 Icon font settings are split into gulp-svgicons2svgfont settings and the path settings.
-Repo: https://github.com/nfroidure/gulp-svgicons2svgfont 
+Repo: https://github.com/nfroidure/gulp-svgicons2svgfont
 
 ```
 iconfont: {
@@ -209,7 +201,7 @@ iconfontCss: [
 ],
 ```
 
-##### image
+#### image
 Minifiy the images inside "/resources/img".
 Repo: https://github.com/sindresorhus/gulp-imagemin
 
@@ -219,7 +211,7 @@ image: {
 },
 ```
 
-##### lec
+#### lec
 Force line-endings to 'LF' formatting to create unification across platform.
 Repo: https://github.com/iShafayet/gulp-line-ending-corrector
 
@@ -231,7 +223,7 @@ lec: {
 },
 ```
 
-##### livereload
+#### livereload
 Specifies the port for using livereload. Runs with connect. See connect settings.
 ```
 livereload: {
@@ -239,10 +231,10 @@ livereload: {
 },
 ```
 
-##### modernizr
+#### modernizr
 Runs modernizr tests and creates polyfills.
 Repo: https://github.com/doctyper/gulp-modernizr
-Options: https://github.com/Modernizr/customizr#config-file 
+Options: https://github.com/Modernizr/customizr#config-file
 ```
 modernizr: {
 	options: [
@@ -255,7 +247,7 @@ modernizr: {
 },
 ```
 
-##### sass
+#### sass
 Sass compiler based on node-sass.
 Repo: https://github.com/dlmanning/gulp-sass
 Options: https://github.com/sass/node-sass#options
@@ -265,14 +257,14 @@ sass: {
 },
 ```
 
-##### sassLint
+#### sassLint
 Linting of sass files. Default options. Rules need to be defined.
 Repo: https://github.com/sasstools/gulp-sass-lint
 ```
 sassLint: {},
 ```
 
-##### ugflify
+#### ugflify
 Javascript uglification settings.
 Repo: https://github.com/terinjokes/gulp-uglify
 
@@ -285,7 +277,7 @@ uglify: {
 },
 ```
 
-##### watch
+#### watch
 Watch task uses polling on windows system, therefore the interval is increased to reduce cpu usage.
 Repo: https://github.com/floatdrop/gulp-watch
 
@@ -296,7 +288,7 @@ watch: {
 },
 ```
 
-##### webpack
+#### webpack
 Add files to an ignoreList, set path relative to src path. Webpack settings are set via webpack.config.js
 Repo: https://github.com/webpack/webpack
 ```
@@ -305,11 +297,26 @@ webpack: {
 }
 ```
 
-#### others
+## others
 There are other tasks in use, but they can not be modified via a projectConfig.js file. If this is needed please open an issue or send a pull request.
 
-## Troubleshooting
+## Local development
+1. Clone [biotope-boilerplate repository](https://github.com/biotope/biotope-boilerplate)
+2. Install locally with `yarn`
+3. Clone biotope-build repository
+4. Install dependencies in biotope-buid with `yarn`
+5. Run `yarn link` in @biotope/build repo
+6. Run `yarn link @biotope/build` in biotope-boilerplate repo
+7. Happy developing 👋
 
-- High cpu usage on windows: the watch task uses polling, which can require a high cpu usage. If your system runs slow or crashes, try to increase the interval of the watch task. 
+### Undo local dev changes
+1. Run `yarn unlink` in @biotope/build repo
+2. Run `yarn unlink @biotope/build` in biotope-boilerplate repo
+3. Run `yarn` in biotope-boilerplate repo
 
-  Current defaults: Unix 100, Windows 250 
+## Troubleshooting, Bugs & Issues
+### Knows issues
+- Missing documentation (on the roadmap)
+- Poor performance (on the roadmap)
+
+If you encounter errors, please submit an issue.
