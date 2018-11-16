@@ -19,6 +19,17 @@
 
 </details>
 
+## [5.4.5] - 2018-11-16
+### Changed
+- updated readme
+### Removed
+- removed eot font creation from iconfont task
+### Fixed
+- sass compilation sometime not triggering when updateding partials
+- css minification not working
+- css charset getting removed
+
+
 ## [5.4.4] - 2018-10-26
 ### Fixed
 - fixed changing sass partials not triggering recompile
