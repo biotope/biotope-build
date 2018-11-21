@@ -7,7 +7,7 @@ const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const webpackConfig = require('./../webpack.config.js');
 
-const webpackSourcePatterns = [
+const webpackDefaultSourcePatterns = [
   path.join(
     config.global.cwd,
     config.global.src,
@@ -23,6 +23,12 @@ const webpackSourcePatterns = [
     '*.ts'
   )
 ];
+
+const webpackSourcePatterns = config.global.tsEntryPoints ? config.global.tsEntryPoints.map((cPath) => path.join(
+  config.global.cwd,
+  cPath
+)) : webpackDefaultSourcePatterns;
+
 const webpackWatchPatterns = [
   ...webpackSourcePatterns
 ];
@@ -50,7 +56,7 @@ gulp.task('webpack:ts', function (cb) {
 
     const entryPoints = globule.find(webpackSourcePatterns);
 
-    if(entryPoints.length) {
+    if (entryPoints.length) {
       webpackConfig.entry = {};
 
       for (const entryPoint of entryPoints) {
@@ -68,7 +74,7 @@ gulp.task('webpack:ts', function (cb) {
         webpackConfig.entry[relativePath] = entryPoint;
       }
 
-      return gulp.src(path.join(config.global.cwd, 'gulpfile.js'), {read: false})
+      return gulp.src(path.join(config.global.cwd, 'gulpfile.js'), { read: false })
         .pipe(plumber())
         .pipe(webpackStream(webpackConfig, webpack))
         .pipe(gulp.dest(path.join(config.global.cwd, config.global.dev)));
