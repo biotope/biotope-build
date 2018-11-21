@@ -7,27 +7,11 @@ const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const webpackConfig = require('./../webpack.config.js');
 
-const webpackDefaultSourcePatterns = [
-  path.join(
-    config.global.cwd,
-    config.global.src,
-    config.global.resources,
-    '**',
-    '*.ts'
-  ),
-  path.join(
-    config.global.cwd,
-    config.global.src,
-    config.global.components,
-    '**',
-    '*.ts'
-  )
-];
-
-const webpackSourcePatterns = config.global.tsEntryPoints ? config.global.tsEntryPoints.map((cPath) => path.join(
+const webpackSourcePatterns = config.global.tsEntryPoints.map((cPath) => path.join(
   config.global.cwd,
+  config.global.src,
   cPath
-)) : webpackDefaultSourcePatterns;
+));;
 
 const webpackWatchPatterns = [
   ...webpackSourcePatterns
