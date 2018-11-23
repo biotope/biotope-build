@@ -36,6 +36,10 @@ module.exports = {
       version: true,
       webpack: true
     },
+    tsEntryPoints: [
+      'resources/ts/**/*.ts',
+      'components/**/*.ts'
+    ],
     externalResources: {},
     bowerResources: {}
   },
