@@ -12,9 +12,6 @@ gulp.task('sass', function () {
     const dependents = require('gulp-dependents');
     const rename = require('gulp-rename');
 
-    const resourcesFolderName = config.global.resources.slice(1);
-    const scssResourcesFolderName = path.join(resourcesFolderName, 'scss');
-
     return gulp
       .src([
         config.global.src + config.global.resources + '/**/*.s+(a|c)ss'
@@ -26,7 +23,7 @@ gulp.task('sass', function () {
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
       .pipe(sourcemaps.write('.'))
       .pipe(rename(function (currentFile) {
-        currentFile.dirname = path.join(config.global.resources, 'css', currentFile.dirname.replace(scssResourcesFolderName, ''));
+        currentFile.dirname = path.join(config.global.resources, currentFile.dirname.replace('scss', 'css'));
       }))
       .pipe(gulp.dest(config.global.dev));
   } else {
