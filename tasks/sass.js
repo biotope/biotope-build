@@ -26,9 +26,7 @@ gulp.task('sass', function () {
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
       .pipe(sourcemaps.write('.'))
       .pipe(rename(function (currentFile) {
-        if (currentFile.dirname.indexOf(resourcesFolderName) === 0) {
-          currentFile.dirname = path.join(config.global.resources, 'css', currentFile.dirname.replace(scssResourcesFolderName, ''));
-        }
+        currentFile.dirname = path.join(config.global.resources, 'css', currentFile.dirname.replace(scssResourcesFolderName, ''));
       }))
       .pipe(gulp.dest(config.global.dev));
   } else {
