@@ -32,28 +32,6 @@ gulp.task('sass', function () {
   }
 });
 
-/**
- * scss file liniting
- * @TODO throws warnings now, define linting rules, remove && false
- */
-gulp.task('lint:sass', function () {
-  if (config.global.tasks.sass && config.global.tasks.linting && false) {
-    const sassLint = require('gulp-sass-lint');
-    const cached = require('gulp-cached');
-
-    return gulp
-      .src([
-        config.global.src + '/**/*.s+(a|c)ss',
-        '!' + config.global.src + '**/_icons.s+(a|c)ss',
-        '!' + config.global.src + '**/_iconClasses.s+(a|c)ss'
-      ])
-      .pipe(cached('sass', { optimizeMemory: true }))
-      .pipe(sassLint(config.global.sassLint))
-      .pipe(sassLint.format())
-      .pipe(sassLint.failOnError());
-  }
-});
-
 gulp.task('watch:sass', function () {
   if (config.global.tasks.sass) {
     const watch = require('gulp-watch');
