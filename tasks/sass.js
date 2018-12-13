@@ -42,7 +42,6 @@ gulp.task('watch:sass', function () {
       config.watch,
       function () {
         runSequence(
-          ['lint:sass'],
           ['sass'],
           ['livereload']
         );
@@ -54,7 +53,6 @@ gulp.task('watch:sass', function () {
       config.watch,
       function () {
         runSequence(
-          ['lint:sass'],
           ['sass'],
           ['livereload']
         );
