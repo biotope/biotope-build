@@ -14,7 +14,7 @@ gulp.task('livereload', function () {
 
 gulp.task('connect:open', function () {
   const opn = require('opn');
-  return opn('http://localhost:' + config.connect.port);
+  return opn(`http://localhost:${config.connect.port}/index.html`);
 });
 
 gulp.task('connect', function () {
