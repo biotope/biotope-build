@@ -24,6 +24,9 @@ gulp.task('build:dev', function (callback) {
       'clean:svgSprite'
     ],
     [
+      'styleGuide'
+    ],
+    [
       'lint:sass',
       'lint:json',
       'eslint:resources',

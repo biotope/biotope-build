@@ -32,6 +32,7 @@ module.exports = {
       image: true,
       linting: true,
       sass: true,
+      styleGuide: true, //TODO: turn false before mergin into master
       uglify: true,
       version: true,
       webpack: true
