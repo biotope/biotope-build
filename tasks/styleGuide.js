@@ -52,7 +52,7 @@ gulp.task('styleGuide', function () {
       bioHelpers(handlebars);
       mkdirSync(path.resolve(config.styleGuide.distFolder));
       const packageFiles = fromDir(origin, /package\.json$/);
-      const contents = packages.map((packageFile) => {
+      const contents = packageFiles.map((packageFile) => {
         let expandedPackage = packageFile;
         const packageUrl = packageFile;
         expandedPackage = JSON.parse(fs.readFileSync(packageUrl, 'utf8'));
