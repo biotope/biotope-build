@@ -6,7 +6,7 @@ const fs = require('fs');
 gulp.task('styleGuide', function () {
   if (config.global.tasks.styleGuide) {
 
-    const handlebars = require('handlebars');
+    const Handlebars = require('handlebars');
     const bioHelpers = require('./../lib/hb2-helpers');
 
     const mkdirSync = function (dirPath) {
@@ -41,32 +41,31 @@ gulp.task('styleGuide', function () {
             filePath
           ];
         } else {
-          return [
-            ...aggregated
-          ];
+          return [...aggregated];
         }
       }, []);
     };
 
     const mergeComponentDefinitions = (origin) => {
-      bioHelpers(handlebars);
-      mkdirSync(path.resolve(config.styleGuide.distFolder));
+      bioHelpers(Handlebars);
+      mkdirSync(path.resolve(config.styleGuide.distFolderLocation));
       const packageFiles = fromDir(origin, /package\.json$/);
       const contents = packageFiles.map((packageFile) => {
         let expandedPackage = packageFile;
         const packageUrl = packageFile;
         expandedPackage = JSON.parse(fs.readFileSync(packageUrl, 'utf8'));
         expandedPackage.biotope.componentVariants.forEach((variant, index) => {
-          let variantUrl = packageUrl.replace('package.json', '');
+          let variantUrl = packageUrl.replace('package.json','');
           variantUrl = variantUrl + variant.file.replace('/', '\\');
-          const url = config.styleGuide.distFolder + expandedPackage.name + '.' + variant.file.replace('.hbs', '.html').replace('variants/', '');
-          expandedPackage.biotope.componentVariants[index].url = url;
+          const urlForPackage = config.styleGuide.distFolder + expandedPackage.name + '.' + variant.file.replace('.hbs', '.html').replace('variants/', '');
+          const url = config.styleGuide.distFolderLocation + expandedPackage.name + '.' + variant.file.replace('.hbs', '.html').replace('variants/', '');
+          expandedPackage.biotope.componentVariants[index].url = urlForPackage;
 
           fs.readFile(variantUrl, 'utf8', (err, data) => {
             let result;
             let template;
             try {
-              template = handlebars.compile(data);
+              template = Handlebars.compile(data);
               result = template({});
             } catch (err) {
               result = data;
