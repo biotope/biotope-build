@@ -94,7 +94,9 @@ gulp.task('build', function (callback) {
       'copy:dist:hbs',
       'copy:dist:bower',
       'copy:dist:components',
-      'copy:dist:svgSprite'
+      'copy:dist:svgSprite',
+      'copy:dist:example',
+      'copy:dist:componentList'
     ],
     [
       'uglify:resources:dist',

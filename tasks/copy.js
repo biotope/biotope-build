@@ -317,6 +317,41 @@ gulp.task('copy:dist:fonts', function () {
   return copyFiles(from, to);
 });
 
+gulp.task('copy:dist:examples', function () {
+  if (config.global.tasks.styleGuide) {
+    const from = path.join(
+      config.global.cwd,
+      config.global.dev,
+      'examples',
+      '**',
+      '*'
+    );
+    const to = path.join(
+      config.global.cwd,
+      config.global.dist,
+      'examples'
+    );
+
+    return copyFiles(from, to);
+  }
+});
+
+gulp.task('copy:dist:componentList', function () {
+  if (config.global.tasks.styleGuide) {
+    const from = path.join(
+      config.global.cwd,
+      config.global.dev,
+      'componentList.json'
+    );
+    const to = path.join(
+      config.global.cwd,
+      config.global.dist
+    );
+
+    return copyFiles(from, to);
+  }
+});
+
 gulp.task('copy:dist:resources:img', function () {
   const from = path.join(
     config.global.cwd,
