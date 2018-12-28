@@ -13,14 +13,16 @@ const globalData = {};
 const templateGlobPatterns = [
   path.join(config.global.cwd, config.global.src, 'pages', '**', '*.hbs'),
   path.join(config.global.cwd, config.global.src, 'index.hbs'),
-  path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
+  path.join(config.global.cwd, config.global.src, 'browserSupport.hbs'),
+  path.join(config.global.cwd, config.global.src, 'style-guide.hbs')
 ];
 
 const partialGlobPatterns = [
   path.join(config.global.cwd, config.global.src, '**', '*.hbs'),
   '!' + path.join(config.global.cwd, config.global.src, 'pages', '**', '*.hbs'),
   '!' + path.join(config.global.cwd, config.global.src, 'index.hbs'),
-  '!' + path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
+  '!' + path.join(config.global.cwd, config.global.src, 'browserSupport.hbs'),
+  '!' + path.join(config.global.cwd, config.global.src, 'style-guide.hbs')
 ];
 
 const jsonGlobPatterns = [
@@ -348,6 +350,9 @@ const prepareTemplateDataForIndexr = () => {
     ),
     normalizeWinPath(
       path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
+    ),
+    normalizeWinPath(
+      path.join(config.global.cwd, config.global.src, 'style-guide.hbs')
     )
   ];
 
