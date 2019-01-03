@@ -95,7 +95,7 @@ gulp.task('build', function (callback) {
       'copy:dist:bower',
       'copy:dist:components',
       'copy:dist:svgSprite',
-      'copy:dist:example',
+      'copy:dist:examples',
       'copy:dist:componentList'
     ],
     [
