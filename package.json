@@ -47,7 +47,7 @@
     "gulp-handlebars": "5.0.2",
     "gulp-hb": "7.0.1",
     "gulp-htmlhint": "2.1.1",
-    "gulp-iconfont-css": "2.1.0",
+    "gulp-iconfont-css": "3.0.0",
     "gulp-if": "2.0.2",
     "gulp-imagemin": "4.1.0",
     "gulp-inject": "4.3.2",
