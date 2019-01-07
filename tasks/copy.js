@@ -322,14 +322,14 @@ gulp.task('copy:dist:examples', function () {
     const from = path.join(
       config.global.cwd,
       config.global.dev,
-      'examples',
+      config.styleGuide.variantDistFolderName || 'variants',
       '**',
       '*'
     );
     const to = path.join(
       config.global.cwd,
       config.global.dist,
-      'examples'
+      config.styleGuide.variantDistFolderName || 'variants'
     );
 
     return copyFiles(from, to);
