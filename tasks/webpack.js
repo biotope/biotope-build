@@ -11,11 +11,13 @@ const webpackSourcePatterns = config.global.tsEntryPoints.map((cPath) => path.jo
   config.global.cwd,
   config.global.src,
   cPath
-));;
+));
 
-const webpackWatchPatterns = [
-  ...webpackSourcePatterns
-];
+const webpackWatchPatterns = config.webpack.tsWatchPatterns.map((cPath) => path.join(
+  config.global.cwd,
+  config.global.src,
+  cPath
+));
 
 if (config.webpack.watchScss) {
   webpackWatchPatterns.push(

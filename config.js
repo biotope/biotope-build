@@ -193,7 +193,11 @@ module.exports = {
 
   webpack: {
     ignoreList: ['/**/*.spec.ts'],
-    watchScss: false
+    watchScss: false,
+    tsWatchPatterns: [
+      'resources/ts/**/*.ts',
+      'components/**/*.ts'
+    ]
   }
 };
 
