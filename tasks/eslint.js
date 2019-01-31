@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const config = require('./../config');
 
-gulp.task('eslint:resources', function() {
+gulp.task('eslint:resources', function () {
   const colors = require('colors/safe');
 
   if (config.global.tasks.linting) {
@@ -11,7 +11,8 @@ gulp.task('eslint:resources', function() {
     return gulp
       .src([
         config.global.src + config.global.resources + '/js/**/*.js',
-        '!' + config.global.src + config.global.resources + '/js/vendor/**/*.js'
+        '!' + config.global.src + config.global.resources + '/js/vendor/**/*.js',
+        '!' + config.global.src + config.global.resources + '/js/polyfills/**/*.js'
       ])
       .pipe(cached('eslint', { optimizeMemory: true }))
       .pipe(eslint())
@@ -22,7 +23,7 @@ gulp.task('eslint:resources', function() {
   }
 });
 
-gulp.task('eslint:components', function() {
+gulp.task('eslint:components', function () {
   const colors = require('colors/safe');
 
   if (config.global.tasks.linting) {
@@ -33,9 +34,9 @@ gulp.task('eslint:components', function() {
       .src([
         config.global.src + config.global.components + '/**/*.js',
         '!' +
-          config.global.src +
-          config.global.components +
-          '/**/vendor/**/*.js'
+        config.global.src +
+        config.global.components +
+        '/**/vendor/**/*.js'
       ])
       .pipe(cached('eslint', { optimizeMemory: true }))
       .pipe(eslint())
@@ -46,7 +47,7 @@ gulp.task('eslint:components', function() {
   }
 });
 
-gulp.task('watch:eslint:resources', function() {
+gulp.task('watch:eslint:resources', function () {
   if (config.global.tasks.linting) {
     const watch = require('gulp-watch');
     const runSequence = require('run-sequence');
@@ -57,14 +58,14 @@ gulp.task('watch:eslint:resources', function() {
         '!' + config.global.src + config.global.resources + '/js/vendor/**/*.js'
       ],
       config.watch,
-      function() {
+      function () {
         runSequence(['eslint:resources'], ['livereload']);
       }
     );
   }
 });
 
-gulp.task('watch:eslint:components', function() {
+gulp.task('watch:eslint:components', function () {
   if (config.global.tasks.linting) {
     const watch = require('gulp-watch');
     const runSequence = require('run-sequence');
@@ -73,12 +74,12 @@ gulp.task('watch:eslint:components', function() {
       [
         config.global.src + config.global.components + '/**/*.js',
         '!' +
-          config.global.src +
-          config.global.components +
-          '/**/vendor/**/*.js'
+        config.global.src +
+        config.global.components +
+        '/**/vendor/**/*.js'
       ],
       config.watch,
-      function() {
+      function () {
         runSequence(['eslint:components'], ['livereload']);
       }
     );

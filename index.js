@@ -17,14 +17,14 @@ gulp.task('default', ['serve']);
 // build templates for development
 gulp.task('build:dev', function (callback) {
   runSequence(
-    'checkDependencies',
+    // ⚠️ does not work with custom tags
+    // 'checkDependencies',
     [
       'clean:dev',
       'clean:iconfont',
       'clean:svgSprite'
     ],
     [
-      'lint:sass',
       'lint:json',
       'eslint:resources',
       'eslint:components',

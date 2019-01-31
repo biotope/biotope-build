@@ -49,9 +49,6 @@ module.exports = {
         test: /\.scss$/,
         use: [
           {
-            loader: 'style-loader'
-          },
-          {
             loader: 'css-loader'
           },
           {
@@ -72,11 +69,11 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               babelrc: false,
-              presets: ['env']
+              presets: [['@babel/preset-env']],
+              plugins: [[require('@babel/plugin-transform-classes').default, { loose: true }]]
             }
           }
-        ],
-        include: generalIncludePaths
+        ]
       }
     ]
   },
