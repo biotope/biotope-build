@@ -21,7 +21,7 @@ const configWatchPatterns = config.webpack.tsWatchPatterns.map((cPath) => path.j
 
 const webpackWatchPatterns = [
   ...webpackSourcePatterns,
-  configWatchPatterns
+  ...configWatchPatterns
 ];
 
 if (config.webpack.watchScss) {
