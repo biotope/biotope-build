@@ -14,7 +14,7 @@ gulp.task('livereload', function () {
 
 gulp.task('connect:open', function () {
   const opn = require('opn');
-  return opn(`http://localhost:${config.connect.port}/index.html`);
+  return opn(`http://${config.connect.host}:${config.connect.port}`);
 });
 
 gulp.task('connect', function () {
@@ -24,7 +24,7 @@ gulp.task('connect', function () {
       config.global.src
     ],
     port: config.connect.port,
-    host: '0.0.0.0',
+    host: config.connect.host,
     middleware: function (connect, opt) {
       return [
         function (req, res, next) {

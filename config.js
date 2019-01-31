@@ -63,6 +63,7 @@ module.exports = {
   },
 
   connect: {
+    host: '0.0.0.0',
     port: 9000,
     historyFallbackIndex: '/index.html',
     globs: [
@@ -193,7 +194,11 @@ module.exports = {
 
   webpack: {
     ignoreList: ['/**/*.spec.ts'],
-    watchScss: false
+    watchScss: false,
+    tsWatchPatterns: [
+      'resources/ts/**/*.ts',
+      'components/**/*.ts'
+    ]
   }
 };
 
