@@ -2,6 +2,10 @@ const gulp = require('gulp');
 const config = require('./../config');
 const path = require('path');
 
+const componentsFolderName = config.global.components.slice(1);
+const resourcesFolderName = config.global.resources.slice(1);
+const scssResourcesFolderName = path.join(resourcesFolderName, 'scss');
+
 gulp.task('sass', function () {
   if (config.global.tasks.sass) {
     const sass = require('gulp-sass');
@@ -14,7 +18,7 @@ gulp.task('sass', function () {
 
     return gulp
       .src([
-        config.global.src + config.global.resources + '/**/*.s+(a|c)ss'
+        config.global.src + '/**/*.s+(a|c)ss'
       ])
       .pipe(cached('resourcesSass'))
       .pipe(dependents())
@@ -23,7 +27,12 @@ gulp.task('sass', function () {
       .pipe(postcss([autoprefixer(config.autoprefixer)]))
       .pipe(sourcemaps.write('.'))
       .pipe(rename(function (currentFile) {
-        currentFile.dirname = path.join(config.global.resources, currentFile.dirname.replace('scss', 'css'));
+        if (currentFile.dirname.indexOf(componentsFolderName) === 0) {
+          currentFile.dirname = path.join(config.global.resources, currentFile.dirname);
+        }
+        if (currentFile.dirname.indexOf(resourcesFolderName) === 0) {
+          currentFile.dirname = path.join(config.global.resources, 'css', currentFile.dirname.replace(scssResourcesFolderName, ''));
+        }
       }))
       .pipe(gulp.dest(config.global.dev));
   } else {
