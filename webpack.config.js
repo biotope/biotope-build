@@ -59,13 +59,20 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        oneOf: [
+        issuer: /\.tsx?$/,
+        use: [
           {
-            resourceQuery: /css/, // ⛑️ icon.svg?css for css usage!
-            use: 'svg-url-loader'
-          },
+            loader: 'svg-inline-loader'
+          }
+        ],
+        include: generalIncludePaths
+      },
+      {
+        test: /\.svg$/,
+        issuer: /\.scss$/,
+        use: [
           {
-            use: 'svg-inline-loader'
+            loader: 'svg-url-loader'
           }
         ],
         include: generalIncludePaths
