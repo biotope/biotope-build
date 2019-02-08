@@ -58,8 +58,28 @@ module.exports = {
         include: generalIncludePaths
       },
       {
+        test: /\.svg$/,
+        issuer: /\.tsx?$/,
+        use: [
+          {
+            loader: 'svg-inline-loader'
+          }
+        ],
+        include: generalIncludePaths
+      },
+      {
+        test: /\.svg$/,
+        issuer: /\.scss$/,
+        use: [
+          {
+            loader: 'svg-url-loader'
+          }
+        ],
+        include: generalIncludePaths
+      },
+      {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
         include: generalIncludePaths
       },
       {
