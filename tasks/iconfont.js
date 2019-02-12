@@ -25,6 +25,8 @@ const checkFilePaths = (_, cb) => {
   }
   Promise.all(promises).then(errors => {
     cb(errors.filter(e => e.error !== ''));
+  }).catch(err => {
+    console.log(colors.red(err));
   });
 };
 
@@ -38,9 +40,7 @@ gulp.task('iconfont', callback => {
         for (const err of errors) {
           console.log(
             colors.yellow(
-              `⚠️ Warning in IconFont task: ${err.error}, ${
-                err.path
-              }`
+              `⚠️ Warning in IconFont task: ${err.error}, ${err.path}`
             )
           );
         }
@@ -61,7 +61,7 @@ gulp.task('iconfont', callback => {
   }
 });
 
-gulp.task('convertIconsToTtf', function() {
+gulp.task('convertIconsToTtf', function () {
   const mergeStream = require('merge-stream');
   const iconfontCss = require('gulp-iconfont-css');
   const svgicons2svgfont = require('gulp-svgicons2svgfont');
@@ -74,7 +74,7 @@ gulp.task('convertIconsToTtf', function() {
   }
 
   return mergeStream(
-    iconfontArray.map(function(currentIconResource) {
+    iconfontArray.map(function (currentIconResource) {
       return gulp
         .src(config.global.src + config.global.resources + '/icons/*.svg')
         .pipe(iconfontCss(currentIconResource))
@@ -89,7 +89,7 @@ gulp.task('convertIconsToTtf', function() {
   );
 });
 
-gulp.task('convertTtfToWoff', function() {
+gulp.task('convertTtfToWoff', function () {
   const ttf2woff = require('gulp-ttf2woff');
 
   return gulp
@@ -98,14 +98,14 @@ gulp.task('convertTtfToWoff', function() {
     .pipe(gulp.dest(config.global.dev + '/resources/fonts/icons/'));
 });
 
-gulp.task('watch:icons', function() {
+gulp.task('watch:icons', function () {
   const watch = require('gulp-watch');
   const runSequence = require('run-sequence');
 
   watch(
     config.global.src + config.global.resources + '/icons/*.svg',
     config.watch,
-    function() {
+    function () {
       runSequence('iconfont', ['static:hb', 'resources:sass'], ['livereload']);
     }
   );

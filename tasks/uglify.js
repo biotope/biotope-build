@@ -1,7 +1,8 @@
 const gulp = require('gulp');
 const config = require('./../config');
+const colors = require('colors/safe');
 
-gulp.task('uglify:resources:dist', function(cb) {
+gulp.task('uglify:resources:dist', function (cb) {
   if (config.global.tasks.uglify) {
     const path = require('path');
     const pump = require('pump');
@@ -41,7 +42,7 @@ gulp.task('uglify:resources:dist', function(cb) {
 
       promises.push(
         new Promise((resolve, reject) => {
-          pump(uglifyPump, function(err) {
+          pump(uglifyPump, function (err) {
             if (!err) {
               resolve();
             } else {
@@ -54,16 +55,17 @@ gulp.task('uglify:resources:dist', function(cb) {
 
     Promise.all(promises).then(() => {
       cb();
+    }).catch(err => {
+      console.log(colors.red(err));
     });
 
   } else {
-    const colors = require('colors/safe');
     console.log(colors.yellow('uglify resources disabled'));
     cb();
   }
 });
 
-gulp.task('uglify:components:dist', function(cb) {
+gulp.task('uglify:components:dist', function (cb) {
   if (config.global.tasks.uglify) {
     const path = require('path');
     const pump = require('pump');
