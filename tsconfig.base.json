@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "es6", "dom.iterable", "scripthost"],
+    "module": "commonjs",
+
+    "sourceMap": true,
+    "noEmitOnError": true,
+    "declaration": false,
+    "removeComments": false,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "typeRoots": [
+      "./typings",
+      "../../../typings",
+      "../../../node_modules/@types"
+    ]
+  },
+  "include": [
+    "../../../typings/global.d.ts",
+    "../../../.*.ts",
+    "../../../*.ts",
+    "../../../**/*.ts",
+    "../../../**/*.tsx"
+  ]
+}

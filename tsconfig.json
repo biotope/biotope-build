@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es6"],
+    "outDir": "lib",
+
+    "sourceMap": false,
+    "declaration": true,
+    "removeComments": true,
+    "declarationDir": "lib",
+
+    "typeRoots": [
+      "typings",
+      "node_modules/@types"
+    ]
+  },
+  "include": [
+    "typings/global.d.ts",
+    "src/**/*.ts"
+  ]
+}
