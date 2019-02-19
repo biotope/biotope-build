@@ -5,6 +5,7 @@
     "lib": ["es6"],
     "outDir": "lib",
 
+    "allowJs": false,
     "sourceMap": false,
     "declaration": true,
     "removeComments": true,

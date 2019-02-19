@@ -6,12 +6,8 @@ import { loader as ExtractLoader } from 'mini-css-extract-plugin';
 import { projectPath, biotopeBuildPath } from './project-paths';
 import { javascriptToSass } from './javascript-to-sass';
 
-const babelPath = existsSync(`${projectPath}/.babelrc.js`)
-  ? `${projectPath}/.babelrc.js`
-  : `${biotopeBuildPath}/.babelrc.js`;
-
 // eslint-disable-next-line import/no-dynamic-require
-const babelOptions = require(babelPath);
+const babelOptions = require(`${biotopeBuildPath}/.babelrc.js`);
 
 const postCssPath = existsSync(`${projectPath}/postcss.config.js`)
   ? `${projectPath}/`

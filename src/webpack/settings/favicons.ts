@@ -20,17 +20,17 @@ const listToVariants = (variants: VariantName[], defaultValue: boolean): Variant
     [variant]: defaultValue,
   }), {}) as Variants;
 
-export const getFavicons = (webpack: Options['webpack'], paths: Settings['paths'], minify: boolean): FaviconsSettings => ({
-  additionalVariants: ((webpack || {}).favicons || {}).additionalVariants || [],
-  cache: ((webpack || {}).favicons || {}).cache || false,
+export const getFavicons = (compilation: Options['compilation'], paths: Settings['paths'], minify: boolean): FaviconsSettings => ({
+  additionalVariants: ((compilation || {}).favicons || {}).additionalVariants || [],
+  cache: ((compilation || {}).favicons || {}).cache || false,
   file: `${paths.assetsAbsolute}/favicon.png`,
   icons: {
     favicons: true,
     ...listToVariants(allVariants, false),
     ...listToVariants([
-      ...(((webpack || {}).favicons || {}).additionalVariants || []),
+      ...(((compilation || {}).favicons || {}).additionalVariants || []),
       ...(minify ? allVariants : []),
     ], true),
   },
-  output: ((webpack || {}).favicons || {}).output || 'favicon',
+  output: ((compilation || {}).favicons || {}).output || 'favicon',
 });

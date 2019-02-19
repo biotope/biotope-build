@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "7.0.0-alpha4",
+  "version": "7.0.0-alpha5",
   "description": "An advanced developent and build runtime to create frontent ecosystems",
   "author": "Biotope",
   "license": "MIT",
@@ -23,10 +23,10 @@
     "start": "yarn build"
   },
   "dependencies": {
-    "@babel/core": "~7.2",
+    "@babel/core": "~7.3",
     "@babel/plugin-proposal-class-properties": "~7.3",
     "@babel/preset-env": "~7.3",
-    "@babel/preset-typescript": "~7.1",
+    "@babel/preset-typescript": "~7.3",
     "@types/clean-webpack-plugin": "~0.1",
     "@types/compression-webpack-plugin": "~2.0",
     "@types/copy-webpack-plugin": "~4.4",

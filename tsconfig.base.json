@@ -4,6 +4,7 @@
     "lib": ["dom", "es6", "dom.iterable", "scripthost"],
     "module": "commonjs",
 
+    "allowJs": true,
     "sourceMap": true,
     "noEmitOnError": true,
     "declaration": false,
@@ -27,6 +28,7 @@
     ]
   },
   "include": [
+    "./typings/global.d.ts",
     "../../../typings/global.d.ts",
     "../../../.*.ts",
     "../../../*.ts",

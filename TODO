@@ -1,6 +1,0 @@
-Beta2
-  server QR code
-  Review/Test API (config file)
-  Add server output on every Request
-  Consider HMR
-  Split project into biotope-cli + biotope-build

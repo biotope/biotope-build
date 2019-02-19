@@ -14,7 +14,7 @@ export const config = (options: Options): Configuration => {
         settings.runtime,
       )),
       ...ifPlugin(settings, 'prerender-spa-plugin', new PrerenderSpaPlugin(
-        settings.webpack.rendering,
+        settings.compilation.rendering,
       )),
     ],
   }));

@@ -1,7 +1,7 @@
 /// <reference types="webpack" />
 import { VariantName } from 'favicons-webpack-plugin';
 import { FaviconsSettings } from './types';
-export declare const getFavicons: (webpack: {
+export declare const getFavicons: (compilation: {
     alias?: IndexObject<string> | undefined;
     chunks?: import("webpack").Options.CacheGroupsOptions[] | undefined;
     cleanExclusions?: string[] | undefined;

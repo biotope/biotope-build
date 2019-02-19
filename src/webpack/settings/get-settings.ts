@@ -2,12 +2,14 @@ import { resolve } from 'path';
 import * as mergeDeep from 'merge-deep';
 import { PuppeteerRenderer as Renderer } from 'prerender-spa-plugin';
 
+import * as plugins from '../plugins';
 import { environments } from './environments';
 import {
   Options,
   Settings,
   EntryPointOption,
   EntryPointOptionAll,
+  BiotopeBuildPlugin,
 } from './types';
 import { getFavicons } from './favicons';
 import { getPaths } from './paths';
@@ -27,12 +29,12 @@ export const getSettings = (options: Options): Settings => {
   paths.server = serverRuntimeKey ? runtime[serverRuntimeKey] : paths.server;
 
   const app = options.app || {};
-  const webpack = options.webpack || {};
-  const entryPoints: EntryPointOptionAll = webpack.entryPoints || {
+  const compilation = options.compilation || {};
+  const entryPoints: EntryPointOptionAll = compilation.entryPoints || {
     index: 'index.ts',
   };
 
-  return {
+  let settings: Settings = {
     app: {
       title: 'Biotope Boilerplate v7',
       description: 'Modern HTML5 UI Framework',
@@ -54,9 +56,9 @@ export const getSettings = (options: Options): Settings => {
     overrides: options.overrides || (s => s),
     paths,
     runtime,
-    webpack: {
-      alias: webpack.alias || {},
-      chunks: webpack.chunks || [
+    compilation: {
+      alias: compilation.alias || {},
+      chunks: compilation.chunks || [
         {
           name: 'vendor',
           test: /[\\/]node_modules[\\/]/,
@@ -68,16 +70,16 @@ export const getSettings = (options: Options): Settings => {
           minChunks: 2,
         },
       ],
-      cleanExclusions: webpack.cleanExclusions || [],
-      disablePlugins: webpack.disablePlugins || [],
+      cleanExclusions: compilation.cleanExclusions || [],
+      disablePlugins: compilation.disablePlugins || [],
       entryPoints: Object.keys(entryPoints).reduce((accumulator, key) => ({
         ...accumulator,
         [key]: getEntryPoints(typeof entryPoints[key] === 'string'
           ? { file: entryPoints[key] as string }
           : entryPoints[key] as EntryPointOption, paths),
       }), {}),
-      extensions: webpack.extensions || ['.ts', '.js', '.scss'],
-      externalFiles: (webpack.externalFiles || [{
+      extensions: compilation.extensions || ['.ts', '.js', '.scss'],
+      externalFiles: (compilation.externalFiles || [{
         from: `${paths.appAbsolute}/resources`,
         to: 'resources',
         ignore: ['*.md'],
@@ -85,14 +87,14 @@ export const getSettings = (options: Options): Settings => {
         ...files,
         from: resolve(files.from),
       }))),
-      favicons: getFavicons(options.webpack, paths, minify),
+      favicons: getFavicons(options.compilation, paths, minify),
       output: mergeDeep({
         script: '[name].js',
         style: '[name].css',
-      }, webpack.output || {}) as { script: string; style: string },
+      }, compilation.output || {}) as { script: string; style: string },
       rendering: {
         staticDir: paths.distAbsolute,
-        routes: (options.webpack || {}).renderRoutes || ['/'],
+        routes: (options.compilation || {}).renderRoutes || ['/'],
         server: { port: 7999 },
         renderer: new Renderer({
           args: ['–no-sandbox', '–disable-setuid-sandbox'],
@@ -100,11 +102,17 @@ export const getSettings = (options: Options): Settings => {
       },
       rules: getRules(
         minify,
-        webpack.globalStyles || false,
-        webpack.disablePlugins || [],
-        webpack.compileExclusions || [],
+        compilation.globalStyles || false,
+        compilation.disablePlugins || [],
+        compilation.compileExclusions || [],
         runtime,
       ),
     },
   };
+
+  (options.plugins || []).forEach((pluginName) => {
+    settings = (plugins as IndexObject<BiotopeBuildPlugin>)[pluginName](settings);
+  });
+
+  return settings;
 };

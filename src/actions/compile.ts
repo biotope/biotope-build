@@ -8,9 +8,7 @@ import {
 } from './compilation';
 
 const configFiles = [
-  '.babelrc.ts',
   'biotope-build.config.ts',
-  'postcss.config.ts',
 ];
 
 const compile = (options: CompileOptions): void => {
