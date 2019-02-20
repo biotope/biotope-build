@@ -4,7 +4,7 @@ module.exports = {
     autoprefixer: {
       browsers: [
         'defaults',
-        'ie >= 9',
+        'ie >= 11',
       ],
     },
   },

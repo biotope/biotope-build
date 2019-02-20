@@ -1,7 +1,6 @@
 import * as webpack from 'webpack';
 
 import { environments, webpackInit, ProjectEnvironment } from '../../webpack';
-import { getConfig } from './get-config';
 
 export interface CompileOptions {
   config?: string;
@@ -12,7 +11,8 @@ export interface CompileOptions {
 
 export const getCompiler = ({ config, environment }: CompileOptions): webpack.Compiler => {
   const nodeEnvironment = environments[environment || 'default'];
-  const compiler = webpack(webpackInit(nodeEnvironment, getConfig(config)));
+  // eslint-disable-next-line global-require,import/no-dynamic-require
+  const compiler = webpack(webpackInit(nodeEnvironment, (config && require(config)) || {}));
   (new webpack.ProgressPlugin()).apply(compiler);
 
   return compiler;

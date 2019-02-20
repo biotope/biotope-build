@@ -1,6 +1,6 @@
 import { createProgram, CompilerOptions } from 'typescript';
 
-export const tsc = (fileNames: string[], options: CompilerOptions): void => {
+export const compile = (fileNames: string[], options: CompilerOptions): void => {
   const program = createProgram(fileNames, options);
   const exitCode = program.emit().emitSkipped ? 1 : 0;
 
