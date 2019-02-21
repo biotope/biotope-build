@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "7.0.0-alpha6",
+  "version": "7.0.0-alpha7",
   "description": "An advanced developent and build runtime to create frontent ecosystems",
   "author": "Biotope",
   "license": "MIT",
@@ -64,6 +64,6 @@
     "webpack-livereload-plugin": "~2.2"
   },
   "devDependencies": {
-    "@biotope/quality-gate": "github:biotope/biotope-quality-gate#feature/eslint"
+    "@biotope/quality-gate": "^1.0.0-beta.1"
   }
 }
