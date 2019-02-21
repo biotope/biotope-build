@@ -5,7 +5,7 @@ log(`:sparkles: Starting Biotope Build (v${localPackage.version}) with :sparklin
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const requireDir = require('require-dir');
-requireDir('./tasks', {recurse: true});
+requireDir('./tasks', { recurse: true });
 
 // Prevent errors caused by too many listeners in gulp-watch
 require('events').EventEmitter.defaultMaxListeners = 0;
@@ -24,8 +24,10 @@ gulp.task('build:dev', function (callback) {
       'clean:svgSprite'
     ],
     [
-      'lint:resources:sass',
-      'lint:components:sass',
+      'styleGuide'
+    ],
+    [
+      'lint:sass',
       'lint:json',
       'eslint:resources',
       'eslint:components',
@@ -43,8 +45,7 @@ gulp.task('build:dev', function (callback) {
       'static:hb2'
     ],
     [
-      'resources:sass',
-      'components:sass',
+      'sass',
       'webpack:ts',
       'copy:dev:components:js'
     ],
@@ -68,6 +69,15 @@ gulp.task('build', function (callback) {
       'copy:dev:js'
     ],
     [
+      'useref'
+    ],
+    [
+      'useref:assets',
+      'image:resources:dist',
+      'image:component:dist',
+      'favicons'
+    ],
+    [
       'copy:dist:js',
       'copy:dist:react',
       'copy:dist:ts',
@@ -83,16 +93,8 @@ gulp.task('build', function (callback) {
       'copy:dist:config',
       'copy:dist:hbs',
       'copy:dist:bower',
-      'copy:dist:components'
-    ],
-    [
-      'useref'
-    ],
-    [
-      'useref:assets',
-      'image:resources:dist',
-      'image:component:dist',
-      'favicons'
+      'copy:dist:components',
+      'copy:dist:svgSprite'
     ],
     [
       'uglify:resources:dist',
@@ -121,8 +123,7 @@ gulp.task('serve', function (callback) {
       'watch:jsons:hb2',
       'watch:icons:hb2',
       'watch:components:js',
-      'watch:components:sass',
-      'watch:resources:sass',
+      'watch:sass',
       'watch:eslint:components',
       'watch:eslint:resources',
       'watch:handlebars',

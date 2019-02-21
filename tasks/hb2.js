@@ -12,6 +12,7 @@ const globalData = {};
 
 const templateGlobPatterns = [
   path.join(config.global.cwd, config.global.src, 'pages', '**', '*.hbs'),
+  path.join(config.global.cwd, config.global.src, 'components', '**', config.styleGuide.variantDistFolderName, '*.hbs'),
   path.join(config.global.cwd, config.global.src, 'index.hbs'),
   path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
 ];
@@ -19,6 +20,7 @@ const templateGlobPatterns = [
 const partialGlobPatterns = [
   path.join(config.global.cwd, config.global.src, '**', '*.hbs'),
   '!' + path.join(config.global.cwd, config.global.src, 'pages', '**', '*.hbs'),
+  '!' + path.join(config.global.cwd, config.global.src, 'components', '**', config.styleGuide.variantDistFolderName, '*.hbs'),
   '!' + path.join(config.global.cwd, config.global.src, 'index.hbs'),
   '!' + path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
 ];
@@ -119,7 +121,7 @@ const loadJsonData = () => {
         config.browserSupport.property,
         browserSupportData
       );
-    } catch (e) {}
+    } catch (e) { }
   }
 
   // load JSON files
@@ -172,6 +174,22 @@ const loadIndexrData = () => {
   );
 };
 
+const loadEnvData = () => {
+  const setupEnvVars = require('../lib/env-helper');
+  const pathToEnvObject = [config.global.dataObject, 'env'].join('.');
+  const existingEnvData = nestedProp.get(
+    globalData,
+    pathToEnvObject
+  ) || {};
+  const envData = Object.assign({}, existingEnvData, setupEnvVars(false));
+
+  nestedProp.set(
+    globalData,
+    pathToEnvObject,
+    envData
+  );
+};
+
 const renderTemplate = templatePath => {
   const templateContent = templates[templatePath];
 
@@ -185,12 +203,26 @@ const renderTemplate = templatePath => {
   try {
     const content = templateContent.precompiled(globalData);
     const parsedPath = path.parse(templatePath);
-    const targetPath = path.join(
-      config.global.cwd,
-      config.global.dev,
-      `${parsedPath.name}.html`
-    );
+    let targetPath = '';
+    if(parsedPath.dir.includes('pages')) {
+      targetPath = path.join(
+        config.global.cwd,
+        config.global.dev,
+        `${parsedPath.name}.html`
+      );
+    } else {
+      const subFoldersArray = parsedPath.dir.substring(
+        parsedPath.dir.lastIndexOf(config.global.src) + config.global.src.length + 1,
+        parsedPath.dir.lastIndexOf(config.styleGuide.variantDistFolderName)
+      ).split(path.sep);
 
+      targetPath = path.join(
+        config.global.cwd,
+        config.global.dev,
+        ...subFoldersArray,
+        parsedPath.base.replace('.hbs', '.html')
+      );
+    }
     fs.ensureDirSync(path.parse(targetPath).dir);
     fs.writeFileSync(targetPath, content);
   } catch (e) {
@@ -206,6 +238,7 @@ gulp.task('init:hb2', cb => {
   loadJsonData();
   loadIconData();
   loadIndexrData();
+  loadEnvData();
   cb();
 });
 
@@ -221,7 +254,7 @@ gulp.task('watch:templates:hb2', () => {
   const runSequence = require('run-sequence');
   const watch = require('gulp-watch');
 
-  watch(templateGlobPatterns, config.watch, function(vinyl) {
+  watch(templateGlobPatterns, config.watch, function (vinyl) {
     let path = vinyl.path;
 
     if (config.global.isWin) {
@@ -246,7 +279,7 @@ gulp.task('watch:partials:hb2', () => {
   const runSequence = require('run-sequence');
   const watch = require('gulp-watch');
 
-  watch(partialGlobPatterns, config.watch, function(vinyl) {
+  watch(partialGlobPatterns, config.watch, function (vinyl) {
     switch (vinyl.event) {
     case 'unlink':
       removePartial(vinyl.path);
@@ -264,7 +297,7 @@ gulp.task('watch:jsons:hb2', () => {
   const runSequence = require('run-sequence');
   const watch = require('gulp-watch');
 
-  watch(jsonGlobPatterns, config.watch, function(vinyl) {
+  watch(jsonGlobPatterns, config.watch, function (vinyl) {
     switch (vinyl.event) {
     case 'unlink':
       const colors = require('colors/safe');
@@ -289,7 +322,7 @@ gulp.task('watch:icons:hb2', () => {
   const runSequence = require('run-sequence');
   const watch = require('gulp-watch');
 
-  watch(iconGlobPatterns, config.watch, function() {
+  watch(iconGlobPatterns, config.watch, function () {
     loadIconData();
     runSequence('static:hb2', 'livereload');
   });
