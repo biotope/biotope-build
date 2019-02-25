@@ -219,7 +219,9 @@ const renderTemplate = templatePath => {
       targetPath = path.join(
         config.global.cwd,
         config.global.dev,
+        config.global.resources,
         ...subFoldersArray,
+        'styleGuide',
         parsedPath.base.replace('.hbs', '.html')
       );
     }
