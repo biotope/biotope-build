@@ -23,9 +23,6 @@ gulp.task('build:dev', function (callback) {
       'clean:iconfont',
       'clean:svgSprite'
 	  ],
-	  [
-		  'styleGuide'
-	  ],
     [
       'lint:resources:sass',
       'lint:components:sass',
@@ -70,6 +67,9 @@ gulp.task('build', function (callback) {
     [
       'copy:dev:js'
     ],
+    [
+		  'styleGuide'
+	  ],
     [
       'copy:dist:js',
       'copy:dist:react',
