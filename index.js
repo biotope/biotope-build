@@ -5,7 +5,7 @@ log(`:sparkles: Starting Biotope Build (v${localPackage.version}) with :sparklin
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const requireDir = require('require-dir');
-requireDir('./tasks', { recurse: true });
+requireDir('./tasks', {recurse: true});
 
 // Prevent errors caused by too many listeners in gulp-watch
 require('events').EventEmitter.defaultMaxListeners = 0;
@@ -22,12 +22,13 @@ gulp.task('build:dev', function (callback) {
       'clean:dev',
       'clean:iconfont',
       'clean:svgSprite'
-    ],
+	  ],
+	  [
+		  'styleGuide'
+	  ],
     [
-      'styleGuide'
-    ],
-    [
-      'lint:sass',
+      'lint:resources:sass',
+      'lint:components:sass',
       'lint:json',
       'eslint:resources',
       'eslint:components',
@@ -45,7 +46,8 @@ gulp.task('build:dev', function (callback) {
       'static:hb2'
     ],
     [
-      'sass',
+      'resources:sass',
+      'components:sass',
       'webpack:ts',
       'copy:dev:components:js'
     ],
@@ -69,15 +71,6 @@ gulp.task('build', function (callback) {
       'copy:dev:js'
     ],
     [
-      'useref'
-    ],
-    [
-      'useref:assets',
-      'image:resources:dist',
-      'image:component:dist',
-      'favicons'
-    ],
-    [
       'copy:dist:js',
       'copy:dist:react',
       'copy:dist:ts',
@@ -93,8 +86,18 @@ gulp.task('build', function (callback) {
       'copy:dist:config',
       'copy:dist:hbs',
       'copy:dist:bower',
-      'copy:dist:components',
-      'copy:dist:svgSprite'
+      'copy:dist:packagejson',
+      'copy:dist:styleGuide',
+      'copy:dist:components'
+    ],
+    [
+      'useref'
+    ],
+    [
+      'useref:assets',
+      'image:resources:dist',
+      'image:component:dist',
+      'favicons'
     ],
     [
       'uglify:resources:dist',
@@ -123,7 +126,8 @@ gulp.task('serve', function (callback) {
       'watch:jsons:hb2',
       'watch:icons:hb2',
       'watch:components:js',
-      'watch:sass',
+      'watch:components:sass',
+      'watch:resources:sass',
       'watch:eslint:components',
       'watch:eslint:resources',
       'watch:handlebars',
