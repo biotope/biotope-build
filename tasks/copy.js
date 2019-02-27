@@ -45,6 +45,24 @@ gulp.task('copy:dev:components:js', function () {
   return copyFiles(from, to);
 });
 
+gulp.task('copy:dev:components:packagejson', function () {
+  const from = path.join(
+    config.global.cwd,
+    config.global.src,
+    config.global.components,
+    '**',
+    'package.json'
+  );
+  const to = path.join(
+    config.global.cwd,
+    config.global.dev,
+    config.global.resources,
+    config.global.components
+  );
+
+  return copyFiles(from, to);
+});
+
 gulp.task('copy:dist:js', function () {
   const from = path.join(
     config.global.cwd,
@@ -312,24 +330,6 @@ gulp.task('copy:dist:fonts', function () {
     config.global.dist,
     config.global.resources,
     'fonts'
-  );
-
-  return copyFiles(from, to);
-});
-
-gulp.task('copy:dist:packagejson', function () {
-  const from = path.join(
-    config.global.cwd,
-    config.global.src,
-    config.global.resources,
-    'components',
-    '**',
-    'package.json'
-  );
-  const to = path.join(
-    config.global.cwd,
-    config.global.dist,
-    'components'
   );
 
   return copyFiles(from, to);

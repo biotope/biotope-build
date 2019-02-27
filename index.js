@@ -46,7 +46,8 @@ gulp.task('build:dev', function (callback) {
       'resources:sass',
       'components:sass',
       'webpack:ts',
-      'copy:dev:components:js'
+      'copy:dev:components:js',
+      'copy:dev:components:packagejson'
     ],
     [
       'modernizr',
@@ -86,7 +87,6 @@ gulp.task('build', function (callback) {
       'copy:dist:config',
       'copy:dist:hbs',
       'copy:dist:bower',
-      'copy:dist:packagejson',
       'copy:dist:styleGuide',
       'copy:dist:components'
     ],
