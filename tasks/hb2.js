@@ -204,7 +204,7 @@ const renderTemplate = templatePath => {
     const content = templateContent.precompiled(globalData);
     const parsedPath = path.parse(templatePath);
     let targetPath = '';
-    if(parsedPath.dir.includes('pages')) {
+    if(parsedPath.dir.includes('pages') || parsedPath.base.includes('index') || parsedPath.base.includes('browserSupport')) {
       targetPath = path.join(
         config.global.cwd,
         config.global.dev,
