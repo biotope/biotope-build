@@ -28,7 +28,7 @@ export const getRules = (
   runtimeVariables: IndexObject<string>,
 ): Rule[] => ([
   {
-    test: /\.(js|tsx?)$/,
+    test: /\.(j|t)sx?$/,
     use: {
       loader: 'babel-loader',
       options: babelOptions,
@@ -38,7 +38,7 @@ export const getRules = (
       : {}),
   },
   {
-    test: /\.scss$/,
+    test: /\.s?css$/,
     use: [
       {
         loader: resolve(`${biotopeBuildPath}/lib/webpack/settings/style-loader`),

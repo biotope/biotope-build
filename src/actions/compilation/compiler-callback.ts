@@ -12,12 +12,12 @@ type CompilerCallback = (error: WebpackCompileError, stats: Stats) => void;
 let firstTimeFinish = true;
 
 export const compilerCallback = (
-  watch: boolean = false,
+  open: boolean = false,
   spa: boolean = false,
 ): CompilerCallback => (error: WebpackCompileError, stats: Stats): void => {
-  if (firstTimeFinish && watch) {
+  if (firstTimeFinish && open) {
     firstTimeFinish = false;
-    serve({ open: true, spa });
+    serve({ open, spa });
   }
 
   if (error) {

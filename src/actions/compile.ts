@@ -17,7 +17,7 @@ const compilation = (options: CompileOptions): void => {
   } else {
     // eslint-disable-next-line no-console
     console.log('@biotope/build is watching the files…\n');
-    compiler.watch({}, compilerCallback(true, options.spa));
+    compiler.watch({}, compilerCallback(!!options.open, !!options.spa));
   }
 };
 
@@ -27,5 +27,6 @@ export const registerCompile: Action = program => program
   .option('-c, --config <file>', 'Specify a configuration file (ts or js)')
   .option('-e, --environment <name>', 'Specify the environment name')
   .option('-w, --watch', 'Watch files and recompile them')
+  .option('-o, --open', 'Serve and open files (requires --watch)')
   .option('-s, --spa', 'Single-page application when watching (must contain an index.html file in root)')
   .action(compilation);
