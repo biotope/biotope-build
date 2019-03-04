@@ -43,6 +43,9 @@ gulp.task('build:dev', function (callback) {
       'static:hb2'
     ],
     [
+		  'styleGuide'
+	  ],
+    [
       'resources:sass',
       'components:sass',
       'webpack:ts',
@@ -68,9 +71,6 @@ gulp.task('build', function (callback) {
     [
       'copy:dev:js'
     ],
-    [
-		  'styleGuide'
-	  ],
     [
       'copy:dist:js',
       'copy:dist:react',
