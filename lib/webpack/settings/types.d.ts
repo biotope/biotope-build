@@ -1,7 +1,4 @@
 import { Configuration, Rule, Options as WebpackOptions } from 'webpack';
-import { Configuration as FaviconsConfiguration, VariantName } from 'favicons-webpack-plugin';
-import { Options as HtmlOptions } from 'html-webpack-plugin';
-import { Options as PrerenderOptions } from 'prerender-spa-plugin';
 export declare type ProjectEnvironment = 'local' | 'dev' | 'prod';
 export declare type NodeEnvironment = 'local' | 'development' | 'production' | 'test';
 export interface ExternalFile {
@@ -38,21 +35,15 @@ export interface Options {
         chunks?: WebpackOptions.CacheGroupsOptions[];
         cleanExclusions?: string[];
         compileExclusions?: string[];
-        disablePlugins?: string[];
+        enablePlugins?: string[];
         entryPoints?: EntryPointOptionAll;
         extensions?: string[];
         externalFiles?: (string | ExternalFile)[];
-        favicons?: {
-            additionalVariants?: VariantName[];
-            cache?: boolean;
-            output?: string;
-        };
         globalStyles?: boolean;
         output?: {
             script?: string;
             style?: string;
         };
-        renderRoutes?: string[];
         rules?: Rule[];
     };
     environment?: NodeEnvironment;
@@ -69,35 +60,25 @@ export interface Options {
     plugins?: string[];
     runtime?: IndexObjectAny;
 }
-export interface FaviconsSettings {
-    additionalVariants: VariantName[];
-    cache: boolean;
-    file: string;
-    output: string;
-    icons: FaviconsConfiguration['icons'];
-}
 export interface Settings {
     app: {
         author: string;
         description: string;
         keywords: string;
         title: string;
-        minify?: HtmlOptions['minify'];
     };
     compilation: {
         alias: IndexObject<string>;
         chunks: WebpackOptions.CacheGroupsOptions[];
         cleanExclusions: string[];
-        disablePlugins: string[];
+        enablePlugins: string[];
         entryPoints: IndexObject<EntryPoint>;
         extensions: string[];
         externalFiles: (string | ExternalFile)[];
-        favicons: FaviconsSettings;
         output: {
             script: string;
             style: string;
         };
-        rendering: PrerenderOptions;
         rules: Rule[];
     };
     environment: NodeEnvironment;
@@ -120,4 +101,3 @@ export interface Settings {
     runtime: IndexObjectAny;
 }
 export declare type WebpackConfig = (options: Options) => Configuration;
-export declare type BiotopeBuildPlugin = (settings: Settings) => Settings;

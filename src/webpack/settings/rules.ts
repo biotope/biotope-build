@@ -23,7 +23,7 @@ const getStyleNaming = (minify: boolean, globalStyles: boolean): string => {
 export const getRules = (
   minify: boolean,
   globalStyles: boolean,
-  disabledPlugins: string[],
+  enabledPlugins: string[],
   compileExclusions: string[],
   runtimeVariables: IndexObject<string>,
 ): Rule[] => ([
@@ -43,7 +43,7 @@ export const getRules = (
       {
         loader: resolve(`${biotopeBuildPath}/lib/webpack/settings/style-loader`),
       },
-      ...(disabledPlugins.indexOf('mini-css-extract-plugin') < 0 ? [ExtractLoader] : []),
+      ...(enabledPlugins.indexOf('mini-css-extract-plugin') >= 0 ? [ExtractLoader] : []),
       {
         loader: 'css-loader',
         options: {
