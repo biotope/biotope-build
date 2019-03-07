@@ -18,11 +18,9 @@ export const config = (options: Options): Configuration => {
       noEmitOnErrors: true,
     },
     plugins: [
-      ...(!settings.compilation.enablePlugins.indexOf('extended-define-webpack-plugin') ? [] : [
-        new ExtendedDefinePlugin(
-          settings.runtime,
-        ),
-      ]),
+      new ExtendedDefinePlugin(
+        settings.runtime,
+      ),
     ],
   }));
 };

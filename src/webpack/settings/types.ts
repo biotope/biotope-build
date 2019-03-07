@@ -17,15 +17,13 @@ export interface ExternalFile {
 
 export type OverrideFunction = (configuration: Configuration) => Configuration;
 
-export interface EntryPointOption {
+export interface EntryPoint {
   file: string;
-  template?: string;
 }
 
-export type EntryPointOptionAll = IndexObject<EntryPointOption | string>;
-
-export interface EntryPoint extends EntryPointOption {
-  filename: string;
+export interface StyleOptions {
+  global?: boolean;
+  extract?: boolean;
 }
 
 export interface Options {
@@ -40,11 +38,10 @@ export interface Options {
     chunks?: WebpackOptions.CacheGroupsOptions[];
     cleanExclusions?: string[];
     compileExclusions?: string[];
-    enablePlugins?: string[];
-    entryPoints?: EntryPointOptionAll;
+    entryPoints?: string[];
     extensions?: string[];
     externalFiles?: (string | ExternalFile)[];
-    globalStyles?: boolean;
+    style?: StyleOptions;
     output?: {
       script?: string;
       style?: string;
@@ -62,7 +59,6 @@ export interface Options {
     buildRelative?: string;
     serverPrefixRuntimeKey?: string;
   };
-  plugins?: string[];
   runtime?: IndexObjectAny;
 }
 
@@ -77,10 +73,10 @@ export interface Settings {
     alias: IndexObject<string>;
     chunks: WebpackOptions.CacheGroupsOptions[];
     cleanExclusions: string[];
-    enablePlugins: string[];
     entryPoints: IndexObject<EntryPoint>;
     extensions: string[];
     externalFiles: (string | ExternalFile)[];
+    extractStyle: boolean;
     output: {
       script: string;
       style: string;

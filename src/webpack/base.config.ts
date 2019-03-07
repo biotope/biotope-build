@@ -28,18 +28,7 @@ export const baseConfig = (options: Options): [Configuration, Settings] => {
         cacheGroups: settings.compilation.chunks.reduce((accumulator, value) => ({
           ...accumulator,
           [value.name as string]: value,
-        }), {
-          default: false,
-          vendors: false,
-          core: {
-            test: /node_modules/,
-            name: 'core',
-            enforce: true,
-            priority: 100,
-            chunks: 'all',
-            minChunks: 1,
-          },
-        }) as { [key: string]: WebpackOptions.CacheGroupsOptions },
+        }), {}) as { [key: string]: WebpackOptions.CacheGroupsOptions },
       },
     },
     plugins: [
@@ -56,7 +45,7 @@ export const baseConfig = (options: Options): [Configuration, Settings] => {
           ignore: parsedRules.ignore || ['.*'],
         };
       })),
-      ...(!settings.compilation.enablePlugins.indexOf('mini-css-extract-plugin') ? [] : [
+      ...(!settings.compilation.extractStyle ? [] : [
         new MiniCssExtractPlugin({
           filename: settings.compilation.output.style,
         }),

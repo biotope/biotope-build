@@ -22,13 +22,13 @@ const getStyleNaming = (minify: boolean, globalStyles: boolean): string => {
 
 export const getRules = (
   minify: boolean,
-  globalStyles: boolean,
-  enabledPlugins: string[],
+  global: boolean,
+  extract: boolean,
   compileExclusions: string[],
   runtimeVariables: IndexObject<string>,
 ): Rule[] => ([
   {
-    test: /\.(j|t)sx?$/,
+    test: /\.(j|t)s$/,
     use: {
       loader: 'babel-loader',
       options: babelOptions,
@@ -43,12 +43,12 @@ export const getRules = (
       {
         loader: resolve(`${biotopeBuildPath}/lib/webpack/settings/style-loader`),
       },
-      ...(enabledPlugins.indexOf('mini-css-extract-plugin') >= 0 ? [ExtractLoader] : []),
+      ...(extract ? [ExtractLoader] : []),
       {
         loader: 'css-loader',
         options: {
           modules: true,
-          localIdentName: getStyleNaming(minify, globalStyles),
+          localIdentName: getStyleNaming(minify, global),
         },
       },
       {
