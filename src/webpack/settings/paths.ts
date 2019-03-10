@@ -6,7 +6,7 @@ import { Options, Settings } from './types';
 const pathDefaults = {
   app: './src/',
   assetsRelative: 'assets/',
-  pagesRelative: 'pages/',
+  bundlesRelative: 'bundles/',
   dist: './dist/',
   buildRelative: 'build/',
 };
@@ -21,7 +21,7 @@ export const getPaths = (paths: Options['paths'] = {}): Settings['paths'] => {
     baseAbsolute,
     appAbsolute: resolve(`${baseAbsolute}/${pathsDefined.app}`),
     assetsAbsolute: resolve(`${baseAbsolute}/${pathsDefined.app}/${pathsDefined.assetsRelative}`),
-    pagesAbsolute: resolve(`${baseAbsolute}/${pathsDefined.app}/${pathsDefined.pagesRelative}`),
+    bundlesAbsolute: resolve(`${baseAbsolute}/${pathsDefined.app}/${pathsDefined.bundlesRelative}`),
     distAbsolute: resolve(`${baseAbsolute}/${pathsDefined.dist}`),
     buildAbsolute: resolve(`${baseAbsolute}/${pathsDefined.dist}/${pathsDefined.buildRelative}`),
   };

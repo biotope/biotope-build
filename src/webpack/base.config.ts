@@ -14,7 +14,7 @@ export const baseConfig = (options: Options): [Configuration, Settings] => {
     mode: 'development',
     entry: Object.keys(settings.compilation.entryPoints).reduce((accumulator, key) => ({
       ...accumulator,
-      [key]: `${settings.paths.pagesAbsolute}/${settings.compilation.entryPoints[key].file}`,
+      [key]: `${settings.paths.bundlesAbsolute}/${settings.compilation.entryPoints[key].file}`,
     }), {}),
     module: { rules: settings.compilation.rules },
     output: {

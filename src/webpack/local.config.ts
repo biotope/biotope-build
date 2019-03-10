@@ -17,5 +17,5 @@ export const config = (options: Options): Configuration => {
         appendScriptTag: true,
       }),
     ],
-  }));
+  }), 'local');
 };

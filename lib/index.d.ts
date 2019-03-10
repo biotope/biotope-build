@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-export { Options } from './webpack';
+export { Options, defaultOptions } from './webpack';

@@ -14,7 +14,7 @@ export interface ExternalFile {
     };
     force?: boolean;
 }
-export declare type OverrideFunction = (configuration: Configuration) => Configuration;
+export declare type OverrideFunction = (configuration: Configuration, environment: ProjectEnvironment) => Configuration;
 export interface EntryPoint {
     file: string;
 }
@@ -23,12 +23,6 @@ export interface StyleOptions {
     extract?: boolean;
 }
 export interface Options {
-    app?: {
-        author?: string;
-        description?: string;
-        keywords?: string[];
-        title?: string;
-    };
     compilation?: {
         alias?: IndexObject<string>;
         chunks?: WebpackOptions.CacheGroupsOptions[];
@@ -49,7 +43,7 @@ export interface Options {
     overrides?: OverrideFunction;
     paths?: {
         app?: string;
-        pagesRelative?: string;
+        bundlesRelative?: string;
         assetsRelative?: string;
         dist?: string;
         buildRelative?: string;
@@ -58,12 +52,6 @@ export interface Options {
     runtime?: IndexObjectAny;
 }
 export interface Settings {
-    app: {
-        author: string;
-        description: string;
-        keywords: string;
-        title: string;
-    };
     compilation: {
         alias: IndexObject<string>;
         chunks: WebpackOptions.CacheGroupsOptions[];
@@ -84,13 +72,13 @@ export interface Settings {
     paths: {
         app: string;
         assetsRelative: string;
-        pagesRelative: string;
+        bundlesRelative: string;
         dist: string;
         buildRelative: string;
         server: string;
         baseAbsolute: string;
         appAbsolute: string;
-        pagesAbsolute: string;
+        bundlesAbsolute: string;
         assetsAbsolute: string;
         buildAbsolute: string;
         distAbsolute: string;

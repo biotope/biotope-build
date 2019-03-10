@@ -10,8 +10,7 @@ import {
 import { getPaths } from './paths';
 import { getRules } from './rules';
 import { getRuntime } from './runtime';
-
-const defaultKeywords = ['biotope', 'boilerplate', 'modern', 'framework', 'html5'];
+import { defaultOptions } from './defaults';
 
 const popLast = (array: string[]): string[] => array.reverse().splice(1).reverse();
 
@@ -24,7 +23,6 @@ export const getSettings = (options: Options): Settings => {
   const serverRuntimeKey = (options.paths || {}).serverPrefixRuntimeKey;
   paths.server = serverRuntimeKey ? runtime[serverRuntimeKey] : paths.server;
 
-  const app = options.app || {};
   const compilation = options.compilation || {};
   const style: { global: boolean; extract: boolean } = {
     global: false,
@@ -38,13 +36,6 @@ export const getSettings = (options: Options): Settings => {
     }), {});
 
   const settings: Settings = {
-    app: {
-      title: 'Biotope Boilerplate v7',
-      description: 'Modern HTML5 UI Framework',
-      author: 'Biotope',
-      ...app,
-      keywords: (app.keywords || defaultKeywords).join(','),
-    },
     environment,
     minify,
     overrides: options.overrides || (s => s),
@@ -52,19 +43,10 @@ export const getSettings = (options: Options): Settings => {
     runtime,
     compilation: {
       alias: compilation.alias || {},
-      chunks: compilation.chunks || [
-        {
-          test: /node_modules/,
-          name: 'core',
-          enforce: true,
-          priority: 100,
-          chunks: 'all',
-          minChunks: 1,
-        },
-      ],
+      chunks: compilation.chunks || defaultOptions.compilation.chunks,
       cleanExclusions: compilation.cleanExclusions || [],
       entryPoints,
-      extensions: compilation.extensions || ['.ts', '.js', '.scss', '.css'],
+      extensions: compilation.extensions || defaultOptions.compilation.extensions,
       externalFiles: (compilation.externalFiles || [{
         from: `${paths.appAbsolute}/resources`,
         to: 'resources',

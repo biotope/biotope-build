@@ -25,7 +25,11 @@ const resolveConfigFile = (configFile?: string): string => {
 
 const isTsFile = (file: string): boolean => file.split('.').pop() === 'ts';
 
-export const getConfigFile = (configFile?: string): string => {
+export const getConfigFile = (configFile?: string, additionalCompilation?: string): string => {
+  if (additionalCompilation) {
+    compile([additionalCompilation], tsConfig);
+  }
+
   let actualConfigFile = resolveConfigFile(configFile);
 
   if (isTsFile(actualConfigFile)) {

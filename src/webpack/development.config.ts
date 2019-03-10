@@ -13,5 +13,5 @@ export const config = (options: Options): Configuration => {
         settings.runtime,
       ),
     ],
-  }));
+  }), 'dev');
 };

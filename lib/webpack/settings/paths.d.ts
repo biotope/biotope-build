@@ -1,6 +1,6 @@
 export declare const getPaths: (paths?: {
     app?: string | undefined;
-    pagesRelative?: string | undefined;
+    bundlesRelative?: string | undefined;
     assetsRelative?: string | undefined;
     dist?: string | undefined;
     buildRelative?: string | undefined;
@@ -8,13 +8,13 @@ export declare const getPaths: (paths?: {
 } | undefined) => {
     app: string;
     assetsRelative: string;
-    pagesRelative: string;
+    bundlesRelative: string;
     dist: string;
     buildRelative: string;
     server: string;
     baseAbsolute: string;
     appAbsolute: string;
-    pagesAbsolute: string;
+    bundlesAbsolute: string;
     assetsAbsolute: string;
     buildAbsolute: string;
     distAbsolute: string;

@@ -1,17 +1,14 @@
-import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { Rule } from 'webpack';
 import { loader as ExtractLoader } from 'mini-css-extract-plugin';
 
-import { projectPath, biotopeBuildPath } from './project-paths';
+import { biotopeBuildPath } from './project-paths';
 import { javascriptToSass } from './javascript-to-sass';
 
 // eslint-disable-next-line import/no-dynamic-require
 const babelOptions = require(`${biotopeBuildPath}/.babelrc.js`);
 
-const postCssPath = existsSync(`${projectPath}/postcss.config.js`)
-  ? `${projectPath}/`
-  : `${biotopeBuildPath}/`;
+const postCssPath = `${biotopeBuildPath}/postcss.config.js`;
 
 const getStyleNaming = (minify: boolean, globalStyles: boolean): string => {
   if (globalStyles) {

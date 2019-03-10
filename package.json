@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "7.0.0-alpha9",
+  "version": "7.0.0-alpha11",
   "description": "An advanced developent and build runtime to create frontent ecosystems",
   "author": "Biotope",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "biotope-build": "./lib/index.js"
   },
   "types": "lib/index.d.ts",
+  "main": "lib/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "test": "echo \"Not implemented yet\"",
