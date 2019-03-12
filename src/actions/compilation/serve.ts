@@ -2,18 +2,20 @@ import * as LocalWebServer from 'local-web-server';
 import * as os from 'os';
 import * as reduceFlatten from 'reduce-flatten';
 
-const PORT = 8000;
+const DEFAULT_PORT = 8000;
 
 export interface ServeOptions {
   directory?: string;
   open?: boolean;
+  port?: number;
   production?: boolean;
   spa?: boolean;
 }
 
 export const serve = (options: ServeOptions): void => {
+  const port = options.port || DEFAULT_PORT;
   (new LocalWebServer()).listen({
-    port: PORT,
+    port,
     https: options.production,
     compress: options.production,
     directory: options.directory || 'dist',
@@ -27,7 +29,7 @@ export const serve = (options: ServeOptions): void => {
     .map(networkInterface => networkInterface.address);
 
   ipList.unshift(os.hostname());
-  const urls = ipList.map(address => `http${options.production ? 's' : ''}://${address}:${PORT}`);
+  const urls = ipList.map(address => `http${options.production ? 's' : ''}://${address}:${port}`);
 
   // eslint-disable-next-line no-console
   console.log(`Serving at ${urls.join(', ')}`);

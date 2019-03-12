@@ -3,10 +3,11 @@ import * as ExtendedDefinePlugin from 'extended-define-webpack-plugin';
 import * as LiveReloadPlugin from 'webpack-livereload-plugin';
 import * as mergeDeep from 'merge-deep';
 
-import { Options } from './settings';
+import { freePorts } from '../free-ports';
+import { Options, WebpackConfig } from './settings';
 import { baseConfig } from './base.config';
 
-export const config = (options: Options): Configuration => {
+export const config: WebpackConfig = (options: Options): Configuration => {
   const [configuration, settings] = baseConfig(options);
   return settings.overrides(mergeDeep(configuration, {
     plugins: [
@@ -15,6 +16,7 @@ export const config = (options: Options): Configuration => {
       ),
       new LiveReloadPlugin({
         appendScriptTag: true,
+        port: freePorts([35729])[0] || 35729,
       }),
     ],
   }), 'local');

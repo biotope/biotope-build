@@ -1,5 +1,6 @@
 import { Stats } from 'webpack';
 
+import { freePorts } from '../../free-ports';
 import { serve } from './serve';
 
 interface WebpackCompileError extends Error {
@@ -17,7 +18,9 @@ export const compilerCallback = (
 ): CompilerCallback => (error: WebpackCompileError, stats: Stats): void => {
   if (firstTimeFinish && open) {
     firstTimeFinish = false;
-    serve({ open, spa });
+
+    const [port] = freePorts([8000]);
+    serve({ open, port, spa });
   }
 
   if (error) {

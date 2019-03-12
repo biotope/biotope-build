@@ -1,6 +1,7 @@
 export interface ServeOptions {
     directory?: string;
     open?: boolean;
+    port?: number;
     production?: boolean;
     spa?: boolean;
 }

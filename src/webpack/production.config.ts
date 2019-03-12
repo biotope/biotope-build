@@ -2,10 +2,10 @@ import { Configuration } from 'webpack';
 import * as ExtendedDefinePlugin from 'extended-define-webpack-plugin';
 import * as mergeDeep from 'merge-deep';
 
-import { Options } from './settings';
+import { Options, WebpackConfig } from './settings';
 import { baseConfig } from './base.config';
 
-export const config = (options: Options): Configuration => {
+export const config: WebpackConfig = (options: Options): Configuration => {
   const [configuration, settings] = baseConfig({
     ...options,
     minify: true,

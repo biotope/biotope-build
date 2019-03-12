@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "7.0.0-alpha11",
+  "version": "7.0.0-alpha12",
   "description": "An advanced developent and build runtime to create frontent ecosystems",
   "author": "Biotope",
   "license": "MIT",
@@ -42,6 +42,7 @@
     "css-loader": "~2.1",
     "dotenv": "~6.2",
     "extended-define-webpack-plugin": "~0.1",
+    "find-free-port-sync": "~1.0",
     "loader-utils": "~1.2",
     "local-web-server": "~2.6",
     "merge-deep": "~3.0",
