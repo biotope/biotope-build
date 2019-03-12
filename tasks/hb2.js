@@ -362,15 +362,18 @@ const prepareTemplateDataForIndexr = () => {
   const sortedTemplates = [];
   const blacklistedTemplates = [
     normalizeWinPath(
+      path.join(config.global.cwd, config.global.src, 'pages', 'style-guide.hbs')
+    ),
+    normalizeWinPath(
       path.join(config.global.cwd, config.global.src, 'index.hbs')
     ),
     normalizeWinPath(
       path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
     )
   ];
-
+  
   for (const template in templates) {
-    if (blacklistedTemplates.indexOf(template) !== -1) {
+    if (blacklistedTemplates.indexOf(template) !== -1 || template.indexOf(config.styleGuide.variantDistFolderName) !== -1) {
       continue;
     }
 
