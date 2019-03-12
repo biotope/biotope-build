@@ -20,7 +20,6 @@ const templateGlobPatterns = [
 const partialGlobPatterns = [
   path.join(config.global.cwd, config.global.src, '**', '*.hbs'),
   '!' + path.join(config.global.cwd, config.global.src, 'pages', '**', '*.hbs'),
-  '!' + path.join(config.global.cwd, config.global.src, 'components', '**', config.styleGuide.variantDistFolderName, '*.hbs'),
   '!' + path.join(config.global.cwd, config.global.src, 'index.hbs'),
   '!' + path.join(config.global.cwd, config.global.src, 'browserSupport.hbs')
 ];
