@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "7.0.0-alpha12",
+  "version": "7.0.0-alpha13",
   "description": "An advanced developent and build runtime to create frontent ecosystems",
   "author": "Biotope",
   "license": "MIT",
@@ -58,6 +58,6 @@
     "webpack-livereload-plugin": "~2.2"
   },
   "devDependencies": {
-    "@biotope/quality-gate": "^1.0.0-beta.1"
+    "@biotope/quality-gate": "^1.0.0-beta.2"
   }
 }

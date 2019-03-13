@@ -10,6 +10,7 @@ import {
 import { getPaths } from './paths';
 import { getRules } from './rules';
 import { getRuntime } from './runtime';
+import { getCoreBundleName } from './core-bundle-name';
 import { defaultOptions } from './defaults';
 
 const popLast = (array: string[]): string[] => array.reverse().splice(1).reverse();
@@ -43,7 +44,17 @@ export const getSettings = (options: Options): Settings => {
     runtime,
     compilation: {
       alias: compilation.alias || {},
-      chunks: compilation.chunks || defaultOptions.compilation.chunks,
+      chunks: [
+        {
+          test: /node_modules/,
+          name: getCoreBundleName(),
+          enforce: true,
+          priority: 100,
+          chunks: 'all',
+          minChunks: 1,
+        },
+        ...(compilation.chunks || []),
+      ],
       cleanExclusions: compilation.cleanExclusions || [],
       entryPoints,
       extensions: compilation.extensions || defaultOptions.compilation.extensions,
