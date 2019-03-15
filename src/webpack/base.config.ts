@@ -1,5 +1,5 @@
 import { Configuration, Options as WebpackOptions } from 'webpack';
-import * as CleanWebpackPlugin from 'clean-webpack-plugin';
+import CleanWebpackPlugin from 'clean-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
@@ -32,10 +32,11 @@ export const baseConfig = (options: Options): [Configuration, Settings] => {
       },
     },
     plugins: [
-      new CleanWebpackPlugin(settings.paths.dist, {
-        root: settings.paths.baseAbsolute,
-        exclude: settings.compilation.cleanExclusions || [],
-        verbose: false,
+      new CleanWebpackPlugin({
+        cleanOnceBeforeBuildPatterns: [`${settings.paths.distAbsolute}/*`].concat(
+          (settings.compilation.cleanExclusions || [])
+            .map(exclusion => `!${settings.paths.distAbsolute}/${exclusion}`),
+        ),
       }),
       new CopyWebpackPlugin(settings.compilation.externalFiles.map((filesRules) => {
         const parsedRules = typeof filesRules === 'string' ? { from: filesRules } : filesRules;
