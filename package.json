@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "7.0.0-alpha14",
+  "version": "7.0.0-alpha15",
   "description": "An advanced developent and build runtime to create frontent ecosystems",
   "author": "Biotope",
   "license": "MIT",
@@ -48,12 +48,13 @@
     "merge-deep": "~3.0",
     "mini-css-extract-plugin": "~0.5",
     "node-sass": "~4.11",
-    "opn": "~5.4",
+    "opn": "~5.5",
     "postcss-loader": "~3.0",
     "raw-loader": "~1.0",
     "reduce-flatten": "~2.0",
     "sass-loader": "~7.1",
     "typescript": "~3.3",
+    "url-loader": "~1.1",
     "webpack": "~4.29",
     "webpack-livereload-plugin": "~2.2"
   },

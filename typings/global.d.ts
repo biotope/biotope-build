@@ -17,14 +17,34 @@ declare module '*.style' {
   export = style;
 }
 
-declare module '*.svg' {
-  const content: string;
-  export = content;
-}
-
 // FIXME: Typescript limitation on importing deconstructed json files
 // declare module '*.json' {
 //   const content: IndexObjectAny;
 //   export = content;
 // }
 declare module '*.json';
+
+declare module '*.svg' {
+  const content: string;
+  export = content;
+}
+
+declare module '*.png' {
+  const content: string;
+  export = content;
+}
+
+declare module '*.jpg' {
+  const content: string;
+  export = content;
+}
+
+declare module '*.jpeg' {
+  const content: string;
+  export = content;
+}
+
+declare module '*.gif' {
+  const content: string;
+  export = content;
+}

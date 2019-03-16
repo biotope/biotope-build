@@ -45,6 +45,7 @@ export const getRules = (
         loader: 'css-loader',
         options: {
           modules: true,
+          url: false,
           localIdentName: getStyleNaming(minify, global),
         },
       },
@@ -63,7 +64,11 @@ export const getRules = (
     ],
   },
   {
-    test: /\.svg/,
+    test: /\.svg$/,
     use: 'raw-loader',
+  },
+  {
+    test: /\.(png|jpe?g|gif)$/,
+    use: 'url-loader',
   },
 ]);
