@@ -25,9 +25,10 @@ export const getSettings = (options: Options): Settings => {
   paths.server = serverRuntimeKey ? runtime[serverRuntimeKey] : paths.server;
 
   const compilation = options.compilation || {};
-  const style: { global: boolean; extract: boolean } = {
+  const style: { global: boolean; extract: boolean; prefix: string } = {
     global: false,
     extract: false,
+    prefix: '',
     ...(compilation.style || {}),
   };
   const entryPoints: IndexObject<EntryPoint> = (compilation.entryPoints || ['index.ts'])
@@ -75,6 +76,7 @@ export const getSettings = (options: Options): Settings => {
         minify,
         style.global,
         style.extract,
+        style.prefix,
         compilation.compileExclusions || [],
         runtime,
       ),

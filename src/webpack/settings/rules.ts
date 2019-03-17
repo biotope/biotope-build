@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { Rule } from 'webpack';
 import { loader as ExtractLoader } from 'mini-css-extract-plugin';
@@ -10,17 +11,18 @@ const babelOptions = require(`${biotopeBuildPath}/.babelrc.js`);
 
 const postCssPath = `${biotopeBuildPath}/postcss.config.js`;
 
-const getStyleNaming = (minify: boolean, globalStyles: boolean): string => {
+const getStyleNaming = (minify: boolean, globalStyles: boolean, prefix: string): string => {
   if (globalStyles) {
-    return '[name]';
+    return `${prefix}[name]`;
   }
-  return minify ? '[hash:base64:24]' : '[path][name]-[local]';
+  return `${prefix}${minify ? '[hash:base64:24]' : '[path][name]-[local]'}`;
 };
 
 export const getRules = (
   minify: boolean,
   global: boolean,
   extract: boolean,
+  prefix: string,
   compileExclusions: string[],
   runtimeVariables: IndexObject<string>,
 ): Rule[] => ([
@@ -44,9 +46,16 @@ export const getRules = (
       {
         loader: 'css-loader',
         options: {
+          camelCase: true,
           modules: true,
-          url: false,
-          localIdentName: getStyleNaming(minify, global),
+          url(url: string, resource: string) {
+            const resourceFolder = resource.split('/');
+            resourceFolder.pop();
+
+            return url.indexOf('http') === 0 || url.indexOf('/') === 0
+              || (!existsSync(resolve(url)) && !existsSync(resolve(`${resourceFolder.join('/')}/${url}`)));
+          },
+          localIdentName: getStyleNaming(minify, global, prefix),
         },
       },
       {

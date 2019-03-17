@@ -27,6 +27,7 @@ export interface EntryPoint {
 export interface StyleOptions {
   global?: boolean;
   extract?: boolean;
+  prefix?: string;
 }
 
 export interface Options {
