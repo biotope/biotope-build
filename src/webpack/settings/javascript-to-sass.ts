@@ -6,7 +6,9 @@ const isNumber = (variable: string): boolean => {
   return value === value && typeof value === 'number';
 };
 
-const toSassVariable = (variable: string): string => (!isNumber(variable) ? `'${variable}'` : variable);
+const toSassVariable = (variable: string): string => (
+  !isNumber(variable) && variable[0] !== '#' ? `'${variable}'` : variable
+);
 
 const flattenObject = (
   variables: IndexObjectAny,
