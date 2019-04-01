@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const connect = require('gulp-connect');
 const config = require('./../config');
 const history = require('connect-history-api-fallback');
+const cors = require('cors');
 
 gulp.task('livereload', function () {
   const cached = require('gulp-cached');
@@ -36,6 +37,7 @@ gulp.task('connect', function () {
           }
           return next();
         },
+        cors(),
         history({
           index: config.connect.historyFallbackIndex
         })
