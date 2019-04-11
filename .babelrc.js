@@ -8,7 +8,6 @@ module.exports = {
           'ie >= 11'
         ],
       },
-      useBuiltIns: 'entry',
     }],
     ['@babel/typescript', {
       isTSX: true,
