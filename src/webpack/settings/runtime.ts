@@ -15,11 +15,11 @@ const getDotEnv = (paths: Settings['paths']): DotenvParseOutput => {
 
 const filterEnvironments = (runtimeVariables: IndexObjectAny): IndexObjectAny => Object
   .keys(runtimeVariables)
-  .filter(key => key !== 'local' && key !== 'development' && key !== 'production')
-  .reduce((accumulator, key) => ({
+  .filter((key): boolean => key !== 'local' && key !== 'development' && key !== 'production')
+  .reduce((accumulator, key): IndexObjectAny => ({
     ...accumulator,
     [key]: runtimeVariables[key],
-  }), {}) as IndexObjectAny;
+  }), {});
 
 export const getRuntime = (
   runtime: IndexObjectAny,

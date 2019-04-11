@@ -25,5 +25,5 @@ if (autoApplyStyle) {
 
 module.exports = {
   ...(style.locals || style),
-  toString: () => (!autoApplyStyle ? content : ''),
+  toString: (): string => (!autoApplyStyle ? content : ''),
 };

@@ -14,7 +14,7 @@ const flattenObject = (
   variables: IndexObjectAny,
   prefix: string = '',
 ): IndexObject<string> => Object.keys(variables)
-  .reduce((accumulator, key) => ({
+  .reduce((accumulator, key): IndexObject<string> => ({
     ...accumulator,
     ...(typeof variables[key] === 'object'
       ? flattenObject(variables[key], `${prefix}${prefix ? '_' : ''}${key}`)
@@ -26,5 +26,5 @@ export const javascriptToSass = (variables: IndexObjectAny): string => {
   const flattenVariables = flattenObject(variables);
 
   return Object.keys(flattenVariables)
-    .reduce((accumulator, key) => `${accumulator}$${key}:${flattenVariables[key]};`, '');
+    .reduce((accumulator, key): string => `${accumulator}$${key}:${flattenVariables[key]};`, '');
 };

@@ -1,10 +1,6 @@
 import { getConfigFile } from '../config-file';
 import { Action } from './types';
-import {
-  compilerCallback,
-  getCompiler,
-  CompileOptions,
-} from './compilation';
+import { compilerCallback, getCompiler, CompileOptions } from './compilation';
 
 const compilation = (options: CompileOptions): void => {
   const compiler = getCompiler({

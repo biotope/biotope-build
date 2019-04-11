@@ -36,7 +36,7 @@ export const compilerCallback = (
     if (stats.compilation.errors.length !== 0) {
       stats.compilation.errors
       // eslint-disable-next-line no-console
-        .forEach(compilationError => console.error(compilationError.message));
+        .forEach((compilationError): void => console.error(compilationError.message));
       process.exitCode = 2;
     } else {
       // eslint-disable-next-line no-console

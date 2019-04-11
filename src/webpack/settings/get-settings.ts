@@ -1,11 +1,10 @@
 import { resolve } from 'path';
+import { Configuration } from 'webpack';
 import * as mergeDeep from 'merge-deep';
 
 import { environments } from './environments';
 import {
-  Options,
-  Settings,
-  EntryPoint,
+  Options, Settings, EntryPoint, ExternalFile,
 } from './types';
 import { getPaths } from './paths';
 import { getRules } from './rules';
@@ -32,7 +31,7 @@ export const getSettings = (options: Options): Settings => {
     ...(compilation.style || {}),
   };
   const entryPoints: IndexObject<EntryPoint> = (compilation.entryPoints || ['index.ts'])
-    .reduce((accumulator, file) => ({
+    .reduce((accumulator, file): IndexObject<EntryPoint> => ({
       ...accumulator,
       [popLast(file.split('.')).join('.')]: { file },
     }), {});
@@ -40,7 +39,7 @@ export const getSettings = (options: Options): Settings => {
   const settings: Settings = {
     environment,
     minify,
-    overrides: options.overrides || (s => s),
+    overrides: options.overrides || ((c): Configuration => c),
     paths,
     runtime,
     compilation: {
@@ -63,7 +62,7 @@ export const getSettings = (options: Options): Settings => {
         from: `${paths.appAbsolute}/resources`,
         to: 'resources',
         ignore: ['*.md'],
-      }]).map(files => (typeof files === 'string' ? resolve(files) : ({
+      }]).map((files): string | ExternalFile => (typeof files === 'string' ? resolve(files) : ({
         ...files,
         from: resolve(files.from),
       }))),

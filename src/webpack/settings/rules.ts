@@ -48,7 +48,7 @@ export const getRules = (
         options: {
           camelCase: true,
           modules: true,
-          url(url: string, resource: string) {
+          url(url: string, resource: string): boolean {
             const resourceFolder = resource.split('/');
             resourceFolder.pop();
 

@@ -1,5 +1,5 @@
+import { networkInterfaces, hostname, NetworkInterfaceInfo } from 'os';
 import * as LocalWebServer from 'local-web-server';
-import * as os from 'os';
 import * as reduceFlatten from 'reduce-flatten';
 
 const DEFAULT_PORT = 8000;
@@ -22,20 +22,21 @@ export const serve = (options: ServeOptions): void => {
     spa: options.spa ? 'index.html' : undefined,
   });
 
-  const ipList = Object.keys(os.networkInterfaces())
-    .map(key => os.networkInterfaces()[key])
+  const interfaces = networkInterfaces();
+  const ipList = Object.keys(interfaces)
+    .map((key): NetworkInterfaceInfo[] => interfaces[key])
     .reduce(reduceFlatten, [])
-    .filter(networkInterface => networkInterface.family === 'IPv4')
-    .map(networkInterface => networkInterface.address);
+    .filter((networkInterface): boolean => networkInterface.family === 'IPv4')
+    .map((networkInterface): string => networkInterface.address);
 
-  ipList.unshift(os.hostname());
-  const urls = ipList.map(address => `http${options.production ? 's' : ''}://${address}:${port}`);
+  ipList.unshift(hostname());
+  const urls = ipList.map((address): string => `http${options.production ? 's' : ''}://${address}:${port}`);
 
   // eslint-disable-next-line no-console
   console.log(`Serving at ${urls.join(', ')}`);
 
   if (options.open) {
     // eslint-disable-next-line global-require
-    require('opn')(urls[1]);
+    require('open')(urls[1]);
   }
 };

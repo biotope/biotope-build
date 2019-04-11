@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-export { Options, defaultOptions } from './webpack';
+export { Options, ExternalFile, OverrideFunction, EntryPoint, StyleOptions, defaultOptions, } from './webpack';
