@@ -78,13 +78,14 @@ module.exports = {
         include: generalIncludePaths
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|mov|mp4|webm)$/i,
         use: [
           {
-            loader: 'file-loader',
+            loader: 'url-loader',
             options: {
               name: '[folder]/[name].[ext]',
-              outputPath: 'resources/components/'
+              outputPath: 'resources/components/',
+              limit: 8192
             }
           }
         ]
