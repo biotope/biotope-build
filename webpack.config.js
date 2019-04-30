@@ -78,6 +78,18 @@ module.exports = {
         include: generalIncludePaths
       },
       {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[folder]/[name].[ext]',
+              outputPath: 'resources/components/'
+            }
+          }
+        ]
+      },
+      {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         include: generalIncludePaths
