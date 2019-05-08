@@ -23,12 +23,7 @@ gulp.task('cssstats', function() {
           console.log(
             colors.green(`Gzipped: ${(stats.gzipSize / 1024).toFixed(2)} KB`)
           );
-
-          // IE9 selector limit
-          if (stats.selectors.total > 4096) {
-          } else {
-            console.log(colors.green(`Selectors: ${stats.selectors.total}`));
-          }
+          console.log(colors.green(`Selectors: ${stats.selectors.total}`));
         })
       );
   } else {
