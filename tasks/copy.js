@@ -428,6 +428,25 @@ gulp.task('copy:dist:component:mock', function () {
   return copyFiles(from, to);
 });
 
+gulp.task('copy:dist:component:data', function () {
+  const from = path.join(
+    config.global.cwd,
+    config.global.src,
+    config.global.components,
+    '**',
+    'data',
+    '**',
+    '*'
+  );
+  const to = path.join(
+    config.global.cwd,
+    config.global.dist,
+    config.global.components
+  );
+
+  return copyFiles(from, to);
+});
+
 gulp.task('copy:dist:config', function () {
   const from = path.join(
     config.global.cwd,
