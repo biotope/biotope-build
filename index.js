@@ -87,6 +87,7 @@ gulp.task('build', function (callback) {
       'copy:dist:css',
       'copy:dist:mock',
       'copy:dist:component:mock',
+      'copy:dist:component:data',
       'copy:dist:config',
       'copy:dist:hbs',
       'copy:dist:bower',
