@@ -32,7 +32,6 @@ gulp.task('build:dev', function (callback) {
       'svgSprite',
       'copy:dev:npm:js',
       'copy:dev:npm:css',
-      'copy:dev:npm:bower',
       'init:hb2'
     ],
     [
@@ -42,9 +41,12 @@ gulp.task('build:dev', function (callback) {
       'static:hb2'
     ],
     [
+      // needs to be independent, so ts and sass overrides default files
+      'copy:dev:components:files'
+    ],
+    [
       'sass',
-      'webpack:ts',
-      'copy:dev:components:js'
+      'webpack:ts'
     ],
     [
       'modernizr',
@@ -63,7 +65,7 @@ gulp.task('build', function (callback) {
       'build:dev'
     ],
     [
-      'copy:dev:js'
+      'copy:dev:resources:js'
     ],
     [
       'useref'
@@ -75,23 +77,20 @@ gulp.task('build', function (callback) {
       'favicons'
     ],
     [
-      'copy:dist:js',
-      'copy:dist:react',
-      'copy:dist:ts',
-      'copy:dist:flash',
-      'copy:dist:json',
-      'copy:dist:fonts',
+      'copy:dist:resources:js',
+      'copy:dist:resources:react',
+      'copy:dist:resources:ts-js',
+      'copy:dist:resources:json',
+      'copy:dist:resources:fonts',
       'copy:dist:resources:img',
-      'copy:dist:components:img',
-      'copy:dist:assets',
-      'copy:dist:css',
-      'copy:dist:mock',
+      'copy:dist:resources:assets',
+      'copy:dist:resources:css',
+      'copy:dist:resources:components',
+      'copy:dist:resources:hbs',
       'copy:dist:component:mock',
-      'copy:dist:component:data',
+      'copy:dist:components:files',
       'copy:dist:config',
-      'copy:dist:hbs',
-      'copy:dist:bower',
-      'copy:dist:components',
+      'copy:dist:mock',
       'copy:dist:svgSprite'
     ],
     [
@@ -120,7 +119,7 @@ gulp.task('serve', function (callback) {
       'watch:partials:hb2',
       'watch:jsons:hb2',
       'watch:icons:hb2',
-      'watch:components:js',
+      'watch:components:files',
       'watch:sass',
       'watch:eslint:components',
       'watch:eslint:resources',
