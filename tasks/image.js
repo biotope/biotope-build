@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const config = require('./../config');
 
-gulp.task('image:resources:dist', function() {
+gulp.task('image:resources:dist', function () {
   if (config.global.tasks.image) {
     const path = require('path');
     const image = require('gulp-imagemin');
@@ -20,14 +20,13 @@ gulp.task('image:resources:dist', function() {
           '**',
           '*.*'
         ),
-        '!' +
-          path.join(
-            config.global.dist,
-            config.global.resources,
-            'img',
-            '**',
-            '*.svg'
-          )
+        `!${path.join(
+          config.global.dist,
+          config.global.resources,
+          'img',
+          '**',
+          '*.svg'
+        )}`
       ])
       .pipe(image(imageOptimizers, config.image))
       .pipe(
@@ -39,7 +38,7 @@ gulp.task('image:resources:dist', function() {
   }
 });
 
-gulp.task('image:component:dist', function() {
+gulp.task('image:component:dist', function () {
   if (config.global.tasks.image) {
     const path = require('path');
     const image = require('gulp-imagemin');
@@ -60,16 +59,15 @@ gulp.task('image:component:dist', function() {
           '**',
           '*.*'
         ),
-        '!' +
-          path.join(
-            config.global.dist,
-            config.global.resources,
-            config.global.components,
-            '**',
-            'img',
-            '**',
-            '*.svg'
-          )
+        `!${path.join(
+          config.global.dist,
+          config.global.resources,
+          config.global.components,
+          '**',
+          'img',
+          '**',
+          '*.svg'
+        )}`
       ])
       .pipe(image(imageOptimizers, config.image))
       .pipe(
