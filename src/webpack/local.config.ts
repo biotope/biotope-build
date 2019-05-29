@@ -3,7 +3,7 @@ import * as ExtendedDefinePlugin from 'extended-define-webpack-plugin';
 import * as LiveReloadPlugin from 'webpack-livereload-plugin';
 import * as mergeDeep from 'merge-deep';
 
-import { freePorts } from '../free-ports';
+import { findPort } from '../find-ports';
 import { Options, WebpackConfig } from './settings';
 import { baseConfig } from './base.config';
 
@@ -16,7 +16,7 @@ export const config: WebpackConfig = (options: Options): Configuration => {
       ),
       new LiveReloadPlugin({
         appendScriptTag: true,
-        port: freePorts([35729])[0] || 35729,
+        port: findPort(35729) || 35729,
       }),
     ],
   }), 'local');

@@ -1,18 +1,21 @@
+/// <reference types="node" />
 import { Configuration, Rule, Options as WebpackOptions } from 'webpack';
 export declare type ProjectEnvironment = 'local' | 'dev' | 'prod';
 export declare type NodeEnvironment = 'local' | 'development' | 'production' | 'test';
 export interface ExternalFile {
     from: string;
     to?: string;
-    toType?: 'file' | 'dir' | 'template';
     context?: string;
-    flatten?: boolean;
+    toType?: 'file' | 'dir' | 'template';
+    test?: RegExp;
+    force?: boolean;
     ignore?: string[];
-    transform?: (content: string, path: string) => string;
+    flatten?: boolean;
+    transform?: (content: Buffer, path: string) => string | Buffer | Promise<string | Buffer>;
     cache?: boolean | {
         key: string;
     };
-    force?: boolean;
+    transformPath?: (targetPath: string, absolutePath: string) => string | Promise<string>;
 }
 export declare type OverrideFunction = (configuration: Configuration, environment: ProjectEnvironment) => Configuration;
 export interface EntryPoint {

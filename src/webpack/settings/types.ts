@@ -3,16 +3,20 @@ import { Configuration, Rule, Options as WebpackOptions } from 'webpack';
 export type ProjectEnvironment = 'local' | 'dev' | 'prod';
 export type NodeEnvironment = 'local' | 'development' | 'production' | 'test';
 
+// Copied and adapted from "@types/copy-webpack-plugin"
+// "@types/node" is added to the dependencies list as the type "Buffer" is used by the plugin
 export interface ExternalFile {
   from: string;
   to?: string;
-  toType?: 'file' | 'dir' | 'template';
   context?: string;
-  flatten?: boolean;
-  ignore?: string[];
-  transform?: (content: string, path: string) => string;
-  cache?: boolean | { key: string };
+  toType?: 'file' | 'dir' | 'template';
+  test?: RegExp;
   force?: boolean;
+  ignore?: string[];
+  flatten?: boolean;
+  transform?: (content: Buffer, path: string) => string | Buffer | Promise<string | Buffer>;
+  cache?: boolean | { key: string };
+  transformPath?: (targetPath: string, absolutePath: string) => string | Promise<string>;
 }
 
 export type OverrideFunction = (
