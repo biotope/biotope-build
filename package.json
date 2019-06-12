@@ -66,7 +66,7 @@
     "gulp-sass": "4.0.1",
     "gulp-sass-lint": "1.4.0",
     "gulp-size": "3.0.0",
-    "gulp-sourcemaps": "2.6.4",
+    "gulp-sourcemaps": "2.6.5",
     "gulp-svg-sprite": "1.4.0",
     "gulp-svg2ttf": "2.0.1",
     "gulp-svgicons2svgfont": "5.0.1",
