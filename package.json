@@ -75,7 +75,7 @@
     "gulp-ttf2woff": "1.1.1",
     "gulp-uglify": "3.0.0",
     "gulp-useref": "3.1.6",
-    "gulp-watch": "5.0.0",
+    "gulp-watch": "5.0.1",
     "gulp-wrap": "0.14.0",
     "handlebars": "4.1.2",
     "htmlhint-stylish": "1.0.3",
