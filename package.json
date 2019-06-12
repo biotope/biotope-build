@@ -73,7 +73,7 @@
     "gulp-tap": "1.0.1",
     "gulp-ttf2eot": "1.1.2",
     "gulp-ttf2woff": "1.1.1",
-    "gulp-uglify": "3.0.0",
+    "gulp-uglify": "3.0.2",
     "gulp-useref": "3.1.6",
     "gulp-watch": "5.0.0",
     "gulp-wrap": "0.14.0",
