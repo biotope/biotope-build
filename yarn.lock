@@ -6070,19 +6070,18 @@ gulp-handlebars@5.0.2:
     replace-ext "^1.0.0"
     through2 "^2.0.3"
 
-gulp-hb@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/gulp-hb/-/gulp-hb-7.0.1.tgz#ffebce7fbae2cc388072f0e4026e276bcea1e6c5"
-  integrity sha512-X9eWF3VFkApCOXHPMdaLnqPK2nOHTTIhhm8IYeI3Bpiczkc/rEslVti1yswquoDD1XTlaIVT6H/RtwERWJqg4g==
+gulp-hb@8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/gulp-hb/-/gulp-hb-8.0.0.tgz#f6ea35be4befc9c27008d45d5b2aeb9d70bb4d4f"
+  integrity sha512-0tu+rhfm+Q9cUVjCxJMHf5yFwF0CIE6+eRKBA/XV7+CaJJGSkyNQQGvOIdgLPscNrhjJjqcxeKMJ74mkzw5xhg==
   dependencies:
     ansi-gray "^0.1.1"
     ansi-green "^0.1.1"
     cli-columns "^3.1.2"
-    handlebars "^4.0.11"
+    handlebars "^4.1.0"
     handlebars-wax "^6.1.0"
-    object-assign "^4.1.1"
-    plugin-error "^0.1.2"
-    through2 "^2.0.3"
+    plugin-error "^1.0.1"
+    through2 "^3.0.0"
 
 gulp-htmlhint@2.2.1:
   version "2.2.1"
@@ -6516,7 +6515,7 @@ handlebars-wax@^6.1.0:
     object-assign "^4.1.1"
     require-glob "^3.2.0"
 
-handlebars@4.1.2:
+handlebars@4.1.2, handlebars@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.1.2.tgz#b6b37c1ced0306b221e094fc7aca3ec23b131b67"
   integrity sha512-nvfrjqvt9xQ8Z/w0ijewdD/vvWDTOweBUm96NTr66Wfvo1mJenBLwcYmPs3TIBP5ruzYGD7Hx/DaM9RmhroGPw==
@@ -6527,7 +6526,7 @@ handlebars@4.1.2:
   optionalDependencies:
     uglify-js "^3.1.4"
 
-handlebars@^4.0.0, handlebars@^4.0.11:
+handlebars@^4.0.0:
   version "4.0.14"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.0.14.tgz#88de711eb693a5b783ae06065f9b91b0dd373a71"
   integrity sha512-E7tDoyAA8ilZIV3xDJgl18sX3M8xB9/fMw8+mfW4msLW8jlX97bAnWgT3pmaNXuvzIEgSBMnAHfuXsB2hdzfow==
