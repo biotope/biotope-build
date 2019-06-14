@@ -6072,14 +6072,14 @@ gulp-cssstats@1.0.1:
     cssstats latest
     through2 "^0.6.3"
 
-gulp-debug@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/gulp-debug/-/gulp-debug-3.2.0.tgz#45aba4439fa79fe0788f6a411ee0778f4492dfa5"
-  integrity sha512-2LZzP+ydczqz1rhqq/NYxvVvYTmOa0IgBl2B1sQTdkQgku9ayOUM/KHuGPjF4QA5aO1VcG+Sskw7iCcRUqHKkA==
+gulp-debug@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/gulp-debug/-/gulp-debug-4.0.0.tgz#036f9539c3fb6af720e01a9ea5c195fc73f29d5b"
+  integrity sha512-cn/GhMD2nVZCVxAl5vWao4/dcoZ8wUJ8w3oqTvQaGDmC1vT7swNOEbhQTWJp+/otKePT64aENcqAQXDcdj5H1g==
   dependencies:
     chalk "^2.3.0"
     fancy-log "^1.3.2"
-    plur "^2.0.0"
+    plur "^3.0.0"
     stringify-object "^3.0.0"
     through2 "^2.0.0"
     tildify "^1.1.2"
@@ -10611,7 +10611,7 @@ plur@^2.0.0, plur@^2.1.0:
   dependencies:
     irregular-plurals "^1.0.0"
 
-plur@^3.0.1:
+plur@^3.0.0, plur@^3.0.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/plur/-/plur-3.1.1.tgz#60267967866a8d811504fe58f2faaba237546a5b"
   integrity sha512-t1Ax8KUvV3FFII8ltczPn2tJdjqbd1sIzu6t4JL7nQ3EyeL/lTrj5PWKb06ic5/6XYDr65rQ4uzQEGN70/6X5w==
