@@ -302,17 +302,17 @@ There are other tasks in use, but they can not be modified via a projectConfig.j
 
 ## Local development
 1. Clone [biotope-boilerplate repository](https://github.com/biotope/biotope-boilerplate)
-2. Install locally with `yarn`
+2. Install locally with `npm`
 3. Clone biotope-build repository
-4. Install dependencies in biotope-buid with `yarn`
-5. Run `yarn link` in @biotope/build repo
-6. Run `yarn link @biotope/build` in biotope-boilerplate repo
+4. Install dependencies in biotope-buid with `npm`
+5. Run `npm link` in @biotope/build repo
+6. Run `npm link @biotope/build` in biotope-boilerplate repo
 7. Happy developing 👋
 
 ### Undo local dev changes
-1. Run `yarn unlink` in @biotope/build repo
-2. Run `yarn unlink @biotope/build` in biotope-boilerplate repo
-3. Run `yarn` in biotope-boilerplate repo
+1. Run `npm unlink` in @biotope/build repo
+2. Run `npm unlink @biotope/build` in biotope-boilerplate repo
+3. Run `npm` in biotope-boilerplate repo
 
 ## Troubleshooting, Bugs & Issues
 ### Knows issues
