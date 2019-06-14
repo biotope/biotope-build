@@ -44,7 +44,7 @@
     "gulp-declare": "0.3.0",
     "gulp-dependents": "1.2.3",
     "gulp-eslint": "5.0.0",
-    "gulp-favicons": "2.2.7",
+    "gulp-favicons": "2.3.1",
     "gulp-filter": "6.0.0",
     "gulp-handlebars": "5.0.2",
     "gulp-hb": "8.0.0",
