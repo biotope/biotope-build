@@ -43,7 +43,7 @@
     "gulp-debug": "3.2.0",
     "gulp-declare": "0.3.0",
     "gulp-dependents": "1.2.3",
-    "gulp-eslint": "4.0.2",
+    "gulp-eslint": "5.0.0",
     "gulp-favicons": "2.2.7",
     "gulp-filter": "6.0.0",
     "gulp-handlebars": "5.0.2",
