@@ -2127,11 +2127,6 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^2.9.26:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
-  integrity sha1-U0uQM8AiyVecVro7Plpcqvu2UOE=
-
 bluebird@^3.0.0, bluebird@^3.1.1, bluebird@^3.5.1:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.3.tgz#7d01c6f9616c9a51ab0f8c549a79dfe6ec33efa7"
@@ -3235,17 +3230,17 @@ console-stream@^0.1.1:
   resolved "https://registry.yarnpkg.com/console-stream/-/console-stream-0.1.1.tgz#a095fe07b20465955f2fafd28b5d72bccd949d44"
   integrity sha1-oJX+B7IEZZVfL6/Si11yvM2UnUQ=
 
-consolidate@^0.13.1:
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/consolidate/-/consolidate-0.13.1.tgz#9e9503568eb4850889da6ed87a852c8dd2d13f64"
-  integrity sha1-npUDVo60hQiJ2m7YeoUsjdLRP2Q=
-  dependencies:
-    bluebird "^2.9.26"
-
 consolidate@^0.14.1:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/consolidate/-/consolidate-0.14.5.tgz#5a25047bc76f73072667c8cb52c989888f494c63"
   integrity sha1-WiUEe8dvcwcmZ8jLUsmJiI9JTGM=
+  dependencies:
+    bluebird "^3.1.1"
+
+consolidate@^0.15.1:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/consolidate/-/consolidate-0.15.1.tgz#21ab043235c71a07d45d9aad98593b0dba56bab7"
+  integrity sha512-DW46nrsMJgy9kqAbPt5rKaCr7uFtpo4mSUvLHIUbJEjm0vo+aY5QLwBUq3FK4tRnJr/X0Psc0C4jf/h+HtXSMw==
   dependencies:
     bluebird "^3.1.1"
 
@@ -6192,14 +6187,15 @@ gulp-htmlhint@2.2.1:
     through2 "^2.0.3"
     vinyl "^2.2.0"
 
-gulp-iconfont-css@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/gulp-iconfont-css/-/gulp-iconfont-css-2.1.0.tgz#40c0f5ebfc88f64097cce2cdacd73f8b40ce9673"
-  integrity sha1-QMD16/yI9kCXzOLNrNc/i0DOlnM=
+gulp-iconfont-css@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/gulp-iconfont-css/-/gulp-iconfont-css-3.0.0.tgz#32012016b3bb60d9d766354068e84f07ccbf6b42"
+  integrity sha512-YrzYbw74gZQysc/TPbZApKDoq5zDn+SXVpvKNHWcuBO/C3QZ3Ves9EraeqHOSnevDTySYWnIwVtmYForjQu98w==
   dependencies:
-    consolidate "^0.13.1"
-    gulp-util "^3.0.6"
-    lodash "^3.10.0"
+    consolidate "^0.15.1"
+    lodash "^4.17.11"
+    plugin-error "^1.0.1"
+    vinyl "^2.2.0"
 
 gulp-if@2.0.2, gulp-if@^2.0.2:
   version "2.0.2"
@@ -8701,7 +8697,7 @@ lodash@4.17.4:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
   integrity sha1-eCA6TRwyiuHYbcpkYONptX9AVa4=
 
-lodash@^3.10.0, lodash@^3.2.0:
+lodash@^3.2.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
