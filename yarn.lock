@@ -821,6 +821,11 @@
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
 
+"@types/fancy-log@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@types/fancy-log/-/fancy-log-1.3.1.tgz#dd94fbc8c2e2ab8ab402ca8d04bb8c34965f0696"
+  integrity sha512-31Dt9JaGfHretvwVxCBrCFL5iC9MQ3zOXpu+8C4qzW0cxc5rJJVGxB5c/vZ+wmeTk/JjPz/D0gv8BZ+Ip6iCqQ==
+
 "@types/glob@^7.1.1":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.1.tgz#aa59a1c6e3fbc421e07ccd31a944c30eba521575"
@@ -849,6 +854,28 @@
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.1.tgz#48fd98c1561fe718b61733daed46ff115b496e18"
   integrity sha512-eqz8c/0kwNi/OEHQfvIuJVLTst3in0e7uTKeuY+WL/zfKn0xVujOTp42bS/vUUokhK5P2BppLd9JXMOMHcgbjA==
+
+"@types/readable-stream@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@types/readable-stream/-/readable-stream-2.3.1.tgz#59d458b51c84c585caea06e296e2225057c9ea8e"
+  integrity sha512-Dp6t95yGEOm2y669mQrSl0kUg+oL+bJEiCWMyDv0Yq+FcVvjzNRLTAqJks2LDBYYrazZXNI7lZXq3lp7MOvt4A==
+  dependencies:
+    "@types/node" "*"
+    safe-buffer "*"
+
+"@types/through2@^2.0.34":
+  version "2.0.34"
+  resolved "https://registry.yarnpkg.com/@types/through2/-/through2-2.0.34.tgz#9c2a259a238dace2a05a2f8e94b786961bc27ac4"
+  integrity sha512-nhRG8+RuG/L+0fAZBQYaRflXKjTrHOKH8MFTChnf+dNVMxA3wHYYrfj0tztK0W51ABXjGfRCDc0vRkecCOrsow==
+  dependencies:
+    "@types/node" "*"
+
+"@types/vinyl@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/vinyl/-/vinyl-2.0.3.tgz#80a6ce362ab5b32a0c98e860748a31bce9bff0de"
+  integrity sha512-hrT6xg16CWSmndZqOTJ6BGIn2abKyTw0B58bI+7ioUoj3Sma6u8ftZ1DTI2yCaJamOVGLOnQWiPH3a74+EaqTA==
+  dependencies:
+    "@types/node" "*"
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
@@ -6393,17 +6420,23 @@ gulp-svg2ttf@2.0.1:
     readable-stream "^2.0.4"
     svg2ttf "^4.1.0"
 
-gulp-svgicons2svgfont@5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/gulp-svgicons2svgfont/-/gulp-svgicons2svgfont-5.0.1.tgz#c900418d24f097e3e3662b97c754f37c6e68e1b4"
-  integrity sha512-wXPQGpQ8bjP2oV25Cq39+r+RjPRQ4u4aCAmBXsXm48Lsx7xfDdTG8dE8uZcheK68pcHTdNm+FK1QMKhKYbwMGA==
+gulp-svgicons2svgfont@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/gulp-svgicons2svgfont/-/gulp-svgicons2svgfont-6.0.0.tgz#90bbea1d63e87d33c5ed947b492ace587d60dd8c"
+  integrity sha512-vLJvnxTy+dIFxgLtl7mT2XskeSGQpTFdFMTdoR71I1e1setbOq7Urp78AGXLkAId7jkgXhIzl38Pc6cwPtOlTA==
   dependencies:
-    fancy-log "^1.3.2"
+    "@types/fancy-log" "^1.3.1"
+    "@types/glob" "^7.1.1"
+    "@types/readable-stream" "^2.3.1"
+    "@types/through2" "^2.0.34"
+    "@types/vinyl" "^2.0.3"
+    fancy-log "^1.3.3"
     plugin-error "^1.0.1"
-    readable-stream "^2.3.6"
+    readable-stream "^3.4.0"
+    safe-buffer "^5.1.2"
     streamifier "^0.1.1"
-    svgicons2svgfont "^9.0.3"
-    vinyl "^2.1.0"
+    svgicons2svgfont "^9.1.1"
+    vinyl "^2.2.0"
 
 gulp-tap@1.0.1:
   version "1.0.1"
@@ -11399,7 +11432,7 @@ readable-stream@1.1:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-"readable-stream@2 || 3", readable-stream@^3.0.6, readable-stream@^3.1.1:
+"readable-stream@2 || 3", readable-stream@^3.0.6, readable-stream@^3.1.1, readable-stream@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.4.0.tgz#a51c26754658e0a3c21dbf59163bd45ba6f447fc"
   integrity sha512-jItXPLmrSR8jmTRmRWJXCnGJsfy85mB3Wd/uINMXA65yrnFo0cPClFIUWzo2najVNSl+mx7/4W8ttlLWJe99pQ==
@@ -11970,7 +12003,7 @@ rxjs@^6.3.3, rxjs@^6.4.0:
   dependencies:
     tslib "^1.9.0"
 
-safe-buffer@5.1.2, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+safe-buffer@*, safe-buffer@5.1.2, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
@@ -13031,10 +13064,10 @@ svg2ttf@^4.1.0:
     svgpath "^2.1.5"
     xmldom "~0.1.22"
 
-svgicons2svgfont@^9.0.3:
-  version "9.0.4"
-  resolved "https://registry.yarnpkg.com/svgicons2svgfont/-/svgicons2svgfont-9.0.4.tgz#0f974f3e01789d22beeecc0077a855587ffe527d"
-  integrity sha512-62C53A8ghSXqwQ/R+rpg4RKreS5Wx/7Jw8Lr8OqIGPnGowbGgYgC7fi35uvNx+Jb8QW8DDIavonL4HKOL9hYZA==
+svgicons2svgfont@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/svgicons2svgfont/-/svgicons2svgfont-9.1.1.tgz#655d30c256176f6e29c96058609ef0a9b0ebf2df"
+  integrity sha512-iOj7lqHP/oMrLg7S2Iv89LOJUfmIuePefXcs5ul4IsKwcYvL/T/Buahz+nQQJygyuvEMBBXqnCRmnvJggHeJzA==
   dependencies:
     commander "^2.12.2"
     geometry-interfaces "^1.1.4"
