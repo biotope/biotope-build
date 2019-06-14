@@ -34,7 +34,7 @@
     "front-matter": "3.0.2",
     "fs-extra": "8.0.1",
     "globule": "1.2.1",
-    "gulp": "3.9.1",
+    "gulp": "4.0.2",
     "gulp-cached": "1.1.1",
     "gulp-clean-css": "4.2.0",
     "gulp-concat": "2.6.1",
