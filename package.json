@@ -16,7 +16,7 @@
   },
   "pre-commit": "eslint:lint",
   "dependencies": {
-    "@babel/core": "^7.4.4",
+    "@babel/core": "^7.4.5",
     "@babel/plugin-transform-classes": "7.4.4",
     "@babel/preset-env": "7.4.4",
     "autoprefixer": "^9.6.0",
