@@ -47,7 +47,7 @@
     "gulp-favicons": "2.2.7",
     "gulp-filter": "6.0.0",
     "gulp-handlebars": "5.0.2",
-    "gulp-hb": "7.0.1",
+    "gulp-hb": "8.0.0",
     "gulp-htmlhint": "2.2.1",
     "gulp-iconfont-css": "3.0.0",
     "gulp-if": "2.0.2",
