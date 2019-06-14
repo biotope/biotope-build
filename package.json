@@ -36,7 +36,7 @@
     "globule": "1.2.1",
     "gulp": "3.9.1",
     "gulp-cached": "1.1.1",
-    "gulp-clean-css": "3.9.4",
+    "gulp-clean-css": "4.2.0",
     "gulp-concat": "2.6.1",
     "gulp-connect": "5.7.0",
     "gulp-cssstats": "1.0.1",
