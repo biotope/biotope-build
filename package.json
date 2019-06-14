@@ -31,7 +31,7 @@
     "css-loader": "0.28.11",
     "del": "4.1.1",
     "eslint": "4.19.1",
-    "front-matter": "2.3.0",
+    "front-matter": "3.0.2",
     "fs-extra": "8.0.1",
     "globule": "1.2.1",
     "gulp": "3.9.1",
