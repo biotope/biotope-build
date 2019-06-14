@@ -94,7 +94,7 @@
     "svg-inline-loader": "^0.8.0",
     "svg-url-loader": "^2.3.2",
     "ts-loader": "^6.0.2",
-    "typescript": "2.9.2",
+    "typescript": "3.5.1",
     "uglify-es": "^3.3.9",
     "url-loader": "^2.0.0",
     "vinyl-named": "1.1.0",
