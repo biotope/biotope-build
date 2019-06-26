@@ -80,4 +80,8 @@ export const getRules = (
     test: /\.(png|jpe?g|gif)$/,
     use: 'url-loader',
   },
+  {
+    test: /\.html$/,
+    loader: 'html-loader'
+  }
 ]);

@@ -2,6 +2,7 @@ import { Configuration, Options as WebpackOptions } from 'webpack';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 
 import {
   Options, Settings, getSettings, ExternalFile,
@@ -17,7 +18,7 @@ export const baseConfig = (options: Options): [Configuration, Settings] => {
     entry: Object.keys(settings.compilation.entryPoints)
       .reduce((accumulator, key): IndexObject<string> => ({
         ...accumulator,
-        [key]: `${settings.paths.bundlesAbsolute}/${settings.compilation.entryPoints[key].file}`,
+        [key]: `${settings.paths.appAbsolute}/${settings.compilation.entryPoints[key].file}`,
       }), {}),
     module: { rules: settings.compilation.rules },
     output: {
@@ -38,6 +39,9 @@ export const baseConfig = (options: Options): [Configuration, Settings] => {
       },
     },
     plugins: [
+      new HtmlWebpackPlugin({
+        template: settings.compilation.htmlTemplate
+      }),
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: [`${settings.paths.distAbsolute}/*`].concat(
           (settings.compilation.cleanExclusions || [])

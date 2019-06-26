@@ -37,6 +37,6 @@ export const serve = (options: ServeOptions): void => {
 
   if (options.open) {
     // eslint-disable-next-line global-require
-    require('open')(urls[1]);
+    require('open')(`${urls[1]}/build`);
   }
 };

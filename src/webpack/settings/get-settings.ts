@@ -67,6 +67,7 @@ export const getSettings = (options: Options): Settings => {
         from: resolve(files.from),
       }))),
       extractStyle: style.extract,
+      htmlTemplate: compilation.htmlTemplate || './resources/index.html',
       output: mergeDeep({
         script: '[name].js',
         style: '[name].css',

@@ -35,6 +35,7 @@ export interface Options {
         entryPoints?: string[];
         extensions?: string[];
         externalFiles?: (string | ExternalFile)[];
+        htmlTemplate?: string;
         style?: StyleOptions;
         output?: {
             script?: string;
@@ -64,6 +65,7 @@ export interface Settings {
         extensions: string[];
         externalFiles: (string | ExternalFile)[];
         extractStyle: boolean;
+        htmlTemplate: string;
         output: {
             script: string;
             style: string;
