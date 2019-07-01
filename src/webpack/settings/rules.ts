@@ -52,8 +52,8 @@ export const getRules = (
             const resourceFolder = resource.split('/');
             resourceFolder.pop();
 
-            return url.indexOf('http') === 0 || url.indexOf('/') === 0
-              || (!existsSync(resolve(url)) && !existsSync(resolve(`${resourceFolder.join('/')}/${url}`)));
+            return url.indexOf('http') !== 0 && url.indexOf('/') !== 0
+              && (existsSync(resolve(url)) || existsSync(resolve(`${resourceFolder.join('/')}/${url}`)));
           },
           localIdentName: getStyleNaming(minify, global, prefix),
         },

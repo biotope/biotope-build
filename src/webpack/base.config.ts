@@ -1,5 +1,5 @@
 import { Configuration, Options as WebpackOptions } from 'webpack';
-import CleanWebpackPlugin from 'clean-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
