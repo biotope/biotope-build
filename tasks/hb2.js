@@ -79,13 +79,14 @@ const loadHelpers = () => {
   if (config.global.handlebarsHelper) {
     const projectHbsHelpersPath = path.join(
       config.global.cwd,
-      config.global.src,
+      //config.global.src,
+      config.global.dist,
       config.global.resources,
       config.global.handlebarsHelper
     );
 
     try {
-      const projectHelpers = require(projectHbsHelpersPath);
+      const projectHelpers = require(projectHbsHelpersPath); 
       projectHelpers(handlebars);
     } catch (e) {
       const colors = require('colors/safe');
