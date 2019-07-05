@@ -82,7 +82,7 @@
     "jshint-stylish": "2.2.1",
     "lodash.merge": "4.6.1",
     "merge-stream": "2.0.0",
-    "nested-property": "0.0.7",
+    "nested-property": "1.0.1",
     "opn": "5.3.0",
     "prettier": "1.18.2",
     "prettier-eslint": "9.0.0",
