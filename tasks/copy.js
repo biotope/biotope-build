@@ -351,6 +351,23 @@ gulp.task('copy:dist:mock', function () {
   return copyFiles(from, to);
 });
 
+gulp.task('copy:dist:assets', function () {
+  const from = path.join(
+    config.global.cwd,
+    config.global.src,
+    '_assets',
+    '**',
+    '*'
+  );
+  const to = path.join(
+    config.global.cwd,
+    config.global.dist,
+    '_assets'
+  );
+
+  return copyFiles(from, to);
+});
+
 gulp.task('copy:dist:component:mock', function () {
   const from = path.join(
     config.global.cwd,

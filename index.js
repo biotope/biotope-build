@@ -91,6 +91,7 @@ gulp.task('build', function (callback) {
       'copy:dist:components:files',
       'copy:dist:config',
       'copy:dist:mock',
+      'copy:dist:assets',
       'copy:dist:svgSprite'
     ],
     [
