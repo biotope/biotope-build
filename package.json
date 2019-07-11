@@ -19,7 +19,7 @@
     "@babel/core": "^7.4.5",
     "@babel/plugin-transform-classes": "7.4.4",
     "@babel/preset-env": "7.4.5",
-    "autoprefixer": "^9.6.0",
+    "autoprefixer": "^9.6.1",
     "babel-loader": "^8.0.6",
     "camelcase": "5.3.1",
     "check-dependencies": "1.1.0",
