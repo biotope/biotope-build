@@ -21,23 +21,23 @@
 
 ## [7.0.0] - 2019-07-xx
 ### Added
-- 
+- Added enhanced assets copying (assets in components folders are copied now to dist)
+
 ### Changed
-- Updated almost all dependencies
-- stability fixes
-- performance improvements
+- Most dependencies updated
+- Stability fixes
+- Performance improvements
 
 ## [6.2.0] - 2019-06-06
 ### Added
 - Added file loader for videos and images to webpack
 - Added cors for localhost server
-- Added enhanced assets copying (assets in components folders are copied now to dist)
 
 ## [6.0.0] - 2019-02-27
 ### Added
-- add svg loader for scss and ts files
+- Add svg loader for scss and ts files
 ### Changed
-- exchanged awesome-typescript-loader with ts-loader for a more common loader
+- Exchanged awesome-typescript-loader with ts-loader for a more common loader
 - Update eslint config to ignore src/resources/js/polyfills
 ### Fixed
 - fix scss task to build component scss files again
