@@ -1,0 +1,10 @@
+- Find a solution for resource loading
+- Setup tests
+- Move Vue App to Build
+- Let preview template be .ejs instead of html
+- Build TS files Preview
+- Build SCSS files Preview
+- Move Assets Preview
+- Create develop preview app styles
+- Cleanup serve task
+- Update generator to generate html files

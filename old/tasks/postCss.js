@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const config = require('./../config');
+const config = require('../../config');
 
 const cleanCssTask = (source, target) => {
   const size = require('gulp-size');

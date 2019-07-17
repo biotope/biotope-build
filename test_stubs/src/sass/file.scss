@@ -1,0 +1,13 @@
+$var: 1px;
+
+body {
+  height: $var;
+}
+
+::placeholder {
+  color: #ccc
+}
+
+:root {
+  --main-var: red;
+}

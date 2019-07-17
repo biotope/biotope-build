@@ -1,6 +1,8 @@
+//browsersync.io
+
 const gulp = require('gulp');
 const connect = require('gulp-connect');
-const config = require('./../config');
+const config = require('../config');
 const history = require('connect-history-api-fallback');
 const cors = require('cors');
 

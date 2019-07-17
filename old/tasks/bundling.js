@@ -1,11 +1,11 @@
 const gulp = require('gulp');
-const config = require('./../config');
+const config = require('../../config');
 const path = require('path');
 const globule = require('globule');
 const plumber = require('gulp-plumber');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
-const webpackConfig = require('./../webpack.config.js');
+const webpackConfig = require('../../webpack.config.js');
 
 const webpackSourcePatterns = config.global.tsEntryPoints.map((cPath) => path.join(
   config.global.cwd,
