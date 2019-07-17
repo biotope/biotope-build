@@ -7,6 +7,7 @@ export interface SassConfig {
 export interface ServeConfig {
   port?: number;
   tempFolder?: string;
+  layoutFile?: string;
 }
 
 export interface BuildConfig {
@@ -16,12 +17,13 @@ export interface BuildConfig {
 
 export const defaultConfig: BuildConfig = {
   sass: {
-    entryGlob: `${process.cwd()}/src/resources/scss/**/*.scss`,
-    target: `${process.cwd()}/dist/`,
+    entryGlob: `src/resources/scss/**/*.scss`,
+    target: `dist/`,
     supportLegacy: false
   },
   serve: {
     port: 9000,
-    tempFolder: '.tmp'
+    tempFolder: '.tmp',
+    layoutFile: 'preview/index.ejs'
   }
 }

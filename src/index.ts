@@ -1,8 +1,8 @@
-import { BuildConfig, defaultConfig } from './config';
+import { BuildConfig, defaultConfig } from './tasks/common/config';
 import { series } from 'gulp';
 import logBuildVersion from './tasks/version';
-import createStylesTask from './tasks/sass';
-import createServeTask from './tasks/serve';
+import createStylesTask from './tasks/build/sass';
+import createServeTask from './tasks/start';
 
 export const createBuild = (config: BuildConfig = {}) => {
   const defaultedConfig = {

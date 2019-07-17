@@ -12,7 +12,7 @@
   "scripts": {
     "start": "npm run clean && npm run copy:preview && tsc --watch",
     "build": "npm run clean && npm run copy:preview && tsc",
-    "copy:preview": "cpy src/devPreview dist/devPreview",
+    "copy:preview": "cpy --parents --cwd=src devPreview ../dist",
     "clean": "rimraf dist",
     "release": "np --no-yarn",
     "test": "ts-mocha -p tsconfig.json src/**/*.spec.ts",
@@ -30,7 +30,9 @@
     "del": "4.1.1",
     "eslint": "6.0.1",
     "gulp-connect": "^5.7.0",
+    "gulp-ejs": "^4.1.1",
     "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "jshint": "2.10.2",
     "jshint-stylish": "2.2.1",
