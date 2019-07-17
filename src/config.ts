@@ -7,7 +7,6 @@ export interface SassConfig {
 export interface ServeConfig {
   port?: number;
   tempFolder?: string;
-  previewRoot?: string;
 }
 
 export interface BuildConfig {
@@ -23,7 +22,6 @@ export const defaultConfig: BuildConfig = {
   },
   serve: {
     port: 9000,
-    previewRoot: 'preview',
     tempFolder: '.tmp'
   }
 }
