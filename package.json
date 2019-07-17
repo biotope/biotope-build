@@ -23,6 +23,7 @@
     "@babel/plugin-transform-classes": "7.4.4",
     "@babel/preset-env": "7.4.5",
     "autoprefixer": "^9.6.1",
+    "console-emoji": "0.0.2",
     "cssnano": "^4.1.10",
     "del": "4.1.1",
     "eslint": "6.0.1",
@@ -35,6 +36,7 @@
     "opn": "5.3.0",
     "prettier": "1.18.2",
     "prettier-eslint": "9.0.0",
+    "rimraf": "^2.6.3",
     "ts-node": "^8.3.0",
     "typescript": "2.9.2"
   },
