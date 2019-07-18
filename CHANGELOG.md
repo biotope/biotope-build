@@ -24,6 +24,7 @@
 - Added enhanced assets copying (assets in components folders are copied now to dist)
 
 ### Changed
+- BREAKING: you have to add a .browserlistrc file to your projects root folder, you can use the default: https://github.com/biotope/biotope-boilerplate/blob/master/.browserslistrc
 - Most dependencies updated
 - Stability fixes
 - Performance improvements
