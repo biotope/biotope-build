@@ -19,7 +19,7 @@
 
 </details>
 
-## [7.0.0] - 2019-07-xx
+## [7.0.0] - 2019-07-18
 ### Added
 - Added enhanced assets copying (assets in components folders are copied now to dist)
 
