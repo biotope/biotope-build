@@ -20,7 +20,7 @@ module.exports = {
     dataObject: 'data',
     resources: '/resources',
     components: '/components',
-    handlebarsHelper: '/ts/handlebars.helper.js',
+    handlebarsHelper: '/js/handlebars.helper.js',
     tasks: {
       browserSupport: true,
       cleanCss: true,
