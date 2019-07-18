@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "7.0.0-9",
+  "version": "7.0.0-rc.0",
   "description": "An advanced development and build runtime to create frontent ecosystems",
   "repository": {
     "type": "git",
@@ -101,9 +101,6 @@
     "webpack": "4.35.0",
     "webpack-stream": "5.2.1",
     "jshint": "2.10.2"
-  },
-  "resolutions": {
-    "webpack-stream/webpack": "4.34.0"
   },
   "publishConfig": {
     "access": "public"
