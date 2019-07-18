@@ -79,7 +79,7 @@ const loadHelpers = () => {
   if (config.global.handlebarsHelper) {
     const projectHbsHelpersPath = path.join(
       config.global.cwd,
-      config.global.src,
+      config.global.dist,
       config.global.resources,
       config.global.handlebarsHelper
     );

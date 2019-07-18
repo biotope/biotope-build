@@ -85,7 +85,7 @@ gulp.task('watch:handlebars', function() {
       config.global.src + config.global.resources + '/hbs/**/*.hbs'
     );
     watchFiles.push(
-      config.global.src + config.global.resources + '/js/handlebars.helper.js'
+      config.global.src + config.global.resources + '/ts/handlebars.helper.js'
     );
     watchFiles.push(
       config.global.src + config.global.components + '/**/hbs/**/*.hbs'
