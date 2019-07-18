@@ -1,29 +1,14 @@
-import * as rollup from 'rollup';
-import { src, dest } from 'gulp';
-import * as scss from 'rollup-plugin-scss';
-import * as typescript from 'rollup-plugin-typescript';
-const commonjs = require('rollup-plugin-commonjs');
-const nodeResolve = require('rollup-plugin-node-resolve');
+import { rollup } from 'rollup';
 
-const rollupTask = () => new Promise(async (res, rej) => {
-    const bundle = await rollup.rollup({
-        input: process.cwd() + '/src/components/CssVars/index.ts',
-        plugins: [
-          scss({ output: false }),
-          typescript(),
-          commonjs({ include: process.cwd() + '/node_modules/**' }),
-          nodeResolve({ browser: true }),
-        ],
-    });
+import { BuildConfig } from './config';
+import rollupConfig from './rollup-config';
 
-    await bundle.generate({
-      dir: process.cwd() + '/tmp',
-      format: 'esm',
-      chunkFileNames: '[name].js',
-    });
-    
-    res();
-})
+const rock = async config => {
+  rollup(config).catch(console.log);
 
+  return (await rollup(config)).write(config.output);
+};
+
+const rollupTask = (config: BuildConfig) => Promise.all(rollupConfig(config).map(rock));
 
 export default rollupTask;

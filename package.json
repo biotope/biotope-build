@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "7.0.0-8",
+  "version": "8.0.0-alpha",
   "description": "An advanced development and build runtime to create frontent ecosystems",
   "repository": {
     "type": "git",
@@ -19,11 +19,17 @@
     "eslint:lint": "eslint --ignore-path .gitignore .",
     "eslint:fix": "eslint --fix --ignore-path .gitignore ."
   },
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "engineStrict": true,
   "pre-commit": "eslint:lint",
   "dependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/plugin-transform-classes": "7.4.4",
-    "@babel/preset-env": "7.4.5",
+    "@babel/core": "^7.5.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/plugin-transform-classes": "^7.5.0",
+    "@babel/preset-env": "^7.5.0",
+    "@babel/preset-typescript": "^7.3.0",
     "autoprefixer": "^9.6.1",
     "console-emoji": "0.0.2",
     "cssnano": "^4.1.10",
@@ -39,17 +45,18 @@
     "jshint": "2.10.2",
     "jshint-stylish": "2.2.1",
     "node-sass": "^4.12.0",
-    "opn": "5.3.0",
+    "open": "^6.4.0",
     "prettier": "1.18.2",
     "prettier-eslint": "9.0.0",
-    "rimraf": "^2.6.3",
+    "rimraf": "^2.6.0",
     "rollup": "^1.17.0",
-    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-babel": "^4.3.0",
+    "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-scss": "^1.0.1",
-    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-scss": "^1.0.0",
+    "rollup-plugin-typescript": "^1.0.0",
     "ts-node": "^8.3.0",
-    "typescript": "2.9.2"
+    "typescript": "^3.5.0"
   },
   "resolutions": {
     "webpack-stream/webpack": "4.34.0"
@@ -64,8 +71,8 @@
     "chai": "^4.2.0",
     "chai-fs": "^2.0.0",
     "cpy-cli": "^2.0.0",
-    "gulp": "^4.0.2",
-    "gulp-filelist": "^2.0.1",
+    "gulp": "^4.0.0",
+    "gulp-filelist": "^2.0.0",
     "np": "~5.0.3",
     "ts-mocha": "^6.0.0"
   }

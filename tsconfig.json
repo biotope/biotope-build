@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2017",
-      "es6"
-    ],
-    "outDir": "dist"
+    "lib": ["es6"],
+    "target": "es5",
+    "outDir": "dist",
+    "moduleResolution": "node"
   },
+  "include": [
+    "src/**/*.ts"
+  ],
   "exclude": [
     "**/*.spec.ts"
   ],
-  "include": [
-    "src/**/*.ts"
-  ]
 }

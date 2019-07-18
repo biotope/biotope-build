@@ -1,30 +1,28 @@
 import { BuildConfig, defaultConfig } from './tasks/common/config';
 import { series } from 'gulp';
 import logBuildVersion from './tasks/common/version';
-import createStylesTask from './tasks/build/sass';
 import createServeTask from './tasks/start';
 
+const getConfig = (config) => ({
+  ...defaultConfig,
+  ...config,
+});
+
 export const createBuild = (config: BuildConfig = {}) => {
-  const defaultedConfig = {
-    ...defaultConfig,
-    ...config
-  };
-  console.log(defaultedConfig);
-  
-  return series(
-    logBuildVersion,
-    createStylesTask(defaultedConfig.sass)
-  )
-}
-
-export const createServe = (config: BuildConfig) => {
-  const defaultedConfig = {
-    ...defaultConfig,
-    ...config
-  };
+  const configuration = getConfig(config);
+  console.log('createBuild:', configuration);
 
   return series(
     logBuildVersion,
-    createServeTask(defaultedConfig.serve)
-  )
+  );
+};
+
+export const createServe = (config: BuildConfig = {}) => {
+  const configuration = getConfig(config);
+  console.log('createServe:', configuration);
+
+  return series(
+    logBuildVersion,
+    createServeTask(configuration),
+  );
 }

@@ -16,11 +16,11 @@ gulp.task('livereload', function () {
 });
 
 gulp.task('connect:open', function () {
-  const opn = require('opn');
+  const open = require('open');
   if (config.connect.host === '0.0.0.0') {
-    return opn(`http://localhost:${config.connect.port}`);
+    return open(`http://localhost:${config.connect.port}`);
   }
-  return opn(`http://${config.connect.host}:${config.connect.port}`);
+  return open(`http://${config.connect.host}:${config.connect.port}`);
 });
 
 gulp.task('connect', function () {

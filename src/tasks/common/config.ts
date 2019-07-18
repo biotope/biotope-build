@@ -1,29 +1,37 @@
-export interface SassConfig {
-  entryGlob?: string;
-  target?: string;
-  supportLegacy?: boolean;
-}
 
 export interface ServeConfig {
   port?: number;
-  tempFolder?: string;
   layoutFile?: string;
 }
 
 export interface BuildConfig {
-  sass?: SassConfig;
+  bundles?: { [key: string]: string } | string[];
+  vendorChunks?: string[];
+  paths?: {
+    distFolder?: string;
+    vendorFolder?: string;
+  };
+  extensions?: string[];
   serve?: ServeConfig;
+  legacy?: boolean;
 }
 
 export const defaultConfig: BuildConfig = {
-  sass: {
-    entryGlob: `src/resources/scss/**/*.scss`,
-    target: `dist/`,
-    supportLegacy: false
+  bundles: [
+    './src/**/*.js',
+    './src/**/*.ts',
+  ],
+  vendorChunks: [
+    '@biotope/element',
+  ],
+  paths: {
+    distFolder: 'dist',
+    vendorFolder: 'vendor',
   },
+  extensions: ['.js', '.ts'],
   serve: {
     port: 9000,
-    tempFolder: 'dist',
     layoutFile: 'preview/index.ejs'
-  }
-}
+  },
+  legacy: true,
+};

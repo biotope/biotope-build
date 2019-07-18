@@ -5,8 +5,8 @@ import * as ejs from 'gulp-ejs';
 const previewPath = '/../../devPreview/'
 
 const renderPreviewEjsTo = (folder: string) => (templatePath: string) => src(templatePath)
-    .pipe(ejs({}, {root: `${__dirname}${previewPath}`}))
-    .pipe(rename(path => path.extname = '.html'))
-    .pipe(dest(folder))
+  .pipe(ejs({}, {root: `${__dirname}${previewPath}`}))
+  .pipe(rename(path => path.extname = '.html'))
+  .pipe(dest(folder))
 
 export default renderPreviewEjsTo;

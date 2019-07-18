@@ -1,12 +1,12 @@
-import { ServeConfig } from "../common/config";
+import { BuildConfig } from "../common/config";
 import * as connect from 'gulp-connect';
 
-const openServer = (config: ServeConfig) => new Promise(res => {
+const openServer = (config: BuildConfig) => new Promise(resolve => {
   connect.server({
-    root: config.tempFolder,
+    root: config.paths.distFolder,
     livereload: true,
-    port: config.port,
-  }, function () { this.server.on('close', res) })
+    port: config.serve.port,
+  }, function () { this.server.on('close', resolve) });
 });
 
 export default openServer;

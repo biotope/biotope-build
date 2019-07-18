@@ -1,9 +1,16 @@
 import { resolve } from 'path';
 import { sync as glob } from 'glob';
-import typescript from 'rollup-plugin-typescript';
-import nodeResolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import scss from 'rollup-plugin-scss';
+import * as typescript from 'rollup-plugin-typescript';
+import * as rawNodeResolve from 'rollup-plugin-node-resolve';
+import * as rawCommonjs from 'rollup-plugin-commonjs';
+import * as scss from 'rollup-plugin-scss';
+import * as babel from 'rollup-plugin-babel';
+
+import { BuildConfig } from './config';
+
+// FIXME: typings fix for "rollup-plugin-node-resolve" and "rollup-plugin-commonjs"
+const nodeResolve: typeof rawNodeResolve.default = rawNodeResolve as any;
+const commonjs: typeof rawCommonjs.default = rawCommonjs as any;
 
 const getOutputName = (file) => {
   let split = resolve(file).replace(process.cwd(), '').split('/').filter(s => s);
@@ -47,7 +54,7 @@ const chunks = (vendorFolder, vendorChunks) => (path) => {
   return;
 };
 
-const createBuild = ({ bundles, vendorChunks, paths }) => ({
+const createBuild = ({ bundles, vendorChunks, paths, extensions }: BuildConfig) => ({
   input: createInputObject(bundles),
   output: {
     dir: paths.distFolder,
@@ -58,32 +65,50 @@ const createBuild = ({ bundles, vendorChunks, paths }) => ({
     scss({ output: false }),
     typescript(),
     commonjs({ include: 'node_modules/**' }),
-    nodeResolve({ browser: true }),
+    nodeResolve({ browser: true, extensions }),
   ],
   manualChunks: chunks(paths.vendorFolder, vendorChunks),
 });
 
-const createLegacyBuilds = (config) => {
+const makeSafe = name => name.replace(/[&\/\\#,+()$~%.'":*?<>{}\s-]/g,'_').toLowerCase();
+
+const createLegacyBuilds = (config: BuildConfig) => {
   const bundles = createInputObject(config.bundles);
   return Object.keys(bundles).map((output) => ({
     input: bundles[output],
     output: {
       format: 'iife',
       file: `${config.paths.distFolder}/${output}.legacy.js`,
-      name: bundles[output],
+      name: `${makeSafe(require(`${process.cwd()}/package.json`).name)}__${makeSafe(output)}`,
     },
     plugins: [
       scss({ output: false }),
-      typescript(),
+      babel({
+        babelrc: false,
+        extensions: config.extensions,
+        presets: [
+          ['@babel/env', {
+            targets: {
+              browsers: ["defaults", "ie >= 11"],
+            },
+          }],
+          '@babel/typescript',
+        ],
+        plugins: [
+          ['@babel/plugin-proposal-class-properties', { loose: true }],
+          ['@babel/plugin-transform-classes', { loose: true }],
+        ],
+      }),
       commonjs({ include: 'node_modules/**' }),
-      nodeResolve({ browser: true }),
+      nodeResolve({
+        browser: true,
+        extensions: config.extensions,
+      }),
     ],
   }));
 };
 
-const config = require('./biotope-build.config');
-
-module.exports = [
+export default (config: BuildConfig) => ([
   createBuild(config),
-  ...createLegacyBuilds(config),
-];
+  ...(config.legacy ? createLegacyBuilds(config) : []),
+]);
