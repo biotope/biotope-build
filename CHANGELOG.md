@@ -19,6 +19,40 @@
 
 </details>
 
+## [7.0.0] - 2019-07-18
+### Added
+- Added enhanced assets copying (assets in components folders are copied now to dist)
+
+### Changed
+- Most dependencies updated
+- Stability fixes
+- Performance improvements
+
+## [6.2.0] - 2019-06-06
+### Added
+- Added file loader for videos and images to webpack
+- Added cors for localhost server
+
+## [6.0.0] - 2019-02-27
+### Added
+- Add svg loader for scss and ts files
+### Changed
+- Exchanged awesome-typescript-loader with ts-loader for a more common loader
+- Update eslint config to ignore src/resources/js/polyfills
+### Fixed
+- fix scss task to build component scss files again
+
+## [5.6.0] - 2019-02-26
+### Changed
+- Upgrade Babel
+- Update eslint config to ignore src/resources/js/polyfills
+### Removed
+- Remove check dependencies due to failure of custom tags
+
+## [5.5.0] - 2018-11-23
+### Added
+- Add configurable ts entry points.
+
 ## [5.4.5] - 2018-11-16
 ### Changed
 - updated readme
@@ -28,7 +62,6 @@
 - sass compilation sometime not triggering when updateding partials
 - css minification not working
 - css charset getting removed
-
 
 ## [5.4.4] - 2018-10-26
 ### Fixed
