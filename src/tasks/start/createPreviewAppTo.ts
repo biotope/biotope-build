@@ -18,6 +18,7 @@ const createPreviewAppTo = (folder: string) => {
     const previewFiles = [
       createPreviewPath('*.js'),
       createPreviewPath('*.css'),
+      createPreviewPath('**/*.png'),
     ];
     copyWatchToTmp(previewFiles)
   

@@ -1,13 +1,21 @@
 (async () => {
-  const Overview = Vue.extend({
-    name: 'over-view',
+  const Header = Vue.extend({
+    name: 'dev-header',
     template: `
-      <div>
-        <h1>Hello App!</h1>
-        <ul>
-          <li v-for="route in routes"><router-link v-bind:to="route.path">{{route.name}}</router-link></li>
-        </ul>
-      </div>
+    <header>
+      <img src="img/logo.png"/>
+      <h1>biotope development server</h1>
+    </header>
+    `,
+  });
+  Vue.component('dev-header', Header);
+
+  const ComponentList = Vue.extend({
+    name: 'dev-component-list',
+    template: `
+      <ul>
+        <li v-for="route in routes"><router-link v-bind:to="route.path">{{route.name}}</router-link></li>
+      </ul>
     `,
     computed: {
       routes () {
@@ -15,7 +23,17 @@
       }
     }
   });
+  Vue.component('dev-component-list', ComponentList);
 
+  const Overview = Vue.extend({
+    name: 'over-view',
+    template: `
+      <div class="overview">
+        <dev-header/>
+        <dev-component-list/>
+      </div>
+    `,
+  });
   Vue.component('over-view', Overview);
 
   const App = Vue.extend({

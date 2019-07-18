@@ -1,6 +1,6 @@
 import { BuildConfig, defaultConfig } from './tasks/common/config';
 import { series } from 'gulp';
-import logBuildVersion from './tasks/version';
+import logBuildVersion from './tasks/common/version';
 import createStylesTask from './tasks/build/sass';
 import createServeTask from './tasks/start';
 

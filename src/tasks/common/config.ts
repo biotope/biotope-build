@@ -23,7 +23,7 @@ export const defaultConfig: BuildConfig = {
   },
   serve: {
     port: 9000,
-    tempFolder: '.tmp',
+    tempFolder: 'dist',
     layoutFile: 'preview/index.ejs'
   }
 }

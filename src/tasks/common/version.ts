@@ -1,4 +1,4 @@
-const localPackage = require('../../package.json');
+const localPackage = require('../../../package.json');
 import * as log from 'console-emoji';
 
 const logBuildVersion = (cb) => {

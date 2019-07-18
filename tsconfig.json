@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
-      "target": "es2017",
-      "lib": [
-          "es2017",
-          "es6"
-      ],
-      "outDir": "dist",
-      "module": "commonjs",
-      "sourceMap": false
+    "lib": [
+      "es2017",
+      "es6"
+    ],
+    "outDir": "dist"
   },
   "exclude": [
     "**/*.spec.ts"
-    ],
+  ],
   "include": [
-      "src/**/*.ts"
+    "src/**/*.ts"
   ]
 }
