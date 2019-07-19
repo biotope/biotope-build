@@ -47,8 +47,6 @@ module.exports = {
 
   //=== Plugins ===//
   autoprefixer: {
-    //browsers: ['last 3 versions', 'last 8 Chrome versions', 'last 8 Firefox versions' , 'Firefox ESR', 'ie 9', 'last 2 iOS versions', 'Android 4']
-    browsers: ['last 1 version'],
     grid: true
   },
 
