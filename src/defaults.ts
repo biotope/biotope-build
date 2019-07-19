@@ -5,9 +5,12 @@ export const defaultConfig: BuildConfig = {
     './src/**/*.js',
     './src/**/*.ts',
   ],
-  vendorChunks: [
-    '@biotope/element',
-  ],
+  vendorChunks: {
+    '@biotope/element': [
+      '@biotope/element',
+      'style-inject',
+    ],
+  },
   paths: {
     distFolder: 'dist',
     vendorFolder: 'vendor',

@@ -6,6 +6,8 @@ export interface ServeConfig {
 
 export type BundleConfig = IndexObject<string> | string[];
 
+export type VendorConfig = IndexObject<string[]> | string[];
+
 export interface PathsConfig {
   distFolder: string;
   vendorFolder: string;
@@ -13,7 +15,7 @@ export interface PathsConfig {
 
 export interface BuildConfig {
   bundles: BundleConfig;
-  vendorChunks: string[];
+  vendorChunks: VendorConfig;
   paths: Partial<PathsConfig>;
   extensions: string[];
   serve: Partial<ServeConfig>;

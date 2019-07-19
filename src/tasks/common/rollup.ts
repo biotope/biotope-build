@@ -1,13 +1,15 @@
 import { resolve } from 'path';
 import { sync as glob } from 'glob';
-import { rollup as runRollup, RollupOptions, RollupOutput } from 'rollup';
+import {
+  rollup as runRollup, RollupOptions, RollupOutput, ManualChunksOption,
+} from 'rollup';
 import * as typescript from 'rollup-plugin-typescript';
 import * as rawNodeResolve from 'rollup-plugin-node-resolve';
 import * as rawCommonjs from 'rollup-plugin-commonjs';
-import * as scss from 'rollup-plugin-scss';
+import * as postcss from 'rollup-plugin-postcss';
 import * as babel from 'rollup-plugin-babel';
 
-import { BuildConfig, BundleConfig } from '../../types';
+import { BuildConfig, BundleConfig, VendorConfig } from '../../types';
 
 // FIXME: typings fix for "rollup-plugin-node-resolve" and "rollup-plugin-commonjs"
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,15 +34,33 @@ const getOutputName = (file: string): string => {
 
 const createInputObject = (bundles: BundleConfig): IndexObject<string> => (!Array.isArray(bundles)
   ? bundles
-  : bundles.map((files): string[] => glob(files)).reduce((acc, files): string[] => [
-    ...acc,
+  : bundles.map((files): string[] => glob(files)).reduce((accumulator, files): string[] => ([
+    ...accumulator,
     ...(typeof files === 'string' ? [files] : files),
-  ], []).reduce((accumulator, file): IndexObject<string> => ({
+  ]), []).reduce((accumulator, file): IndexObject<string> => ({
     ...accumulator,
     [getOutputName(file)]: resolve(file),
   }), {}));
 
-const manualChunks = (folder: string, chunks: string[]): (_: string) => string | undefined => (
+const createVendorObject = (vendors: VendorConfig): IndexObject<string[]> => (
+  !Array.isArray(vendors) ? vendors : vendors
+    .reduce((accumulator, vendor): IndexObject<string[]> => ({
+      ...accumulator,
+      [vendor]: [vendor],
+    }), {})
+);
+
+const invertObject = (vendors: VendorConfig): IndexObject<string> => Object
+  .keys(vendors)
+  .reduce((accumulator, name): IndexObject<string> => ({
+    ...accumulator,
+    ...(vendors[name].reduce((acc, vendor): IndexObject<string> => ({
+      ...acc,
+      [vendor]: name,
+    }), {})),
+  }), {});
+
+const manualChunks = (folder: string, chunks: IndexObject<string[]>): ManualChunksOption => (
   path: string,
 ): string => {
   const relativePath = path
@@ -49,11 +69,12 @@ const manualChunks = (folder: string, chunks: string[]): (_: string) => string |
     .filter((slug): boolean => !!slug).join('/');
 
   if (relativePath.includes('node_modules')) {
-    const libPath = relativePath.replace('node_modules/', '');
+    const libPath = relativePath.slice(relativePath.indexOf('node_modules/') + 'node_modules/'.length);
     const lib = libPath.split('/').splice(0, libPath.indexOf('@') === 0 ? 2 : 1).join('/');
 
-    if (chunks.includes(lib)) {
-      return `${folder}/${lib.split('/').join('-')}`;
+    const invertedChunks = invertObject(chunks);
+    if (Object.keys(invertedChunks).includes(lib)) {
+      return `${folder}/${invertedChunks[lib].split('/').join('-')}`;
     }
 
     return `${folder}/bundle`;
@@ -74,12 +95,15 @@ const createBuild = ({
     chunkFileNames: '[name].js',
   },
   plugins: [
-    scss({ output: false }),
+    postcss({
+      extensions: ['.css', '.scss'],
+      inject: false,
+    }),
     typescript(),
     commonjs({ include: 'node_modules/**' }),
     nodeResolve({ browser: true, extensions }),
   ],
-  manualChunks: manualChunks(paths.vendorFolder, vendorChunks),
+  manualChunks: manualChunks(paths.vendorFolder, createVendorObject(vendorChunks)),
 });
 
 const createLegacyBuilds = (config: BuildConfig): RollupOptions[] => {
@@ -95,7 +119,10 @@ const createLegacyBuilds = (config: BuildConfig): RollupOptions[] => {
       name: `${safeName(packageName)}__${safeName(output)}`,
     },
     plugins: [
-      scss({ output: false }),
+      postcss({
+        extensions: ['.css', '.scss'],
+        inject: false,
+      }),
       babel({
         babelrc: false,
         extensions: config.extensions,

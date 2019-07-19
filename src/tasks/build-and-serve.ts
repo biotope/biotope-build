@@ -14,7 +14,12 @@ export const buildAndServe = (config: BuildConfig, watch: boolean = false): Gulp
 
   return async (): Promise<void> => {
     await cleanup();
-    await rollup(config);
+    try {
+      await rollup(config);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
     createPreviewApp(config.serve.layoutFile);
     return openServer(config);
   };
