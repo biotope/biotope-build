@@ -8,6 +8,7 @@ import * as rawNodeResolve from 'rollup-plugin-node-resolve';
 import * as rawCommonjs from 'rollup-plugin-commonjs';
 import * as postcss from 'rollup-plugin-postcss';
 import * as babel from 'rollup-plugin-babel';
+import * as autoprefixer from 'autoprefixer';
 
 import { BuildConfig, BundleConfig, VendorConfig } from '../../types';
 
@@ -98,6 +99,9 @@ const createBuild = ({
     postcss({
       extensions: ['.css', '.scss'],
       inject: false,
+      plugins: [
+        autoprefixer(),
+      ],
     }),
     typescript(),
     commonjs({ include: 'node_modules/**' }),
@@ -122,6 +126,9 @@ const createLegacyBuilds = (config: BuildConfig): RollupOptions[] => {
       postcss({
         extensions: ['.css', '.scss'],
         inject: false,
+        plugins: [
+          autoprefixer(),
+        ],
       }),
       babel({
         babelrc: false,
