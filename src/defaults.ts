@@ -6,7 +6,7 @@ export const defaultConfig: BuildConfig = {
     './src/**/*.ts',
   ],
   vendorChunks: {
-    '@biotope/element': [
+    'biotope-element': [
       '@biotope/element',
       'style-inject',
     ],
