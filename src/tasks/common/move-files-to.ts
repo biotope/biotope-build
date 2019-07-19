@@ -1,6 +1,12 @@
 import { src, dest } from 'gulp';
 import { reload } from 'gulp-connect';
 
-export const moveFilesTo = (folder: string): any => (globs: string[] | string) => src(globs)
+import { GulpPipeReturn } from '../../types';
+
+type MoveFiles = (_: string[] | string) => void;
+
+export const moveFilesTo = (folder: string): MoveFiles => (
+  globs: string[] | string,
+): GulpPipeReturn => src(globs)
   .pipe(dest(folder))
   .pipe(reload());

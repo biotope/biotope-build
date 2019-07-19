@@ -9,75 +9,56 @@
   "author": "Biotope",
   "license": "MIT",
   "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "engineStrict": true,
   "scripts": {
     "start": "npm run clean && npm run copy:preview && tsc --watch",
     "build": "npm run clean && npm run copy:preview && tsc",
     "copy:preview": "cpy --parents --cwd=src devPreview ../dist",
     "clean": "rimraf dist",
     "release": "np --no-yarn",
-    "test": "ts-mocha -p tsconfig.json src/**/*.spec.ts",
-    "eslint:lint": "eslint --ignore-path .gitignore .",
-    "eslint:fix": "eslint --fix --ignore-path .gitignore ."
+    "test": "npm run test:code && npm run lint",
+    "test:code": "echo \"Not implemented yet…\"",
+    "lint": "biotope-quality-gate lint -p ./src/*.ts,./src/tasks",
+    "lint:fix": "biotope-quality-gate lint -p ./src/*.ts,./src/tasks --fix"
   },
-  "engines": {
-    "node": ">=10.15.0"
-  },
-  "engineStrict": true,
-  "pre-commit": "eslint:lint",
   "dependencies": {
-    "@babel/core": "^7.5.0",
-    "@babel/plugin-proposal-class-properties": "^7.5.0",
-    "@babel/plugin-transform-classes": "^7.5.0",
-    "@babel/preset-env": "^7.5.0",
-    "@babel/preset-typescript": "^7.3.0",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-transform-classes": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
     "autoprefixer": "^9.6.1",
     "console-emoji": "0.0.2",
-    "cssnano": "^4.1.10",
-    "del": "4.1.1",
-    "eslint": "6.0.1",
+    "glob": "^7.1.4",
+    "gulp": "^4.0.2",
     "gulp-connect": "^5.7.0",
     "gulp-ejs": "^4.1.1",
-    "gulp-merge-json": "^1.3.1",
-    "gulp-postcss": "^8.0.0",
+    "gulp-filelist": "^2.0.1",
     "gulp-rename": "^1.4.0",
     "gulp-rollup": "^2.16.2",
-    "gulp-sass": "^4.0.2",
-    "jshint": "2.10.2",
-    "jshint-stylish": "2.2.1",
-    "node-sass": "^4.12.0",
     "open": "^6.4.0",
-    "prettier": "1.18.2",
-    "prettier-eslint": "9.0.0",
-    "rimraf": "^2.6.0",
+    "rimraf": "^2.6.3",
     "rollup": "^1.17.0",
-    "rollup-plugin-babel": "^4.3.0",
-    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.0.1",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-scss": "^1.0.0",
-    "rollup-plugin-typescript": "^1.0.0",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.0"
-  },
-  "resolutions": {
-    "webpack-stream/webpack": "4.34.0"
-  },
-  "publishConfig": {
-    "access": "public"
+    "rollup-plugin-scss": "^1.0.1",
+    "rollup-plugin-typescript": "^1.0.1",
+    "typescript": "^3.5.3"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/chai-fs": "^2.0.1",
+    "@biotope/quality-gate": "^1.0.0-beta.8",
     "@types/gulp": "^4.0.6",
     "@types/gulp-connect": "^5.0.3",
     "@types/gulp-rename": "0.0.33",
-    "@types/mocha": "^5.2.7",
     "@types/rimraf": "^2.0.2",
-    "chai": "^4.2.0",
-    "chai-fs": "^2.0.0",
     "cpy-cli": "^2.0.0",
-    "gulp": "^4.0.0",
-    "gulp-filelist": "^2.0.0",
-    "np": "~5.0.3",
-    "ts-mocha": "^6.0.0"
+    "np": "~5.0.3"
   }
 }

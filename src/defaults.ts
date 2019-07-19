@@ -15,7 +15,7 @@ export const defaultConfig: BuildConfig = {
   extensions: ['.js', '.ts'],
   serve: {
     port: 9000,
-    layoutFile: 'preview/index.ejs'
+    layoutFile: 'preview/index.ejs',
   },
   legacy: true,
 };

@@ -1,14 +1,18 @@
-import * as connect from 'gulp-connect';
+import { server as connectServer, ConnectAppOptions } from 'gulp-connect';
 
 import { BuildConfig } from '../../types';
 
 // FIXME: Fix for "gulp-connect" incorrect typings
-const server: (_?: connect.ConnectAppOptions, __?: Function) => connect.ConnectAppOptions = connect.server;
+// eslint-disable-next-line prefer-destructuring
+const server: (_?: ConnectAppOptions, __?: Function) => ConnectAppOptions = connectServer;
 
-export const openServer = (config: BuildConfig) => new Promise<void>(resolve => server({
-  root: config.paths.distFolder,
-  livereload: true,
-  port: config.serve.port,
-}, function () {
-  this.server.on('close', resolve);
-}));
+export const openServer = (config: BuildConfig): Promise<void> => new Promise(
+  (resolve): ConnectAppOptions => server({
+    root: config.paths.distFolder,
+    livereload: true,
+    port: config.serve.port,
+  // eslint-disable-next-line func-names
+  }, function (): void {
+    this.server.on('close', resolve);
+  }),
+);
