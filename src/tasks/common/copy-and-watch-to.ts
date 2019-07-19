@@ -1,10 +1,8 @@
 import { watch } from 'gulp';
-import moveFilesTo from '../common/moveFilesTo';
+import { moveFilesTo } from './move-files-to';
 
-const copyAndWatchTo = (folder: string) => (globs: string[] | string) => {
+export const copyAndWatchTo = (folder: string) => (globs: string[] | string) => {
   const moveFilesToFolder = moveFilesTo(folder);
   moveFilesToFolder(globs);
   watch(globs).on('change', moveFilesToFolder);
 }
-
-export default copyAndWatchTo;

@@ -3,9 +3,14 @@
     "lib": ["es6"],
     "target": "es5",
     "outDir": "dist",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "typeRoots": [
+      "./typings",
+      "./node_modules/@types"
+    ]
   },
   "include": [
+    "typings/global.d.ts",
     "src/**/*.ts"
   ],
   "exclude": [

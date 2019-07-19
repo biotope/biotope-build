@@ -1,20 +1,4 @@
-
-export interface ServeConfig {
-  port?: number;
-  layoutFile?: string;
-}
-
-export interface BuildConfig {
-  bundles?: { [key: string]: string } | string[];
-  vendorChunks?: string[];
-  paths?: {
-    distFolder?: string;
-    vendorFolder?: string;
-  };
-  extensions?: string[];
-  serve?: ServeConfig;
-  legacy?: boolean;
-}
+import { BuildConfig } from './types';
 
 export const defaultConfig: BuildConfig = {
   bundles: [

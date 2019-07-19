@@ -1,28 +1,28 @@
-import { BuildConfig, defaultConfig } from './tasks/common/config';
 import { series } from 'gulp';
-import logBuildVersion from './tasks/common/version';
-import createServeTask from './tasks/start';
 
-const getConfig = (config) => ({
+import { BuildConfig } from './types';
+import { logVersion, buildAndServe } from './tasks';
+import { defaultConfig } from './defaults';
+
+const getConfig = (config: Partial<BuildConfig>) => ({
   ...defaultConfig,
   ...config,
 });
 
-export const createBuild = (config: BuildConfig = {}) => {
-  const configuration = getConfig(config);
-  console.log('createBuild:', configuration);
+export const createBuild = (config?: Partial<BuildConfig>) => {
+  const configuration = getConfig(config || {});
 
   return series(
-    logBuildVersion,
+    logVersion,
+    buildAndServe(configuration),
   );
 };
 
-export const createServe = (config: BuildConfig = {}) => {
-  const configuration = getConfig(config);
-  console.log('createServe:', configuration);
+export const createServe = (config?: Partial<BuildConfig>) => {
+  const configuration = getConfig(config || {});
 
   return series(
-    logBuildVersion,
-    createServeTask(configuration),
+    logVersion,
+    buildAndServe(configuration, true),
   );
 }

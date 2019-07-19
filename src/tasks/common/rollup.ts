@@ -1,18 +1,19 @@
 import { resolve } from 'path';
 import { sync as glob } from 'glob';
+import { rollup as runRollup, RollupOptions } from 'rollup';
 import * as typescript from 'rollup-plugin-typescript';
 import * as rawNodeResolve from 'rollup-plugin-node-resolve';
 import * as rawCommonjs from 'rollup-plugin-commonjs';
 import * as scss from 'rollup-plugin-scss';
 import * as babel from 'rollup-plugin-babel';
 
-import { BuildConfig } from './config';
+import { BuildConfig, BundleConfig } from '../../types';
 
 // FIXME: typings fix for "rollup-plugin-node-resolve" and "rollup-plugin-commonjs"
 const nodeResolve: typeof rawNodeResolve.default = rawNodeResolve as any;
 const commonjs: typeof rawCommonjs.default = rawCommonjs as any;
 
-const getOutputName = (file) => {
+const getOutputName = (file: string): string => {
   let split = resolve(file).replace(process.cwd(), '').split('/').filter(s => s);
   if (split[0] === 'src') {
     const [ _, ...rest ] = split;
@@ -28,7 +29,7 @@ const getOutputName = (file) => {
   return split.join('/');
 };
 
-const createInputObject = bundles => !Array.isArray(bundles)
+const createInputObject = (bundles: BundleConfig): IndexObject<string> => !Array.isArray(bundles)
   ? bundles
   : bundles.map(files => glob(files)).reduce((acc, files) => [
     ...acc,
@@ -38,23 +39,26 @@ const createInputObject = bundles => !Array.isArray(bundles)
     [getOutputName(file)]: resolve(file),
   }), {});
 
-const chunks = (vendorFolder, vendorChunks) => (path) => {
+const manualChunks = (folder: string, chunks: string[]) => (path: string): string | undefined => {
   const relativePath = path.replace(process.cwd(), '').split('/').filter(s => s).join('/');
 
   if (relativePath.includes('node_modules')) {
     const libPath = relativePath.replace('node_modules/', '');
     const lib = libPath.split('/').splice(0, libPath.indexOf('@') === 0 ? 2 : 1).join('/');
 
-    if (vendorChunks.includes(lib)) {
-      return `${vendorFolder}/${lib.split('/').join('-')}`;
+    if (chunks.includes(lib)) {
+      return `${folder}/${lib.split('/').join('-')}`;
     }
 
-    return `${vendorFolder}/bundle`;
+    return `${folder}/bundle`;
   }
   return;
 };
 
-const createBuild = ({ bundles, vendorChunks, paths, extensions }: BuildConfig) => ({
+const safeName = (name: string): string => name
+  .replace(/[&\/\\#,+()$~%.'":*?<>{}\s-]/g,'_').toLowerCase();
+
+const createBuild = ({ bundles, vendorChunks, paths, extensions }: BuildConfig): RollupOptions => ({
   input: createInputObject(bundles),
   output: {
     dir: paths.distFolder,
@@ -67,19 +71,17 @@ const createBuild = ({ bundles, vendorChunks, paths, extensions }: BuildConfig) 
     commonjs({ include: 'node_modules/**' }),
     nodeResolve({ browser: true, extensions }),
   ],
-  manualChunks: chunks(paths.vendorFolder, vendorChunks),
+  manualChunks: manualChunks(paths.vendorFolder, vendorChunks),
 });
 
-const makeSafe = name => name.replace(/[&\/\\#,+()$~%.'":*?<>{}\s-]/g,'_').toLowerCase();
-
-const createLegacyBuilds = (config: BuildConfig) => {
+const createLegacyBuilds = (config: BuildConfig): RollupOptions[] => {
   const bundles = createInputObject(config.bundles);
   return Object.keys(bundles).map((output) => ({
     input: bundles[output],
     output: {
       format: 'iife',
       file: `${config.paths.distFolder}/${output}.legacy.js`,
-      name: `${makeSafe(require(`${process.cwd()}/package.json`).name)}__${makeSafe(output)}`,
+      name: `${safeName(require(`${process.cwd()}/package.json`).name)}__${safeName(output)}`,
     },
     plugins: [
       scss({ output: false }),
@@ -108,7 +110,12 @@ const createLegacyBuilds = (config: BuildConfig) => {
   }));
 };
 
-export default (config: BuildConfig) => ([
+const createAllBuilds = (config: BuildConfig): RollupOptions[] => ([
   createBuild(config),
   ...(config.legacy ? createLegacyBuilds(config) : []),
 ]);
+
+export const rollup = (config: BuildConfig) => Promise.all(
+  createAllBuilds(config)
+    .map(async rollupConfig => (await runRollup(rollupConfig)).write(rollupConfig.output)),
+);

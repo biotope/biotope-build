@@ -1,14 +1,13 @@
-import { ServeConfig } from '../common/config';
-import * as fs from 'fs';
+import { existsSync } from 'fs';
 
-import createComponentJsonTo from "./createComponentJsonTo";
-import copyAndWatchTo from './copyAndWatchTo';
-import renderPreviewEjsTo from './renderPreviewEjsTo';
+import { createComponentJsonTo } from './create-component-json-to';
+import { copyAndWatchTo } from './copy-and-watch-to';
+import { renderPreviewEjsTo } from './render-preview-ejs-to';
 
 const previewPath = '/../../devPreview/';
 const createPreviewPath = (path: string) => `${__dirname}${previewPath}${path}`;
 
-const createPreviewAppTo = (folder: string) => {
+export const createPreviewAppTo = (folder: string) => {
   const createComponentJsonToTmp = createComponentJsonTo(folder);
   const copyWatchToTmp = copyAndWatchTo(folder);
   const renderEjsToTemp = renderPreviewEjsTo(folder);
@@ -21,12 +20,10 @@ const createPreviewAppTo = (folder: string) => {
       createPreviewPath('**/*.png'),
     ];
     copyWatchToTmp(previewFiles)
-  
+
     const projectIndexFileLocation = `${process.cwd()}/${ layoutFile}`;
-    const indexPagePath = fs.existsSync(projectIndexFileLocation) ? projectIndexFileLocation : createPreviewPath('index.ejs');
+    const indexPagePath = existsSync(projectIndexFileLocation) ? projectIndexFileLocation : createPreviewPath('index.ejs');
 
     renderEjsToTemp(indexPagePath);
   };
 }
-
-export default createPreviewAppTo;
