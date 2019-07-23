@@ -24,7 +24,7 @@
 - Added enhanced assets copying (assets in components folders are copied now to dist)
 
 ### Changed
-- BREAKING: you have to add a .browserlistrc file to your projects root folder, you can use the default: https://github.com/biotope/biotope-boilerplate/blob/master/.browserslistrc
+- BREAKING: you have to add a .browserlistrc file to your projects root folder you can use the default: https://github.com/biotope/biotope-boilerplate/blob/master/.browserslistrc. Remove "browsers" option from autoprefixer section in projectConfig.js if it exists
 - BREAKING: typescript updated from version 2.9.2 to 3.5.3 please see breaking changes in typescript for migration https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes
 - Most dependencies updated
 - Stability fixes
