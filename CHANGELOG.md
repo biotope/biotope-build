@@ -25,6 +25,7 @@
 
 ### Changed
 - BREAKING: you have to add a .browserlistrc file to your projects root folder, you can use the default: https://github.com/biotope/biotope-boilerplate/blob/master/.browserslistrc
+- BREAKING: typescript updated from version 2.9.2 to 3.5.3 please see breaking changes in typescript for migration https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes
 - Most dependencies updated
 - Stability fixes
 - Performance improvements
@@ -74,16 +75,16 @@
 ### Fixed
 - changing a sass files triggers compilation of all sass files -> now only compiles the changed file
 
-## [5.4.2] - 2018-09-17 
+## [5.4.2] - 2018-09-17
 ### Added
 - Merge env data into handlebars global data object under `data.env`
 - Add support for `cross-env`
 
-## [5.4.1] - 2018-08-30 
+## [5.4.1] - 2018-08-30
 ### Fixed
-- ES6 modules from node_modules are now transpiled by Webpack (https://github.com/biotope/biotope-build/issues/129) 
+- ES6 modules from node_modules are now transpiled by Webpack (https://github.com/biotope/biotope-build/issues/129)
 
-## [5.4.0] - 2018-08-17 
+## [5.4.0] - 2018-08-17
 ### Changed
 - BREAKING: After updateing to 5.4.0 rename resources/scss/fonts/iconfont/_icons.scss → src/resources/scss/fonts/iconfont/_icons.tpl
 ### Added
@@ -91,22 +92,22 @@
 - support for svg sprites added
 - Support for ES6 added (uglifyjs)
 
-## [5.3.9] - 2018-06-27 
+## [5.3.9] - 2018-06-27
 ### Updated
 - Updated all node modules to newest versions
 
-## [5.3.8] - 2018-06-21 
+## [5.3.8] - 2018-06-21
 ### Fixed
 - Disabled Uglify task prevents components from being copied (https://github.com/biotope/biotope-build/issues/73)
 ### Added
 - Welcome message in biotope console output :sparkles:
 - Added error message log for missing local projectConfig.js   
 
-## [5.3.6] - 2018-06-05 
+## [5.3.6] - 2018-06-05
 ### Fixed
 - Webpack tasks is broken when no TS files are available
 
-## [5.3.5] - 2018-05-30 
+## [5.3.5] - 2018-05-30
 ### Fixed
 - Heap out of memory bug (https://github.com/biotope/biotope-build/issues/48)
 ### Changed
@@ -120,7 +121,7 @@
 	},
 ```
 
-## [5.3.4] - 2018-05-20 
+## [5.3.4] - 2018-05-20
 ### Removed
 - Iconfont path checker
 
@@ -135,7 +136,7 @@
 
 ## [5.3.2] - 2018-04-24
 ### Fixed
-- Webpack now loads JS and JSX files with babel loader 
+- Webpack now loads JS and JSX files with babel loader
 
 ## [5.3.1] - 2018-04-18
 ### Fixed
@@ -143,7 +144,7 @@
 
 ## [5.3.0] - 2018-04-17
 ### Changed
-- Complete Handlebars Task Refactoring 
+- Complete Handlebars Task Refactoring
 - BREAKING: Change `handlebars.helpers.js` according to `https://github.com/biotope/biotope/blob/5.3.0/src/resources/js/handlebars.helper.js`
 - BREAKING: Change `index.hbs` according to `https://github.com/biotope/biotope/blob/5.3.0/src/index.hbs`
 - BREAKING: Change `browserSupport.hbs` according to `https://github.com/biotope/biotope/blob/5.3.0/src/browserSupport.hbs`
@@ -156,7 +157,7 @@
 
 ## [5.2.0] - 2018-02-25
 ### Changed
- - BREAKING: Repository name changed to github.com/biotope/biotope-build. Adjust your package.json 
+ - BREAKING: Repository name changed to github.com/biotope/biotope-build. Adjust your package.json
  - BREAKING: Prefixed all handlebars helper functions with "bio", for example the helper "include" is now named "bioInclude". This reduces chance of naming collision with variables [(see)](https://github.com/biotope/biotope-build/pull/45/files)
  - BREAKING: "resources" and "components" in projectConfig.json have now to be strings instead of arrays [(see)](https://github.com/biotope/biotope-build/pull/40/commits/3cde1073237241db1fc0749ca24b3a9ec41e4521)
 ### Added
