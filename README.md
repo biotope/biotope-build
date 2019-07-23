@@ -70,14 +70,9 @@ JS files then get copied to '.tmp/resources/js/vendor/', CSS files to '.tmp/reso
 
 ### plugin defaults
 #### autoprefixer
-Autoprefixer uses the default options, with the last browser versions.
+Autoprefixer uses the .browserlistrc file from your projects root, or otherwise default options
 Repo: https://github.com/postcss/autoprefixer#options
 
-```
-autoprefixer: {
-	browsers: ['last 1 version']
-},
-```
 
 #### browserSupport
 Set the file path to the corresponding *.json file to create a browser support overview.
