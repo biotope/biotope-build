@@ -119,11 +119,11 @@ module.exports = {
     noEmitOnErrors: true,
     concatenateModules: true,
     splitChunks: {
-      chunks: 'all',
-      name: 'resources/js/vendor/biotope-element',
       cacheGroups: {
         vendors: {
           test: /[\\/]@biotope[\\/]element[\\/]/,
+          name: 'resources/js/vendor/biotope-element',
+          chunks: 'all',
           priority: -10
         }
       }
