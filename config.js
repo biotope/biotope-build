@@ -24,14 +24,14 @@ module.exports = {
     tasks: {
       browserSupport: true,
       cleanCss: true,
-      cssStats: true,
+      cssStats: false,
       favicons: true,
       handlebars: true,
-      htmlhint: true,
+      htmlhint: false,
       iconfont: true,
       svgSprite: true,
       image: true,
-      linting: true,
+      linting: false,
       sass: true,
       uglify: true,
       version: true,
@@ -68,7 +68,6 @@ module.exports = {
     globs: [
       dev + '/**/*.*',
       src + '/resources/js/**/*.js',
-      src + '/resources/bower_components/**/*',
       src + '/_mock/**/*',
       src + '/_config/**/*',
       '!' + dev + '/_mock/**/*',
@@ -76,7 +75,6 @@ module.exports = {
       '!' + dev + '/_assets/**/*',
       '!' + dev + '/resources/js/vendor/**/*.js',
       '!' + dev + '/resources/css/**/*.map',
-      '!' + dev + '/resources/bower_components/**/*',
       '!' + dev + '/resources/js/handlebars.templates.js'
     ]
   },
@@ -94,7 +92,7 @@ module.exports = {
   },
 
   favicons: {
-    appName: 'gulp-frontend-boilerplate',
+    appName: 'biotope',
     background: '#020307',
     path: 'favicons/',
     display: 'standalone',
