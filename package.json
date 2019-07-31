@@ -29,7 +29,7 @@
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
     "css-loader": "0.28.11",
-    "del": "4.1.1",
+    "del": "5.0.0",
     "eslint": "6.1.0",
     "front-matter": "3.0.2",
     "fs-extra": "8.1.0",
