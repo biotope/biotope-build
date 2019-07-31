@@ -26,7 +26,7 @@
 ### Changed
 - BREAKING: you have to add a .browserlistrc file to your projects root folder you can use the default: https://github.com/biotope/biotope-boilerplate/blob/master/.browserslistrc. Remove "browsers" option from autoprefixer section in projectConfig.js if it exists
 - BREAKING: typescript updated from version 2.9.2 to 3.5.3 please see breaking changes in typescript for migration https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes
-- BREAKING: All linters are deactivated by default now and will be removed in 8.0 (Please see Deprecation section for more information). If you need to, You can still activate them by overwriting defaults in your projectConfig.js.
+- BREAKING: All linters are deactivated by default now and will be removed in 8.0 (Please see Deprecation section for more information). If you need to, You can still activate them by overwriting defaults in your projectConfig.js, otherwise if you have them activated in your projectConfig.js your should remove the following tasks: cssStats, htmlhint, linting
 - Most dependencies updated
 - Stability fixes
 - Performance improvements
