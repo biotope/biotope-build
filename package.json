@@ -1,7 +1,7 @@
 {
   "name": "@biotope/build",
   "version": "7.0.0-rc.9",
-  "description": "An advanced development and build runtime to create frontent ecosystems",
+  "description": "Develop and build system for Biotope Web Components Ecosystems",
   "repository": {
     "type": "git",
     "url": "https://github.com/biotope/biotope-build.git"
