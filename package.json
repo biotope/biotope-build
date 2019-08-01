@@ -106,7 +106,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "ava": "0.25.0",
+    "ava": "2.2.0",
     "lodash": "latest",
     "map-stream": "0.0.7",
     "np": "~5.0.3",
