@@ -4,7 +4,7 @@ import * as ejs from 'gulp-ejs';
 
 import { GulpPipeReturn } from '../../types';
 
-const previewPath = '/../../devPreview/';
+const previewPath = '/../../dev-preview/';
 
 type renderPreviewEjs = (_: string) => GulpPipeReturn;
 

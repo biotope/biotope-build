@@ -4,7 +4,7 @@ import { createComponentJsonTo } from './create-component-json-to';
 import { copyAndWatchTo } from './copy-and-watch-to';
 import { renderPreviewEjsTo } from './render-preview-ejs-to';
 
-const previewPath = '/../../devPreview/';
+const previewPath = '/../../dev-oreview/';
 const createPreviewPath = (path: string): string => `${__dirname}${previewPath}${path}`;
 
 type CreatePreviewApp = (_: string) => void;
