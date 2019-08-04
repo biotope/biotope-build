@@ -8,7 +8,6 @@ export const defaultConfig: BuildConfig = {
   vendorChunks: {
     'biotope-element': [
       '@biotope/element',
-      'style-inject',
     ],
   },
   paths: {
