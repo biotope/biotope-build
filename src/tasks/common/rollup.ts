@@ -1,7 +1,12 @@
 import { resolve } from 'path';
 import { sync as glob } from 'glob';
 import {
-  rollup as runRollup, RollupOptions, RollupOutput, ManualChunksOption,
+  rollup as runRollup,
+  watch as runWatch,
+  RollupOptions,
+  RollupOutput,
+  ManualChunksOption,
+  RollupWatcher,
 } from 'rollup';
 import * as typescript from 'rollup-plugin-typescript';
 import * as rawNodeResolve from 'rollup-plugin-node-resolve';
@@ -159,6 +164,10 @@ const createAllBuilds = (config: BuildConfig): RollupOptions[] => ([
   createBuild(config),
   ...(config.legacy ? createLegacyBuilds(config) : []),
 ]);
+
+export const watch = (config: BuildConfig): RollupWatcher => runWatch(
+  createAllBuilds(config),
+);
 
 export const rollup = (config: BuildConfig): Promise<RollupOutput[]> => Promise.all(
   createAllBuilds(config).map(
