@@ -19,6 +19,13 @@
 
 </details>
 
+## [7.1.0] - 2019-08-06
+### Added
+- Make weback.config.js extendable
+
+### Changed
+- remove splitChunks from default webpack.config.js because of breaking none bio-element projects
+
 ## [7.0.0] - 2019-07-18
 ### Added
 - Added enhanced assets copying (assets in components folders are copied now to dist)
