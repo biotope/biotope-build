@@ -128,6 +128,5 @@ try {
     merge(module.exports, webpackProjectConfig);
   }
 } catch (e) {
-  const colors = require('colors/safe');
-  console.log(colors.red('Error: ', e));
+  console.log('No webpack.config.js in project root folder, using biotope-build default webpack.config.js: ');
 }
