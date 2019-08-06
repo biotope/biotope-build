@@ -117,7 +117,18 @@ module.exports = {
 
   optimization: {
     noEmitOnErrors: true,
-    concatenateModules: true
+    concatenateModules: true,
+    splitChunks: {
+      cacheGroups: {
+        default: false,
+        vendors: {
+           test: /[\\/]@biotope[\\/]element[\\/]/,
+           name: 'resources/js/vendor/biotope-element',
+           chunks: 'all',
+           priority: -10
+        }
+      }
+    }
   }
 };
 
