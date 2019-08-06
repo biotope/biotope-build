@@ -117,18 +117,7 @@ module.exports = {
 
   optimization: {
     noEmitOnErrors: true,
-    concatenateModules: true,
-    splitChunks: {
-      cacheGroups: {
-        default: false,
-        vendors: {
-          test: /[\\/]@biotope[\\/]element[\\/]/,
-          name: 'resources/js/vendor/biotope-element',
-          chunks: 'all',
-          priority: -10
-        }
-      }
-    }
+    concatenateModules: true
   }
 };
 
@@ -139,5 +128,5 @@ try {
     merge(module.exports, webpackProjectConfig);
   }
 } catch (e) {
-  console.log('No webpack.config.js in project root folder, using biotope-build default webpack.config.js: ');
+  console.log('No webpack.config.js in project root folder, using biotope-build default webpack.config.js');
 }
