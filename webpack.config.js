@@ -117,16 +117,17 @@ module.exports = {
 
   optimization: {
     noEmitOnErrors: true,
-    concatenateModules: true,
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]@biotope[\\/]element[\\/]/,
-          name: 'resources/js/vendor/biotope-element',
-          chunks: 'all',
-          priority: -10
-        }
-      }
-    }
+    concatenateModules: true
   }
 };
+
+try {
+  const webpackProjectConfig = require(path.join(cwd, 'webpack.config.js'));
+  if (webpackProjectConfig) {
+    const merge = require('lodash.merge');
+    merge(module.exports, webpackProjectConfig);
+  }
+} catch (e) {
+  const colors = require('colors/safe');
+  console.log(colors.red('Error: ', e));
+}
