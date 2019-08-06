@@ -122,10 +122,10 @@ module.exports = {
       cacheGroups: {
         default: false,
         vendors: {
-           test: /[\\/]@biotope[\\/]element[\\/]/,
-           name: 'resources/js/vendor/biotope-element',
-           chunks: 'all',
-           priority: -10
+          test: /[\\/]@biotope[\\/]element[\\/]/,
+          name: 'resources/js/vendor/biotope-element',
+          chunks: 'all',
+          priority: -10
         }
       }
     }
