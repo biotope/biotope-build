@@ -1,6 +1,6 @@
 {
   "name": "@biotope/build",
-  "version": "7.1.0-2",
+  "version": "7.1.1",
   "description": "Develop and build system for Biotope Web Components Ecosystems",
   "repository": {
     "type": "git",
