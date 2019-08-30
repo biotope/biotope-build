@@ -14,6 +14,9 @@ import * as rawCommonjs from 'rollup-plugin-commonjs';
 import * as postcss from 'rollup-plugin-postcss';
 import * as babel from 'rollup-plugin-babel';
 import * as autoprefixer from 'autoprefixer';
+import * as babelPluginProposalClassProperties from '@babel/plugin-proposal-class-properties';
+import * as babelPluginTransformClasses from '@babel/plugin-transform-classes';
+import * as babelPresetTypescript from '@babel/preset-typescript';
 
 import { BuildConfig, BundleConfig, VendorConfig } from '../../types';
 
@@ -144,11 +147,11 @@ const createLegacyBuilds = (config: BuildConfig): RollupOptions[] => {
               browsers: ['defaults', 'ie >= 11'],
             },
           }],
-          '@babel/typescript',
+          babelPresetTypescript,
         ],
         plugins: [
-          ['@babel/plugin-proposal-class-properties', { loose: true }],
-          ['@babel/plugin-transform-classes', { loose: true }],
+          [babelPluginProposalClassProperties, { loose: true }],
+          [babelPluginTransformClasses, { loose: true }],
         ],
       }),
       commonjs({ include: 'node_modules/**' }),

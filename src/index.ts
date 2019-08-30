@@ -3,6 +3,7 @@ import { series, TaskFunction } from 'gulp';
 import { BuildConfig } from './types';
 import { logVersion, buildAndServe } from './tasks';
 import { defaultConfig } from './defaults';
+import * as connect from 'gulp-connect';
 
 const getConfig = (config: Partial<BuildConfig>): BuildConfig => ({
   ...defaultConfig,
@@ -23,6 +24,6 @@ export const createServe = (config?: Partial<BuildConfig>): TaskFunction => {
 
   return series(
     logVersion,
-    buildAndServe(configuration, true),
+    buildAndServe(configuration, connect),
   );
 };

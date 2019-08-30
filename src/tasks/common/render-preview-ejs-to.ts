@@ -8,7 +8,7 @@ const previewPath = '/../../dev-preview/';
 
 type renderPreviewEjs = (_: string) => GulpPipeReturn;
 
-export const renderPreviewEjsTo = (folder: string): renderPreviewEjs => (
+export const renderPreviewEjsTo = (folder: string, connect?): renderPreviewEjs => (
   templatePath: string,
 ): GulpPipeReturn => src(templatePath)
   .pipe(ejs({}, { root: `${__dirname}${previewPath}` }))
@@ -16,4 +16,5 @@ export const renderPreviewEjsTo = (folder: string): renderPreviewEjs => (
     // eslint-disable-next-line no-param-reassign
     path.extname = '.html';
   }))
-  .pipe(dest(folder));
+  .pipe(dest(folder))
+  .pipe(connect.reload());

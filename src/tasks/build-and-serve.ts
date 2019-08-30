@@ -3,23 +3,24 @@ import {
   rollup, watch as rollupWatch, openServer, removeFolder, createPreviewAppTo,
 } from './common';
 
-export const buildAndServe = (config: BuildConfig, watch: boolean = false): GulpTaskPromise => {
+export const buildAndServe = (config: BuildConfig, connect?): GulpTaskPromise => {
   const cleanup = removeFolder(config.paths.distFolder);
-  const createPreviewApp = createPreviewAppTo(config.paths.distFolder);
-
+  const createPreviewApp = createPreviewAppTo(config.paths.distFolder, connect);
+  
   return async (): Promise<void> => {
     await cleanup();
     try {
-      if (watch) {
+      if (connect) {
         rollupWatch(config);
       } else {
         await rollup(config);
       }
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.error(e);
+      console.error('ERROR: ', e);
     }
+    
     createPreviewApp(config.serve.layoutFile);
-    return watch ? openServer(config) : undefined;
+    return connect ? openServer(config, connect) : null;
   };
 };
