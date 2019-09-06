@@ -1,12 +1,10 @@
-import { watch } from 'gulp';
-import { moveFilesTo } from './move-files-to';
+import { watch } from 'chokidar';
+import { copyFilesTo } from './copyFilesTo';
 
-type CopyAndWatch = (_: string[] | string) => void;
-
-export const copyAndWatchTo = (folder: string): CopyAndWatch => (
-  globs: string[] | string,
+export const copyAndWatchTo = (folder: string) => (
+  glob: string,
 ): void => {
-  const moveFilesToFolder = moveFilesTo(folder);
-  moveFilesToFolder(globs);
-  watch(globs).on('change', moveFilesToFolder);
+  const moveFilesToFolder = copyFilesTo(folder);
+  moveFilesToFolder(glob);
+  watch(glob).on('all', moveFilesToFolder);
 };

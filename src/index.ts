@@ -1,29 +1,54 @@
-import { series, TaskFunction } from 'gulp';
-
 import { BuildConfig } from './types';
-import { logVersion, buildAndServe } from './tasks';
+import { logVersion, startLiveServer, setupPreviewApp, bundle, clean } from './tasks';
 import { defaultConfig } from './defaults';
-import * as connect from 'gulp-connect';
 
 const getConfig = (config: Partial<BuildConfig>): BuildConfig => ({
   ...defaultConfig,
   ...config,
 });
 
-export const createBuild = (config?: Partial<BuildConfig>): TaskFunction => {
+export const createBuild = (config?: Partial<BuildConfig>): Function => {
   const configuration = getConfig(config || {});
 
-  return series(
-    logVersion,
-    buildAndServe(configuration),
-  );
+  return async () => {
+    logVersion();
+    await clean(configuration);
+    await bundle(configuration);
+  }
+  // compileLoners();
+  // copyResources();
+  // copyDependencies();
 };
 
-export const createServe = (config?: Partial<BuildConfig>): TaskFunction => {
+export const createServe = (config?: Partial<BuildConfig>): Function => {
   const configuration = getConfig(config || {});
 
-  return series(
-    logVersion,
-    buildAndServe(configuration, connect),
-  );
+  return async () => {
+    logVersion();
+    await clean(configuration);
+    startLiveServer(configuration);
+    await setupPreviewApp(configuration);
+    await bundle(configuration, true);
+  }
 };
+
+// // Both
+// Livereload
+// Preview Server
+// Log version
+// postcss
+// Scss compile
+// uglify
+// stats
+
+// // New Projects
+// Bundle
+
+// // Old Projects
+// Image Copy
+// Iconfonts
+// Scripts all
+// Styles all
+// JS Transpile
+// TS Transpile
+// move modules
