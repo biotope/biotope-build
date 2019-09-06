@@ -36,6 +36,7 @@
     "autoprefixer": "^9.6.1",
     "console-emoji": "0.0.2",
     "cpx": "^1.5.0",
+    "ejs": "^2.7.1",
     "glob": "^7.1.4",
     "live-server": "^1.2.1",
     "node-sass": "^4.12.0",

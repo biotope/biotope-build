@@ -9,10 +9,11 @@ const getConfig = (config: Partial<BuildConfig>): BuildConfig => ({
 
 export const createBuild = (config?: Partial<BuildConfig>): Function => {
   const configuration = getConfig(config || {});
-
+  
   return async () => {
     logVersion();
     await clean(configuration);
+    await setupPreviewApp(configuration);
     await bundle(configuration);
   }
   // compileLoners();
@@ -23,6 +24,8 @@ export const createBuild = (config?: Partial<BuildConfig>): Function => {
 export const createServe = (config?: Partial<BuildConfig>): Function => {
   const configuration = getConfig(config || {});
 
+  console.log(configuration);
+  
   return async () => {
     logVersion();
     await clean(configuration);
@@ -39,12 +42,12 @@ export const createServe = (config?: Partial<BuildConfig>): Function => {
 // postcss
 // Scss compile
 // uglify
-// stats
 
 // // New Projects
 // Bundle
 
 // // Old Projects
+// stats
 // Image Copy
 // Iconfonts
 // Scripts all

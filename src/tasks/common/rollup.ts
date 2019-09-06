@@ -168,7 +168,7 @@ const createAllBuilds = (config: BuildConfig): RollupOptions[] => ([
   ...(config.legacy ? createLegacyBuilds(config) : []),
 ]);
 
-export const watch = (config: BuildConfig): RollupWatcher => runWatch(
+export const rollupWatch = (config: BuildConfig): RollupWatcher => runWatch(
   createAllBuilds(config),
 );
 

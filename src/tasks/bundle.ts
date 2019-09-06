@@ -1,4 +1,4 @@
-import { rollup, watch as rollupWatch } from './common';
+import { rollup, rollupWatch } from './common';
 
 export const bundle = async (config, watch: boolean = false) => {
   if(watch) {
