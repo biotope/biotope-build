@@ -1,5 +1,5 @@
-import { BuildConfig } from './../types';
+import { BuildConfig, BuildTask } from './../types';
 import { removeFolder } from './common/remove-folder';
-export const clean = async (config: BuildConfig) => {
-  return await removeFolder(config.paths.distFolder);
+export const clean: BuildTask = async (config: BuildConfig, watch: boolean) => {
+  await removeFolder(config.paths.distFolder);
 }

@@ -1,39 +1,44 @@
-import { BuildConfig } from './types';
+import { BuildConfig, BuildTask } from './types';
 import { logVersion, startLiveServer, setupPreviewApp, bundle, clean } from './tasks';
 import { defaultConfig } from './defaults';
+import { createDistFolder } from './tasks/createDistFolder';
 
 const getConfig = (config: Partial<BuildConfig>): BuildConfig => ({
   ...defaultConfig,
   ...config,
 });
 
-export const createBuild = (config?: Partial<BuildConfig>): Function => {
+const defaultTasks: BuildTask[] = [
+  logVersion,
+  clean,
+  createDistFolder,
+  setupPreviewApp,
+  bundle,
+];
+
+export const createBuild = (config: Partial<BuildConfig> = {}, extraTasks: BuildTask[] = []): Function => {
   const configuration = getConfig(config || {});
-  
+
   return async () => {
-    logVersion();
-    await clean(configuration);
-    await setupPreviewApp(configuration);
-    await bundle(configuration);
+    for(const task of [...defaultTasks, ...extraTasks]) {
+      await task(configuration, false);
+    }
   }
-  // compileLoners();
+};
+
+export const createServe = (config: Partial<BuildConfig> = {}, extraTasks: BuildTask[]): Function => {
+  const configuration = getConfig(config || {});
+
+  return async () => {
+    for(const task of [...defaultTasks, ...extraTasks]) {
+      await task(configuration, true);
+    }
+  }
+};
+
+// compileLoners();
   // copyResources();
   // copyDependencies();
-};
-
-export const createServe = (config?: Partial<BuildConfig>): Function => {
-  const configuration = getConfig(config || {});
-
-  console.log(configuration);
-  
-  return async () => {
-    logVersion();
-    await clean(configuration);
-    startLiveServer(configuration);
-    await setupPreviewApp(configuration);
-    await bundle(configuration, true);
-  }
-};
 
 // // Both
 // Livereload

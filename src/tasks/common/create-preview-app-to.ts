@@ -9,10 +9,10 @@ const createPreviewPath = (path: string): string => `${__dirname}${previewPath}$
 
 type CreatePreviewApp = (_: string) => void;
 
-export const createPreviewAppTo = (folder: string, connect?): CreatePreviewApp => {
+export const createPreviewAppTo = (folder: string, shouldWatch: boolean): CreatePreviewApp => {
   const createComponentJson = createComponentJsonTo(folder);
-  const copyWatch = copyAndWatchTo(folder);
-  const renderEjs = renderPreviewEjsTo(folder, connect);
+  const copyWatch = copyAndWatchTo(folder, shouldWatch);
+  const renderEjs = renderPreviewEjsTo(folder);
 
   return (layoutFile: string): void => {
     createComponentJson();
@@ -25,10 +25,12 @@ export const createPreviewAppTo = (folder: string, connect?): CreatePreviewApp =
     const indexPagePath = existsSync(projectIndexFileLocation)
       ? projectIndexFileLocation
       : createPreviewPath('index.ejs');
-    watch(indexPagePath).on('all', () => {
-      renderEjs(indexPagePath);
-    });
     renderEjs(indexPagePath);
+    if(shouldWatch) {
+      watch(indexPagePath).on('all', () => {
+        renderEjs(indexPagePath);
+      });
+    }
     
   };
 };

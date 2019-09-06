@@ -1,4 +1,3 @@
-
 export interface ServeConfig {
   port: number;
   layoutFile: string;
@@ -21,3 +20,5 @@ export interface BuildConfig {
   serve: Partial<ServeConfig>;
   legacy: boolean;
 }
+
+export type BuildTask = (config: BuildConfig, watch: boolean) => Promise<void>;

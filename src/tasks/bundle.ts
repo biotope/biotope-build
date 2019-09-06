@@ -1,8 +1,10 @@
+import { BuildTask, BuildConfig } from './../types';
 import { rollup, rollupWatch } from './common';
 
-export const bundle = async (config, watch: boolean = false) => {
+export const bundle: BuildTask = async (config: BuildConfig, watch: boolean = false) => {
   if(watch) {
-    return await rollupWatch(config)
+    await rollupWatch(config)
+  } else {
+    await rollup(config);
   }
-  return await rollup(config);
 }
