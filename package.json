@@ -23,7 +23,7 @@
     "clean": "rimraf dist",
     "release": "np --no-yarn",
     "test": "npm run test:code && npm run lint",
-    "test:code": "echo \"Not implemented yet…\"",
+    "test:code": "jest",
     "lint": "biotope-quality-gate -p ./src/*.ts,./src/tasks",
     "lint:fix": "biotope-quality-gate -p ./src/*.ts,./src/tasks --fix"
   },
@@ -54,8 +54,11 @@
   "devDependencies": {
     "@biotope/quality-gate": "^1.0.0-beta.10",
     "@types/autoprefixer": "^9.5.0",
+    "@types/jest": "^24.0.18",
     "@types/rimraf": "^2.0.2",
     "cpy-cli": "^2.0.0",
-    "np": "~5.0.3"
+    "jest": "^24.9.0",
+    "np": "~5.0.3",
+    "ts-jest": "^24.0.2"
   }
 }
