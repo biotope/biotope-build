@@ -1,5 +1,5 @@
 import { BuildConfig, BuildTask } from './../types';
-import liveServer from 'live-server';
+import * as liveServer from 'live-server';
 
 export const startLiveServer: BuildTask = async (config: BuildConfig, watch: boolean) => {
   if(watch) {

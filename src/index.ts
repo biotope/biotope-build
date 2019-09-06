@@ -13,6 +13,7 @@ const defaultTasks: BuildTask[] = [
   clean,
   createDistFolder,
   setupPreviewApp,
+  startLiveServer,
   bundle,
 ];
 
@@ -26,7 +27,7 @@ export const createBuild = (config: Partial<BuildConfig> = {}, extraTasks: Build
   }
 };
 
-export const createServe = (config: Partial<BuildConfig> = {}, extraTasks: BuildTask[]): Function => {
+export const createServe = (config: Partial<BuildConfig> = {}, extraTasks: BuildTask[] = []): Function => {
   const configuration = getConfig(config || {});
 
   return async () => {

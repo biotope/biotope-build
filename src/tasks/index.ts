@@ -1,4 +1,4 @@
-export * from './log-version';
+export * from './logVersion';
 export * from './setupPreviewApp';
 export * from './startLiveServer';
 export * from './bundle';

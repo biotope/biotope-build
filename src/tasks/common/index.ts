@@ -1,3 +1,3 @@
-export * from './create-preview-app-to';
+export * from './createPreviewAppTo';
 export * from './remove-folder';
 export * from './rollup';

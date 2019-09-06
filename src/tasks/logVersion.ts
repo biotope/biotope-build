@@ -1,4 +1,4 @@
-import { BuildTask, BuildConfig } from './../types';
+import { BuildTask, BuildConfig } from '../types';
 import * as consoleEmoji from 'console-emoji';
 
 export const logVersion: BuildTask = async (config: BuildConfig, watch: boolean) => {
