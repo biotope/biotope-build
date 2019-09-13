@@ -1,4 +1,5 @@
 import { resolve } from 'path';
+import * as path from 'path';
 import { sync as glob } from 'glob';
 import {
   rollup as runRollup,
@@ -25,6 +26,19 @@ import { BuildConfig, BundleConfig, VendorConfig } from '../../types';
 const nodeResolve: typeof rawNodeResolve.default = rawNodeResolve as any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const commonjs: typeof rawCommonjs.default = rawCommonjs as any;
+
+const onwarn = warning => {
+  // Silence circular dependency warning for moment package
+  if (
+    warning.code === 'CIRCULAR_DEPENDENCY'
+    && !warning.importer.indexOf(path.normalize('src'))
+  ) {
+    return
+  }
+
+  console.warn(`(!) ${warning.message}`)
+}
+
 
 const getOutputName = (file: string): string => {
   let split = resolve(file).replace(process.cwd(), '').split('/').filter((slug): boolean => !!slug);
@@ -98,6 +112,7 @@ const createBuild = ({
   bundles, vendorChunks, paths, extensions,
 }: BuildConfig): RollupOptions => ({
   input: createInputObject(bundles),
+  onwarn,
   output: {
     dir: paths.distFolder,
     format: 'esm',
@@ -112,7 +127,13 @@ const createBuild = ({
       ],
     }),
     typescript(),
-    commonjs({ include: 'node_modules/**' }),
+    commonjs({ 
+      include: 'node_modules/**',
+      namedExports: {
+        'node_modules/react/index.js': ['Children', 'Component', 'PropTypes', 'createElement'],
+        'node_modules/react-dom/index.js': ['render']
+      }
+    }),
     nodeResolve({ browser: true, extensions }),
   ],
   manualChunks: manualChunks(paths.vendorFolder, createVendorObject(vendorChunks)),
@@ -125,6 +146,7 @@ const createLegacyBuilds = (config: BuildConfig): RollupOptions[] => {
 
   return Object.keys(bundles).map((output): RollupOptions => ({
     input: bundles[output],
+    onwarn,
     output: {
       format: 'iife',
       file: `${config.paths.distFolder}/${output}.legacy.js`,
@@ -154,7 +176,13 @@ const createLegacyBuilds = (config: BuildConfig): RollupOptions[] => {
           [babelPluginTransformClasses, { loose: true }],
         ],
       }),
-      commonjs({ include: 'node_modules/**' }),
+      commonjs({
+        include: 'node_modules/**',
+        namedExports: {
+          'node_modules/react/index.js': ['Children', 'Component', 'PropTypes', 'createElement'],
+          'node_modules/react-dom/index.js': ['render']
+        }
+      }),
       nodeResolve({
         browser: true,
         extensions: config.extensions,

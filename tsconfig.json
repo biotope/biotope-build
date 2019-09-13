@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["es6"],
+    "jsx": "react",
     "target": "es5",
     "outDir": "dist",
     "moduleResolution": "node",

@@ -21,4 +21,4 @@ export interface BuildConfig {
   legacy: boolean;
 }
 
-export type BuildTask = (config: BuildConfig, watch: boolean) => Promise<void>;
+export type BuildTask = (config: BuildConfig, watch?: Function) => Promise<void>;

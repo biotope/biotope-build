@@ -54,7 +54,8 @@
     asyncComputed: {
       async content () {
         const url = this.$route.meta.fileUrl.replace('src/', '');
-        return await fetch(url).then(r => r.text());
+        const html = await fetch(url).then(r => r.text());
+        return html;
       }
     },
     computed: {
@@ -66,8 +67,8 @@
   
   const components = await fetch('components.json').then(r => r.json());
   const routes = components.map(component => ({
-    path: `/${component.split('/')[2]}`,
-    name: component.split('/')[2],
+    path: '/' + component.replace('src/components/', '').replace('.html', '').replace(new RegExp('/', 'g'), '_'),
+    name: component.replace('src/components/', '').replace('.html', ''),
     component: Detail,
     meta: { fileUrl: component }
   }))

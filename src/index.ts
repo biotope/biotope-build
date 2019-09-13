@@ -1,3 +1,4 @@
+import { watch } from 'chokidar';
 import { BuildConfig, BuildTask } from './types';
 import { logVersion, startLiveServer, setupPreviewApp, bundle, clean } from './tasks';
 import { defaultConfig } from './defaults';
@@ -22,7 +23,7 @@ export const createBuild = (config: Partial<BuildConfig> = {}, extraTasks: Build
 
   return async () => {
     for(const task of [...defaultTasks, ...extraTasks]) {
-      await task(configuration, false);
+      await task(configuration);
     }
   }
 };
@@ -32,7 +33,7 @@ export const createServe = (config: Partial<BuildConfig> = {}, extraTasks: Build
 
   return async () => {
     for(const task of [...defaultTasks, ...extraTasks]) {
-      await task(configuration, true);
+      await task(configuration, watch);
     }
   }
 };

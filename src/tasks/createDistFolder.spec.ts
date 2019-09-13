@@ -15,7 +15,7 @@ describe('create dist folder task', () => {
       }
     } as BuildConfig;
 
-    await createDistFolder(config, false);
+    await createDistFolder(config);
 
     expect(fs.existsSync(`${process.cwd()}/test_stubs/dist`)).toBeTruthy();
   });

@@ -18,7 +18,7 @@ describe('clean task', () => {
       }
     } as BuildConfig;
 
-    await clean(config, false);
+    await clean(config);
 
     expect(fs.existsSync(`${process.cwd()}/test_stubs/dist`)).toBeFalsy();
   });
