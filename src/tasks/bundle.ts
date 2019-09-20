@@ -1,8 +1,8 @@
 import { BuildTask, BuildConfig } from './../types';
-import { rollup, rollupWatch } from './common';
+import { rollup, rollupWatch } from '../common';
 
-export const bundle: BuildTask = async (config: BuildConfig, watch: Function) => {
-  if(watch) {
+export const bundle: BuildTask = async (config: BuildConfig, isServing: boolean) => {
+  if(isServing) {
     await rollupWatch(config)
   } else {
     await rollup(config);

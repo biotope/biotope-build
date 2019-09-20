@@ -3,7 +3,7 @@ import * as fs from 'fs';
 
 type renderPreviewEjs = (_: string) => Promise<any>;
 
-const previewPath = '/../../dev-preview/';
+const previewPath = '/../dev-preview/';
 
 export const renderPreviewEjsTo = (folder: string, connect?): renderPreviewEjs => (
   templatePath: string,

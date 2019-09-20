@@ -2,15 +2,16 @@ import { existsSync } from 'fs';
 import { createComponentJsonTo } from './createComponentJsonTo';
 import { copyAndWatchTo } from './copyAndWatchTo';
 import { renderPreviewEjsTo } from './renderPreviewEjsTo';
+import { watch } from 'chokidar';
 
-const previewPath = '/../../dev-preview/';
+const previewPath = '/../dev-preview/';
 const createPreviewPath = (path: string): string => `${__dirname}${previewPath}${path}`;
 
 type CreatePreviewApp = (_: string) => void;
 
-export const createPreviewAppTo = (folder: string, watch: Function): CreatePreviewApp => {
+export const createPreviewAppTo = (folder: string, isServing: boolean): CreatePreviewApp => {
   const createComponentJson = createComponentJsonTo(folder);
-  const copyWatch = copyAndWatchTo(folder, watch);
+  const copyWatch = copyAndWatchTo(folder, isServing);
   const renderEjs = renderPreviewEjsTo(folder);
 
   return (layoutFile: string): void => {
@@ -24,9 +25,11 @@ export const createPreviewAppTo = (folder: string, watch: Function): CreatePrevi
     const indexPagePath = existsSync(projectIndexFileLocation)
       ? projectIndexFileLocation
       : createPreviewPath('index.ejs');
-    watch(indexPagePath).on('all', () => {
-      renderEjs(indexPagePath);
-    });
+    if(isServing) {
+      watch(indexPagePath).on('all', () => {
+        renderEjs(indexPagePath);
+      });
+    }
     renderEjs(indexPagePath);
     
   };

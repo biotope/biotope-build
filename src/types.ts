@@ -19,6 +19,7 @@ export interface BuildConfig {
   extensions: string[];
   serve: Partial<ServeConfig>;
   legacy: boolean;
+  plugins: BuildTask[];
 }
 
-export type BuildTask = (config: BuildConfig, watch?: Function) => Promise<void>;
+export type BuildTask = (config: BuildConfig, isServing: boolean) => Promise<void>;

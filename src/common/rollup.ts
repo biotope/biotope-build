@@ -19,7 +19,7 @@ import * as babelPluginProposalClassProperties from '@babel/plugin-proposal-clas
 import * as babelPluginTransformClasses from '@babel/plugin-transform-classes';
 import * as babelPresetTypescript from '@babel/preset-typescript';
 
-import { BuildConfig, BundleConfig, VendorConfig } from '../../types';
+import { BuildConfig, BundleConfig, VendorConfig } from '../types';
 
 // FIXME: typings fix for "rollup-plugin-node-resolve" and "rollup-plugin-commonjs"
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

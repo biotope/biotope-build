@@ -20,4 +20,5 @@ export const defaultConfig: BuildConfig = {
     layoutFile: 'preview/index.ejs',
   },
   legacy: true,
+  plugins: []
 };

@@ -1,4 +1,3 @@
-import { watch } from 'chokidar';
 import { BuildConfig, BuildTask } from './types';
 import { logVersion, startLiveServer, setupPreviewApp, bundle, clean } from './tasks';
 import { defaultConfig } from './defaults';
@@ -18,22 +17,30 @@ const defaultTasks: BuildTask[] = [
   bundle,
 ];
 
-export const createBuild = (config: Partial<BuildConfig> = {}, extraTasks: BuildTask[] = []): Function => {
+export const createBuild = (config: Partial<BuildConfig> = {}): Function => {
   const configuration = getConfig(config || {});
 
   return async () => {
-    for(const task of [...defaultTasks, ...extraTasks]) {
-      await task(configuration);
+    for(const task of [...defaultTasks, ...config.plugins]) {
+      try {
+        await task(configuration, false);
+      } catch(e) {
+        console.error(`Error in task:`,e);
+      }
     }
   }
 };
 
-export const createServe = (config: Partial<BuildConfig> = {}, extraTasks: BuildTask[] = []): Function => {
+export const createServe = (config: Partial<BuildConfig> = {}): Function => {
   const configuration = getConfig(config || {});
 
   return async () => {
-    for(const task of [...defaultTasks, ...extraTasks]) {
-      await task(configuration, watch);
+    for(const task of [...defaultTasks, ...config.plugins]) {
+      try {
+        await task(configuration, true);
+      } catch(e) {
+        console.error(`Error in task:`,e);
+      }
     }
   }
 };
