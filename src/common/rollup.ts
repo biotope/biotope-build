@@ -1,5 +1,7 @@
 import { resolve } from 'path';
 import * as path from 'path';
+import * as nodeEval from 'node-eval';
+import * as fs from 'fs';
 import { sync as glob } from 'glob';
 import {
   rollup as runRollup,
@@ -108,6 +110,30 @@ const manualChunks = (folder: string, chunks: IndexObject<string[]>): ManualChun
 const safeName = (name: string): string => name
   .replace(/[&/\\#,+()$~%.'":*?<>{}\s-]/g, '_').toLowerCase();
 
+const getModuleExports = (moduleId) =>  {
+  const id = require.resolve(`${process.cwd()}/node_modules/${moduleId}`)
+  const moduleOut = nodeEval(fs.readFileSync(id).toString(), id)
+  let result = []
+  const excludeExports = /^(default|__)/
+  if (moduleOut && typeof moduleOut === 'object') {
+      result = Object.keys(moduleOut)
+          .filter(name => !excludeExports.test(name))
+  }
+
+  return result
+}
+
+const getNamedExports = (moduleIds) => {
+  const result = {}
+  moduleIds.forEach( id => {
+      result[id] = getModuleExports(id)
+  })
+  console.log(result);
+  
+  return result;
+}
+
+
 const createBuild = ({
   bundles, vendorChunks, paths, extensions,
 }: BuildConfig): RollupOptions => ({
@@ -129,10 +155,7 @@ const createBuild = ({
     typescript(),
     commonjs({ 
       include: 'node_modules/**',
-      namedExports: {
-        'node_modules/react/index.js': ['Children', 'Component', 'PropTypes', 'createElement'],
-        'node_modules/react-dom/index.js': ['render']
-      }
+      namedExports: getNamedExports(['react', 'react-dom'])
     }),
     nodeResolve({ browser: true, extensions }),
   ],
@@ -178,10 +201,7 @@ const createLegacyBuilds = (config: BuildConfig): RollupOptions[] => {
       }),
       commonjs({
         include: 'node_modules/**',
-        namedExports: {
-          'node_modules/react/index.js': ['Children', 'Component', 'PropTypes', 'createElement'],
-          'node_modules/react-dom/index.js': ['render']
-        }
+        namedExports: getNamedExports(['react', 'react-dom'])
       }),
       nodeResolve({
         browser: true,

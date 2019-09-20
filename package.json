@@ -42,6 +42,7 @@
     "glob": "^7.1.4",
     "handlebars": "^4.2.0",
     "live-server": "^1.2.1",
+    "node-eval": "^2.0.0",
     "node-sass": "^4.12.0",
     "open": "^6.4.0",
     "rimraf": "^2.6.3",
