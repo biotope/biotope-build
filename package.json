@@ -20,7 +20,7 @@
   "scripts": {
     "start": "npm run clean && npm run copy:preview && tsc --watch",
     "build": "npm run clean && npm run copy:preview && tsc",
-    "copy:preview": "cpy --parents --cwd=src dev-preview ../dist",
+    "copy:preview": "cpy --parents --cwd=src tasks/previewApp/dev-preview ../dist",
     "clean": "rimraf dist",
     "release": "np --no-yarn",
     "test": "npm run test:code && npm run lint",

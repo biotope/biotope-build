@@ -24,7 +24,7 @@ const defaultTasks: BuildTask[] = [
 
 export const createBuild = (config: Partial<BuildConfig> = {}): Function => {
   const configuration = getConfig(config || {});
-
+  
   return async () => {
     for(const task of [...defaultTasks, ...config.plugins]) {
       try {

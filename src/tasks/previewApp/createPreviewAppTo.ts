@@ -1,10 +1,10 @@
 import { existsSync } from 'fs';
 import { createComponentJsonTo } from '../../common/createComponentJsonTo';
 import { copyAndWatchTo } from '../../common/copyAndWatchTo';
-import { renderPreviewEjsTo } from '../../common/renderPreviewEjsTo';
+import { renderPreviewEjsTo } from './renderPreviewEjsTo';
 import { watch } from 'chokidar';
 
-const previewPath = '/../dev-preview/';
+const previewPath = '/dev-preview/';
 const createPreviewPath = (path: string): string => `${__dirname}${previewPath}${path}`;
 
 type CreatePreviewApp = (_: string) => void;
