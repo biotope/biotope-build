@@ -1,7 +1,12 @@
 import { BuildConfig, BuildTask } from './types';
-import { logVersion, startLiveServer, setupPreviewApp, bundle, clean } from './tasks';
 import { defaultConfig } from './defaults';
-import { createDistFolder } from './tasks/createDistFolder';
+import clean from './tasks/clean';
+import createDistFolder from './tasks/createDistFolder';
+import startLiveServer from './tasks/liveServer';
+import setupPreviewApp from './tasks/previewApp';
+import logVersion from './tasks/logVersion';
+import bundle from './tasks/bundle';
+
 
 const getConfig = (config: Partial<BuildConfig>): BuildConfig => ({
   ...defaultConfig,

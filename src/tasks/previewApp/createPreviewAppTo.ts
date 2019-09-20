@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
-import { createComponentJsonTo } from './createComponentJsonTo';
-import { copyAndWatchTo } from './copyAndWatchTo';
-import { renderPreviewEjsTo } from './renderPreviewEjsTo';
+import { createComponentJsonTo } from '../../common/createComponentJsonTo';
+import { copyAndWatchTo } from '../../common/copyAndWatchTo';
+import { renderPreviewEjsTo } from '../../common/renderPreviewEjsTo';
 import { watch } from 'chokidar';
 
 const previewPath = '/../dev-preview/';

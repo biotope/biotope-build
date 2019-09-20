@@ -1,5 +1,5 @@
-import { BuildConfig } from './../types';
-import { clean } from './clean';
+import { BuildConfig } from '../../types';
+import clean from './';
 import * as fs from  'fs';
 
 describe('clean task', () => {

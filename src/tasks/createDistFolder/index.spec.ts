@@ -1,5 +1,5 @@
-import { createDistFolder } from './createDistFolder';
-import { BuildConfig } from './../types';
+import createDistFolder  from '.';
+import { BuildConfig } from '../../types';
 import * as fs from  'fs';
 
 describe('create dist folder task', () => {
@@ -15,7 +15,7 @@ describe('create dist folder task', () => {
       }
     } as BuildConfig;
 
-    await createDistFolder(config, false);
+    await createDistFolder(config);
 
     expect(fs.existsSync(`${process.cwd()}/test_stubs/dist`)).toBeTruthy();
   });

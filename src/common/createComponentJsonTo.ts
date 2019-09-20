@@ -2,7 +2,7 @@ import * as glob from 'glob';
 import * as fs from 'fs';
 
 export const createComponentJsonTo = (folder: string): Function => (): Promise<any> => new Promise((res, rej) => {
-  glob('{src/components/**/*.html,src/components/**/*.hbs}', (err, files) => {
+  glob('{src/components/**/*.html,src/components/**/scaffolding/*.hbs}', (err, files) => {
     if(err) {
       rej(err);
     }

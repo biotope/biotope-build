@@ -1,7 +1,7 @@
-import { BuildConfig, BuildTask } from './../types';
+import { BuildConfig } from '../../types';
 import * as liveServer from 'live-server';
 
-export const startLiveServer: BuildTask = async (config: BuildConfig, isServing: boolean) => {
+export default async (config: BuildConfig, isServing: boolean) => {
   if(isServing) {
     const params = {
         port: config.serve.port,

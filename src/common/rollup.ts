@@ -196,9 +196,13 @@ const createAllBuilds = (config: BuildConfig): RollupOptions[] => ([
   ...(config.legacy ? createLegacyBuilds(config) : []),
 ]);
 
-export const rollupWatch = (config: BuildConfig): RollupWatcher => runWatch(
+export const rollupWatch = (config: BuildConfig): RollupWatcher => {
+  console.log(createAllBuilds(config));
+  
+  return runWatch(
   createAllBuilds(config),
 );
+}
 
 export const rollup = (config: BuildConfig): Promise<RollupOutput[]> => Promise.all(
   createAllBuilds(config).map(
