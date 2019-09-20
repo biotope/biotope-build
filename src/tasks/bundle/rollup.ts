@@ -21,7 +21,7 @@ import * as babelPluginProposalClassProperties from '@babel/plugin-proposal-clas
 import * as babelPluginTransformClasses from '@babel/plugin-transform-classes';
 import * as babelPresetTypescript from '@babel/preset-typescript';
 
-import { BuildConfig, BundleConfig, VendorConfig } from '../types';
+import { BuildConfig, BundleConfig, VendorConfig } from '../../types';
 
 // FIXME: typings fix for "rollup-plugin-node-resolve" and "rollup-plugin-commonjs"
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -111,16 +111,21 @@ const safeName = (name: string): string => name
   .replace(/[&/\\#,+()$~%.'":*?<>{}\s-]/g, '_').toLowerCase();
 
 const getModuleExports = (moduleId) =>  {
-  const id = require.resolve(`${process.cwd()}/node_modules/${moduleId}`)
-  const moduleOut = nodeEval(fs.readFileSync(id).toString(), id)
-  let result = []
-  const excludeExports = /^(default|__)/
-  if (moduleOut && typeof moduleOut === 'object') {
-      result = Object.keys(moduleOut)
-          .filter(name => !excludeExports.test(name))
+  try {
+    const id = require.resolve(`${process.cwd()}/node_modules/${moduleId}`)
+    const moduleOut = nodeEval(fs.readFileSync(id).toString(), id)
+    let result = []
+    const excludeExports = /^(default|__)/
+    if (moduleOut && typeof moduleOut === 'object') {
+        result = Object.keys(moduleOut)
+            .filter(name => !excludeExports.test(name))
+    }
+  
+    return result
+  } catch(e) {
+    console.error('could not find named exports for ' + moduleId);
+    return [];
   }
-
-  return result
 }
 
 const getNamedExports = (moduleIds) => {

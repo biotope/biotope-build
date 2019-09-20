@@ -1,3 +1,3 @@
 export * from '../tasks/previewApp/createPreviewAppTo';
 export * from './remove-folder';
-export * from './rollup';
+export * from '../tasks/bundle/rollup';

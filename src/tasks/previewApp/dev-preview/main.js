@@ -58,6 +58,9 @@
         return html;
       }
     },
+    updated: () => {
+      window.resourceLoader.update()
+    },
     computed: {
       componentName () {
         return this.$route.name

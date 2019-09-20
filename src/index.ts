@@ -26,7 +26,7 @@ export const createBuild = (config: Partial<BuildConfig> = {}): Function => {
   const configuration = getConfig(config || {});
   
   return async () => {
-    for(const task of [...defaultTasks, ...config.plugins]) {
+    for(const task of [...defaultTasks, ...configuration.plugins]) {
       try {
         await task(configuration, false);
       } catch(e) {
@@ -38,9 +38,9 @@ export const createBuild = (config: Partial<BuildConfig> = {}): Function => {
 
 export const createServe = (config: Partial<BuildConfig> = {}): Function => {
   const configuration = getConfig(config || {});
-
+  
   return async () => {
-    for(const task of [...defaultTasks, ...config.plugins]) {
+    for(const task of [...defaultTasks, ...configuration.plugins]) {
       try {
         await task(configuration, true);
       } catch(e) {

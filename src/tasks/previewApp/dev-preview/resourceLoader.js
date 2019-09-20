@@ -1,5 +1,5 @@
 import ResourceLoader from 'https://unpkg.com/@biotope/resource-loader@1.4.2/lib/index.esm.js';
-new ResourceLoader({
+window.resourceLoader = new ResourceLoader({
   handler: [
     {
       match: ({resource, response}) => true,
