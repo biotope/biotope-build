@@ -6,6 +6,7 @@ import startLiveServer from './tasks/liveServer';
 import setupPreviewApp from './tasks/previewApp';
 import logVersion from './tasks/logVersion';
 import bundle from './tasks/bundle';
+import copy from './tasks/copy';
 
 
 const getConfig = (config: Partial<BuildConfig>): BuildConfig => ({
@@ -19,6 +20,7 @@ const defaultTasks: BuildTask[] = [
   createDistFolder,
   setupPreviewApp,
   startLiveServer,
+  copy,
   bundle,
 ];
 

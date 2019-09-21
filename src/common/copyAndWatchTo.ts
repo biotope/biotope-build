@@ -1,12 +1,13 @@
 import { copyFilesTo } from './copyFilesTo';
 import { watch } from 'chokidar';
 
-export const copyAndWatchTo = (folder: string, isServing: boolean) => (
+export const copyAndWatchTo = (folder: string, isServing: boolean) => async (
   glob: string,
-): void => {
+): Promise<void> => {
   const moveFilesToFolder = copyFilesTo(folder);
-  moveFilesToFolder(glob);
   if(isServing) {
     watch(glob).on('all', moveFilesToFolder);
+  } else {
+    await moveFilesToFolder(glob);
   }
 };

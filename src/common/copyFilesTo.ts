@@ -2,6 +2,6 @@ import {copy} from 'cpx';
 
 type MoveFiles = (_: string[] | string) => void;
 
-export const copyFilesTo = (folder: string): MoveFiles => (
+export const copyFilesTo = (folder: string): MoveFiles => async (
   glob: string,
-): Promise<any> => copy(glob, folder);
+): Promise<any> => new Promise((res, rej) => {copy(glob, folder, (err) => {res()})});

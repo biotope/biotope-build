@@ -1,3 +1,5 @@
+import { Transform } from "stream";
+
 export interface ServeConfig {
   port: number;
   layoutFile: string;
@@ -12,6 +14,11 @@ export interface PathsConfig {
   vendorFolder: string;
 }
 
+export interface CopyConfig {
+  src: string;
+  transform: (filepath: string) => Transform;
+}
+
 export interface BuildConfig {
   bundles: BundleConfig;
   vendorChunks: VendorConfig;
@@ -19,6 +26,7 @@ export interface BuildConfig {
   extensions: string[];
   serve: Partial<ServeConfig>;
   legacy: boolean;
+  copyFiles: CopyConfig[];
   plugins: BuildTask[];
 }
 

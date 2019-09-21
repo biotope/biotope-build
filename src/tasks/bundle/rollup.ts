@@ -133,7 +133,6 @@ const getNamedExports = (moduleIds) => {
   moduleIds.forEach( id => {
       result[id] = getModuleExports(id)
   })
-  console.log(result);
   
   return result;
 }
