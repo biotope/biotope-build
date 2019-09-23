@@ -24,55 +24,16 @@ const defaultTasks: BuildTask[] = [
   bundle,
 ];
 
-export const createBuild = (config: Partial<BuildConfig> = {}): Function => {
+export const createBuild = (config: Partial<BuildConfig> = {}, watch: boolean): Function => {
   const configuration = getConfig(config || {});
   
   return async () => {
     for(const task of [...defaultTasks, ...configuration.plugins]) {
       try {
-        await task(configuration, false);
+        await task(configuration, watch);
       } catch(e) {
         console.error(`Error in task:`,e);
       }
     }
   }
 };
-
-export const createServe = (config: Partial<BuildConfig> = {}): Function => {
-  const configuration = getConfig(config || {});
-  
-  return async () => {
-    for(const task of [...defaultTasks, ...configuration.plugins]) {
-      try {
-        await task(configuration, true);
-      } catch(e) {
-        console.error(`Error in task:`,e);
-      }
-    }
-  }
-};
-
-// compileLoners();
-  // copyResources();
-  // copyDependencies();
-
-// // Both
-// Livereload
-// Preview Server
-// Log version
-// postcss
-// Scss compile
-// uglify
-
-// // New Projects
-// Bundle
-
-// // Old Projects
-// stats
-// Image Copy
-// Iconfonts
-// Scripts all
-// Styles all
-// JS Transpile
-// TS Transpile
-// move modules

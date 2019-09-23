@@ -6,5 +6,7 @@ export default async (buildConfig: BuildConfig, isServing: boolean) => {
   const copies = buildConfig.copyFiles.map((fileGlob) => new Promise((res, rej) => {
     copy(fileGlob.src, buildConfig.paths.distFolder, (err) => {err ? rej(err) : res()})
   }));
-  await Promise.all(copies);
+  if(!isServing) {
+    await Promise.all(copies);
+  }
 }
