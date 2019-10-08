@@ -93,7 +93,7 @@
     "style-loader": "0.23.1",
     "svg-inline-loader": "^0.8.0",
     "svg-url-loader": "^3.0.2",
-    "ts-loader": "^6.0.4",
+    "ts-loader": "^6.2.0",
     "typescript": "^3.5",
     "uglify-es": "^3.3.9",
     "url-loader": "^2.1.0",
