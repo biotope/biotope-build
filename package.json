@@ -27,7 +27,7 @@
     "connect-history-api-fallback": "^1.6.0",
     "console-emoji": "0.0.2",
     "cors": "^2.8.5",
-    "cross-env": "^5.2.1",
+    "cross-env": "^6.0.3",
     "css-loader": "0.28.11",
     "del": "5.1.0",
     "eslint": "6.4.0",
