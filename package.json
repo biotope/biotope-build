@@ -109,7 +109,7 @@
     "ava": "0.25.0",
     "lodash": "latest",
     "map-stream": "0.0.7",
-    "np": "~5.0.3",
+    "np": "~5.1.2",
     "pre-commit": "1.2.2",
     "vinyl-string": "1.0.2"
   }
