@@ -48,7 +48,7 @@
     "gulp-filter": "6.0.0",
     "gulp-handlebars": "5.0.2",
     "gulp-hb": "8.0.0",
-    "gulp-htmlhint": "2.2.1",
+    "gulp-htmlhint": "3.0.0",
     "gulp-iconfont-css": "3.0.0",
     "gulp-if": "3.0.0",
     "gulp-imagemin": "4.1.0",
