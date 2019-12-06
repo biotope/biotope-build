@@ -1,0 +1,21 @@
+{
+  "name": "project-one",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "biotope-build -c ./biotope-build.config.js",
+    "build": "biotope-build -c ./biotope-build.config.js --production",
+    "watch": "biotope-build -c ./biotope-build.config.js --watch --serve",
+    "watch:prod": "biotope-build -c ./biotope-build.config.js --watch --serve --production"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@biotope/build": "biotope/biotope-build#new/custom-refactor",
+    "@biotope/element": "^4.0.0",
+    "change-case": "^4.0.1",
+    "classnames": "^2.2.6",
+    "handlebars": "^4.5.3"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "include": [
+    "types/global.d.ts",
+    "src/**/*.ts"
+  ]
+}

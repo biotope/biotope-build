@@ -1,20 +1,37 @@
 {
   "compilerOptions": {
+    "target": "es6",
     "lib": ["es6"],
-    "jsx": "react",
-    "target": "es5",
-    "outDir": "dist",
-    "moduleResolution": "node",
+    "module": "commonjs",
+    "outDir": "lib",
+    "declarationDir": "lib",
+
+    "sourceMap": false,
+    "noEmitOnError": true,
+    "declaration": true,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
     "typeRoots": [
-      "./typings",
-      "./node_modules/@types"
+      "types",
+      "node_modules/@types"
     ]
   },
   "include": [
-    "typings/global.d.ts",
+    "types/global.d.ts",
     "src/**/*.ts"
   ],
   "exclude": [
     "**/*.spec.ts"
-  ],
+  ]
 }
