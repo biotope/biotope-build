@@ -1,12 +1,24 @@
-import { RollupBuild } from 'rollup';
+import { RollupBuild, RollupOptions, RollupOutput } from 'rollup';
 
 export type PluginEvent = 'before-build' | 'after-build';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface PluginRowSimple extends Array<any> {
+export interface PluginRowBase extends Array<any> {
   0: PluginEvent;
   1: Function;
 }
+
+export interface PluginRowSimpleBefore extends PluginRowBase {
+  0: 'before-build';
+  1: (config: ParsedOptions, builds: RollupOptions[]) => void | Promise<void>;
+}
+
+export interface PluginRowSimpleAfter extends PluginRowBase {
+  0: 'after-build';
+  1: (data: RollupEvent | RollupOutput[]) => void | Promise<void>;
+}
+
+export type PluginRowSimple = PluginRowSimpleBefore | PluginRowSimpleAfter;
 
 export type PluginRow = PluginRowSimple | PluginRowSimple[];
 

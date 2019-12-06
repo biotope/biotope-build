@@ -56,7 +56,6 @@
     "rollup-plugin-terser": "~5.1",
     "rollup-plugin-typescript2": "~0.25",
     "set-value": "~3.0",
-    "synchronized-promise": "~0.2",
     "typescript": "~3.7"
   },
   "devDependencies": {

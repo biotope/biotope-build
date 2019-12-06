@@ -5,7 +5,7 @@ class BioWorld extends Component {
 
   public render(): HTMLFragment {
     return this.html`
-      <span>Hello World!<span>
+      <p>Hello <slot /> World!<p>
     `;
   }
 }

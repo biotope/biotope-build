@@ -41,18 +41,14 @@ const createServer = (directory, port, open, spa, https) => {
 };
 
 function servePlugin(pluginOptions = {}) {
+  const { open, spa, secure } = pluginOptions;
   const config = {};
-  const port = 8000;
+  let port = pluginOptions.port || 8000;
   return [
     saveConfigPlugin(config),
-    runOnceAfterBuildEndPlugin(() => {
-      findPort(pluginOptions.port || port).then((newPort) => createServer(
-        config.output || 'dist',
-        newPort,
-        pluginOptions.open || false,
-        pluginOptions.spa || false,
-        pluginOptions.secure || false,
-      ));
+    runOnceAfterBuildEndPlugin(async () => {
+      port = await findPort(port);
+      createServer(config.output || 'dist', port, open || false, spa || false, secure || false);
     }, () => config.serve),
   ];
 }

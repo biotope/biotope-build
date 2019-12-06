@@ -5,9 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.3.0/webcomponents-bundle.js"></script>
 </head>
 <body>
-  {{ bioInclude 'components/bio-world/scaffolding/partial' }}
-  {{ bioText 500 }}
+  <h1>Bio-World</h1>
+  <section>
+    <h2>Example text</h2>
+    <p>{{ bioText 500 }}</p>
+  </section>
+  <section>
+    <h2>Example data</h2>
+    <p>{{ bioStringify data }}</p>
+  </section>
+  <section>
+    <h2>Example partial</h2>
+    {{ bioInclude 'components/bio-world/scaffolding/partial'
+      content=data.components.bio-world.scaffolding.demo.headline
+    }}
+  </section>
 </body>
 </html>

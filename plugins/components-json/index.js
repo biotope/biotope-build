@@ -1,10 +1,18 @@
 const { outputFileSync } = require('fs-extra');
 
+const isLegacyBuild = (legacyOption, filesObject) => {
+  if (!legacyOption) {
+    return false;
+  }
+  return !!Object.keys(filesObject)
+    .find((file) => file.indexOf(legacyOption.suffix) === file.length - legacyOption.suffix.length);
+};
+
 function componentsJsonPlugin() {
   return ['before-build', ({ output, extLogic, legacy }, builds) => {
-    const inputs = builds.reduce((accumulator, { input, output: { banner: isLegacy } }) => ({
+    const inputs = builds.reduce((accumulator, { input }) => ({
       ...accumulator,
-      ...(!isLegacy ? input : {}),
+      ...(isLegacyBuild(legacy, input) ? input : {}),
     }), {});
 
     const components = Object.keys(inputs)

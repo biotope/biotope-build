@@ -1,9 +1,18 @@
-import { RollupBuild } from 'rollup';
+import { RollupBuild, RollupOptions, RollupOutput } from 'rollup';
 export declare type PluginEvent = 'before-build' | 'after-build';
-export interface PluginRowSimple extends Array<any> {
+export interface PluginRowBase extends Array<any> {
     0: PluginEvent;
     1: Function;
 }
+export interface PluginRowSimpleBefore extends PluginRowBase {
+    0: 'before-build';
+    1: (config: ParsedOptions, builds: RollupOptions[]) => void | Promise<void>;
+}
+export interface PluginRowSimpleAfter extends PluginRowBase {
+    0: 'after-build';
+    1: (data: RollupEvent | RollupOutput[]) => void | Promise<void>;
+}
+export declare type PluginRowSimple = PluginRowSimpleBefore | PluginRowSimpleAfter;
 export declare type PluginRow = PluginRowSimple | PluginRowSimple[];
 export declare type PluginRowMaker = (options: object) => PluginRow;
 export interface Options {

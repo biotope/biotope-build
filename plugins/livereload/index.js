@@ -1,20 +1,21 @@
 const livereload = require('rollup-plugin-livereload');
-const synchronizedPromise = require('synchronized-promise');
 const getPort = require('get-port');
 
-const findPort = (port, range = 999) => synchronizedPromise(getPort)({
+const findPort = (port, range = 999) => getPort({
   port: getPort.makeRange(port, port + range),
 });
 
 function livereloadPlugin() {
-  const port = 35729;
-  return ['before-build', (config, builds) => {
+  let port = 35729;
+  return ['before-build', async (config, builds) => {
     if (config.serve) {
-      builds.forEach((build) => build.plugins.push(livereload({
-        port: findPort(port),
+      port = await findPort(port);
+
+      builds[0].plugins.push(livereload({
+        port,
         watch: config.output,
         verbose: false,
-      })));
+      }));
     }
   }];
 }

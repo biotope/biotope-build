@@ -10,11 +10,12 @@ function saveConfigPlugin(parentConfig) {
 
 const runOnceAfterBuildPlugin = (state, callback, conditionCallback) => {
   let isFirstRun = true;
-  return ['after-build', ({ code }) => {
+  return ['after-build', async ({ code }) => {
     if (isFirstRun && code === state && (!conditionCallback || conditionCallback())) {
       isFirstRun = false;
-      callback();
+      return callback();
     }
+    return undefined;
   }];
 };
 
