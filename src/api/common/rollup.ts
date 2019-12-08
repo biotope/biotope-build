@@ -32,6 +32,8 @@ const TYPESCRIPT_ES6_CONFIG = {
   },
 };
 
+const requirePath = resolve(`${__dirname}/../../require.min.js`);
+
 const getOutputName = (file: string, folder: string): string => {
   const split = file.replace(resolve(`${process.cwd()}${folder ? `/${folder}` : ''}`), '')
     .split('/')
@@ -132,7 +134,9 @@ const createBuild = (
     dir: config.output,
     format: !legacy ? 'esm' : 'cjs',
     chunkFileNames: '[name].js',
-    banner: legacy && (config.legacy as LegacyOptions).inline ? readFileSync('../../static/legacy.min.js').toString() : '',
+    banner: legacy && (config.legacy as LegacyOptions).inline
+      ? readFileSync(requirePath).toString()
+      : '',
     sourcemap: !config.production,
   },
   plugins: [
@@ -181,7 +185,7 @@ const createBuild = (
         dest: `${config.output}/${folder}`,
       })),
       ...(legacy && !(config.legacy as LegacyOptions).inline
-        ? [{ files: `${__dirname}/../../../static/legacy.min.js`, dest: config.output }]
+        ? [{ files: requirePath, dest: config.output }]
         : []),
     ], { watch: config.watch }),
   ],

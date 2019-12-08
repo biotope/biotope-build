@@ -15,7 +15,6 @@
     "@biotope/build": "biotope/biotope-build#new/custom-refactor",
     "@biotope/element": "^4.0.0",
     "change-case": "^4.0.1",
-    "classnames": "^2.2.6",
-    "handlebars": "^4.5.3"
+    "classnames": "^2.2.6"
   }
 }

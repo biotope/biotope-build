@@ -1,7 +1,13 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs-extra';
 import {
-  Options, ParsedOptions, PluginRow, PluginEvent, PluginRowSimple, PluginRowMaker,
+  Options,
+  ParsedOptions,
+  PluginRow,
+  PluginEvent,
+  PluginRowSimple,
+  PluginRowMaker,
+  ParsedOptionsConfig,
 } from './types';
 import { defaultCliOptions, defaultConfigs, defaultPlugins } from './defaults';
 
@@ -21,6 +27,24 @@ const setByPriority = <T>(
   } else if (config[prop] === undefined) {
     // eslint-disable-next-line no-param-reassign
     config[prop] = t ? t(defaultValue) : defaultValue;
+  }
+};
+
+const setObjectByPriority = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config: Record<string, any>, prop: string, cliValue: any, defaultValue: any,
+): void => {
+  const defaultConfig = defaultConfigs[prop as keyof ParsedOptionsConfig];
+  setByPriority(config, prop, cliValue, defaultValue, (value) => (value ? defaultConfig : false));
+  if ((config[prop] as boolean) === true) {
+    // eslint-disable-next-line no-param-reassign
+    config[prop] = defaultConfig;
+  } else if (typeof config[prop] === 'object') {
+    // eslint-disable-next-line no-param-reassign
+    config[prop] = {
+      ...defaultConfig,
+      ...config[prop],
+    };
   }
 };
 
@@ -44,21 +68,9 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setByPriority(configFile, 'production', cliOptions.production, defaultCliOptions.production);
   setByPriority(configFile, 'extLogic', cliOptions.extLogic, defaultCliOptions.extLogic, toArray);
   setByPriority(configFile, 'extStyle', cliOptions.extStyle, defaultCliOptions.extStyle, toArray);
-
-  setByPriority(configFile, 'legacy', cliOptions.legacy, defaultCliOptions.legacy, (value) => (value ? defaultConfigs.legacy : false));
-  if ((configFile.legacy as boolean) === true) {
-    configFile.legacy = defaultConfigs.legacy;
-  }
-
-  setByPriority(configFile, 'serve', cliOptions.serve, defaultCliOptions.serve, (value) => (value ? defaultConfigs.serve : false));
-  if ((configFile.serve as boolean) === true) {
-    configFile.serve = defaultConfigs.serve;
-  }
-
-  setByPriority(configFile, 'chunks', undefined, defaultConfigs.chunks);
-  if ((configFile.chunks as boolean) === true) {
-    configFile.chunks = defaultConfigs.chunks;
-  }
+  setObjectByPriority(configFile, 'legacy', cliOptions.legacy, defaultCliOptions.legacy);
+  setObjectByPriority(configFile, 'serve', cliOptions.serve, defaultCliOptions.serve);
+  setObjectByPriority(configFile, 'chunks', undefined, defaultConfigs.chunks);
 
   configFile.plugins = [
     ...(configFile.plugins || []),

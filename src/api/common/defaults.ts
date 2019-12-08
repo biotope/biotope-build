@@ -17,7 +17,7 @@ export const defaultCliOptions: Options = {
 
 export const defaultConfigs: ParsedOptionsConfig = {
   legacy: {
-    inline: false,
+    inline: true,
     suffix: '.legacy',
   },
   serve: {

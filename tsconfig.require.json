@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es6", "DOM"],
+    "declaration": false,
+    "declarationDir": null,
+    "typeRoots": []
+  },
+  "include": [
+    "require/**/*.ts"
+  ]
+}

@@ -2,8 +2,5 @@
   "extends": "./node_modules/@biotope/quality-gate/config/logic/recommended.js",
   "rules": {
     "compat/compat": "off"
-  },
-  "env": {
-    "browser": false
   }
 }

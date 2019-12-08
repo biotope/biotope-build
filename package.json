@@ -16,10 +16,11 @@
   },
   "scripts": {
     "clean": "rimraf ./lib",
-    "build": "npm run clean && tsc --project tsconfig.json",
-    "lint": "biotope-quality-gate -p src,types,plugins",
+    "build": "npm run clean && npm run build:require && tsc --project tsconfig.json",
+    "build:require": "tsc --project tsconfig.require.json && uglifyjs lib/require.js --wrap window -m -b -o lib/require.js && uglifyjs lib/require.js -c -o lib/require.min.js",
+    "lint": "biotope-quality-gate -p src,types,require,plugins",
     "start": "npm run build",
-    "watch": "tsc --project tsconfig.json --watch"
+    "watch": "npm run build:require && tsc --project tsconfig.json --watch"
   },
   "dependencies": {
     "@babel/core": "~7.7",
@@ -39,6 +40,7 @@
     "fs-extra": "~8.1",
     "get-port": "~5.0",
     "glob": "~7.1",
+    "handlebars": "~4.5",
     "local-web-server": "~3.0",
     "node-sass": "~4.13",
     "open": "~7.0",
@@ -59,6 +61,7 @@
     "typescript": "~3.7"
   },
   "devDependencies": {
-    "@biotope/quality-gate": "~1.0"
+    "@biotope/quality-gate": "~1.0",
+    "uglify-js": "~3.7"
   }
 }
