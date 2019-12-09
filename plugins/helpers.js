@@ -1,34 +1,51 @@
 
-function saveConfigPlugin(parentConfig) {
-  return ['before-build', (config) => {
+function onEvent(event, callback, eventCode) {
+  return [event, async (...args) => {
+    if (!eventCode || !args[0].code) {
+      return callback(...args);
+    }
+    if (args[0].code === eventCode) {
+      return callback(...args);
+    }
+    return undefined;
+  }];
+}
+
+function beforeBuildStart(callback) {
+  return onEvent('before-build', callback);
+}
+
+function onBuildStart(callback) {
+  return onEvent('after-build', callback, 'START');
+}
+
+function onBundleStart(callback) {
+  return onEvent('after-build', callback, 'BUNDLE_START');
+}
+
+function onBundleEnd(callback) {
+  return onEvent('after-build', callback, 'BUNDLE_END');
+}
+
+function onBuildEnd(callback) {
+  return onEvent('after-build', callback, 'END');
+}
+
+function saveConfig(parentConfig) {
+  return beforeBuildStart((config) => {
     Object.keys(config).forEach((key) => {
       // eslint-disable-next-line no-param-reassign
       parentConfig[key] = config[key];
     });
-  }];
-}
-
-const runOnceAfterBuildPlugin = (state, callback, conditionCallback) => {
-  let isFirstRun = true;
-  return ['after-build', async ({ code }) => {
-    if (isFirstRun && code === state && (!conditionCallback || conditionCallback())) {
-      isFirstRun = false;
-      return callback();
-    }
-    return undefined;
-  }];
-};
-
-function runOnceAfterBuildStartPlugin(...args) {
-  return runOnceAfterBuildPlugin('START', ...args);
-}
-function runOnceAfterBuildEndPlugin(...args) {
-  return runOnceAfterBuildPlugin('END', ...args);
+  });
 }
 
 module.exports = {
-  saveConfigPlugin,
-  runOnceAfterBuildPlugin,
-  runOnceAfterBuildStartPlugin,
-  runOnceAfterBuildEndPlugin,
+  onEvent,
+  saveConfig,
+  beforeBuildStart,
+  onBuildStart,
+  onBundleStart,
+  onBundleEnd,
+  onBuildEnd,
 };

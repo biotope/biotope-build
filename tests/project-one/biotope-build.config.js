@@ -1,4 +1,5 @@
 const handlebars = require('@biotope/build/plugins/handlebars');
+const devPreview = require('@biotope/build/plugins/dev-preview');
 
 module.exports = {
   // project: 'src',
@@ -12,6 +13,7 @@ module.exports = {
   // serve: false,
   // serve: {
   //   port: 9000,
+  //   open: false,
   // },
   legacy: true,
   // legacy: {
@@ -38,5 +40,11 @@ module.exports = {
         'src/resources/**/*.json',
       ],
     }),
+    devPreview(),
+    // devPreview({
+    //   output: 'preview',
+    //   // prepend: '//non-existing-file-one.js',
+    //   // append: ['//non-existing-file-two.js', '//non-existing-file-three.js'],
+    // }),
   ],
 };

@@ -1,22 +1,37 @@
 import {
-  rollup as runRollup,
-  watch as runWatch,
-  RollupOptions,
-  OutputOptions,
+  rollup as runRollup, watch as runWatch, RollupOptions, OutputOptions,
 } from 'rollup';
 import {
   Options, RollupEvent, ParsedOptions, PluginRowSimpleAfter, PluginRowSimpleBefore,
 } from './common/types';
 import { cleanFolder } from './common/clean-folder';
 import { createAllBuilds } from './common/rollup';
-import { parseOptions, getPlugins } from './common/parsers';
+import { parseOptions, getPlugins, toThenable } from './common/parsers';
+
+let isQueueRunning = false;
+const eventQueue: (() => Promise<void[]>)[] = [];
+
+const runEventQueue = async (): Promise<void> => {
+  if (!eventQueue.length || isQueueRunning) {
+    isQueueRunning = false;
+    return;
+  }
+  isQueueRunning = true;
+  await (eventQueue.pop() as Function)();
+  setTimeout(runEventQueue, 0);
+};
+
+const eventListener = (plugins: PluginRowSimpleAfter[]) => (event: RollupEvent): void => {
+  eventQueue.unshift(async () => Promise.all(
+    plugins.map(([, plugin]) => toThenable(plugin(event))),
+  ));
+  runEventQueue();
+};
 
 const watch = (options: ParsedOptions, builds: RollupOptions[]): void => {
   const plugins = getPlugins(options.plugins, 'after-build') as PluginRowSimpleAfter[];
 
-  const eventEmitter = runWatch(builds);
-
-  eventEmitter.addListener('event', (event: RollupEvent) => plugins.forEach(([, plugin]) => plugin(event)));
+  runWatch(builds).addListener('event', eventListener(plugins));
 };
 
 const run = async (options: ParsedOptions, builds: RollupOptions[]): Promise<void> => {
@@ -27,7 +42,7 @@ const run = async (options: ParsedOptions, builds: RollupOptions[]): Promise<voi
     return result.write(build.output as OutputOptions);
   }));
 
-  plugins.forEach(([, plugin]) => plugin(outputBuilds));
+  await Promise.all(plugins.map(([, plugin]) => toThenable(plugin(outputBuilds))));
 };
 
 export const build = async (options: Partial<Options>): Promise<void> => {
@@ -36,13 +51,7 @@ export const build = async (options: Partial<Options>): Promise<void> => {
   cleanFolder(parsedOptions.output);
 
   await Promise.all((getPlugins(parsedOptions.plugins, 'before-build') as PluginRowSimpleBefore[])
-    .map(([, plugin]) => {
-      const result = plugin(parsedOptions, builds);
-      if (result && result.then && typeof result.then === 'function') {
-        return new Promise((resolve) => result.then(() => resolve()));
-      }
-      return result as Promise<void>;
-    }));
+    .map(([, plugin]) => toThenable(plugin(parsedOptions, builds))));
 
-  (!parsedOptions.watch ? run : watch)(parsedOptions, builds);
+  await (!parsedOptions.watch ? run : watch)(parsedOptions, builds);
 };

@@ -11,6 +11,13 @@ import {
 } from './types';
 import { defaultCliOptions, defaultConfigs, defaultPlugins } from './defaults';
 
+export const toThenable = (object: void | Promise<void>): Promise<void> => {
+  if (object && object.then && typeof object.then === 'function') {
+    return new Promise((resolvePromise) => object.then(() => resolvePromise()));
+  }
+  return object as Promise<void>;
+};
+
 const kebabToCamel = (string: string): string => string.replace(/-([a-z])/g, (_, item): string => item.toUpperCase());
 
 const toArray = (obj: string): string[] => obj.split(',').filter((p): boolean => !!p);

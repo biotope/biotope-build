@@ -8,7 +8,7 @@ const { resolve, dirname, basename } = require('path');
 const handlebars = require('handlebars');
 const { watch } = require('chokidar');
 const setValue = require('set-value');
-const { saveConfigPlugin, runOnceAfterBuildStartPlugin } = require('../helpers');
+const { saveConfig, onBundleEnd } = require('../helpers');
 const registerHelpers = require('./register-helpers');
 
 const createGlobPattern = (array) => (array.length === 1 ? array[0] : `{${array.join(',')}}`);
@@ -51,23 +51,24 @@ function handlebarsPlugin(pluginOptions = {}) {
   const dataPatterns = createGlobPattern(pluginOptions.data || []);
   const partialPatterns = createGlobPattern(pluginOptions.partial || []);
   const sourcePatterns = createGlobPattern(pluginOptions.source || []);
-  const config = {};
+  const projectConfig = {};
 
   return [
-    saveConfigPlugin(config),
-    runOnceAfterBuildStartPlugin(() => {
-      const templateData = gatherData(config.project, dataPatterns);
+    saveConfig(projectConfig),
+    onBundleEnd(() => {
+      const { project, output, serve } = projectConfig;
+      const templateData = gatherData(project, dataPatterns);
 
       registerHelpers(handlebars);
-      registerPartials(config.project, partialPatterns, handlebars);
+      registerPartials(project, partialPatterns, handlebars);
 
-      if (!config.serve) {
-        glob(sourcePatterns, (_, files) => files.forEach((file) => {
-          compileHandlebars(config.project, file, templateData, handlebars, config.output);
-        }));
+      if (!serve) {
+        glob(sourcePatterns).forEach((file) => {
+          compileHandlebars(project, file, templateData, handlebars, output);
+        });
       } else {
         watch(sourcePatterns).on('all', (_, file) => {
-          compileHandlebars(config.project, file, templateData, handlebars, config.output);
+          compileHandlebars(project, file, templateData, handlebars, output);
         });
       }
     }),

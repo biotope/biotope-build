@@ -22,7 +22,7 @@ export const defaultConfigs: ParsedOptionsConfig = {
   },
   serve: {
     port: 8000,
-    open: true,
+    open: false,
     spa: false,
     secure: false,
   },

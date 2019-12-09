@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "biotope-build -c ./biotope-build.config.js",
-    "build": "biotope-build -c ./biotope-build.config.js --production",
+    "start": "npm run build",
+    "build": "biotope-build -c ./biotope-build.config.js",
+    "build:prod": "biotope-build -c ./biotope-build.config.js --production",
     "watch": "biotope-build -c ./biotope-build.config.js --watch --serve",
     "watch:prod": "biotope-build -c ./biotope-build.config.js --watch --serve --production"
   },

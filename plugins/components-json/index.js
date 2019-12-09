@@ -1,4 +1,5 @@
 const { outputFileSync } = require('fs-extra');
+const { beforeBuildStart } = require('../helpers');
 
 const isLegacyBuild = (legacyOption, filesObject) => {
   if (!legacyOption) {
@@ -9,7 +10,7 @@ const isLegacyBuild = (legacyOption, filesObject) => {
 };
 
 function componentsJsonPlugin() {
-  return ['before-build', ({ output, extLogic, legacy }, builds) => {
+  return beforeBuildStart(({ output, extLogic, legacy }, builds) => {
     const inputs = builds.reduce((accumulator, { input }) => ({
       ...accumulator,
       ...(isLegacyBuild(legacy, input) ? input : {}),
@@ -26,7 +27,7 @@ function componentsJsonPlugin() {
     );
 
     outputFileSync(`${output}/components.json`, JSON.stringify(componentsFiltered));
-  }];
+  });
 }
 
 module.exports = componentsJsonPlugin;
