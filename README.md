@@ -104,14 +104,14 @@ should we also build for IE11 and below?
 
 cli-default: no
 
-config-default: `{ inline: true, suffix: '.legacy' }`
+config-default: `{ port: 8000, open: false, spa: false, secure: false }`
 
 ### legacy
 should we also build for IE11 and below?
 
 cli-default: no
 
-config-default: `{ port: 8000, open: false, spa: false, secure: false }`
+config-default: `{ inline: true, suffix: '.legacy' }`
 
 ### chunks
 which third-party libs should NOT be in "bundle.js" and where should they be placed then?
