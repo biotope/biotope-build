@@ -222,10 +222,12 @@ export const finalizeBuilds = (builds: PreRollupOptions[]): RollupOptions[] => b
     ...(key !== 'pluginsConfig' ? { [key]: (build as Record<string, any>)[key] } : {}),
     ...(key === 'pluginsConfig' ? {
       plugins: [
+        ...Object.keys(build.pluginsConfig)
+          .filter((pluginName) => Array.isArray(build.pluginsConfig[pluginName]))
+          .map((pluginName) => plugins[
+            pluginName as keyof typeof plugins
+          ](...build.pluginsConfig[pluginName])),
         ...(build.plugins || []),
-        ...Object.keys(build.pluginsConfig).map((pluginName) => plugins[
-          pluginName as keyof typeof plugins
-        ](...build.pluginsConfig[pluginName])),
       ],
     } : {}),
   }), {})]), []);
