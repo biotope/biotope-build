@@ -98,3 +98,8 @@ export interface RollupEventBundleEnd {
 
 export type RollupEvent = RollupEventStart
 | RollupEventEnd | RollupEventError | RollupEventBundleStart | RollupEventBundleEnd;
+
+export interface PreRollupOptions extends RollupOptions {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pluginsConfig: Record<string, any[]>;
+}

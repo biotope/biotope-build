@@ -15,7 +15,7 @@ import * as babelPresetTypescript from '@babel/preset-typescript';
 import * as babelPluginProposalClassProperties from '@babel/plugin-proposal-class-properties';
 import * as babelPluginTransformClasses from '@babel/plugin-transform-classes';
 import * as babelPluginTransformObjectAssign from '@babel/plugin-transform-object-assign';
-import { ParsedOptions, LegacyOptions } from './types';
+import { ParsedOptions, LegacyOptions, PreRollupOptions } from './types';
 import { resolver } from './resolver';
 
 // FIXME: typings fix for all these packages
@@ -25,6 +25,16 @@ const nodeResolve: typeof rawNodeResolve.default = rawNodeResolve as any;
 const commonjs: typeof rawCommonjs.default = rawCommonjs as any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const typescript: typeof rawTypescript.default = rawTypescript as any;
+
+const plugins = {
+  postcss,
+  copy,
+  terser,
+  babel,
+  typescript,
+  commonjs,
+  nodeResolve,
+};
 
 const TYPESCRIPT_ES6_CONFIG = {
   compilerOptions: {
@@ -123,7 +133,7 @@ const createExtractor = (localCSS: Record<string, string> = {}): Extractor => ({
 
 const createBuild = (
   config: ParsedOptions, legacy: boolean, { getJSON, plugin }: Extractor = createExtractor(),
-): RollupOptions => ({
+): PreRollupOptions => ({
   input: createInputObject(
     config.project,
     config.extLogic,
@@ -139,8 +149,9 @@ const createBuild = (
       : '',
     sourcemap: !config.production,
   },
-  plugins: [
-    postcss({
+  plugins: [],
+  pluginsConfig: {
+    postcss: [{
       extensions: config.extStyle,
       inject: false,
       minimize: config.production,
@@ -153,46 +164,68 @@ const createBuild = (
         autoprefixer({ grid: 'autoplace' }),
         plugin,
       ],
-    }),
-    commonjs({
+    }],
+    commonjs: [{
       include: 'node_modules/**',
-    }),
-    nodeResolve({
+    }],
+    nodeResolve: [{
       browser: true,
       extensions: config.extLogic,
+    }],
+    ...(!legacy ? {
+      typescript: [{
+        // eslint-disable-next-line global-require
+        typescript: require('typescript'),
+        tsconfigOverride: TYPESCRIPT_ES6_CONFIG,
+      }],
+    } : {
+      babel: [{
+        babelrc: false,
+        extensions: config.extLogic,
+        presets: [
+          babelPresetEnv,
+          babelPresetTypescript,
+        ],
+        plugins: [
+          [babelPluginProposalClassProperties, { loose: true }],
+          [babelPluginTransformClasses, { loose: true }],
+          babelPluginTransformObjectAssign,
+        ],
+      }],
     }),
-    (!legacy ? typescript({
-      // eslint-disable-next-line global-require
-      typescript: require('typescript'),
-      tsconfigOverride: TYPESCRIPT_ES6_CONFIG,
-    }) : babel({
-      babelrc: false,
-      extensions: config.extLogic,
-      presets: [
-        babelPresetEnv,
-        babelPresetTypescript,
+    ...(config.production ? { terser: [] } : {}),
+    copy: [
+      [
+        ...config.copy.map((folder) => ({
+          files: `${config.project}/${folder}/**/*`,
+          dest: `${config.output}/${folder}`,
+        })),
+        ...(legacy && !(config.legacy as LegacyOptions).inline
+          ? [{ files: requirePath, dest: config.output }]
+          : []),
       ],
-      plugins: [
-        [babelPluginProposalClassProperties, { loose: true }],
-        [babelPluginTransformClasses, { loose: true }],
-        babelPluginTransformObjectAssign,
-      ],
-    })),
-    ...(config.production ? [terser()] : []),
-    copy([
-      ...config.copy.map((folder) => ({
-        files: `${config.project}/${folder}/**/*`,
-        dest: `${config.output}/${folder}`,
-      })),
-      ...(legacy && !(config.legacy as LegacyOptions).inline
-        ? [{ files: requirePath, dest: config.output }]
-        : []),
-    ], { watch: config.watch }),
-  ],
+      { watch: config.watch },
+    ],
+  },
   manualChunks: manualChunks('vendor', config.chunks || {}, legacy ? config.legacy as LegacyOptions : false),
 });
 
-export const createAllBuilds = (config: ParsedOptions): RollupOptions[] => ([
+export const createAllBuilds = (config: ParsedOptions): PreRollupOptions[] => ([
   createBuild(config, false),
   ...(config.legacy ? [createBuild(config, true)] : []),
 ]);
+
+export const finalizeBuilds = (builds: PreRollupOptions[]): RollupOptions[] => builds
+  .reduce((accumulator, build) => ([...accumulator, Object.keys(build).reduce((acc, key) => ({
+    ...acc,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...(key !== 'pluginsConfig' ? { [key]: (build as Record<string, any>)[key] } : {}),
+    ...(key === 'pluginsConfig' ? {
+      plugins: [
+        ...(build.plugins || []),
+        ...Object.keys(build.pluginsConfig).map((pluginName) => plugins[
+          pluginName as keyof typeof plugins
+        ](...build.pluginsConfig[pluginName])),
+      ],
+    } : {}),
+  }), {})]), []);

@@ -5,13 +5,13 @@ interface WindowRequire extends Window {
   require?: Require;
 }
 
-type ExtensionType = 'executable' | 'object' | 'style';
+type ExtensionType = 'executable' | 'object'; // | 'style';
 
 if (!(window as WindowRequire).require) {
   const extensionTypes: Record<ExtensionType, string[]> = {
     executable: ['js'],
     object: ['json'],
-    style: ['css'],
+    // style: ['css'],
   };
 
   const createElementAndSet = <T extends HTMLElement>(
@@ -95,9 +95,9 @@ if (!(window as WindowRequire).require) {
           return getExports(require, url, value);
         case 'object':
           return JSON.parse(value);
-        case 'style':
-          document.head.appendChild(createElementAndSet('style', 'innerHTML', value));
-          return value;
+        // case 'style':
+        //   document.head.appendChild(createElementAndSet('style', 'innerHTML', value));
+        //   return value;
         default:
           return value;
       }

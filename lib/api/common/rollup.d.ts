@@ -1,3 +1,4 @@
 import { RollupOptions } from 'rollup';
-import { ParsedOptions } from './types';
-export declare const createAllBuilds: (config: ParsedOptions) => RollupOptions[];
+import { ParsedOptions, PreRollupOptions } from './types';
+export declare const createAllBuilds: (config: ParsedOptions) => PreRollupOptions[];
+export declare const finalizeBuilds: (builds: PreRollupOptions[]) => RollupOptions[];

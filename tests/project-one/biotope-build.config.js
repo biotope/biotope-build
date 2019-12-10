@@ -1,5 +1,6 @@
 const handlebars = require('@biotope/build/plugins/handlebars');
 const devPreview = require('@biotope/build/plugins/dev-preview');
+// const noCodeSplit = require('@biotope/build/plugins/no-code-split');
 
 module.exports = {
   // project: 'src',
@@ -45,6 +46,10 @@ module.exports = {
     //   output: 'preview',
     //   // prepend: '//non-existing-file-one.js',
     //   // append: ['//non-existing-file-two.js', '//non-existing-file-three.js'],
+    // }),
+    // noCodeSplit({
+    //   // files: 'all',
+    //   files: 'legacy',
     // }),
   ],
 };
