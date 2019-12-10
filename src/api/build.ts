@@ -5,7 +5,7 @@ import {
   Options, RollupEvent, ParsedOptions, PluginRowSimpleAfter, PluginRowSimpleBefore,
 } from './common/types';
 import { cleanFolder } from './common/clean-folder';
-import { createAllBuilds, finalizeBuilds } from './common/rollup';
+import { createPreBuilds, finalizeBuilds } from './common/rollup';
 import { parseOptions, getPlugins, toThenable } from './common/parsers';
 
 let isQueueRunning = false;
@@ -47,7 +47,7 @@ const run = async (options: ParsedOptions, builds: RollupOptions[]): Promise<voi
 
 export const build = async (options: Partial<Options>): Promise<void> => {
   const parsedOptions = parseOptions(options);
-  const preBuilds = createAllBuilds(parsedOptions);
+  const preBuilds = createPreBuilds(parsedOptions);
   cleanFolder(parsedOptions.output);
 
   await Promise.all((getPlugins(parsedOptions.plugins, 'before-build') as PluginRowSimpleBefore[])

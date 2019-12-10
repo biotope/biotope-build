@@ -101,5 +101,5 @@ export type RollupEvent = RollupEventStart
 
 export interface PreRollupOptions extends RollupOptions {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  pluginsConfig: Record<string, any[]>;
+  pluginsConfig: Record<string, object[] | undefined>;
 }

@@ -79,5 +79,5 @@ export interface RollupEventBundleEnd {
 }
 export declare type RollupEvent = RollupEventStart | RollupEventEnd | RollupEventError | RollupEventBundleStart | RollupEventBundleEnd;
 export interface PreRollupOptions extends RollupOptions {
-    pluginsConfig: Record<string, any[]>;
+    pluginsConfig: Record<string, object[] | undefined>;
 }
