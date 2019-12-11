@@ -18,6 +18,12 @@ import { ParsedOptions, LegacyOptions, PreRollupOptions } from './types';
 
 const requirePath = resolve(`${__dirname}/../../require.min.js`);
 
+const getLegacyBanner = (config: ParsedOptions, legacy: boolean): string => (
+  legacy && (config.legacy as LegacyOptions).inline
+    ? readFileSync(requirePath).toString()
+    : ''
+);
+
 const createBuild = (config: ParsedOptions, legacy: boolean): PreRollupOptions => ({
   input: createInputs(
     config.project,
@@ -29,12 +35,11 @@ const createBuild = (config: ParsedOptions, legacy: boolean): PreRollupOptions =
     dir: config.output,
     format: !legacy ? 'esm' : 'cjs',
     chunkFileNames: '[name].js',
-    banner: legacy && (config.legacy as LegacyOptions).inline
-      ? readFileSync(requirePath).toString()
-      : '',
+    banner: getLegacyBanner(config, legacy),
     sourcemap: !config.production,
   },
   plugins: [],
+  priorityPlugins: [],
   pluginsConfig: {
     postcss: [getPostcssConfig(config)],
     commonjs: [getCommonjsConfig()],
@@ -56,9 +61,10 @@ export const finalizeBuilds = (builds: PreRollupOptions[]): RollupOptions[] => b
   .reduce((accumulator, build) => ([...accumulator, Object.keys(build).reduce((acc, key) => ({
     ...acc,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ...(key !== 'pluginsConfig' ? { [key]: (build as Record<string, any>)[key] } : {}),
+    ...(key !== 'pluginsConfig' && key !== 'priorityPlugins' ? { [key]: (build as Record<string, any>)[key] } : {}),
     ...(key === 'pluginsConfig' ? {
       plugins: [
+        ...(build.priorityPlugins || []),
         ...Object.keys(build.pluginsConfig)
           .filter((name: InnerPlugin) => Array.isArray(build.pluginsConfig[name]))
           .map((name: InnerPlugin) => innerPlugins[name](

@@ -1,8 +1,21 @@
 import style from './style.scss';
 
-// eslint-disable-next-line no-console
 export const logStyle = (): void => {
-  console.log(style['cenas-grandes']);
-  console.log(style.cenasGrandes);
-  console.log(style.default);
+  /* eslint-disable no-console */
+  console.log('full object:', style);
+  console.log('accessed by kebab:', style['my-cute-class']);
+  console.log('accessed by camel:', style.myCuteClass);
+  console.log('full style:', style.default);
+  /* eslint-enable no-console */
+
+  const styleElement = document.createElement('style');
+  styleElement.innerHTML = style.default;
+  document.head.appendChild(styleElement);
+
+  document.querySelector('#root').innerHTML = `
+    <div class="${style.myCuteClass}">
+      <p>color is: ${COLORS.PRIMARY} (${typeof COLORS.PRIMARY})</p>
+      <p>z-index is: ${PRIORITY_LAYER} (${typeof PRIORITY_LAYER})</p>
+    </div>
+  `;
 };

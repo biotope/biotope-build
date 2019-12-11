@@ -78,6 +78,7 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setObjectByPriority(configFile, 'legacy', cliOptions.legacy, defaultCliOptions.legacy);
   setObjectByPriority(configFile, 'serve', cliOptions.serve, defaultCliOptions.serve);
   setObjectByPriority(configFile, 'chunks', undefined, defaultConfigs.chunks);
+  setObjectByPriority(configFile, 'runtime', undefined, defaultConfigs.runtime);
 
   configFile.plugins = [
     ...(configFile.plugins || []),

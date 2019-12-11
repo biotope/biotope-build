@@ -1,8 +1,23 @@
+@import './useful';
 
-html {
-  display: grid;
+body {
+  padding: 0;
+  margin: 0;
+  border: 0;
+
+  #root {
+    display: grid;
+  }
+
+  .my-cute-class {
+    margin: auto;
+    color: $COLORS_PRIMARY;
+    z-index: $PRIORITY_LAYER;
+  }
 }
 
-.cenas-grandes {
-  display: none;
+html,
+body,
+#root {
+  @include full;
 }

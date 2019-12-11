@@ -29,6 +29,7 @@ export const defaultConfigs: ParsedOptionsConfig = {
   chunks: {
     'biotope-element': ['@biotope/element'],
   },
+  runtime: {},
 };
 
-export const defaultPlugins = ['serve', 'livereload', 'components-json', 'logger'];
+export const defaultPlugins = ['serve', 'livereload', 'components-json', 'logger', 'images', 'runtime'];

@@ -1,4 +1,4 @@
-import { RollupBuild, RollupOptions, RollupOutput } from 'rollup';
+import { RollupBuild, RollupOptions, RollupOutput, Plugin } from 'rollup';
 export declare type PluginEvent = 'before-build' | 'after-build';
 export interface PluginRowBase extends Array<any> {
     0: PluginEvent;
@@ -39,10 +39,12 @@ export interface LegacyOptions {
     inline: boolean;
     suffix: string;
 }
+export declare type RuntimeOptions = Record<string, any>;
 export interface ParsedOptionsConfig {
     legacy: false | LegacyOptions;
     serve: false | ServeOptions;
     chunks: false | Record<string, string[]>;
+    runtime: RuntimeOptions;
 }
 export interface ParsedOptions extends ParsedOptionsConfig {
     project: string;
@@ -79,5 +81,6 @@ export interface RollupEventBundleEnd {
 }
 export declare type RollupEvent = RollupEventStart | RollupEventEnd | RollupEventError | RollupEventBundleStart | RollupEventBundleEnd;
 export interface PreRollupOptions extends RollupOptions {
+    priorityPlugins: Plugin[];
     pluginsConfig: Record<string, object[] | undefined>;
 }

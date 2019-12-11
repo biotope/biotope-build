@@ -1,4 +1,6 @@
-import { RollupBuild, RollupOptions, RollupOutput } from 'rollup';
+import {
+  RollupBuild, RollupOptions, RollupOutput, Plugin,
+} from 'rollup';
 
 export type PluginEvent = 'before-build' | 'after-build';
 
@@ -51,10 +53,14 @@ export interface LegacyOptions {
   suffix: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type RuntimeOptions = Record<string, any>;
+
 export interface ParsedOptionsConfig {
   legacy: false | LegacyOptions;
   serve: false | ServeOptions;
   chunks: false | Record<string, string[]>;
+  runtime: RuntimeOptions;
 }
 
 export interface ParsedOptions extends ParsedOptionsConfig {
@@ -100,6 +106,6 @@ export type RollupEvent = RollupEventStart
 | RollupEventEnd | RollupEventError | RollupEventBundleStart | RollupEventBundleEnd;
 
 export interface PreRollupOptions extends RollupOptions {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  priorityPlugins: Plugin[];
   pluginsConfig: Record<string, object[] | undefined>;
 }

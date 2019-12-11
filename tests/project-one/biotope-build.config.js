@@ -26,6 +26,13 @@ module.exports = {
   //   'biotope-element': ['@biotope/element'],
   //   // style: ['src/style/index.ts'], // TODO - project-code chunks
   // },
+  runtime: {
+    COLORS: {
+      PRIMARY: '#ff0000',
+    },
+    PRIORITY_LAYER: 100,
+    VARIABLE_NOT_FOUND_IN_COMPILED_CODE_BECAUSE_ITS_NOT_USED: 'runtime variables are awesome!',
+  },
   plugins: [
     // ['before-build', (...args) => console.log('BEFORE', ...args)],
     // ['after-build', (...args) => console.log('AFTER', ...args)],

@@ -1,5 +1,6 @@
 import { plugin as postcssPlugin } from 'postcss';
 import * as autoprefixer from 'autoprefixer';
+import { resolve } from 'path';
 import { ParsedOptions } from '../types';
 
 interface Extractor {
@@ -10,6 +11,10 @@ interface Extractor {
 const createExtractor = (localCSS: Record<string, string> = {}): Extractor => ({
   getJSON: (filename: string, json: Record<string, string>): void => {
     if (localCSS[filename]) {
+      Object.keys(json).filter((key) => json[key][0] !== '#').forEach((key) => {
+        // eslint-disable-next-line no-param-reassign
+        localCSS[filename] = localCSS[filename].replace(new RegExp(`.${key}`, 'g'), `.${json[key]}`);
+      });
       // eslint-disable-next-line no-param-reassign
       json.default = localCSS[filename];
     }
@@ -29,7 +34,15 @@ export const getPostcssConfig = (config: ParsedOptions, extractor = createExtrac
   minimize: config.production,
   modules: {
     camelCase: true,
-    generateScopedName: '[path]__[name]__[local]--[hash:base64:5]',
+    generateScopedName(name: string, file: string, css: string): string {
+      const isClass = css.indexOf(`.${name}`) >= 0;
+      const path = file
+        .replace(`${resolve(`${process.cwd()}/${config.project}`)}/`, '')
+        .replace(/[&#,+()$~%.'":*?<>{}\s-]/g, '-')
+        .replace(/[/\\]/g, '_');
+
+      return isClass ? `${path}_${name}` : `#${name}`;
+    },
     getJSON: extractor.getJSON,
   },
   plugins: [
