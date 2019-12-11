@@ -1,1 +1,1 @@
-export declare const resolver: (extensions: string[], pattern: string[]) => string[];
+export declare const resolver: (pattern: string[], includeNodeModules: boolean, extensions?: string[] | undefined) => string[];

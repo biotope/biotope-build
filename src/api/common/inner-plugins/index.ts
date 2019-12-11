@@ -1,6 +1,5 @@
 import * as babel from 'rollup-plugin-babel';
 import * as rawCommonjs from 'rollup-plugin-commonjs';
-import * as copy from 'rollup-plugin-copy-glob';
 import * as rawNodeResolve from 'rollup-plugin-node-resolve';
 import * as postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
@@ -16,7 +15,6 @@ const typescript: typeof rawTypescript.default = rawTypescript as any;
 
 export * from './babel';
 export * from './commonjs';
-export * from './copy';
 export * from './node-resolver';
 export * from './postcss';
 export * from './typescript';
@@ -24,7 +22,6 @@ export * from './typescript';
 export const innerPlugins = {
   babel,
   commonjs,
-  copy,
   nodeResolve,
   postcss,
   terser,

@@ -5,7 +5,18 @@ const devPreview = require('@biotope/build/plugins/dev-preview');
 module.exports = {
   // project: 'src',
   // output: 'dist',
-  // copy: 'resources',
+  copy: [
+    'resources',
+    {
+      from: 'node_modules/@webcomponents/webcomponentsjs/*.js',
+      to: 'dist/polyfills',
+      ignore: ['es5-adapter.js$'],
+    },
+    {
+      from: 'node_modules/@webcomponents/webcomponentsjs/bundles/**/*',
+      to: 'dist/polyfills/bundles',
+    },
+  ],
   // exclude: [],
   // watch: true,
   // production: true,

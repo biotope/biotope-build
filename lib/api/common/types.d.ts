@@ -26,6 +26,7 @@ export interface Options {
     legacy: boolean;
     chunks: boolean;
     production: boolean;
+    componentsJson: string;
     extLogic: string;
     extStyle: string;
 }
@@ -46,13 +47,19 @@ export interface ParsedOptionsConfig {
     chunks: false | Record<string, string[]>;
     runtime: RuntimeOptions;
 }
+export interface CopyItem {
+    from: string;
+    to: string;
+    ignore: string[];
+}
 export interface ParsedOptions extends ParsedOptionsConfig {
     project: string;
     exclude: string[];
     output: string;
-    copy: string[];
+    copy: CopyItem[];
     watch: boolean;
     production: boolean;
+    componentsJson: string;
     extLogic: string[];
     extStyle: string[];
     plugins: PluginRow[];

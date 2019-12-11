@@ -9,7 +9,6 @@ import {
   getPostcssConfig,
   getNodeResolverConfig,
   getTypescriptConfig,
-  getCopyConfig,
 } from './inner-plugins';
 import { resolver } from './resolver';
 import { createInputs } from './create-inputs';
@@ -29,7 +28,7 @@ const createBuild = (config: ParsedOptions, legacy: boolean): PreRollupOptions =
     config.project,
     config.extLogic,
     legacy ? (config.legacy as LegacyOptions).suffix : '',
-    resolver(config.extLogic, config.exclude.map((folder) => `${config.project}/${folder}`)),
+    resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic),
   ),
   output: {
     dir: config.output,
@@ -47,7 +46,6 @@ const createBuild = (config: ParsedOptions, legacy: boolean): PreRollupOptions =
     typescript: !legacy ? [getTypescriptConfig()] : undefined,
     babel: legacy ? [getBabelConfig(config)] : undefined,
     terser: config.production ? [] : undefined,
-    copy: [...getCopyConfig(config, legacy ? requirePath : undefined)],
   },
   manualChunks: manualChunks('vendor', config.chunks || {}, legacy ? config.legacy as LegacyOptions : false),
 });

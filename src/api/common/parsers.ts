@@ -8,6 +8,7 @@ import {
   PluginRowSimple,
   PluginRowMaker,
   ParsedOptionsConfig,
+  CopyItem,
 } from './types';
 import { defaultCliOptions, defaultConfigs, defaultPlugins } from './defaults';
 
@@ -73,12 +74,19 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setByPriority(configFile, 'copy', cliOptions.copy, defaultCliOptions.copy, toArray);
   setByPriority(configFile, 'watch', cliOptions.watch, defaultCliOptions.watch);
   setByPriority(configFile, 'production', cliOptions.production, defaultCliOptions.production);
+  setByPriority(configFile, 'componentsJson', cliOptions.componentsJson, defaultCliOptions.componentsJson);
   setByPriority(configFile, 'extLogic', cliOptions.extLogic, defaultCliOptions.extLogic, toArray);
   setByPriority(configFile, 'extStyle', cliOptions.extStyle, defaultCliOptions.extStyle, toArray);
   setObjectByPriority(configFile, 'legacy', cliOptions.legacy, defaultCliOptions.legacy);
   setObjectByPriority(configFile, 'serve', cliOptions.serve, defaultCliOptions.serve);
   setObjectByPriority(configFile, 'chunks', undefined, defaultConfigs.chunks);
   setObjectByPriority(configFile, 'runtime', undefined, defaultConfigs.runtime);
+
+  configFile.copy = (configFile as ParsedOptions).copy.map((item: string | Partial<CopyItem>) => ({
+    from: typeof item === 'string' ? `${configFile.project}/${item}` : item.from || '',
+    to: typeof item === 'string' ? `${configFile.output}/${item}` : item.to || 'vendor',
+    ignore: typeof item === 'string' || !item.ignore ? [] : item.ignore,
+  })).filter((item) => item.from);
 
   configFile.plugins = [
     ...(configFile.plugins || []),

@@ -3,8 +3,8 @@
  */
 
 const { writeFileSync } = require('fs-extra');
-const copy = require('rollup-plugin-copy-glob');
-const { saveConfig, beforeBuildStart, onBundleEnd } = require('../helpers');
+const { saveConfig, onBundleEnd } = require('../helpers');
+const copyPlugin = require('../copy');
 
 const template = ({ output, prepend, append }) => `
 <!DOCTYPE html>
@@ -55,20 +55,18 @@ function devPreviewPlugin(pluginConfig = {}) {
   let isFirstTime = true;
   return [
     saveConfig(projectConfig),
-    beforeBuildStart((_, builds) => {
-      builds.forEach((build) => {
-        build.plugins.push(copy([
-          {
-            files: `${__dirname}/files/**/*`,
-            dest: `${projectConfig.output}/${output}`,
-          },
-          {
-            files: `${projectConfig.project}/${assets}/**/*`,
-            dest: `${projectConfig.output}/${output}`,
-          },
-        ], { watch: !!projectConfig.serve }));
-      });
-    }),
+    copyPlugin(() => ([
+      {
+        from: `${__dirname}/files/*`,
+        to: `${projectConfig.output}/${output}`,
+        ignore: [],
+      },
+      {
+        from: `${projectConfig.project}/${assets}`,
+        to: `${projectConfig.output}/${output}`,
+        ignore: [],
+      },
+    ])),
     onBundleEnd(() => {
       if (isFirstTime) {
         isFirstTime = false;

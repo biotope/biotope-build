@@ -8,6 +8,7 @@ export const defaultCliOptions: Options = {
   copy: 'resources',
   watch: false,
   production: false,
+  componentsJson: 'components\\/.*\\/index\\.(j|t)s$',
   extLogic: '.js,.ts',
   extStyle: '.css,.scss',
   legacy: false,
@@ -32,4 +33,6 @@ export const defaultConfigs: ParsedOptionsConfig = {
   runtime: {},
 };
 
-export const defaultPlugins = ['serve', 'livereload', 'components-json', 'logger', 'images', 'runtime'];
+export const defaultPlugins = [
+  'serve', 'livereload', 'logger', 'images', 'runtime', 'copy', 'components-json',
+];
