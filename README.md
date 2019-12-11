@@ -18,6 +18,10 @@ A module bundler for modern frontend applications.
 - style files will be inserted into the js/ts files that import them - always
   - this means the build will not generate any "css" files
 
+- image files, when imported, will be turned into base64 strings
+
+- svg files, when imported, will be simple strings containing the file contents
+
 - cli options are sacred and override everything
   - if an option is missing on the cli, the config file options are used
   - if nothing is provided, the default configs are used
@@ -62,7 +66,7 @@ what folders should be copied to the `output` folder? (comma separated)
 
 cli-default: `resources`
 
-config-default: `['resources']`
+config-default: `['resources']` (which will be transformed into: `[{ from: 'src/resources', to: 'dist/resources', ignore: [] }]`)
 
 ### exclude
 which files should be ignored during logic (js/ts) compilation?
@@ -113,6 +117,13 @@ cli-default: no
 
 config-default: `{ inline: true, suffix: '.legacy' }`
 
+### components-json
+what is the components.json pattern that generates a list of components?
+
+cli-default: `components\\/.*\\/index\\.(j|t)s$`
+
+config-default: `components\/.*\/index\.(j|t)s$`
+
 ### chunks
 which third-party libs should NOT be in "bundle.js" and where should they be placed then?
 
@@ -126,6 +137,13 @@ what do you want me to run BEFORE and AFTER the build?
 cli-default: N/A
 
 config-default: `[]`
+
+### runtime
+what variables should be available globally on all JS/TS/CSS/SCSS files?
+
+cli-default: N/A
+
+config-default: `{ ENVIRONMENT: ?? }` (?? => "development" or "production")
 
 ## Guidelines for internal development
 - everything is a plugin
