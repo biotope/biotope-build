@@ -30,6 +30,10 @@ export const defaultConfigs: ParsedOptionsConfig = {
   chunks: {
     'biotope-element': ['@biotope/element'],
   },
+  style: {
+    extract: false,
+    global: false,
+  },
   runtime: {},
 };
 

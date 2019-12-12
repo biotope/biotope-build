@@ -1,0 +1,11 @@
+@import '~@biotope/element/lib/host.mixin';
+
+@include host(bio-world);
+
+.container {
+  display: block;
+}
+
+.text {
+  color: dodgerblue;
+}

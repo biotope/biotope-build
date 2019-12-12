@@ -33,7 +33,7 @@ const createServer = (directory, port, open, spa, https) => {
     .map((host) => `http${https ? 's' : ''}://${host}${port === 80 ? '' : `:${port}`}`);
 
   // eslint-disable-next-line no-console
-  console.log(`\nServing at ${urls.join(', ')}\n`);
+  console.log(`\nServing at ${urls.join(' ')}\n`);
 
   if (open) {
     opn(urls[0]);

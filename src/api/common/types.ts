@@ -57,10 +57,16 @@ export interface LegacyOptions {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RuntimeOptions = Record<string, any>;
 
+export interface StyleOptions {
+  extract: boolean;
+  global: boolean;
+}
+
 export interface ParsedOptionsConfig {
   legacy: false | LegacyOptions;
   serve: false | ServeOptions;
   chunks: false | Record<string, string[]>;
+  style: StyleOptions;
   runtime: RuntimeOptions;
 }
 

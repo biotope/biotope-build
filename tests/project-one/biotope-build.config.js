@@ -37,6 +37,10 @@ module.exports = {
   //   'biotope-element': ['@biotope/element'],
   //   // style: ['src/style/index.ts'], // TODO - project-code chunks
   // },
+  style: {
+    extract: true,
+    // global: true,
+  },
   runtime: {
     COLORS: {
       PRIMARY: '#ff0000',
