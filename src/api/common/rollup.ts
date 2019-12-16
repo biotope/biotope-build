@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
-import { RollupOptions } from 'rollup';
+import { RollupOptions, OutputOptions, RollupWarning } from 'rollup';
 import {
   innerPlugins,
   InnerPlugin,
@@ -23,13 +23,22 @@ const getLegacyBanner = (config: ParsedOptions, legacy: boolean): string => (
     : ''
 );
 
-const createBuild = (config: ParsedOptions, legacy: boolean): PreRollupOptions => ({
+const createBuild = (
+  config: ParsedOptions, legacy: boolean, warnings: Record<string, RollupWarning[]> = {},
+): PreRollupOptions => ({
   input: createInputs(
     config.project,
     config.extLogic,
     legacy ? (config.legacy as LegacyOptions).suffix : '',
     resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic),
   ),
+  onwarn(warning: RollupWarning): void {
+    // eslint-disable-next-line no-param-reassign
+    warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] = [
+      ...(warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] || []),
+      warning,
+    ];
+  },
   output: {
     dir: config.output,
     format: !legacy ? 'esm' : 'cjs',
@@ -37,7 +46,19 @@ const createBuild = (config: ParsedOptions, legacy: boolean): PreRollupOptions =
     banner: getLegacyBanner(config, legacy),
     sourcemap: !config.production,
   },
-  plugins: [],
+  plugins: [
+    {
+      name: 'biotope-build-cleanup',
+      generateBundle(_: OutputOptions, bundle: Record<string, object>): void {
+        (warnings.EMPTY_BUNDLE || []).forEach((warning) => {
+          if (warning.chunkName) {
+            // eslint-disable-next-line no-param-reassign
+            delete bundle[`${warning.chunkName}.js`];
+          }
+        });
+      },
+    },
+  ],
   priorityPlugins: [],
   pluginsConfig: {
     postcss: [getPostcssConfig(config)],
@@ -48,6 +69,9 @@ const createBuild = (config: ParsedOptions, legacy: boolean): PreRollupOptions =
     terser: config.production ? [] : undefined,
   },
   manualChunks: manualChunks('vendor', config.chunks || {}, legacy ? config.legacy as LegacyOptions : false),
+  watch: {
+    chokidar: true,
+  },
 });
 
 export const createPreBuilds = (config: ParsedOptions): PreRollupOptions[] => ([

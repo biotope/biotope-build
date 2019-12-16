@@ -1,5 +1,5 @@
 
-function onEvent(event, callback, eventCode) {
+function onBuildEvent(event, callback, eventCode) {
   return [event, async (...args) => {
     if (!eventCode || !args[0].code) {
       return callback(...args);
@@ -12,23 +12,23 @@ function onEvent(event, callback, eventCode) {
 }
 
 function beforeBuildStart(callback) {
-  return onEvent('before-build', callback);
+  return onBuildEvent('before-build', callback);
 }
 
 function onBuildStart(callback) {
-  return onEvent('after-build', callback, 'START');
+  return onBuildEvent('after-build', callback, 'START');
 }
 
 function onBundleStart(callback) {
-  return onEvent('after-build', callback, 'BUNDLE_START');
+  return onBuildEvent('after-build', callback, 'BUNDLE_START');
 }
 
 function onBundleEnd(callback) {
-  return onEvent('after-build', callback, 'BUNDLE_END');
+  return onBuildEvent('after-build', callback, 'BUNDLE_END');
 }
 
 function onBuildEnd(callback) {
-  return onEvent('after-build', callback, 'END');
+  return onBuildEvent('after-build', callback, 'END');
 }
 
 function saveConfig(parentConfig) {
@@ -50,7 +50,7 @@ const isLegacyBuild = (legacyOption, build) => {
 
 module.exports = {
   isLegacyBuild,
-  onEvent,
+  onBuildEvent,
   saveConfig,
   beforeBuildStart,
   onBuildStart,

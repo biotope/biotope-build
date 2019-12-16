@@ -15,4 +15,5 @@ export const resolver = (
   .filter((item) => (extensions
     ? extensions.reduce((hasExt, ext) => (new RegExp(`\\${ext}$`)).test(item) || hasExt, false)
     : true))
-  .map((item) => resolve(item));
+  .map((item) => resolve(item))
+  .filter((item) => !statSync(item).isDirectory());

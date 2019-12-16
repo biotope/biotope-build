@@ -18,4 +18,5 @@ export const registerLint: Action = (program) => program
   .option('--production', 'Build for production')
   .option('--ext-logic <pattern>', 'Extensions to include for logic files (comma separated)')
   .option('--ext-style <pattern>', 'Extensions to include for style files (comma separated)')
+  .option('-d, --debug', 'Debug')
   .action(buildAction);
