@@ -2,7 +2,7 @@
  * TODO: MOVE PLUGIN TO OWN REPO
  */
 
-const { writeFileSync } = require('fs-extra');
+const { outputFileSync, readFileSync } = require('fs-extra');
 const { saveConfig, onBundleEnd } = require('../helpers');
 const copyPlugin = require('../copy');
 
@@ -51,13 +51,17 @@ function devPreviewPlugin(pluginConfig = {}) {
   const assets = pluginConfig.assets || 'dev-preview';
   const prepend = toArray(pluginConfig.prepend);
   const append = toArray(pluginConfig.append);
+  const templateHtml = pluginConfig.template ? readFileSync(pluginConfig.template) : template({
+    output, prepend, append,
+  });
+  
   const projectConfig = {};
   let isFirstTime = true;
   return [
     saveConfig(projectConfig),
     copyPlugin(() => ([
       {
-        from: `${__dirname}/files/*`,
+        from: `${__dirname}/files`,
         to: `${projectConfig.output}/${output}`,
         ignore: [],
       },
@@ -70,9 +74,7 @@ function devPreviewPlugin(pluginConfig = {}) {
     onBundleEnd(() => {
       if (isFirstTime) {
         isFirstTime = false;
-        writeFileSync(`${projectConfig.output}/index.html`, template({
-          output, prepend, append,
-        }));
+        outputFileSync(`${projectConfig.output}/index.html`, templateHtml);
       }
     }),
   ];
