@@ -15,8 +15,8 @@ function runtimePlugin() {
       );
 
       builds.forEach((build) => {
-        build.priorityPlugins.push(prepend(logicPrepend));
-        build.priorityPlugins.push(prepend(stylePrepend));
+        build.priorityPlugins.unshift(prepend(logicPrepend));
+        build.priorityPlugins.unshift(prepend(stylePrepend));
       });
     }),
   ];

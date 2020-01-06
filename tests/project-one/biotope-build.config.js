@@ -1,5 +1,6 @@
 const handlebars = require('@biotope/build/plugins/handlebars');
 const devPreview = require('@biotope/build/plugins/dev-preview');
+const jsx = require('@biotope/build/plugins/jsx');
 // const noCodeSplit = require('@biotope/build/plugins/no-code-split');
 
 module.exports = {
@@ -20,8 +21,9 @@ module.exports = {
   // exclude: [],
   // watch: true,
   // production: true,
-  // extLogic: ['.js', '.ts'],
+  extLogic: ['.js', '.ts', '.jsx', '.tsx'],
   // extStyle: ['.css', '.scss'],
+  componentsJson: 'components\\/.*\\/index\\.(j|t)sx?$',
   // serve: false,
   // serve: {
   //   port: 9000,
@@ -32,11 +34,12 @@ module.exports = {
   //   inline: false,
   //   suffix: '.ie11',
   // },
-  chunks: true,
-  // chunks: {
-  //   'biotope-element': ['@biotope/element'],
-  //   // style: ['src/style/index.ts'], // TODO - project-code chunks
-  // },
+  // chunks: true,
+  chunks: {
+    'biotope-element': ['@biotope/element'],
+    react: ['react', 'react-dom'],
+    // style: ['src/style/index.ts'], // TODO - project-code chunks
+  },
   style: {
     extract: true,
     // global: true,
@@ -51,6 +54,7 @@ module.exports = {
   plugins: [
     // ['before-build', (...args) => console.log('BEFORE', ...args)],
     // ['after-build', (...args) => console.log('AFTER', ...args)],
+    jsx(),
     handlebars({
       source: [
         'src/components/**/scaffolding/*.hbs',

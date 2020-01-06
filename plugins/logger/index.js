@@ -129,6 +129,18 @@ const onWatch = (projectConfig, output, isFirstTime) => {
     const currentTime = (new Date(Date.now())).toTimeString().split(' ')[0];
     logStrong(`\nFinished building at ${chalk.underline(currentTime)}\n`);
   }
+
+  if (output.code === 'ERROR') {
+    console.error('Error:', output.error.code);
+    console.log(output.error);
+
+    try {
+      const { file, line, column } = output.error.loc;
+      console.error('Origin:', file.replace(process.cwd(), '.'), `(${line},${column})`);
+    } catch (_) {}
+
+    console.error('\n', output.error.stack);
+  }
 };
 
 function loggerPlugin() {

@@ -2,6 +2,7 @@
 const TYPESCRIPT_ES6_CONFIG = {
   compilerOptions: {
     target: 'es6',
+    allowSyntheticDefaultImports: true,
   },
 };
 

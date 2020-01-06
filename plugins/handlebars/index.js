@@ -2,6 +2,8 @@
  * TODO: MOVE PLUGIN TO OWN REPO
  */
 
+// TODO: add env vars to hbs templates
+
 const { readFileSync, createFileSync, writeFileSync } = require('fs-extra');
 const { sync: glob } = require('glob');
 const { resolve, dirname, basename } = require('path');

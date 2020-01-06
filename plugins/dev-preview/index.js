@@ -49,17 +49,17 @@ const toArray = (files) => {
 function devPreviewPlugin(pluginConfig = {}) {
   const output = pluginConfig.output || 'dev-preview';
   const assets = pluginConfig.assets || 'dev-preview';
-  const prepend = toArray(pluginConfig.prepend);
-  const append = toArray(pluginConfig.append);
   const templateHtml = pluginConfig.template ? readFileSync(pluginConfig.template) : template({
-    output, prepend, append,
+    output,
+    prepend: toArray(pluginConfig.prepend),
+    append: toArray(pluginConfig.append),
   });
-  
+
   const projectConfig = {};
   let isFirstTime = true;
   return [
     saveConfig(projectConfig),
-    copyPlugin(() => ([
+    ...copyPlugin(() => ([
       {
         from: `${__dirname}/files`,
         to: `${projectConfig.output}/${output}`,

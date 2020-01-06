@@ -1,30 +1,30 @@
-const cpy = require("cpy");
-const { resolver } = require("../../lib/api/common/resolver");
-const { beforeBuildStart } = require("../helpers");
-const glob = require('glob');
-
-function globExists(globPath) {
-  return glob.sync(globPath).length > 0;
-}
+const cpy = require('cpy');
+const { sync: glob } = require('glob');
+const chokidar = require('chokidar');
+const { resolver } = require('../../lib/api/common/resolver');
+const { saveConfig, beforeBuildStart } = require('../helpers');
 
 function copyPlugin(pluginConfig) {
-  // TODO watch files and trigger recompile
-  // TODO do not flatten file paths when copying
-  return beforeBuildStart(() => {
-    const parsedConfig =
-      typeof pluginConfig === "function" ? pluginConfig() : pluginConfig;
-    
-    return Promise.all(
-      parsedConfig.filter(({ from }) => globExists(from)).map(async ({ from, to, ignore }) =>
-        cpy(
-          resolver([from], true).filter(
-            file => !ignore || !ignore.some(ign => new RegExp(ign).test(file))
-          ),
-          to
-        )
-      )
-    );
-  });
+  const projectConfig = {};
+  return [
+    saveConfig(projectConfig),
+    beforeBuildStart(() => {
+      const list = (typeof pluginConfig === 'function' ? pluginConfig() : pluginConfig)
+        .filter(({ from }) => glob(from).length > 0);
+
+      return Promise.all(list.map(
+        async ({ from, to, ignore }) => {
+          const files = resolver([from], true)
+            .filter((file) => !ignore.some((ign) => (new RegExp(ign)).test(file)));
+
+          await cpy(files, to);
+          if (projectConfig.watch) {
+            chokidar.watch(files).on('all', async () => cpy(files, to));
+          }
+        },
+      ));
+    }),
+  ];
 }
 
 module.exports = copyPlugin;

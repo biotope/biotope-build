@@ -5,6 +5,7 @@ import { logger } from './logger';
 import { errorLogger } from './error';
 
 console.log(ENVIRONMENT);
+console.log(process.env.NODE_ENV);
 
 logStyle();
 logger(camelCase('hello world!'));

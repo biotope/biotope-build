@@ -16,8 +16,18 @@ const getRuntime = (config) => ({
   ...getDotEnv(),
 });
 
-const getRuntimeJavascript = (variables) => Object.keys(variables)
-  .reduce((banner, key) => `${banner}var ${key}=${JSON.stringify(variables[key])};`, '');
+const getRuntimeJavascript = (variables) => {
+  const finalVariables = {
+    ...variables,
+    process: {
+      env: {
+        NODE_ENV: variables.ENVIRONMENT,
+      },
+    },
+  };
+  return Object.keys(finalVariables)
+    .reduce((banner, key) => `${banner}var ${key}=${JSON.stringify(finalVariables[key])};`, '');
+};
 
 const isNumber = (variable) => {
   const value = parseFloat(variable);

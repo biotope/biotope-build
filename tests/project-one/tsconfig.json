@@ -1,6 +1,12 @@
 {
+  "compilerOptions": {
+    "jsx": "react"
+  },
   "include": [
     "types/global.d.ts",
-    "src/**/*.ts"
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ]
 }

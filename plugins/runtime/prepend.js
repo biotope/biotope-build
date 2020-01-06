@@ -4,11 +4,11 @@ const MagicString = require('magic-string');
 const getPrependConfig = (runtime, extensions) => ({
   string: runtime,
   extensions,
-  nodeModules: false,
+  nodeModules: true,
 });
 
 const prepend = ({ string, extensions, nodeModules }) => ({
-  name: 'prepend',
+  name: 'biotope-build-prepend',
   transform(code, id) {
     if (
       !string

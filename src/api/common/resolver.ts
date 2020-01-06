@@ -1,11 +1,10 @@
-import { existsSync, statSync } from 'fs-extra';
+import { statSync } from 'fs-extra';
 import { resolve } from 'path';
 import { sync as glob } from 'glob';
 
 export const resolver = (
   pattern: string[], includeNodeModules: boolean, extensions?: string[],
 ): string[] => pattern
-  .filter(existsSync)
   .map((item) => (item.indexOf('*') < 0 && statSync(item).isDirectory() ? `${item}/**/*` : item))
   .map((item) => glob(item))
   .reduce((accumulator, file) => ([
