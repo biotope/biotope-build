@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Require = (rootRequire: boolean, currentPath: string, file: string) => any;
+type FullRequire = (rootRequire: boolean, currentPath: string, file: string) => any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Require = (file: string) => any;
 
 interface WindowRequire extends Window {
   require?: Require;
@@ -7,7 +9,7 @@ interface WindowRequire extends Window {
 
 type ExtensionType = 'executable' | 'object'; // | 'style';
 
-if (!(window as WindowRequire).require) {
+if (window && !(window as WindowRequire).require) {
   const extensionTypes: Record<ExtensionType, string[]> = {
     executable: ['js'],
     object: ['json'],
@@ -62,27 +64,20 @@ if (!(window as WindowRequire).require) {
     return request.status === 200 ? request.responseText : undefined;
   };
 
-  const getExports = (requireFunction: Require, url: string, code: string): object => {
+  const getExports = (fullRequire: FullRequire, url: string, code: string): object => {
     const module: { exports: object } = { exports: {} };
     const newCurrentPath = getCurrentPath(url);
-    const innerRequire = requireFunction.bind(window, false, newCurrentPath);
+    const innerRequire = fullRequire.bind(window, false, newCurrentPath) as Require;
     // eslint-disable-next-line no-new-func
     (new Function('exports', 'require', 'module', '__filename', '__dirname', code))
       .call(window, module.exports, innerRequire, module, url, newCurrentPath);
     return module.exports;
   };
 
-  const require: Require = (rootRequire: boolean, currentPath: string, file: string) => {
+  const require: FullRequire = (rootRequire: boolean, currentPath: string, file: string) => {
     const extension = toExtensionType(file.split('.').pop() as ExtensionType);
     const scriptSource = (lastOf<HTMLScriptElement>(document.querySelectorAll('script')) || {}).src;
-    const path = rootRequire && scriptSource
-      ? getCurrentPath(scriptSource)
-        .split('/')
-        .reverse()
-        .slice(1)
-        .reverse()
-        .join('/')
-      : currentPath;
+    const path = rootRequire && scriptSource ? getCurrentPath(scriptSource) : currentPath;
     const url = `${window.location.origin}/${resolveRelativity(file, path)}`;
 
     try {
@@ -108,9 +103,11 @@ if (!(window as WindowRequire).require) {
     }
   };
 
-  (window as WindowRequire).require = require.bind(window, true, getCurrentPath(
+  const rootPath = getCurrentPath(
     window.location.href.indexOf('/') === window.location.href.length - 1
       ? window.location.href.slice(0, window.location.href.length - 1)
       : window.location.href,
-  ));
+  );
+
+  (window as WindowRequire).require = require.bind(window, true, rootPath) as Require;
 }
