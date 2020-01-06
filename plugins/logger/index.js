@@ -131,14 +131,19 @@ const onWatch = (projectConfig, output, isFirstTime) => {
   }
 
   if (output.code === 'ERROR') {
+    // eslint-disable-next-line no-console
     console.error('Error:', output.error.code);
+    // eslint-disable-next-line no-console
     console.log(output.error);
 
     try {
       const { file, line, column } = output.error.loc;
+      // eslint-disable-next-line no-console
       console.error('Origin:', file.replace(process.cwd(), '.'), `(${line},${column})`);
+      // eslint-disable-next-line no-empty
     } catch (_) {}
 
+    // eslint-disable-next-line no-console
     console.error('\n', output.error.stack);
   }
 };
