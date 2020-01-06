@@ -1,23 +1,42 @@
 @import './useful';
 
+html {
+  @extend %full;
+}
+
 body {
+  @extend %full;
+
   padding: 0;
   margin: 0;
   border: 0;
 
   #root {
     display: grid;
+    // Start IE-Compatibility
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    // End IE-Compatibility
   }
 
   .my-cute-class {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 200px;
+    height: 100px;
     margin: auto;
+    background-color: lightskyblue;
     color: $COLORS_PRIMARY;
     z-index: $PRIORITY_LAYER;
+
+    p {
+      margin: 0;
+      text-align: center;
+    }
   }
 }
 
-html,
-body,
 #root {
   @include full;
 }
