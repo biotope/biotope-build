@@ -14,11 +14,11 @@
   "license": "ISC",
   "dependencies": {
     "@biotope/build": "biotope/biotope-build#new/custom-refactor",
-    "@biotope/element": "^4.0.0",
-    "@types/react": "^16.9.16",
+    "@biotope/element": "^4.2.0",
+    "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "@webcomponents/webcomponentsjs": "^2.4.0",
-    "change-case": "^4.0.1",
+    "change-case": "^4.1.1",
     "classnames": "^2.2.6",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"

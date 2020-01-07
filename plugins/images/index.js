@@ -1,4 +1,4 @@
-const images = require('rollup-plugin-image-base64');
+const image = require('@rollup/plugin-image');
 const svg = require('rollup-plugin-svg');
 const { beforeBuildStart } = require('../helpers');
 
@@ -6,7 +6,9 @@ function imagesPlugin() {
   return beforeBuildStart((_, builds) => {
     builds.forEach((build) => {
       build.plugins.push(svg());
-      build.plugins.push(images());
+      build.plugins.push(image({
+        exclude: /.svg$/,
+      }));
     });
   });
 }

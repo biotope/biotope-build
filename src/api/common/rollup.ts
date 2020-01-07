@@ -67,6 +67,7 @@ const createBuild = (
     typescript: !legacy ? [getTypescriptConfig()] : undefined,
     babel: legacy ? [getBabelConfig(config)] : undefined,
     terser: config.production ? [] : undefined,
+    json: [],
   },
   manualChunks: manualChunks('vendor', config.chunks || {}, legacy ? config.legacy as LegacyOptions : false),
   watch: {

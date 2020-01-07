@@ -7,6 +7,7 @@ declare module '*.scss' {
     default: string;
   }
   const exports: StyleObject;
+  // eslint-disable-next-line import/no-default-export
   export default exports;
 }
 
@@ -19,6 +20,7 @@ declare module '*.json';
 
 declare module '*.svg';
 
+declare module '*.png';
 declare module '*.jpg';
 declare module '*.jpeg';
 declare module '*.gif';

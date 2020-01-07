@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "react"
   },

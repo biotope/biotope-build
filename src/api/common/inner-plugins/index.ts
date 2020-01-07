@@ -1,15 +1,12 @@
 import * as babel from 'rollup-plugin-babel';
-import * as rawCommonjs from 'rollup-plugin-commonjs';
-import * as rawNodeResolve from 'rollup-plugin-node-resolve';
+import * as commonjs from '@rollup/plugin-commonjs';
+import * as nodeResolve from '@rollup/plugin-node-resolve';
+import * as json from '@rollup/plugin-json';
 import * as postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import * as rawTypescript from 'rollup-plugin-typescript2';
 
-// FIXME: typings fix for all these packages
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const commonjs: typeof rawCommonjs.default = rawCommonjs as any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const nodeResolve: typeof rawNodeResolve.default = rawNodeResolve as any;
+// FIXME: typings fix
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const typescript: typeof rawTypescript.default = rawTypescript as any;
 
@@ -26,6 +23,7 @@ export const innerPlugins = {
   postcss,
   terser,
   typescript,
+  json,
 };
 
 export type InnerPlugin = keyof typeof innerPlugins;
