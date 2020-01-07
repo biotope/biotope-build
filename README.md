@@ -132,11 +132,11 @@ cli-default: N/A
 config-default: `{ 'biotope-element': ['@biotope/element'] }`
 
 ### style
-how should the style be handled? Should it be extracted to a global css file? should the classes not be renamed (i.e. treated as global classes)?
+how should the style be handled? Should it be extracted to a global css file? should the classes not be renamed (i.e. treated as global classes)? should css modules be ignored altogether?
 
 cli-default: N/A
 
-config-default: `{ extract: false, global: false }`
+config-default: `{ extract: false, global: false, modules: true }`
 
 ### plugins
 what do you want me to run BEFORE and AFTER the build?

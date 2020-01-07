@@ -1,8 +1,9 @@
 
 const TYPESCRIPT_ES6_CONFIG = {
   compilerOptions: {
-    target: 'es6',
+    target: 'ES6',
     allowSyntheticDefaultImports: true,
+    esModuleInterop: true,
   },
 };
 

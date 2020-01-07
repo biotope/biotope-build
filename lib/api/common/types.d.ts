@@ -45,6 +45,7 @@ export declare type RuntimeOptions = Record<string, any>;
 export interface StyleOptions {
     extract: boolean;
     global: boolean;
+    modules: boolean;
 }
 export interface ParsedOptionsConfig {
     legacy: false | LegacyOptions;

@@ -43,6 +43,7 @@ module.exports = {
   style: {
     extract: true,
     // global: true,
+    // modules: false,
   },
   runtime: {
     COLORS: {
@@ -74,8 +75,8 @@ module.exports = {
     //   // append: ['//non-existing-file-two.js', '//non-existing-file-three.js'],
     // }),
     // noCodeSplit({
-    //   // files: 'all',
     //   files: 'legacy',
+    //   // files: 'all',
     // }),
   ],
 };

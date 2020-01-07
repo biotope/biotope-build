@@ -37,7 +37,7 @@ export const getPostcssConfig = (config: ParsedOptions, extractor = createExtrac
   extract: config.style.extract,
   inject: false,
   minimize: config.production,
-  modules: {
+  modules: config.style.modules ? {
     camelCase: true,
     generateScopedName(name: string, file: string, css: string): string {
       if (config.style.global) {
@@ -56,9 +56,9 @@ export const getPostcssConfig = (config: ParsedOptions, extractor = createExtrac
       return `${path}__${name}`;
     },
     getJSON: extractor.getJSON,
-  },
+  } : false,
   plugins: [
     autoprefixer({ grid: 'autoplace' }),
-    extractor.plugin,
+    ...(config.style.modules ? [extractor.plugin] : []),
   ],
 });
