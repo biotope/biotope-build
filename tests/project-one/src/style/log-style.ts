@@ -15,7 +15,7 @@ export const logStyle = (): void => {
   document.querySelector('#root').innerHTML = `
     <div class="${style.myCuteClass}">
       <p>color is: ${COLORS.PRIMARY} (${typeof COLORS.PRIMARY})</p>
-      <p>z-index is: ${PRIORITY_LAYER} (${typeof PRIORITY_LAYER})</p>
+      <p>z-index is: ${LAYERS.PRIORITY} (${typeof LAYERS.PRIORITY})</p>
     </div>
   `;
 };

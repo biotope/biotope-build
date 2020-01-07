@@ -4,4 +4,8 @@ declare const COLORS: {
   PRIMARY: string;
 };
 
-declare const PRIORITY_LAYER: number;
+declare const LAYERS: {
+  PRIORITY: number;
+};
+
+declare const EXAMPLE_TEXT: string;

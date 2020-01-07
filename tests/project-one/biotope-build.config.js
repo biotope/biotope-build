@@ -49,8 +49,11 @@ module.exports = {
     COLORS: {
       PRIMARY: '#ff0000',
     },
-    PRIORITY_LAYER: 100,
-    VARIABLE_NOT_FOUND_IN_COMPILED_CODE_BECAUSE_ITS_NOT_USED: 'runtime variables are awesome!',
+    LAYERS: {
+      BASE: 0,
+      PRIORITY: 100,
+    },
+    EXAMPLE_TEXT: 'runtime variables are awesome!',
   },
   plugins: [
     // ['before-build', (...args) => console.log('BEFORE', ...args)],

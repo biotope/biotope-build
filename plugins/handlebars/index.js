@@ -2,14 +2,13 @@
  * TODO: MOVE PLUGIN TO OWN REPO
  */
 
-// TODO: add env vars to hbs templates
-
 const { readFileSync, createFileSync, writeFileSync } = require('fs-extra');
 const { sync: glob } = require('glob');
 const { resolve, dirname, basename } = require('path');
 const handlebars = require('handlebars');
 const { watch } = require('chokidar');
 const setValue = require('set-value');
+const deepmerge = require('deepmerge');
 const { saveConfig, onBundleEnd } = require('../helpers');
 const registerHelpers = require('./register-helpers');
 
@@ -25,8 +24,8 @@ const cleanFilePath = (projectFolder, file, ext) => {
   return ext ? `${dirname(name)}/${basename(name, ext)}` : name;
 };
 
-const gatherData = (projectFolder, globString) => {
-  const collectedData = {};
+const gatherData = (runtime, projectFolder, globString) => {
+  const collectedData = deepmerge({}, runtime);
   glob(globString).forEach((file) => setValue(
     collectedData,
     file.replace(`${projectFolder}/`, '').replace('.json', '').replace(new RegExp('/', 'g'), '.'),
@@ -59,7 +58,7 @@ function handlebarsPlugin(pluginOptions = {}) {
     saveConfig(projectConfig),
     onBundleEnd(() => {
       const { project, output, serve } = projectConfig;
-      const templateData = gatherData(project, dataPatterns);
+      const templateData = gatherData(projectConfig.runtime, project, dataPatterns);
 
       registerHelpers(handlebars);
       registerPartials(project, partialPatterns, handlebars);

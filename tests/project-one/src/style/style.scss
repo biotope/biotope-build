@@ -28,7 +28,7 @@ body {
     margin: auto;
     background-color: lightskyblue;
     color: $COLORS_PRIMARY;
-    z-index: $PRIORITY_LAYER;
+    z-index: $LAYERS_PRIORITY;
 
     p {
       margin: 0;
