@@ -18,6 +18,7 @@
     "clean": "rimraf ./lib",
     "build": "npm run clean && npm run build:require && tsc --project tsconfig.json",
     "build:require": "tsc --project tsconfig.require.json && uglifyjs lib/require.js -e -b -o lib/require.js && uglifyjs lib/require.js -m -c -o lib/require.min.js",
+    "chmod": "chmod +x ./lib/index.js",
     "lint": "biotope-quality-gate -p src,types,require,plugins",
     "start": "npm run build",
     "watch": "npm run build:require && tsc --project tsconfig.json --watch"

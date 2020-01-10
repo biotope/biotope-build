@@ -17,13 +17,13 @@ const createExtractor = (
     if (localCSS[filename]) {
       Object.keys(json).filter((key) => !identifiers.includes(json[key])).forEach((key) => {
         // eslint-disable-next-line no-param-reassign
-        localCSS[filename] = localCSS[filename].replace(new RegExp(`.${key}`, 'g'), `.${json[key]}`);
+        localCSS[filename] = localCSS[filename].replace(new RegExp(`\\.${key}`, 'g'), `.${json[key]}`);
       });
       // eslint-disable-next-line no-param-reassign
       json.default = localCSS[filename];
     }
   },
-  plugin: postcssPlugin('postcss-custom-content-extractor', () => (root): void => {
+  plugin: postcssPlugin('biotope-build-postcss-custom-content-extractor', () => (root): void => {
     const result = root.toResult().css;
     if (root.source && root.source.input.file && result.indexOf(':export') === -1) {
       // eslint-disable-next-line no-param-reassign
