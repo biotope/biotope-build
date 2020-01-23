@@ -1,7 +1,7 @@
 import { resolve } from 'path';
-import { readFileSync } from 'fs';
+import { readFileSync } from 'fs-extra';
 import {
-  OutputOptions, RollupWarning, OutputBundle, RollupOptions,
+  OutputOptions, RollupWarning, OutputBundle, RollupOptions, OutputAsset, OutputChunk,
 } from 'rollup';
 import {
   innerPlugins,
@@ -15,8 +15,9 @@ import {
 import { resolver } from './resolver';
 import { createInputs } from './create-inputs';
 import { manualChunks } from './manual-chunks';
+import { removeOutputFile, addOutputFile } from './emit';
 import {
-  ParsedOptions, LegacyOptions, Build, PostBuild,
+  ParsedOptions, LegacyOptions, Build, PostBuild, OutputFile,
 } from './types';
 
 const requirePath = resolve(`${__dirname}/../../require.min.js`);
@@ -27,9 +28,29 @@ const getLegacyBanner = (config: ParsedOptions, legacy: boolean): string => (
     : ''
 );
 
+const getOutputContent = (output: OutputAsset | OutputChunk): string | Buffer => {
+  if (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (output.type === 'asset' || (output as any).isAsset)
+    && (typeof (output as OutputAsset).source === 'string' || (output as OutputAsset).source !== undefined)
+  ) {
+    return (output as OutputAsset).source;
+  }
+
+  if (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (output.type === 'chunk' || (output as any).isAsset === undefined)
+    && (typeof (output as OutputChunk).code === 'string' || (output as OutputChunk).code !== undefined)
+  ) {
+    return (output as OutputChunk).code;
+  }
+
+  return '';
+};
+
 const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
   const warnings: Record<string, RollupWarning[]> = {};
-  const outputFiles: Record<string, string | Buffer> = {};
+  const outputFiles: Record<string, OutputFile> = {};
 
   return {
     build: {
@@ -40,7 +61,6 @@ const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
         resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic),
       ),
       onwarn(warning: RollupWarning): void {
-        // eslint-disable-next-line no-param-reassign
         warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] = [
           ...(warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] || []),
           warning,
@@ -58,12 +78,11 @@ const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
           name: 'biotope-build-rollup-plugin-extract',
           generateBundle(_: OutputOptions, bundle: OutputBundle): void {
             Object.keys(bundle).forEach((key) => {
-              // TODO: try "if (isAsset) then 'source' else 'code'"
+              const content = getOutputContent(bundle[key]);
 
-              // eslint-disable-next-line no-param-reassign
-              outputFiles[key] = (bundle[key] as any).code || (bundle[key] as any).source || '';
-              // eslint-disable-next-line no-param-reassign
-              delete bundle[key];
+              addOutputFile(key, content, outputFiles);
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              removeOutputFile(key, bundle as Record<string, any>);
             });
 
             // TODO: add banners if "no-code-split"?

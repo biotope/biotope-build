@@ -1,3 +1,4 @@
+const { removeOutputFile } = require('../../lib/api/common/emit');
 
 const removeEmptyPlugin = () => ({
   name: 'biotope-build-plugin-remove-empty',
@@ -7,8 +8,7 @@ const removeEmptyPlugin = () => ({
     builds.forEach((build) => {
       (build.warnings.EMPTY_BUNDLE || []).forEach((warning) => {
         if (warning.chunkName) {
-          // eslint-disable-next-line no-param-reassign
-          delete build.outputFiles[`${warning.chunkName}.js`];
+          removeOutputFile(`${warning.chunkName}.js`, build.outputFiles);
         }
       });
     });

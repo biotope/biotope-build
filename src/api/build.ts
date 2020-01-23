@@ -1,26 +1,11 @@
 import { rollup as runRollup, watch as runWatch, OutputOptions } from 'rollup';
-import { writeFileSync, createFileSync } from 'fs-extra';
-import { resolve } from 'path';
-import { Options, ParsedOptions, PostBuild } from './common/types';
 import { cleanFolder } from './common/clean-folder';
 import { createPreBuilds, finalizeBuilds } from './common/rollup';
 import { parseOptions } from './common/parsers';
 import { createAsyncQueue } from './common/async-queue';
 import { runPlugins } from './common/run-plugins';
-
-const emit = async (options: ParsedOptions, builds: PostBuild[]): Promise<void> => {
-  await runPlugins(options.plugins, 'before-emit', options, builds);
-
-  builds.forEach(({ outputFiles }) => {
-    Object.keys(outputFiles).forEach((filename) => {
-      const file = resolve(`${options.output}/${filename}`);
-      createFileSync(file);
-      writeFileSync(file, outputFiles[filename]);
-    });
-  });
-
-  await runPlugins(options.plugins, 'after-emit', options, builds);
-};
+import { emit } from './common/emit';
+import { Options, ParsedOptions, PostBuild } from './common/types';
 
 const watch = (options: ParsedOptions, builds: PostBuild[]): void => {
   const { push } = createAsyncQueue();

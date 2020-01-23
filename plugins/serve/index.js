@@ -52,6 +52,7 @@ const servePlugin = (pluginOptions = {}) => {
   return {
     name: 'biotope-build-plugin-serve',
     hook: 'after-emit',
+    priority: -10,
     async runner({ serve, output }) {
       const { open, spa, secure } = pluginOptions;
 

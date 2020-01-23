@@ -1,5 +1,6 @@
-const { readFileSync } = require('fs-extra');
 const { resolve } = require('path');
+const { readFileSync } = require('fs-extra');
+const { addOutputFile } = require('../../lib/api/common/emit');
 const copyPlugin = require('../copy');
 
 const toArray = (files) => {
@@ -42,8 +43,7 @@ const devPreviewPlugin = (pluginConfig = {}) => {
         if (!builds.length) {
           return;
         }
-        // eslint-disable-next-line no-param-reassign
-        builds[0].outputFiles['index.html'] = hydrateTemplate(output, pluginConfig);
+        addOutputFile('index.html', hydrateTemplate(output, pluginConfig), builds[0].outputFiles);
       },
     },
   ];

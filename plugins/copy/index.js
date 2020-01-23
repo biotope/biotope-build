@@ -2,6 +2,7 @@ const { resolve } = require('path');
 const { readFileSync } = require('fs-extra');
 const { sync: glob } = require('glob');
 const { resolver } = require('../../lib/api/common/resolver');
+const { addOutputFile } = require('../../lib/api/common/emit');
 
 const copyPlugin = (pluginConfig) => ({
   name: 'biotope-build-plugin-copy',
@@ -30,10 +31,8 @@ const copyPlugin = (pluginConfig) => ({
         ...files,
       }));
 
-    Object.keys(list).forEach((input) => {
-      // eslint-disable-next-line no-param-reassign
-      builds[0].outputFiles[list[input]] = readFileSync(input);
-    });
+    Object.keys(list)
+      .forEach((input) => addOutputFile(list[input], readFileSync(input), builds[0].outputFiles));
   },
 });
 

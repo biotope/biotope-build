@@ -69,13 +69,21 @@ export interface PreRollupOptions extends RollupOptions {
     priorityPlugins: RollupPlugin[];
     pluginsConfig: Record<string, object[] | undefined>;
 }
+export interface OutputFile {
+    name: string;
+    content: string | Buffer;
+    changed: boolean;
+    checksum: string;
+    size: number;
+    gzip: number;
+}
 export interface Build {
     build: PreRollupOptions;
-    outputFiles: Record<string, string | Buffer>;
+    outputFiles: Record<string, OutputFile>;
     warnings: Record<string, RollupWarning[]>;
 }
 export interface PostBuild {
     build: RollupOptions;
-    outputFiles: Record<string, string | Buffer>;
+    outputFiles: Record<string, OutputFile>;
     warnings: Record<string, RollupWarning[]>;
 }

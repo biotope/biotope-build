@@ -9,7 +9,7 @@
     "url": "https://github.com/biotope/biotope-build.git"
   },
   "engines": {
-    "node": ">=10.15.0"
+    "node": ">=12.0.0"
   },
   "bin": {
     "biotope-build": "lib/index.js"
@@ -36,12 +36,14 @@
     "@rollup/plugin-json": "~4.0",
     "@rollup/plugin-node-resolve": "~7.0",
     "@types/autoprefixer": "~9.6",
+    "@types/crc": "~3.4",
     "@types/fs-extra": "~8.0",
     "@types/rimraf": "~2.0",
     "autoprefixer": "~9.7",
     "chalk": "~3.0",
     "commander": "~4.1",
     "console-emoji": "~0.0",
+    "crc": "~3.8",
     "deepmerge": "~4.2",
     "dotenv": "~8.2",
     "favicons": "~5.5",

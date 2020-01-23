@@ -1,6 +1,6 @@
+import { resolve } from 'path';
 import { plugin as postcssPlugin } from 'postcss';
 import * as autoprefixer from 'autoprefixer';
-import { resolve } from 'path';
 import { ParsedOptions } from '../types';
 
 interface Extractor {

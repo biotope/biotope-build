@@ -1,3 +1,4 @@
+const { addOutputFile } = require('../../lib/api/common/emit');
 const { isLegacyBuild } = require('../helpers');
 
 const componentsJsonPlugin = (pattern) => ({
@@ -14,12 +15,11 @@ const componentsJsonPlugin = (pattern) => ({
       ...(!isLegacyBuild(legacy, build) ? build.input : {}),
     }), {});
 
-    const componentsJsonContent = JSON.stringify(
+    const content = JSON.stringify(
       Object.keys(inputs).filter((key) => (new RegExp(pattern)).test(inputs[key])),
     );
 
-    // eslint-disable-next-line no-param-reassign
-    builds[0].outputFiles['components.json'] = componentsJsonContent;
+    addOutputFile('components.json', content, builds[0].outputFiles);
   },
 });
 

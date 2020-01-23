@@ -1,5 +1,5 @@
-import { statSync } from 'fs-extra';
 import { resolve } from 'path';
+import { statSync } from 'fs-extra';
 import { sync as glob } from 'glob';
 
 export const resolver = (

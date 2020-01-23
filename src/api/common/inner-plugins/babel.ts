@@ -17,4 +17,5 @@ export const getBabelConfig = (config: ParsedOptions): object => ({
     [babelPluginTransformClasses, { loose: true }],
     babelPluginTransformObjectAssign,
   ],
+  compact: false,
 });

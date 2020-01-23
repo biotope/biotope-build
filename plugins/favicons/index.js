@@ -1,5 +1,6 @@
 const path = require('path');
 const favicons = require('favicons');
+const { addOutputFile } = require('../../lib/api/common/emit');
 
 const devIcons = {
   favicons: true,
@@ -80,7 +81,6 @@ const imagesPlugin = (pluginConfig = {}) => {
     {
       name: 'biotope-build-plugin-favicons',
       hook: 'before-emit',
-      priority: -5,
       async runner(_, builds) {
         if (!contentPromise || !builds.length) {
           return new Promise((resolve) => resolve());
@@ -97,10 +97,11 @@ const imagesPlugin = (pluginConfig = {}) => {
               return;
             }
 
-            faviconContent.images.forEach(({ name, contents }) => {
-              // eslint-disable-next-line no-param-reassign
-              builds[0].outputFiles[joinPath(destination, name)] = contents;
-            });
+            faviconContent.images.forEach(({ name, contents }) => addOutputFile(
+              joinPath(destination, name),
+              contents,
+              builds[0].outputFiles,
+            ));
 
             builds.forEach(({ outputFiles }) => {
               Object.keys(outputFiles)
@@ -112,9 +113,11 @@ const imagesPlugin = (pluginConfig = {}) => {
                     options.path,
                     joinPath(backPrefix, destination),
                   ).join('');
-                  const html = typeof outputFiles[file] === 'string' ? outputFiles[file] : outputFiles[file].toString();
-                  // eslint-disable-next-line no-param-reassign
-                  outputFiles[file] = html.replace('</head>', `${links}\n</head>`);
+                  const html = typeof outputFiles[file].content === 'string'
+                    ? outputFiles[file].content
+                    : outputFiles[file].content.toString();
+
+                  addOutputFile(file, html.replace('</head>', `${links}\n</head>`), outputFiles);
                 });
             });
 

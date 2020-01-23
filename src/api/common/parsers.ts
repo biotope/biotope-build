@@ -1,9 +1,9 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs-extra';
+import { defaultCliOptions, defaultConfigs, defaultPlugins } from './defaults';
 import {
   Options, ParsedOptions, ParsedOptionsConfig, CopyItem, Plugin,
 } from './types';
-import { defaultCliOptions, defaultConfigs, defaultPlugins } from './defaults';
 
 const kebabToCamel = (string: string): string => string.replace(/-([a-z])/g, (_, item): string => item.toUpperCase());
 

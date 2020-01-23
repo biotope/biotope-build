@@ -1,9 +1,10 @@
+const { resolve, dirname, basename } = require('path');
 const { readFileSync } = require('fs-extra');
 const { sync: glob } = require('glob');
-const { resolve, dirname, basename } = require('path');
 const handlebars = require('handlebars');
 const setValue = require('set-value');
 const deepmerge = require('deepmerge');
+const { addOutputFile } = require('../../lib/api/common/emit');
 const registerHelpers = require('./register-helpers');
 
 const createGlobPattern = (array) => (array.length === 1 ? array[0] : `{${array.join(',')}}`);
@@ -59,8 +60,8 @@ const handlebarsPlugin = (pluginOptions = {}) => [
       glob(sourcePatterns).forEach((file) => {
         const outputFile = `${cleanFilePath(project, file, '.hbs').replace('./', '')}.html`;
         const contents = handlebars.compile(readFileSync(file, { encoding: 'utf8' }))({ data: templateData });
-        // eslint-disable-next-line no-param-reassign
-        builds[0].outputFiles[outputFile] = contents;
+
+        addOutputFile(outputFile, contents, builds[0].outputFiles);
       });
     },
   },

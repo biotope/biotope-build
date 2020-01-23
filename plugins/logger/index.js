@@ -1,9 +1,6 @@
-const { statSync, readFileSync } = require('fs-extra');
-const { resolve } = require('path');
-// const consoleEmoji = require('console-emoji');
 const chalk = require('chalk');
 const {
-  version, logTitle, logStrong, logSection, createTicker, gzipSize, toKb, checkLimit, logTable,
+  version, log, logTitle, logStrong, createTicker, logTable,
 } = require('./helpers');
 
 const beforeBuild = (_, projectConfig) => {
@@ -13,7 +10,11 @@ const beforeBuild = (_, projectConfig) => {
     logStrong(chalk.yellow('CONFIG:\n'));
     // eslint-disable-next-line no-console
     console.log(projectConfig);
+    return;
   }
+
+  logStrong('\nEnvironment: ');
+  log(`${projectConfig.production ? 'production' : 'development'}\n`);
 };
 
 const midBuild = ({ start }, projectConfig, builds, event, isFirstTime) => {
@@ -28,12 +29,8 @@ const midBuild = ({ start }, projectConfig, builds, event, isFirstTime) => {
   }
 
   if (event.code === 'START') {
-    logSection(isFirstTime ? '\nDiscovering and building files' : '\nRebuilding files');
-    if (!projectConfig.watch) {
-      start();
-    } else {
-      logSection('…\n');
-    }
+    logStrong(isFirstTime ? '\nDiscovering and building files' : '\nRebuilding files');
+    start();
   }
 
   // TODO - implement better error logging
@@ -63,46 +60,28 @@ const afterEmitBuild = ({ stop }, projectConfig, builds) => {
     return;
   }
   stop();
-  logSection('\n\nOutput:\n');
+  logStrong('\n\n');
 
-  // TODO: separate compiled from assets
-  const table = builds
-    .reduce((accumulator, { outputFiles }) => ([
-      ...accumulator,
-      ...Object.keys(outputFiles),
-    ]), [])
-    .sort()
-    .map((file) => ({
-      asset: `./${projectConfig.output}/${file}`,
-      size: statSync(resolve(`${projectConfig.output}/${file}`)).size / 1024,
-      gzip: gzipSize(readFileSync(resolve(`${projectConfig.output}/${file}`)).toString()) / 1024,
-    }))
-    .reduce((accumulator, file) => [
-      ...accumulator,
-      ...(!accumulator.find((item) => item.asset === file.asset) ? [file] : []),
-    ], [])
-    .reduce((accumulator, { asset, size, gzip }) => ([
-      ...accumulator,
-      [
-        asset,
-        toKb(size),
-        checkLimit(gzip, size, (s) => `${toKb(s)} (${Math.round((s * 100) / size)}%)`),
-      ],
-    ]), [['Assets', 'Size', 'Gzipped']]);
+  logTable(projectConfig.output, builds);
 
-  logTable(table);
+  logStrong('\nBuild complete\n\n');
 };
 
-const afterEmitWatch = (_, projectConfig, builds /* , isFirstTime */) => {
+const afterEmitWatch = ({ stop }, projectConfig, builds /* , isFirstTime */) => {
   if (projectConfig.debug) {
     logStrong(chalk.yellow('\nBUILD DATA:\n'));
     // eslint-disable-next-line no-console
     console.log(builds);
     return;
   }
+  stop();
+  logStrong('\n\n');
+
   const currentTime = (new Date(Date.now())).toTimeString().split(' ')[0];
 
-  logStrong(`\nFinished building at ${chalk.underline(currentTime)}\n`);
+  logTable(projectConfig.output, builds);
+
+  logStrong(`\nFinished build at ${chalk.underline(currentTime)}\n`);
 };
 
 const loggerPlugin = () => {
