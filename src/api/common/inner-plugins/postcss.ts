@@ -32,9 +32,11 @@ const createExtractor = (
   })(),
 });
 
-export const getPostcssConfig = (config: ParsedOptions, extractor = createExtractor()): object => ({
+export const getPostcssConfig = (
+  config: ParsedOptions, legacy: boolean, extractor = createExtractor(),
+): object => ({
   extensions: config.extStyle,
-  extract: config.style.extract,
+  extract: !legacy && config.style.extract,
   inject: false,
   minimize: config.production,
   modules: config.style.modules ? {

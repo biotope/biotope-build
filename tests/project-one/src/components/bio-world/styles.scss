@@ -10,7 +10,16 @@
   color: dodgerblue;
 }
 
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .image {
   width: 100px;
   height: 100px;
+
+  svg {
+    min-width: 100px;
+  }
 }

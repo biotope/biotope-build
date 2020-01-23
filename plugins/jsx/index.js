@@ -2,7 +2,6 @@ const { resolve } = require('path');
 const jsxTransform = require('jsx-transform');
 const MagicString = require('magic-string');
 const babelPresetReact = require('@babel/preset-react');
-const { beforeBuildStart } = require('../helpers');
 
 const rollupJsxPlugin = ({ extensions, factory }) => ({
   name: 'biotope-build-jsx',
@@ -24,22 +23,27 @@ const rollupJsxPlugin = ({ extensions, factory }) => ({
   },
 });
 
-function jsxPlugin(pluginConfig = {}) {
+const jsxPlugin = (pluginConfig = {}) => {
   const extIgnore = pluginConfig.extIgnore || ['.ts', '.tsx'];
   const factory = pluginConfig.factory || 'React.createElement';
 
-  return beforeBuildStart((projectConfig, builds) => {
-    const extensions = projectConfig.extLogic
-      .filter((extension) => !extIgnore.some((ext) => extension === ext));
+  return {
+    name: 'biotope-build-plugin-jsx',
+    hook: 'before-build',
+    priority: 10,
+    runner(projectConfig, builds) {
+      const extensions = projectConfig.extLogic
+        .filter((extension) => !extIgnore.some((ext) => extension === ext));
 
-    builds.forEach((build) => {
-      build.priorityPlugins.push(rollupJsxPlugin({ extensions, factory }));
+      builds.forEach(({ build }) => {
+        build.priorityPlugins.push(rollupJsxPlugin({ extensions, factory }));
 
-      if (build.pluginsConfig.babel) {
-        build.pluginsConfig.babel[0].presets.push(babelPresetReact);
-      }
-    });
-  });
-}
+        if (build.pluginsConfig.babel) {
+          build.pluginsConfig.babel[0].presets.push(babelPresetReact);
+        }
+      });
+    },
+  };
+};
 
 module.exports = jsxPlugin;

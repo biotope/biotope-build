@@ -1,23 +1,9 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs-extra';
 import {
-  Options,
-  ParsedOptions,
-  PluginRow,
-  PluginEvent,
-  PluginRowSimple,
-  PluginRowMaker,
-  ParsedOptionsConfig,
-  CopyItem,
+  Options, ParsedOptions, ParsedOptionsConfig, CopyItem, Plugin,
 } from './types';
 import { defaultCliOptions, defaultConfigs, defaultPlugins } from './defaults';
-
-export const toThenable = (object: void | Promise<void>): Promise<void> => {
-  if (object && object.then && typeof object.then === 'function') {
-    return new Promise((resolvePromise) => object.then(() => resolvePromise()));
-  }
-  return object as Promise<void>;
-};
 
 const kebabToCamel = (string: string): string => string.replace(/-([a-z])/g, (_, item): string => item.toUpperCase());
 
@@ -93,19 +79,13 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   configFile.plugins = [
     ...(configFile.plugins || []),
     ...defaultPlugins.map((pluginName) => {
-      const plugin = getConfig<PluginRowMaker>(`${__dirname}/../../../plugins/${pluginName}`);
+      const plugin = getConfig<Function>(`${__dirname}/../../../plugins/${pluginName}`);
       const pluginConfig = (configFile as Record<string, object>)[
         kebabToCamel(pluginName) as keyof typeof configFile
       ];
-      return plugin(pluginConfig !== undefined ? pluginConfig : {});
+      return plugin(pluginConfig !== undefined ? pluginConfig : {}) as Plugin;
     }),
   ];
 
   return configFile as ParsedOptions;
 };
-
-export const getPlugins = (plugins: PluginRow[], name: PluginEvent): PluginRowSimple[] => plugins
-  .reduce((accumulator, plugin) => [
-    ...accumulator,
-    ...(typeof plugin[0] === 'string' ? [plugin as PluginRowSimple] : plugin as PluginRowSimple[]),
-  ], []).filter(([event]) => event === name);

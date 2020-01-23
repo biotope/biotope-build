@@ -1,91 +1,75 @@
 const { statSync, readFileSync } = require('fs-extra');
 const { resolve } = require('path');
-const consoleEmoji = require('console-emoji');
+// const consoleEmoji = require('console-emoji');
 const chalk = require('chalk');
-const { sync: gzipSize } = require('gzip-size');
-const { beforeBuildStart, onBuildEvent, saveConfig } = require('../helpers');
+const {
+  version, logTitle, logStrong, logSection, createTicker, gzipSize, toKb, checkLimit, logTable,
+} = require('./helpers');
 
-// eslint-disable-next-line import/no-dynamic-require
-const { version } = require(`${__dirname}/../../package.json`);
-
-const toKb = (size) => `${Math.round(size * 100) / 100} KB`;
-
-const logTitle = (...args) => consoleEmoji(chalk.green.bold(...args));
-const logSection = (...args) => process.stdout.write(chalk.bold.underline(...args));
-const logStrong = (...args) => process.stdout.write(chalk.bold(...args));
-const log = (...args) => process.stdout.write(chalk(...args));
-
-const cleanChalk = (str) => str.replace(/[^ -~]+/g, '').replace(/\[[0-9][0-9]m/g, '');
-
-const logTable = (table) => {
-  const columnSizes = table.reduce((accumulator, row) => row.reduce((acc, column, index) => ({
-    ...acc,
-    [index]: Math.max(accumulator[index] || 0, cleanChalk(column).length),
-  }), {}), {});
-
-  const alignRight = (str, length) => (cleanChalk(str).length >= length ? str : alignRight(` ${str}`, length));
-
-  table
-    .map((row) => row.reduce((rowText, column, index) => `${rowText}${alignRight(column, columnSizes[index])} `, ''))
-    .forEach((row, index) => (index ? log : logStrong)(`${row}\n`));
-};
-
-const checkLimit = (size, total, t) => {
-  let warning = false;
-  if (size > total) {
-    warning = true;
-  }
-  if (size < 10 && !warning) {
-    return chalk.white(t(size));
-  }
-  if (size < 20) {
-    return chalk.yellow(t(size));
-  }
-  return size < 50 ? chalk.red(t(size)) : chalk.bgRed(t(size));
-};
-
-let IS_RUNNING;
-const startTicking = () => {
-  IS_RUNNING = setInterval(() => process.stdout.write('.'), 50);
-};
-const stopTicking = () => clearInterval(IS_RUNNING);
-
-const onStart = (projectConfig, builds) => {
+const beforeBuild = (_, projectConfig) => {
   logTitle(`:sparkles: Starting Biotope Build (v${version}) with :sparkling_heart: for Frontend Developers around the world :sparkles:`);
 
   if (projectConfig.debug) {
     logStrong(chalk.yellow('CONFIG:\n'));
     // eslint-disable-next-line no-console
     console.log(projectConfig);
+  }
+};
+
+const midBuild = ({ start }, projectConfig, builds, event, isFirstTime) => {
+  if (projectConfig.debug) {
+    logStrong(chalk.yellow('EVENT:\n'));
+    // eslint-disable-next-line no-console
+    console.log(event);
     logStrong(chalk.yellow('BUILD:\n'));
     // eslint-disable-next-line no-console
     console.log(builds);
     return;
   }
 
-  logSection('\nDiscovering and building files');
-  if (!projectConfig.watch) {
-    startTicking();
-  } else {
-    logSection('…\n');
+  if (event.code === 'START') {
+    logSection(isFirstTime ? '\nDiscovering and building files' : '\nRebuilding files');
+    if (!projectConfig.watch) {
+      start();
+    } else {
+      logSection('…\n');
+    }
+  }
+
+  // TODO - implement better error logging
+  if (event.code === 'ERROR') {
+    // eslint-disable-next-line no-console
+    console.error('Error:', event.error.code);
+    // eslint-disable-next-line no-console
+    console.log(event.error);
+
+    try {
+      const { file, line, column } = event.error.loc;
+      // eslint-disable-next-line no-console
+      console.error('Origin:', file.replace(process.cwd(), '.'), `(${line},${column})`);
+      // eslint-disable-next-line no-empty
+    } catch (__) {}
+
+    // eslint-disable-next-line no-console
+    console.error('\n', event.error.stack);
   }
 };
 
-const onBuild = (projectConfig, outputs) => {
+const afterEmitBuild = ({ stop }, projectConfig, builds) => {
   if (projectConfig.debug) {
     logStrong(chalk.yellow('\n\nBUILD DATA:\n'));
     // eslint-disable-next-line no-console
-    console.log(outputs);
+    console.log(builds);
     return;
   }
-
-  stopTicking();
+  stop();
   logSection('\n\nOutput:\n');
 
-  const table = outputs
-    .reduce((accumulator, { output }) => ([
+  // TODO: separate compiled from assets
+  const table = builds
+    .reduce((accumulator, { outputFiles }) => ([
       ...accumulator,
-      ...(output.map((file) => file.fileName)),
+      ...Object.keys(outputFiles),
     ]), [])
     .sort()
     .map((file) => ({
@@ -109,58 +93,49 @@ const onBuild = (projectConfig, outputs) => {
   logTable(table);
 };
 
-const onWatch = (projectConfig, output, isFirstTime) => {
+const afterEmitWatch = (_, projectConfig, builds /* , isFirstTime */) => {
   if (projectConfig.debug) {
     logStrong(chalk.yellow('\nBUILD DATA:\n'));
     // eslint-disable-next-line no-console
-    console.log(output);
+    console.log(builds);
     return;
   }
+  const currentTime = (new Date(Date.now())).toTimeString().split(' ')[0];
 
-  if (!isFirstTime && output.code === 'START') {
-    logSection('\nRebuilding files…\n');
-  }
-
-  // if (output.code === 'BUNDLE_END') {
-  //   // TODO: output compiled files…
-  // }
-
-  if (output.code === 'END') {
-    const currentTime = (new Date(Date.now())).toTimeString().split(' ')[0];
-    logStrong(`\nFinished building at ${chalk.underline(currentTime)}\n`);
-  }
-
-  if (output.code === 'ERROR') {
-    // eslint-disable-next-line no-console
-    console.error('Error:', output.error.code);
-    // eslint-disable-next-line no-console
-    console.log(output.error);
-
-    try {
-      const { file, line, column } = output.error.loc;
-      // eslint-disable-next-line no-console
-      console.error('Origin:', file.replace(process.cwd(), '.'), `(${line},${column})`);
-      // eslint-disable-next-line no-empty
-    } catch (_) {}
-
-    // eslint-disable-next-line no-console
-    console.error('\n', output.error.stack);
-  }
+  logStrong(`\nFinished building at ${chalk.underline(currentTime)}\n`);
 };
 
-function loggerPlugin() {
-  const projectConfig = {};
+const loggerPlugin = () => {
+  const ticker = createTicker();
   let isFirstTime = true;
   return [
-    saveConfig(projectConfig),
-    beforeBuildStart((_, builds) => {
-      onStart(projectConfig, builds);
-    }),
-    onBuildEvent('after-build', (data) => {
-      (!projectConfig.watch ? onBuild : onWatch)(projectConfig, data, isFirstTime);
-      isFirstTime = false;
-    }),
+    {
+      name: 'biotope-build-plugin-logger',
+      hook: 'before-build',
+      priority: 10,
+      runner(projectConfig, builds) {
+        beforeBuild(ticker, projectConfig, builds);
+      },
+    },
+    {
+      name: 'biotope-build-plugin-logger',
+      hook: 'mid-build',
+      priority: 10,
+      runner(projectConfig, builds, event) {
+        midBuild(ticker, projectConfig, builds, event, isFirstTime);
+      },
+    },
+    {
+      name: 'biotope-build-plugin-logger',
+      hook: 'after-emit',
+      priority: -10,
+      runner(projectConfig, builds) {
+        const fn = !projectConfig.watch ? afterEmitBuild : afterEmitWatch;
+        fn(ticker, projectConfig, builds, isFirstTime);
+        isFirstTime = false;
+      },
+    },
   ];
-}
+};
 
 module.exports = loggerPlugin;

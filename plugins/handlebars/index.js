@@ -1,15 +1,9 @@
-/**
- * TODO: MOVE PLUGIN TO OWN REPO
- */
-
-const { readFileSync, createFileSync, writeFileSync } = require('fs-extra');
+const { readFileSync } = require('fs-extra');
 const { sync: glob } = require('glob');
 const { resolve, dirname, basename } = require('path');
 const handlebars = require('handlebars');
-const { watch } = require('chokidar');
 const setValue = require('set-value');
 const deepmerge = require('deepmerge');
-const { saveConfig, onBundleEnd } = require('../helpers');
 const registerHelpers = require('./register-helpers');
 
 const createGlobPattern = (array) => (array.length === 1 ? array[0] : `{${array.join(',')}}`);
@@ -40,40 +34,36 @@ const registerPartials = (projectFolder, partialPattern, hbs) => glob(partialPat
     readFileSync(file, { encoding: 'utf8' }),
   ));
 
-const compileHandlebars = (projectFolder, file, data, hbs, folder) => {
-  const targetPath = `${folder}/${cleanFilePath(projectFolder, file, '.hbs')}.html`;
-  const hydrated = hbs.compile(readFileSync(file, { encoding: 'utf8' }))({ data });
-
-  createFileSync(targetPath);
-  writeFileSync(targetPath, hydrated);
-};
-
-function handlebarsPlugin(pluginOptions = {}) {
-  const dataPatterns = createGlobPattern(pluginOptions.data || []);
-  const partialPatterns = createGlobPattern(pluginOptions.partial || []);
-  const sourcePatterns = createGlobPattern(pluginOptions.source || []);
-  const projectConfig = {};
-
-  return [
-    saveConfig(projectConfig),
-    onBundleEnd(() => {
-      const { project, output, serve } = projectConfig;
-      const templateData = gatherData(projectConfig.runtime, project, dataPatterns);
-
+const handlebarsPlugin = (pluginOptions = {}) => [
+  {
+    name: 'biotope-build-plugin-handlebars',
+    hook: 'before-build',
+    runner() {
       registerHelpers(handlebars);
+    },
+  },
+  {
+    name: 'biotope-build-plugin-handlebars',
+    hook: 'before-emit',
+    runner({ project, runtime }, builds) {
+      if (!builds.length) {
+        return;
+      }
+      const dataPatterns = createGlobPattern(pluginOptions.data || []);
+      const partialPatterns = createGlobPattern(pluginOptions.partial || []);
+      const sourcePatterns = createGlobPattern(pluginOptions.source || []);
+      const templateData = gatherData(runtime, project, dataPatterns);
+
       registerPartials(project, partialPatterns, handlebars);
 
-      if (!serve) {
-        glob(sourcePatterns).forEach((file) => {
-          compileHandlebars(project, file, templateData, handlebars, output);
-        });
-      } else {
-        watch(sourcePatterns).on('all', (_, file) => {
-          compileHandlebars(project, file, templateData, handlebars, output);
-        });
-      }
-    }),
-  ];
-}
+      glob(sourcePatterns).forEach((file) => {
+        const outputFile = `${cleanFilePath(project, file, '.hbs').replace('./', '')}.html`;
+        const contents = handlebars.compile(readFileSync(file, { encoding: 'utf8' }))({ data: templateData });
+        // eslint-disable-next-line no-param-reassign
+        builds[0].outputFiles[outputFile] = contents;
+      });
+    },
+  },
+];
 
 module.exports = handlebarsPlugin;

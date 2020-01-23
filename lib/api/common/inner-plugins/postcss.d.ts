@@ -4,5 +4,5 @@ interface Extractor {
     getJSON: (_: string, __: Record<string, string>, ___: string) => void;
     plugin: Function;
 }
-export declare const getPostcssConfig: (config: ParsedOptions, extractor?: Extractor) => object;
+export declare const getPostcssConfig: (config: ParsedOptions, legacy: boolean, extractor?: Extractor) => object;
 export {};

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build",
+    "start": "npm run watch",
     "build": "biotope-build -c ./biotope-build.config.js",
     "build:prod": "biotope-build -c ./biotope-build.config.js --production",
     "watch": "biotope-build -c ./biotope-build.config.js --watch --serve",
@@ -15,9 +15,9 @@
   "dependencies": {
     "@biotope/build": "biotope/biotope-build#new/custom-refactor",
     "@biotope/element": "^4.2.0",
-    "@types/react": "^16.9.17",
-    "@types/react-dom": "^16.9.4",
-    "@webcomponents/webcomponentsjs": "^2.4.0",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@webcomponents/webcomponentsjs": "^2.4.1",
     "change-case": "^4.1.1",
     "classnames": "^2.2.6",
     "react": "^16.12.0",

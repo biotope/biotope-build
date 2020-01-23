@@ -15,12 +15,14 @@ export class BioWorld extends Component {
 
     return this.html`
       <div class=${styles.container}>
-        <p class=${styles.text}>Hello <slot /> World!<p>
-        <div class=${styles.image}>
-          ${this.exampleSvg}
+        <p class=${styles.text}>Hello <slot /> World!</p>
+        <div class=${styles.imageContainer}>
+          <div class=${styles.image}>
+            ${this.exampleSvg}
+          </div>
+          <img class=${styles.image} src=${testPng} />
+          <img class=${styles.image} src=${testJpg} />
         </div>
-        <img class=${styles.image} src=${testPng} />
-        <img class=${styles.image} src=${testJpg} />
       </div>
       ${this.createStyle(styles.default)}
     `;

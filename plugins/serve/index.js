@@ -1,9 +1,16 @@
 const os = require('os');
 const LocalWebServer = require('local-web-server');
 const opn = require('open');
-const reduceFlatten = require('reduce-flatten');
 const getPort = require('get-port');
-const { saveConfig, onBuildEnd } = require('../helpers');
+
+const flatten = (array, current) => {
+  if (Array.isArray(current)) {
+    array.push(...current);
+  } else {
+    array.push(current);
+  }
+  return array;
+};
 
 const findPort = (port, range = 999) => getPort({
   port: getPort.makeRange(port, port + range),
@@ -12,7 +19,7 @@ const findPort = (port, range = 999) => getPort({
 const findHosts = () => {
   const ipList = Object.keys(os.networkInterfaces())
     .map((key) => os.networkInterfaces()[key])
-    .reduce(reduceFlatten, [])
+    .reduce(flatten, [])
     .filter((networkInterface) => networkInterface.family === 'IPv4')
     .map((networkInterface) => networkInterface.address);
 
@@ -40,21 +47,21 @@ const createServer = (directory, port, open, spa, https) => {
   }
 };
 
-function servePlugin(pluginOptions = {}) {
-  const { open, spa, secure } = pluginOptions;
-  const projectConfig = {};
-  let port = pluginOptions.port || 8000;
+const servePlugin = (pluginOptions = {}) => {
   let isFirstTime = true;
-  return [
-    saveConfig(projectConfig),
-    onBuildEnd(async () => {
-      if (isFirstTime && projectConfig.serve) {
+  return {
+    name: 'biotope-build-plugin-serve',
+    hook: 'after-emit',
+    async runner({ serve, output }) {
+      const { open, spa, secure } = pluginOptions;
+
+      if (isFirstTime && serve) {
         isFirstTime = false;
-        port = await findPort(port);
-        createServer(projectConfig.output || 'dist', port, open || false, spa || false, secure || false);
+        const port = await findPort(pluginOptions.port || 8000);
+        createServer(output || 'dist', port, open || false, spa || false, secure || false);
       }
-    }),
-  ];
-}
+    },
+  };
+};
 
 module.exports = servePlugin;

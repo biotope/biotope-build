@@ -1,21 +1,31 @@
+const favicons = require('@biotope/build/plugins/favicons');
 const handlebars = require('@biotope/build/plugins/handlebars');
 const devPreview = require('@biotope/build/plugins/dev-preview');
+const manifestJson = require('@biotope/build/plugins/manifest-json');
 const jsx = require('@biotope/build/plugins/jsx');
-// const noCodeSplit = require('@biotope/build/plugins/no-code-split');
+// const noCodeSplit = require('@biotope/build/plugins/no-code-split'); // CURRENTLY NOT WORKING
 
 module.exports = {
   // project: 'src',
   // output: 'dist',
   copy: [
-    'resources',
+    // 'resources',
+    {
+      // FIXME (node:20534) UnhandledPromiseRejectionWarning:
+      // Error: ENOENT: no such file or directory, stat 'src/resources'
+      from: 'src/resources',
+      to: 'resources',
+      ignore: ['favicon.png'],
+    },
     {
       from: 'node_modules/@webcomponents/webcomponentsjs/*.js',
-      to: 'dist/polyfills',
+      to: 'polyfills',
       ignore: ['es5-adapter.js$'],
     },
     {
       from: 'node_modules/@webcomponents/webcomponentsjs/bundles/**/*',
-      to: 'dist/polyfills/bundles',
+      to: 'polyfills/bundles',
+      ignore: ['.map$'],
     },
   ],
   // exclude: [],
@@ -71,15 +81,34 @@ module.exports = {
         'src/resources/**/*.json',
       ],
     }),
+    favicons({
+      source: 'src/resources/favicon.png',
+      destination: 'favicons',
+    }),
     devPreview(),
     // devPreview({
     //   output: 'preview',
     //   // prepend: '//non-existing-file-one.js',
     //   // append: ['//non-existing-file-two.js', '//non-existing-file-three.js'],
     // }),
+    manifestJson({
+      short_name: 'ProjectOne',
+      name: 'Biotope Build Project One',
+      start_url: '/',
+      background_color: '#FFFFFF',
+      display: 'standalone',
+      scope: '/',
+      theme_color: '#3367D6',
+    }),
     // noCodeSplit({
     //   files: 'legacy',
     //   // files: 'all',
     // }),
+
+    // Example of custom function plugin
+    // function test() {
+    //   console.log('\n::Custom Plugin Start::\n');
+    //   throw new Error('## Custom Plugin ERROR ##');
+    // },
   ],
 };

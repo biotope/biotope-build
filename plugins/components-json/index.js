@@ -1,17 +1,26 @@
-const { outputFileSync } = require('fs-extra');
-const { isLegacyBuild, beforeBuildStart } = require('../helpers');
+const { isLegacyBuild } = require('../helpers');
 
-function componentsJsonPlugin(pattern) {
-  return beforeBuildStart(({ output, legacy }, builds) => {
-    const inputs = builds.reduce((accumulator, build) => ({
+const componentsJsonPlugin = (pattern) => ({
+  name: 'biotope-build-plugin-component-json',
+  hook: 'before-emit',
+  priority: -10,
+  runner({ legacy }, builds) {
+    if (!builds.length) {
+      return;
+    }
+
+    const inputs = builds.reduce((accumulator, { build }) => ({
       ...accumulator,
       ...(!isLegacyBuild(legacy, build) ? build.input : {}),
     }), {});
 
-    const components = Object.keys(inputs).filter((key) => (new RegExp(pattern)).test(inputs[key]));
+    const componentsJsonContent = JSON.stringify(
+      Object.keys(inputs).filter((key) => (new RegExp(pattern)).test(inputs[key])),
+    );
 
-    outputFileSync(`${output}/components.json`, JSON.stringify(components));
-  });
-}
+    // eslint-disable-next-line no-param-reassign
+    builds[0].outputFiles['components.json'] = componentsJsonContent;
+  },
+});
 
 module.exports = componentsJsonPlugin;

@@ -1,30 +1,13 @@
-import {
-  RollupBuild, RollupOptions, RollupOutput, Plugin,
-} from 'rollup';
+import { RollupOptions, Plugin as RollupPlugin, RollupWarning } from 'rollup';
 
-export type PluginEvent = 'before-build' | 'after-build';
+export type PluginHook = 'before-build' | 'mid-build' | 'before-emit' | 'after-emit';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface PluginRowBase extends Array<any> {
-  0: PluginEvent;
-  1: Function;
+export interface Plugin {
+  name?: string;
+  hook?: PluginHook;
+  priority?: number;
+  runner: Function;
 }
-
-export interface PluginRowSimpleBefore extends PluginRowBase {
-  0: 'before-build';
-  1: (config: ParsedOptions, builds: RollupOptions[]) => void | Promise<void>;
-}
-
-export interface PluginRowSimpleAfter extends PluginRowBase {
-  0: 'after-build';
-  1: (data: RollupEvent | RollupOutput[]) => void | Promise<void>;
-}
-
-export type PluginRowSimple = PluginRowSimpleBefore | PluginRowSimpleAfter;
-
-export type PluginRow = PluginRowSimple | PluginRowSimple[];
-
-export type PluginRowMaker = (options: object) => PluginRow;
 
 export interface Options {
   config: string;
@@ -89,40 +72,24 @@ export interface ParsedOptions extends ParsedOptionsConfig {
   componentsJson: string;
   extLogic: string[];
   extStyle: string[];
-  plugins: PluginRow[];
+  plugins: Plugin[];
 }
 
-export interface RollupEventStart {
-  code: 'START';
-}
-
-export interface RollupEventEnd {
-  code: 'END';
-}
-
-export interface RollupEventError {
-  code: 'ERROR';
-  error: Error;
-}
-
-export interface RollupEventBundleStart {
-  code: 'BUNDLE_START';
-  input: Record<string, string>;
-  output: string[];
-}
-
-export interface RollupEventBundleEnd {
-  code: 'BUNDLE_END';
-  input: Record<string, string>;
-  output: string[];
-  duration: number;
-  result: RollupBuild;
-}
-
-export type RollupEvent = RollupEventStart
-| RollupEventEnd | RollupEventError | RollupEventBundleStart | RollupEventBundleEnd;
+export type RollupEventCode = 'START' | 'END' | 'ERROR' | 'BUNDLE_START' | 'BUNDLE_END';
 
 export interface PreRollupOptions extends RollupOptions {
-  priorityPlugins: Plugin[];
+  priorityPlugins: RollupPlugin[];
   pluginsConfig: Record<string, object[] | undefined>;
+}
+
+export interface Build {
+  build: PreRollupOptions;
+  outputFiles: Record<string, string | Buffer>;
+  warnings: Record<string, RollupWarning[]>;
+}
+
+export interface PostBuild {
+  build: RollupOptions;
+  outputFiles: Record<string, string | Buffer>;
+  warnings: Record<string, RollupWarning[]>;
 }

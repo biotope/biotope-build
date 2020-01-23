@@ -1,47 +1,40 @@
 const { resolve } = require('path');
-const cpy = require('cpy');
+const { readFileSync } = require('fs-extra');
 const { sync: glob } = require('glob');
-const chokidar = require('chokidar');
 const { resolver } = require('../../lib/api/common/resolver');
-const { saveConfig, beforeBuildStart } = require('../helpers');
 
-const popLast = (file, gutter = '/') => file.split(gutter)
-  .reverse().slice(1).reverse()
-  .join(gutter);
+const copyPlugin = (pluginConfig) => ({
+  name: 'biotope-build-plugin-copy',
+  hook: 'before-emit',
+  priority: 5,
+  runner(projectConfig, builds) {
+    if (!builds.length) {
+      return;
+    }
 
-function copyPlugin(pluginConfig) {
-  const projectConfig = {};
-  return [
-    saveConfig(projectConfig),
-    beforeBuildStart(() => {
-      const list = (typeof pluginConfig === 'function' ? pluginConfig() : pluginConfig)
-        .filter(({ from }) => glob(from).length > 0);
-
-      return Promise.all(list.map(async ({ from, to, ignore }) => {
+    const list = (typeof pluginConfig === 'function' ? pluginConfig(projectConfig, builds) : pluginConfig)
+      .filter(({ from }) => glob(from).length > 0)
+      .map(({ from, to, ignore }) => {
         const flatten = from.indexOf('*') >= 0;
-
-        const files = resolver([from], true)
+        return resolver([from], true)
           .filter((file) => !ignore.some((ign) => (new RegExp(ign)).test(file)))
           .reduce((accumulator, file) => ({
             ...accumulator,
             [file]: !flatten
-              ? popLast(`${to}/${file.replace(`${resolve(from)}/`, '')}`)
-              : popLast(`${to}/${file.split('/').pop()}`),
+              ? `${to}/${file.replace(`${resolve(from)}/`, '')}`
+              : `${to}/${file.split('/').pop()}`,
           }), {});
-
-        for (let index = 0; index < Object.keys(files).length; index += 1) {
-          const input = Object.keys(files)[index];
-
-          if (projectConfig.watch) {
-            chokidar.watch(input).on('all', async () => cpy(input, files[input]));
-          } else {
-            // eslint-disable-next-line no-await-in-loop
-            await cpy(input, files[input]);
-          }
-        }
+      })
+      .reduce((accumulator, files) => ({
+        ...accumulator,
+        ...files,
       }));
-    }),
-  ];
-}
+
+    Object.keys(list).forEach((input) => {
+      // eslint-disable-next-line no-param-reassign
+      builds[0].outputFiles[list[input]] = readFileSync(input);
+    });
+  },
+});
 
 module.exports = copyPlugin;

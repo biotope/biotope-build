@@ -40,5 +40,12 @@ export const defaultConfigs: ParsedOptionsConfig = {
 };
 
 export const defaultPlugins = [
-  'serve', 'livereload', 'logger', 'images', 'runtime', 'copy', 'components-json',
+  'logger',
+  'runtime',
+  'images',
+  'copy',
+  'components-json',
+  'remove-empty',
+  'serve',
+  'livereload',
 ];
