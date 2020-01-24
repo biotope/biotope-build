@@ -29,7 +29,7 @@ const copyPlugin = (pluginConfig) => ({
       .reduce((accumulator, files) => ({
         ...accumulator,
         ...files,
-      }));
+      }), {});
 
     Object.keys(list)
       .forEach((input) => addOutputFile(list[input], readFileSync(input), builds[0].outputFiles));
