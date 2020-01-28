@@ -1,10 +1,10 @@
 import * as babel from 'rollup-plugin-babel';
 import * as commonjs from '@rollup/plugin-commonjs';
 import * as nodeResolve from '@rollup/plugin-node-resolve';
-import * as json from '@rollup/plugin-json';
 import * as postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import * as rawTypescript from 'rollup-plugin-typescript2';
+import { json } from './json';
 
 // FIXME: typings fix
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

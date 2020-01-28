@@ -5,6 +5,7 @@ const handlebars = require('handlebars');
 const setValue = require('set-value');
 const deepmerge = require('deepmerge');
 const { addOutputFile } = require('../../lib/api/common/emit');
+const { parseJson } = require('../../lib/api/common/require-json');
 const registerHelpers = require('./register-helpers');
 
 const createGlobPattern = (array) => (array.length === 1 ? array[0] : `{${array.join(',')}}`);
@@ -24,7 +25,7 @@ const gatherData = (runtime, projectFolder, globString) => {
   glob(globString).forEach((file) => setValue(
     collectedData,
     file.replace(`${projectFolder}/`, '').replace('.json', '').replace(new RegExp('/', 'g'), '.'),
-    JSON.parse(readFileSync(file, { encoding: 'utf8' })),
+    parseJson(readFileSync(file, { encoding: 'utf8' })),
   ));
   return collectedData;
 };

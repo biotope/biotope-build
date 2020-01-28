@@ -1,6 +1,5 @@
 import * as commonjs from '@rollup/plugin-commonjs';
 import * as nodeResolve from '@rollup/plugin-node-resolve';
-import * as json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
 export * from './babel';
 export * from './commonjs';
@@ -14,6 +13,6 @@ export declare const innerPlugins: {
     postcss: any;
     terser: typeof terser;
     typescript: import("rollup").PluginImpl<import("rollup-plugin-typescript2/dist/partial").Partial<import("rollup-plugin-typescript2/dist/ioptions").IOptions>>;
-    json: typeof json;
+    json: () => import("rollup").Plugin;
 };
 export declare type InnerPlugin = keyof typeof innerPlugins;

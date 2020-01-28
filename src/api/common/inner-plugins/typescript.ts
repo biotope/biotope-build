@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs-extra';
 import * as deepmerge from 'deepmerge';
+import { requireJson } from '../require-json';
 
 const MINIMAL_TYPESCRIPT_CONFIG = {
   compilerOptions: {
@@ -21,7 +22,7 @@ export const getTypescriptConfig = (): object => {
 
   const tsconfig: RecordAny = configFile && existsSync(configFile)
     // eslint-disable-next-line import/no-dynamic-require,global-require
-    ? require(configFile)
+    ? requireJson(configFile)
     : MINIMAL_TYPESCRIPT_CONFIG;
 
   MANDATORY_TYPESCRIPT_CONFIG_DELETIONS.forEach((key) => {

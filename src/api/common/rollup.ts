@@ -74,6 +74,7 @@ const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
         sourcemap: !config.production,
       },
       plugins: [
+        // TODO: move this to inner-plugins folder
         {
           name: 'biotope-build-rollup-plugin-extract',
           generateBundle(_: OutputOptions, bundle: OutputBundle): void {

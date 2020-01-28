@@ -1,3 +1,4 @@
 {
-  "hello": "world"
+  // comments are allowed!
+  "hello": "world", // trailing commas too!!
 }

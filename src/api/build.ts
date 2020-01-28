@@ -36,6 +36,10 @@ const run = async (options: ParsedOptions, builds: PostBuild[]): Promise<void> =
 
 export const build = async (options: Partial<Options>): Promise<void> => {
   const parsedOptions = parseOptions(options);
+
+  const originalEnvironment = process.env.NODE_ENV;
+  process.env.NODE_ENV = parsedOptions.production ? 'production' : 'development';
+
   const preBuilds = createPreBuilds(parsedOptions);
   cleanFolder(parsedOptions.output);
 
@@ -43,4 +47,6 @@ export const build = async (options: Partial<Options>): Promise<void> => {
 
   const builds = finalizeBuilds(preBuilds);
   await (!parsedOptions.watch ? run : watch)(parsedOptions, builds);
+
+  process.env.NODE_ENV = originalEnvironment;
 };

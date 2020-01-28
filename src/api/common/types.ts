@@ -57,15 +57,15 @@ export interface ParsedOptionsConfig {
 
 export interface CopyItem {
   from: string;
-  to: string;
-  ignore: string[];
+  to?: string;
+  ignore?: string[];
 }
 
 export interface ParsedOptions extends ParsedOptionsConfig {
   project: string;
   exclude: string[];
   output: string;
-  copy: CopyItem[];
+  copy: (string | CopyItem)[];
   watch: boolean;
   production: boolean;
   debug: boolean;

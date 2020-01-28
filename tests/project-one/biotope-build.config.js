@@ -11,8 +11,6 @@ module.exports = {
   copy: [
     // 'resources',
     {
-      // FIXME (node:20534) UnhandledPromiseRejectionWarning:
-      // Error: ENOENT: no such file or directory, stat 'src/resources'
       from: 'src/resources',
       to: 'resources',
       ignore: ['favicon.png'],

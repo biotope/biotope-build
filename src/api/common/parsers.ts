@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import { existsSync } from 'fs-extra';
 import { defaultCliOptions, defaultConfigs, defaultPlugins } from './defaults';
 import {
-  Options, ParsedOptions, ParsedOptionsConfig, CopyItem, Plugin,
+  Options, ParsedOptions, ParsedOptionsConfig, Plugin,
 } from './types';
 
 const kebabToCamel = (string: string): string => string.replace(/-([a-z])/g, (_, item): string => item.toUpperCase());
@@ -69,12 +69,6 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setObjectByPriority(configFile, 'chunks', undefined, defaultConfigs.chunks);
   setObjectByPriority(configFile, 'style', undefined, defaultConfigs.style);
   setObjectByPriority(configFile, 'runtime', undefined, defaultConfigs.runtime);
-
-  configFile.copy = (configFile as ParsedOptions).copy.map((item: string | Partial<CopyItem>) => ({
-    from: typeof item === 'string' ? `${configFile.project}/${item}` : item.from || '',
-    to: typeof item === 'string' ? `${configFile.output}/${item}` : item.to || 'vendor',
-    ignore: typeof item === 'string' || !item.ignore ? [] : item.ignore,
-  })).filter((item) => item.from);
 
   configFile.plugins = [
     ...(configFile.plugins || []),

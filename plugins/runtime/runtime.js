@@ -25,8 +25,7 @@ const getRuntimeJavascript = (variables) => {
       },
     },
   };
-  return Object.keys(finalVariables)
-    .reduce((banner, key) => `${banner}var ${key}=${JSON.stringify(finalVariables[key])};`, '');
+  return finalVariables;
 };
 
 const isNumber = (variable) => {

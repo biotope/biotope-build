@@ -9,14 +9,9 @@ const runtimePlugin = () => ({
     if (!builds.length) {
       return;
     }
-    const logicPrepend = getPrependConfig(
-      getRuntimeJavascript(getRuntime(projectConfig)),
-      projectConfig.extLogic,
-    );
-    const stylePrepend = getPrependConfig(
-      getRuntimeSass(getRuntime(projectConfig)),
-      projectConfig.extStyle,
-    );
+    const variables = getRuntime(projectConfig);
+    const logicPrepend = getPrependConfig(getRuntimeJavascript(variables), projectConfig.extLogic);
+    const stylePrepend = getPrependConfig(getRuntimeSass(variables), projectConfig.extStyle);
 
     builds.forEach(({ build }) => {
       build.priorityPlugins.unshift(prepend(logicPrepend));

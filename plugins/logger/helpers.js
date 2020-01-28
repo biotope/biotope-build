@@ -82,6 +82,11 @@ const createTableLayout = (folder, builds) => {
 const logTable = (folder, builds) => {
   const table = createTableLayout(folder, builds);
 
+  if (table.length === 1) {
+    log('No file changes detected…\n');
+    return;
+  }
+
   const columnSizes = table.reduce((accumulator, row) => row.reduce((acc, column, index) => ({
     ...acc,
     [index]: Math.max(accumulator[index] || 0, cleanChalk(column).length),

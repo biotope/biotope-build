@@ -14,6 +14,11 @@ const copyPlugin = (pluginConfig) => ({
     }
 
     const list = (typeof pluginConfig === 'function' ? pluginConfig(projectConfig, builds) : pluginConfig)
+      .map((input) => ({
+        from: input.from || `${projectConfig.project}/${input}`,
+        to: input.to || input.from || input,
+        ignore: input.ignore || [],
+      }))
       .filter(({ from }) => glob(from).length > 0)
       .map(({ from, to, ignore }) => {
         const flatten = from.indexOf('*') >= 0;
