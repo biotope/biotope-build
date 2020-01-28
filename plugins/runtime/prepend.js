@@ -67,7 +67,13 @@ const prepend = ({
         return undefined;
       }
 
-      // FIXME - React-DOM - both "dev" and "prod" are being included in every build
+      // FIXME - React-DOM package is not being included correctly
+      // 1) both "dev" and "prod" are being included in every build
+      // 2) "process.env.NODE_ENV" is not defined and causes causes this error at runtime:
+      // Uncaught ReferenceError: process is not defined
+      //   at react.js:27075
+      //   at createCommonjsModule (bundle.js:8)
+      //   at react.js:27053
 
       const magicString = new MagicString(code);
 
