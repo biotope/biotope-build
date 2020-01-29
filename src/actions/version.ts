@@ -1,4 +1,4 @@
-import { requireJson } from '../api/common/require-json.js';
+import { requireJson } from '../api/common/json-handlers';
 import { Action } from './types';
 
 const { version } = requireJson('../../package.json');

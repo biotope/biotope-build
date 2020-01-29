@@ -57,25 +57,24 @@ const prepend = ({
   const flatObject = object && !string ? getFlatObject(object) : null;
 
   return {
-    name: 'biotope-build-prepend',
+    name: 'biotope-build-rollup-plugin-prepend',
     transform(code, id) {
+      const isInsideNodeModules = id.indexOf(resolve(`${process.cwd()}/node_modules`)) === 0;
       if (
         (!string && !object)
-        || (!nodeModules && id.indexOf(resolve(`${process.cwd()}/node_modules`)) === 0)
+        || (!nodeModules && isInsideNodeModules)
         || (extensions ? !(new RegExp(`(${extensions.join('|')})$`)).test(id) : true)
       ) {
         return undefined;
       }
 
-      // FIXME - React-DOM package is not being included correctly
-      // 1) both "dev" and "prod" are being included in every build
-      // 2) "process.env.NODE_ENV" is not defined and causes causes this error at runtime:
-      // Uncaught ReferenceError: process is not defined
-      //   at react.js:27075
-      //   at createCommonjsModule (bundle.js:8)
-      //   at react.js:27053
-
       const magicString = new MagicString(code);
+
+      // Fixes some packages that do not tree-shake well
+      // Example: React-DOM includes both "dev" and "prod" builds if this is not done
+      if (isInsideNodeModules && code.indexOf('process.env.NODE_ENV') >= 0) {
+        magicString.prepend(`;var process={env:{NODE_ENV:${flatObject['process.env.NODE_ENV']}}};\n`);
+      }
 
       if (string) {
         magicString.prepend(`${string}\n`);

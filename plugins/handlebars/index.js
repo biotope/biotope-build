@@ -5,7 +5,7 @@ const handlebars = require('handlebars');
 const setValue = require('set-value');
 const deepmerge = require('deepmerge');
 const { addOutputFile } = require('../../lib/api/common/emit');
-const { parseJson } = require('../../lib/api/common/require-json');
+const { parseJson } = require('../../lib/api/common/json-handlers');
 const registerHelpers = require('./register-helpers');
 
 const createGlobPattern = (array) => (array.length === 1 ? array[0] : `{${array.join(',')}}`);
