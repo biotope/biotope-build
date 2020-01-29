@@ -78,10 +78,14 @@ const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
         {
           name: 'biotope-build-rollup-plugin-extract',
           generateBundle(_: OutputOptions, bundle: OutputBundle): void {
-            Object.keys(bundle).forEach((key) => {
-              const content = getOutputContent(bundle[key]);
+            if (legacy && !(config.legacy as LegacyOptions).inline) {
+              addOutputFile('require.js', readFileSync(
+                `${__dirname}/../../require${config.production ? '.min' : ''}.js`,
+              ), outputFiles);
+            }
 
-              addOutputFile(key, content, outputFiles);
+            Object.keys(bundle).forEach((key) => {
+              addOutputFile(key, getOutputContent(bundle[key]), outputFiles);
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               removeOutputFile(key, bundle as Record<string, any>);
             });
