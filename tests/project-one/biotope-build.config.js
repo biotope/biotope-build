@@ -3,7 +3,7 @@ const handlebars = require('@biotope/build/plugins/handlebars');
 const devPreview = require('@biotope/build/plugins/dev-preview');
 const manifestJson = require('@biotope/build/plugins/manifest-json');
 const jsx = require('@biotope/build/plugins/jsx');
-// const noCodeSplit = require('@biotope/build/plugins/no-code-split'); // CURRENTLY NOT WORKING
+// const noCodeSplit = require('@biotope/build/plugins/no-code-split');
 
 module.exports = {
   // project: 'src',
@@ -64,8 +64,12 @@ module.exports = {
     EXAMPLE_TEXT: 'runtime variables are awesome!',
   },
   plugins: [
-    // ['before-build', (...args) => console.log('BEFORE', ...args)],
-    // ['after-build', (...args) => console.log('AFTER', ...args)],
+    // Example of custom function plugin
+    // function test() {
+    //   console.log('\n::Custom Plugin Start::\n');
+    //   throw new Error('## Custom Plugin ERROR ##');
+    // },
+
     jsx(),
     handlebars({
       source: [
@@ -102,11 +106,5 @@ module.exports = {
     //   files: 'legacy',
     //   // files: 'all',
     // }),
-
-    // Example of custom function plugin
-    // function test() {
-    //   console.log('\n::Custom Plugin Start::\n');
-    //   throw new Error('## Custom Plugin ERROR ##');
-    // },
   ],
 };

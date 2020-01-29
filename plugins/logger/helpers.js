@@ -61,7 +61,7 @@ const createTableLayout = (folder, builds) => {
     ...accumulator,
     ...Object.values(outputFiles).reduce((files, file) => ([
       ...files,
-      ...(file.changed && !files.find(({ name }) => file.name === name) ? [file] : []),
+      ...(file.changed && !accumulator.find(({ name }) => file.name === name) ? [file] : []),
     ]), []).map((file) => ({
       ...file,
       size: file.size / 1024,
