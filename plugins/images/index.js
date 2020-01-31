@@ -6,9 +6,6 @@ const imagesPlugin = () => ({
   hook: 'before-build',
   priority: 10,
   runner(_, builds) {
-    if (!builds.length) {
-      return;
-    }
     builds.forEach(({ build }) => {
       build.plugins.push(svg());
       build.plugins.push(image({

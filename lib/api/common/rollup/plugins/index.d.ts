@@ -9,6 +9,6 @@ export declare const innerPlugins: {
     terser: typeof terser;
     typescript: import("rollup").PluginImpl<import("rollup-plugin-typescript2/dist/partial").Partial<import("rollup-plugin-typescript2/dist/ioptions").IOptions>>;
     json: () => import("rollup").Plugin;
-    bundleExtract: (options: import("./bundle-extract").BundleExtractPluginOptions) => import("rollup").Plugin;
+    bundleExtract: ({ legacy, isInline, production, styleExtracted, addFile, }: import("./types").BundleExtractPluginOptions) => import("rollup").Plugin;
 };
 export declare type InnerPlugin = keyof typeof innerPlugins;

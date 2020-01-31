@@ -1,5 +1,4 @@
-/// <reference types="node" />
-import { OutputFile, ParsedOptions, PostBuild } from './types';
-export declare const addOutputFile: (name: string, content: string | Buffer, files: Record<string, OutputFile>) => void;
-export declare const removeOutputFile: (file: string, files: Record<string, OutputFile>) => void;
+import { OutputFile, ParsedOptions, PostBuild, OutputFileInfo } from './types';
+export declare const getAddFileFunction: (config: ParsedOptions, files: Record<string, OutputFile>) => ({ name, content, mapping }: OutputFileInfo, override?: boolean) => void;
+export declare const getRemoveFileFunction: (files: Record<string, OutputFile>) => ({ name, mapping }: OutputFileInfo) => void;
 export declare const emit: (options: ParsedOptions, builds: PostBuild[]) => Promise<void>;

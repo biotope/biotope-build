@@ -1,5 +1,5 @@
 import { ManualChunksOption } from 'rollup';
-import { LegacyOptions } from './types';
+import { LegacyOptions } from '../types';
 
 const invertObject = (vendors: Record<string, string[]>): Record<string, string> => Object
   .keys(vendors)

@@ -1,11 +1,13 @@
 import { RollupWarning, RollupOptions } from 'rollup';
+import { readFileSync, writeFileSync } from 'fs-extra';
 import { resolver } from '../resolver';
-import { createInputs } from '../create-inputs';
-import { manualChunks } from '../manual-chunks';
 import { getContent } from '../require';
+import { getAddFileFunction, getRemoveFileFunction } from '../emit';
 import {
   ParsedOptions, LegacyOptions, Build, PostBuild, OutputFile,
 } from '../types';
+import { createInputs } from './create-inputs';
+import { manualChunks } from './manual-chunks';
 import {
   babel, commonJs, postcss, nodeResolve, typescript, bundleExtract,
 } from './plugins/config';
@@ -18,15 +20,18 @@ const getLegacyBanner = (config: ParsedOptions, legacy: boolean): string => (
 const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
   const warnings: Record<string, RollupWarning[]> = {};
   const outputFiles: Record<string, OutputFile> = {};
+  const addFile = getAddFileFunction(config, outputFiles);
+  const removeFile = getRemoveFileFunction(outputFiles);
+  const input = createInputs(
+    config.project,
+    config.extLogic,
+    legacy ? (config.legacy as LegacyOptions).suffix : '',
+    resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic),
+  );
 
   return {
     build: {
-      input: createInputs(
-        config.project,
-        config.extLogic,
-        legacy ? (config.legacy as LegacyOptions).suffix : '',
-        resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic),
-      ),
+      input,
       onwarn(warning: RollupWarning): void {
         warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] = [
           ...(warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] || []),
@@ -38,7 +43,7 @@ const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
         format: !legacy ? 'esm' : 'cjs',
         chunkFileNames: '[name].js',
         banner: getLegacyBanner(config, legacy),
-        sourcemap: !config.production,
+        sourcemap: true, // TODO minor speed-up: disable if maps === false
       },
       priorityPlugins: [],
       plugins: [],
@@ -48,14 +53,26 @@ const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
         nodeResolve: [nodeResolve(config)],
         typescript: !legacy ? [typescript()] : undefined,
         babel: legacy ? [babel(config)] : undefined,
-        terser: config.production ? [] : undefined,
         json: [],
-        bundleExtract: [bundleExtract(config, legacy, outputFiles)],
+        terser: config.production ? [] : undefined,
+        bundleExtract: [bundleExtract(config, legacy, addFile)],
+      },
+      watch: {
+        chokidar: true,
       },
       manualChunks: manualChunks('vendor', config.chunks || {}, legacy ? config.legacy as LegacyOptions : false),
     },
+    legacy,
     warnings,
     outputFiles,
+    addFile,
+    removeFile,
+    triggerBuild(file?: string): void {
+      if (!legacy && config.watch) {
+        const intendedFile = file || input[Object.keys(input)[0]];
+        writeFileSync(intendedFile, readFileSync(intendedFile));
+      }
+    },
   };
 };
 
@@ -85,7 +102,11 @@ export const finalizeBuilds = (builds: Build[]): PostBuild[] => {
 
   return builds.map((_, index) => ({
     build: rollupBuilds[index],
+    legacy: builds[index].legacy,
     outputFiles: builds[index].outputFiles,
     warnings: builds[index].warnings,
+    addFile: builds[index].addFile,
+    removeFile: builds[index].removeFile,
+    triggerBuild: builds[index].triggerBuild,
   }));
 };

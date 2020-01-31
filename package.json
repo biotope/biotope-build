@@ -40,6 +40,7 @@
     "@types/rimraf": "~2.0",
     "autoprefixer": "~9.7",
     "chalk": "~3.0",
+    "chokidar": "~3.3",
     "commander": "~4.1",
     "comment-json": "~2.4",
     "console-emoji": "~0.0",

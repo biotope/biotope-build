@@ -17,8 +17,8 @@ const beforeBuild = (_, projectConfig) => {
   log(`${projectConfig.production ? 'production' : 'development'}\n`);
 };
 
-const midBuild = ({ start }, projectConfig, builds, event, isFirstTime) => {
-  if (projectConfig.debug) {
+const midBuild = ({ start }, { debug }, builds, event, isFirstTime) => {
+  if (debug) {
     logStrong(chalk.yellow('EVENT:\n'));
     // eslint-disable-next-line no-console
     console.log(event);
@@ -52,8 +52,8 @@ const midBuild = ({ start }, projectConfig, builds, event, isFirstTime) => {
   }
 };
 
-const afterEmitBuild = ({ stop }, projectConfig, builds) => {
-  if (projectConfig.debug) {
+const afterEmitBuild = ({ stop }, { debug, output }, builds) => {
+  if (debug) {
     logStrong(chalk.yellow('\n\nBUILD DATA:\n'));
     // eslint-disable-next-line no-console
     console.log(builds);
@@ -62,13 +62,13 @@ const afterEmitBuild = ({ stop }, projectConfig, builds) => {
   stop();
   logStrong('\n\n');
 
-  logTable(projectConfig.output, builds);
+  logTable(output, builds);
 
   logStrong('\nBuild complete\n\n');
 };
 
-const afterEmitWatch = ({ stop }, projectConfig, builds /* , isFirstTime */) => {
-  if (projectConfig.debug) {
+const afterEmitWatch = ({ stop }, { debug, output }, builds /* , isFirstTime */) => {
+  if (debug) {
     logStrong(chalk.yellow('\nBUILD DATA:\n'));
     // eslint-disable-next-line no-console
     console.log(builds);
@@ -79,7 +79,7 @@ const afterEmitWatch = ({ stop }, projectConfig, builds /* , isFirstTime */) => 
 
   const currentTime = (new Date(Date.now())).toTimeString().split(' ')[0];
 
-  logTable(projectConfig.output, builds);
+  logTable(output, builds);
 
   logStrong(`\nFinished build at ${chalk.underline(currentTime)}\n`);
 };

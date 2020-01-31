@@ -8,13 +8,13 @@ const findPort = (port, range = 999) => getPort({
 const livereloadPlugin = () => ({
   name: 'biotope-build-plugin-livereload',
   hook: 'before-build',
-  async runner({ output, serve }, builds) {
-    if (!serve || !builds.length) {
+  async runner({ output, serve }, [{ build }]) {
+    if (!serve) {
       return;
     }
     const port = await findPort(35729);
 
-    builds[0].build.plugins.push(livereload({
+    build.plugins.push(livereload({
       port,
       watch: output,
       verbose: false,

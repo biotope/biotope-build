@@ -6,12 +6,10 @@ const runtimePlugin = () => ({
   hook: 'before-build',
   priority: 10,
   runner(projectConfig, builds) {
-    if (!builds.length) {
-      return;
-    }
+    const { extLogic, extStyle } = projectConfig;
     const variables = getRuntime(projectConfig);
-    const logicPrepend = getPrependConfig(getRuntimeJavascript(variables), projectConfig.extLogic);
-    const stylePrepend = getPrependConfig(getRuntimeSass(variables), projectConfig.extStyle);
+    const logicPrepend = getPrependConfig(getRuntimeJavascript(variables), extLogic);
+    const stylePrepend = getPrependConfig(getRuntimeSass(variables), extStyle);
 
     builds.forEach(({ build }) => {
       build.priorityPlugins.unshift(prepend(logicPrepend));

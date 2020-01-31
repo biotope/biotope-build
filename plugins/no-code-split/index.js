@@ -1,5 +1,4 @@
 const { requireJson } = require('../../lib/api/common/json-handlers');
-const { isLegacyBuild } = require('../helpers');
 
 const { name: packageName } = requireJson(`${process.cwd()}/package.json`);
 
@@ -8,12 +7,14 @@ const safeName = (name) => name.replace(/[&/\\#,+()$~%.'":*?<>{}\s-]/g, '_').toL
 const noCodeSplitPlugin = (pluginConfig = {}) => ({
   name: 'biotope-build-plugin-no-code-split',
   hook: 'before-build',
-  runner({ legacy }, builds) {
+  runner(_, builds) {
     const files = pluginConfig.files || 'legacy';
     const newBuilds = [];
 
-    builds.forEach(({ build, outputFiles, warnings }, index) => {
-      if (files === 'all' || (files === 'legacy' && isLegacyBuild(legacy, build))) {
+    builds.forEach(({
+      build, legacy, outputFiles, warnings, addFile, removeFile,
+    }, index) => {
+      if (files === 'all' || (files === 'legacy' && legacy)) {
         newBuilds.push(...Object.keys(build.input).map((key) => ({
           build: {
             ...build,
@@ -30,6 +31,8 @@ const noCodeSplitPlugin = (pluginConfig = {}) => ({
           },
           outputFiles,
           warnings,
+          addFile,
+          removeFile,
         })));
 
         builds.splice(index, 1);

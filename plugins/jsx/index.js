@@ -31,8 +31,8 @@ const jsxPlugin = (pluginConfig = {}) => {
     name: 'biotope-build-plugin-jsx',
     hook: 'before-build',
     priority: 10,
-    runner(projectConfig, builds) {
-      const extensions = projectConfig.extLogic
+    runner({ extLogic }, builds) {
+      const extensions = extLogic
         .filter((extension) => !extIgnore.some((ext) => extension === ext));
 
       builds.forEach(({ build }) => {

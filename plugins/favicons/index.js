@@ -1,6 +1,6 @@
 const path = require('path');
 const favicons = require('favicons');
-const { addOutputFile } = require('../../lib/api/common/emit');
+const { joinPath, appendToHtml } = require('../helpers');
 
 const devIcons = {
   favicons: true,
@@ -21,10 +21,8 @@ const prodIcons = {
   coast: true,
   firefox: true,
   windows: true,
-  yandex: true,
+  yandex: false,
 };
-
-const joinPath = (left, right) => `${left}${left && left[left.length - 1] !== '/' ? '/' : ''}${right}`;
 
 const createIcons = (source, options) => new Promise((resolve) => {
   favicons(source, options, (error, response) => {
@@ -44,13 +42,7 @@ const createIcons = (source, options) => new Promise((resolve) => {
   });
 });
 
-const replaceIconsHtmlPrefix = (iconsHtml, basePath, newPath, attributes = ['href', 'src']) => attributes
-  .reduce((html, attribute) => html.map((node) => node.replace(
-    `${attribute}="${basePath}`,
-    `${attribute}="${joinPath(newPath, '')}`,
-  )), iconsHtml);
-
-const imagesPlugin = (pluginConfig = {}) => {
+const faviconsPlugin = (pluginConfig = {}) => {
   if (!pluginConfig.source) {
     // eslint-disable-next-line no-console
     console.error('No "source" set on favicons plugin. Skipping…');
@@ -71,7 +63,6 @@ const imagesPlugin = (pluginConfig = {}) => {
         options = {
           ...favicons.config.defaults,
           icons: production ? prodIcons : devIcons,
-          // fixme include destination here somehow (for the html files)
           ...(pluginConfig.options || {}),
         };
 
@@ -81,8 +72,8 @@ const imagesPlugin = (pluginConfig = {}) => {
     {
       name: 'biotope-build-plugin-favicons',
       hook: 'before-emit',
-      async runner(_, builds) {
-        if (!contentPromise || !builds.length) {
+      async runner(_, [{ outputFiles, addFile }]) {
+        if (!contentPromise) {
           return new Promise((resolve) => resolve());
         }
         let faviconContent;
@@ -97,30 +88,16 @@ const imagesPlugin = (pluginConfig = {}) => {
               return;
             }
 
-            faviconContent.images.forEach(({ name, contents }) => addOutputFile(
-              joinPath(destination, name),
-              contents,
-              builds[0].outputFiles,
-            ));
+            const { images, files, html } = faviconContent;
+            const htmlNodes = html.filter((node) => node.indexOf('rel="manifest"') < 0);
 
-            builds.forEach(({ outputFiles }) => {
-              Object.keys(outputFiles)
-                .filter((file) => file.indexOf('.html') === (file.length - '.html'.length))
-                .forEach((file) => {
-                  const backPrefix = Array(file.split('/').length - 1).fill('..').join('/');
-                  const links = replaceIconsHtmlPrefix(
-                    faviconContent.html,
-                    options.path,
-                    joinPath(backPrefix, destination),
-                  ).join('');
-                  const html = typeof outputFiles[file].content === 'string'
-                    ? outputFiles[file].content
-                    : outputFiles[file].content.toString();
+            [...images, ...files.filter(({ name }) => name === 'browserconfig.xml')]
+              .forEach(({ name, contents }) => addFile({
+                name: joinPath(destination, name),
+                content: contents,
+              }));
 
-                  addOutputFile(file, html.replace('</head>', `${links}\n</head>`), outputFiles);
-                });
-            });
-
+            appendToHtml({ outputFiles, addFile }, 'favicons', htmlNodes, options.path, destination);
             resolve();
           };
           tryFinish();
@@ -130,4 +107,4 @@ const imagesPlugin = (pluginConfig = {}) => {
   ];
 };
 
-module.exports = imagesPlugin;
+module.exports = faviconsPlugin;

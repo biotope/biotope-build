@@ -1,9 +1,8 @@
 import {
   Plugin, OutputOptions, OutputBundle, OutputAsset, OutputChunk,
 } from 'rollup';
-import { addOutputFile, removeOutputFile } from '../../emit';
 import { getContent } from '../../require';
-import { OutputFile } from '../../types';
+import { BundleExtractPluginOptions } from './types';
 
 const getOutputContent = (output: OutputAsset | OutputChunk): string | Buffer => {
   if (
@@ -25,26 +24,33 @@ const getOutputContent = (output: OutputAsset | OutputChunk): string | Buffer =>
   return '';
 };
 
-export interface BundleExtractPluginOptions {
-  legacy: boolean;
-  isInline: boolean;
-  production: boolean;
-  outputFiles: Record<string, OutputFile>;
-}
-
-export const bundleExtract = (options: BundleExtractPluginOptions): Plugin => ({
+export const bundleExtract = ({
+  legacy, isInline, production, styleExtracted, addFile,
+}: BundleExtractPluginOptions): Plugin => ({
   name: 'biotope-build-rollup-plugin-extract',
   generateBundle(_: OutputOptions, bundle: OutputBundle): void {
-    if (options.legacy && !options.isInline) {
-      addOutputFile('require.js', getContent(options.production), options.outputFiles);
+    if (legacy && !isInline) {
+      addFile({
+        name: 'require.js',
+        content: getContent(production),
+      });
     }
 
-    Object.keys(bundle).forEach((key) => {
-      addOutputFile(key, getOutputContent(bundle[key]), options.outputFiles);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      removeOutputFile(key, bundle as Record<string, any>);
-    });
+    // TODO: remove old files before adding new ones
 
-    // TODO: add banners if "no-code-split"? or is it too late?
+    Object.keys(bundle).forEach((key) => {
+      let filename = key;
+      if (styleExtracted && key.slice(-4) === '.css') {
+        filename = 'index.css';
+      }
+
+      addFile({
+        name: filename,
+        content: getOutputContent(bundle[key]),
+        mapping: (bundle[key] as OutputChunk).map,
+      }, true);
+      // eslint-disable-next-line no-param-reassign
+      delete bundle[key];
+    });
   },
 });

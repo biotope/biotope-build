@@ -57,17 +57,16 @@ const sortPaths = (files) => files.sort(({ name: leftName }, { name: rightName }
 });
 
 const createTableLayout = (folder, builds) => {
-  const filteredFiles = builds.reduce((accumulator, { outputFiles }) => ([
+  const filteredFiles = builds.reverse().reduce((accumulator, { outputFiles }) => ([
     ...accumulator,
-    ...Object.values(outputFiles).reduce((files, file) => ([
-      ...files,
-      ...(file.changed && !accumulator.find(({ name }) => file.name === name) ? [file] : []),
-    ]), []).map((file) => ({
-      ...file,
-      size: file.size / 1024,
-      gzip: file.gzip / 1024,
-      percent: Math.round((file.gzip / file.size) * 100),
-    })),
+    ...Object.values(outputFiles)
+      .filter((file) => file.changed && !accumulator.find(({ name }) => file.name === name))
+      .map((file) => ({
+        ...file,
+        size: file.size / 1024,
+        gzip: file.gzip / 1024,
+        percent: Math.round((file.gzip / file.size) * 100),
+      })),
   ]), []);
 
   return sortPaths(filteredFiles, (file) => file.name, '/').reduce((accumulator, {
@@ -103,7 +102,7 @@ const logTable = (folder, builds) => {
 const createTicker = (ticker = { isRunning: undefined }) => ({
   start: () => {
     // eslint-disable-next-line no-param-reassign
-    ticker.isRunning = setInterval(() => process.stdout.write('.'), 50);
+    ticker.isRunning = setInterval(() => process.stdout.write('.'), 150);
   },
   stop: () => clearInterval(ticker.isRunning),
 });

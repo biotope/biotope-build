@@ -5,6 +5,7 @@ const manifestJson = require('@biotope/build/plugins/manifest-json');
 const jsx = require('@biotope/build/plugins/jsx');
 // const noCodeSplit = require('@biotope/build/plugins/no-code-split');
 
+// can also export a function that receives the current process.env.NODE_ENV as a parameter
 module.exports = {
   // project: 'src',
   // output: 'dist',
@@ -32,6 +33,10 @@ module.exports = {
   extLogic: ['.js', '.ts', '.jsx', '.tsx'],
   // extStyle: ['.css', '.scss'],
   componentsJson: 'components\\/.*\\/index\\.(j|t)sx?$',
+  maps: {
+    type: 'file',
+    // environment: 'all',
+  },
   // serve: false,
   // serve: {
   //   port: 9000,
@@ -41,6 +46,12 @@ module.exports = {
   // legacy: {
   //   inline: false,
   //   suffix: '.ie11',
+  // },
+  // Use the "legacy" config bellow to ONLY emit legacy files
+  // (i.e. type=module/nomodule needed on script tags)
+  // legacy: {
+  //   inline: true,
+  //   suffix: '',
   // },
   // chunks: true,
   chunks: {
@@ -86,6 +97,11 @@ module.exports = {
     favicons({
       source: 'src/resources/favicon.png',
       destination: 'favicons',
+      options: {
+        appName: 'ProjectOne',
+        theme_color: '#3367D6',
+        appleStatusBarStyle: 'black-translucent', // black,default
+      },
     }),
     devPreview(),
     // devPreview({
@@ -97,7 +113,7 @@ module.exports = {
       short_name: 'ProjectOne',
       name: 'Biotope Build Project One',
       start_url: '/',
-      background_color: '#FFFFFF',
+      background_color: '#FFF',
       display: 'standalone',
       scope: '/',
       theme_color: '#3367D6',

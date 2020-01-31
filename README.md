@@ -2,7 +2,7 @@
 A module bundler for modern frontend applications.
 
 ## Guidelines for usage
-- B-E-M NOT NEEDED ANYMORE! PLZ WRITE YOUR CSS AS IF IT WERE LOCAL!!!
+- B-E-M NOT NEEDED ANYMORE! PLEASE WRITE YOUR CSS AS IF IT WERE LOCAL!!!
 
 - third party code will be compiled and placed in "vendor/bundle.js"
 
@@ -103,8 +103,15 @@ cli-default: `.css,.scss`
 
 config-default: `['.css', '.scss']`
 
+### maps
+should map files be created?
+
+cli-default: yes
+
+config-default: `{ type: 'inline', environment: 'development' }`
+
 ### serve
-should we also build for IE11 and below?
+should we serve the build output on localhost?
 
 cli-default: no
 

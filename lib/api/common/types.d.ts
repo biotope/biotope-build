@@ -1,18 +1,12 @@
 /// <reference types="node" />
-import { RollupOptions, Plugin as RollupPlugin, RollupWarning } from 'rollup';
-export declare type PluginHook = 'before-build' | 'mid-build' | 'before-emit' | 'after-emit';
-export interface Plugin {
-    name?: string;
-    hook?: PluginHook;
-    priority?: number;
-    runner: Function;
-}
+import { RollupOptions, Plugin as RollupPlugin, RollupWarning, SourceMap } from 'rollup';
 export interface Options {
     config: string;
     project: string;
     output: string;
     copy: string;
     exclude: string;
+    maps: boolean;
     watch: boolean;
     serve: boolean;
     legacy: boolean;
@@ -39,7 +33,12 @@ export interface StyleOptions {
     global: boolean;
     modules: boolean;
 }
+export interface MapOptions {
+    type: 'file' | 'inline' | 'hidden';
+    environment: 'all' | 'development' | 'production';
+}
 export interface ParsedOptionsConfig {
+    maps: false | MapOptions;
     legacy: false | LegacyOptions;
     serve: false | ServeOptions;
     chunks: false | Record<string, string[]>;
@@ -50,6 +49,13 @@ export interface CopyItem {
     from: string;
     to?: string;
     ignore?: string[];
+}
+export declare type PluginHook = 'before-build' | 'mid-build' | 'before-emit' | 'after-emit';
+export interface Plugin {
+    name?: string;
+    hook?: PluginHook;
+    priority?: number;
+    runner: Function;
 }
 export interface ParsedOptions extends ParsedOptionsConfig {
     project: string;
@@ -64,10 +70,16 @@ export interface ParsedOptions extends ParsedOptionsConfig {
     extStyle: string[];
     plugins: Plugin[];
 }
-export declare type RollupEventCode = 'START' | 'END' | 'ERROR' | 'BUNDLE_START' | 'BUNDLE_END';
+export declare type ParsedOptionsFunction = (environment: string) => Partial<ParsedOptions>;
+export declare type RollupEventCode = 'START' | 'BUNDLE_START' | 'BUNDLE_END' | 'END' | 'ERROR';
 export interface PreRollupOptions extends RollupOptions {
     priorityPlugins: RollupPlugin[];
     pluginsConfig: Record<string, object[] | undefined>;
+}
+export interface OutputFileInfo {
+    name: string;
+    content: string | Buffer;
+    mapping?: SourceMap;
 }
 export interface OutputFile {
     name: string;
@@ -79,11 +91,19 @@ export interface OutputFile {
 }
 export interface Build {
     build: PreRollupOptions;
+    legacy: boolean;
     outputFiles: Record<string, OutputFile>;
     warnings: Record<string, RollupWarning[]>;
+    addFile: (file: OutputFileInfo, override?: boolean) => void;
+    removeFile: (file: OutputFileInfo) => void;
+    triggerBuild: (file?: string) => void;
 }
 export interface PostBuild {
     build: RollupOptions;
+    legacy: boolean;
     outputFiles: Record<string, OutputFile>;
     warnings: Record<string, RollupWarning[]>;
+    addFile: (file: OutputFileInfo, override?: boolean) => void;
+    removeFile: (file: OutputFileInfo) => void;
+    triggerBuild: (file?: string) => void;
 }

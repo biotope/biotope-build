@@ -3,8 +3,8 @@ import { statSync } from 'fs-extra';
 import { sync as glob } from 'glob';
 
 export const resolver = (
-  pattern: string[], includeNodeModules: boolean, extensions?: string[],
-): string[] => pattern
+  pattern: string | string[], includeNodeModules: boolean, extensions?: string[],
+): string[] => (Array.isArray(pattern) ? pattern : [pattern])
   .map((item) => (item.indexOf('*') < 0 && statSync(item).isDirectory() ? `${item}/**/*` : item))
   .map((item) => glob(item))
   .reduce((accumulator, file) => ([

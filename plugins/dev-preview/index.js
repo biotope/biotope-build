@@ -1,6 +1,5 @@
 const { resolve } = require('path');
 const { readFileSync } = require('fs-extra');
-const { addOutputFile } = require('../../lib/api/common/emit');
 const copyPlugin = require('../copy');
 
 const toArray = (files) => {
@@ -39,11 +38,8 @@ const devPreviewPlugin = (pluginConfig = {}) => {
       name: 'biotope-build-plugin-dev-preview',
       hook: 'before-emit',
       priority: 5,
-      runner(_, builds) {
-        if (!builds.length) {
-          return;
-        }
-        addOutputFile('index.html', hydrateTemplate(output, pluginConfig), builds[0].outputFiles);
+      runner(_, [{ addFile }]) {
+        addFile({ name: 'index.html', content: hydrateTemplate(output, pluginConfig) });
       },
     },
   ];

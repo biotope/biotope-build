@@ -1,25 +1,20 @@
-const { addOutputFile } = require('../../lib/api/common/emit');
-const { isLegacyBuild } = require('../helpers');
 
 const componentsJsonPlugin = (pattern) => ({
   name: 'biotope-build-plugin-component-json',
   hook: 'before-emit',
   priority: -10,
-  runner({ legacy }, builds) {
-    if (!builds.length) {
-      return;
-    }
-
-    const inputs = builds.reduce((accumulator, { build }) => ({
+  runner(_, builds) {
+    const [{ addFile }] = builds;
+    const inputs = builds.reduce((accumulator, { build, legacy }) => ({
       ...accumulator,
-      ...(!isLegacyBuild(legacy, build) ? build.input : {}),
+      ...(!legacy ? build.input : {}),
     }), {});
 
     const content = JSON.stringify(
       Object.keys(inputs).filter((key) => (new RegExp(pattern)).test(inputs[key])),
     );
 
-    addOutputFile('components.json', content, builds[0].outputFiles);
+    addFile({ name: 'components.json', content });
   },
 });
 

@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import { existsSync } from 'fs-extra';
 import { defaultCliOptions, defaultConfigs, defaultPlugins } from './defaults';
 import {
-  Options, ParsedOptions, ParsedOptionsConfig, Plugin,
+  Options, ParsedOptions, ParsedOptionsFunction, ParsedOptionsConfig, Plugin,
 } from './types';
 
 const kebabToCamel = (string: string): string => string.replace(/-([a-z])/g, (_, item): string => item.toUpperCase());
@@ -10,7 +10,7 @@ const kebabToCamel = (string: string): string => string.replace(/-([a-z])/g, (_,
 const toArray = (obj: string): string[] => obj.split(',').filter((p): boolean => !!p);
 
 // eslint-disable-next-line import/no-dynamic-require,global-require
-const getConfig = <T>(file: string): T => require(resolve(file));
+const fetchFile = <T>(file: string): T => require(resolve(file));
 
 const setByPriority = <T>(
   config: Record<string, T>, prop: string, cliValue: T, defaultValue: T, t?: (_: T) => T,
@@ -47,7 +47,8 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   if (cliOptions.config) {
     const resolved = resolve(cliOptions.config);
     if (existsSync(resolved)) {
-      configFile = getConfig<Partial<ParsedOptions>>(resolved);
+      const config = fetchFile<Partial<ParsedOptions> | ParsedOptionsFunction>(resolved);
+      configFile = typeof config === 'function' ? config(process.env.NODE_ENV as string) : config;
     } else {
       // eslint-disable-next-line no-console
       console.error(`Config file "${resolved}" does not exist…`);
@@ -58,6 +59,7 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setByPriority(configFile, 'exclude', cliOptions.exclude, defaultCliOptions.exclude, toArray);
   setByPriority(configFile, 'output', cliOptions.output, defaultCliOptions.output);
   setByPriority(configFile, 'copy', cliOptions.copy, defaultCliOptions.copy, toArray);
+  setByPriority(configFile, 'maps', cliOptions.maps, defaultCliOptions.maps);
   setByPriority(configFile, 'watch', cliOptions.watch, defaultCliOptions.watch);
   setByPriority(configFile, 'production', cliOptions.production, defaultCliOptions.production);
   setByPriority(configFile, 'debug', cliOptions.debug, defaultCliOptions.debug);
@@ -73,7 +75,7 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   configFile.plugins = [
     ...(configFile.plugins || []),
     ...defaultPlugins.map((pluginName) => {
-      const plugin = getConfig<Function>(`${__dirname}/../../../plugins/${pluginName}`);
+      const plugin = fetchFile<Function>(`${__dirname}/../../../plugins/${pluginName}`);
       const pluginConfig = (configFile as Record<string, object>)[
         kebabToCamel(pluginName) as keyof typeof configFile
       ];

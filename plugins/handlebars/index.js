@@ -4,8 +4,8 @@ const { sync: glob } = require('glob');
 const handlebars = require('handlebars');
 const setValue = require('set-value');
 const deepmerge = require('deepmerge');
-const { addOutputFile } = require('../../lib/api/common/emit');
 const { parseJson } = require('../../lib/api/common/json-handlers');
+const watchFilesPlugin = require('../watch-files');
 const registerHelpers = require('./register-helpers');
 
 const createGlobPattern = (array) => (array.length === 1 ? array[0] : `{${array.join(',')}}`);
@@ -47,10 +47,7 @@ const handlebarsPlugin = (pluginOptions = {}) => [
   {
     name: 'biotope-build-plugin-handlebars',
     hook: 'before-emit',
-    runner({ project, runtime }, builds) {
-      if (!builds.length) {
-        return;
-      }
+    runner({ project, runtime }, [{ addFile }]) {
       const dataPatterns = createGlobPattern(pluginOptions.data || []);
       const partialPatterns = createGlobPattern(pluginOptions.partial || []);
       const sourcePatterns = createGlobPattern(pluginOptions.source || []);
@@ -58,14 +55,17 @@ const handlebarsPlugin = (pluginOptions = {}) => [
 
       registerPartials(project, partialPatterns, handlebars);
 
-      glob(sourcePatterns).forEach((file) => {
-        const outputFile = `${cleanFilePath(project, file, '.hbs').replace('./', '')}.html`;
-        const contents = handlebars.compile(readFileSync(file, { encoding: 'utf8' }))({ data: templateData });
-
-        addOutputFile(outputFile, contents, builds[0].outputFiles);
-      });
+      glob(sourcePatterns).forEach((file) => addFile({
+        name: `${cleanFilePath(project, file, '.hbs').replace('./', '')}.html`,
+        content: handlebars.compile(readFileSync(file, { encoding: 'utf8' }))({ data: templateData }),
+      }));
     },
   },
+  watchFilesPlugin([
+    ...pluginOptions.data,
+    ...pluginOptions.partial,
+    ...pluginOptions.source,
+  ]),
 ];
 
 module.exports = handlebarsPlugin;

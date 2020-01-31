@@ -7,3 +7,9 @@ Quick start (linux/osx):
 - ln -s ../../../../ ./build
 - cd ../../
 - Happy testing
+
+Where to start testing:
+- localhost:8000
+  - includes 2 components (react and biotope-element)
+- localhost:8000/resources
+  - open console

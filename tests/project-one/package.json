@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@biotope/build": "biotope/biotope-build#new/custom-refactor",
-    "@biotope/element": "^4.2.0",
+    "@biotope/element": "^4.3.0",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@webcomponents/webcomponentsjs": "^2.4.1",

@@ -6,6 +6,7 @@ export const defaultCliOptions: Options = {
   exclude: 'resources',
   output: 'dist',
   copy: 'resources',
+  maps: true,
   watch: false,
   production: false,
   debug: false,
@@ -18,6 +19,10 @@ export const defaultCliOptions: Options = {
 };
 
 export const defaultConfigs: ParsedOptionsConfig = {
+  maps: {
+    type: 'inline',
+    environment: 'development',
+  },
   legacy: {
     inline: true,
     suffix: '.legacy',

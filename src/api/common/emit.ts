@@ -1,9 +1,11 @@
-import { resolve } from 'path';
+import { resolve, basename } from 'path';
 import { createFileSync, writeFileSync } from 'fs-extra';
 import { sync as gzipSize } from 'gzip-size';
 import { runPlugins } from './run-plugins';
 import { checksum } from './checksum';
-import { OutputFile, ParsedOptions, PostBuild } from './types';
+import {
+  OutputFile, ParsedOptions, PostBuild, OutputFileInfo,
+} from './types';
 
 let lastEmittedFiles: OutputFile[] = [];
 
@@ -12,30 +14,69 @@ const hasChanged = (newFileName: string, newFileChecksum: string): boolean => {
   return !previousOutputFile || previousOutputFile.checksum !== newFileChecksum;
 };
 
-const emitFile = (folder: string, { name, content }: OutputFile): void => {
-  const filePath = resolve(`${folder}/${name}`);
-  createFileSync(filePath);
-  writeFileSync(filePath, content);
-};
-
-export const addOutputFile = (
-  name: string, content: string | Buffer, files: Record<string, OutputFile>,
-): void => {
+export const getAddFileFunction = (
+  config: ParsedOptions, files: Record<string, OutputFile>,
+) => ({ name, content, mapping }: OutputFileInfo, override = false): void => {
   const crc = checksum(content);
+  const changed = hasChanged(name, crc);
+  const mapFileName = `${basename(name)}.map`;
+
+  if (!override && !changed) {
+    // eslint-disable-next-line no-param-reassign
+    files[name].changed = false;
+
+    if (files[mapFileName]) {
+      // eslint-disable-next-line no-param-reassign
+      files[mapFileName].changed = false;
+    }
+    return;
+  }
+
+  let contentEnding = '';
+  if (mapping && config.maps) {
+    const isCorrectEnvironment = (config.maps.environment === process.env.NODE_ENV || config.maps.environment === 'all');
+
+    if (isCorrectEnvironment && (config.maps.type === 'inline' || config.maps.type === 'file')) {
+      contentEnding = `\n//# sourceMappingURL=${config.maps.type === 'inline' ? mapping.toUrl() : mapFileName}`;
+    }
+
+    if (config.maps.type === 'hidden' || config.maps.type === 'file') {
+      const mappingContent = mapping.toString();
+      // eslint-disable-next-line no-param-reassign
+      files[mapFileName] = {
+        name: `${name}.map`,
+        content: mappingContent,
+        changed,
+        checksum: crc,
+        size: Buffer.byteLength(mappingContent, 'utf-8'),
+        gzip: gzipSize(mappingContent),
+      };
+    }
+  }
+
   // eslint-disable-next-line no-param-reassign
   files[name] = {
     name,
-    content,
-    changed: hasChanged(name, crc),
+    content: !contentEnding || typeof content !== 'string' ? content : `${content}${contentEnding}`,
+    changed,
     checksum: crc,
     size: Buffer.byteLength(content, typeof content === 'string' ? 'utf-8' : undefined),
     gzip: gzipSize(content),
   };
 };
 
-export const removeOutputFile = (file: string, files: Record<string, OutputFile>): void => {
+export const getRemoveFileFunction = (
+  files: Record<string, OutputFile>,
+) => ({ name, mapping }: OutputFileInfo): void => {
+  const mapFileName = `${basename(name)}.map`;
+
   // eslint-disable-next-line no-param-reassign
-  delete files[file];
+  delete files[name];
+
+  if (mapping) {
+    // eslint-disable-next-line no-param-reassign
+    delete files[mapFileName];
+  }
 };
 
 export const emit = async (options: ParsedOptions, builds: PostBuild[]): Promise<void> => {
@@ -43,16 +84,23 @@ export const emit = async (options: ParsedOptions, builds: PostBuild[]): Promise
 
   builds.forEach(({ outputFiles }) => {
     Object.keys(outputFiles).forEach((filename) => {
-      if (hasChanged(outputFiles[filename].name, outputFiles[filename].checksum)) {
-        emitFile(options.output, outputFiles[filename]);
+      if (outputFiles[filename].changed) {
+        const filePath = resolve(`${options.output}/${outputFiles[filename].name}`);
+        createFileSync(filePath);
+        writeFileSync(filePath, outputFiles[filename].content);
       }
     });
   });
 
   await runPlugins(options.plugins, 'after-emit', options, builds);
 
-  lastEmittedFiles = builds.reduce((accumulator, { outputFiles }) => ([
+  const uniqueFiles = builds.reduce((accumulator, { outputFiles }) => ({
     ...accumulator,
-    ...Object.values(outputFiles),
+    ...outputFiles,
+  }), {} as Record<string, OutputFile>);
+
+  lastEmittedFiles = Object.keys(uniqueFiles).reduce((accumulator, file) => ([
+    ...accumulator,
+    uniqueFiles[file],
   ]), []);
 };

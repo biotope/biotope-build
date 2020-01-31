@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { resolver } from './resolver';
+import { resolver } from '../resolver';
 
 const getOutputName = (file: string, folder: string): string => {
   const split = file.replace(resolve(`${process.cwd()}${folder ? `/${folder}` : ''}`), '')
