@@ -21,7 +21,7 @@ export const getAddFileFunction = (
   const changed = hasChanged(name, crc);
   const mapFileName = `${basename(name)}.map`;
 
-  if (!override && !changed) {
+  if (!override && !changed && files[name]) {
     // eslint-disable-next-line no-param-reassign
     files[name].changed = false;
 
