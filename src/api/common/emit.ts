@@ -33,10 +33,8 @@ export const getAddFileFunction = (
   }
 
   let contentEnding = '';
-  if (mapping && config.maps) {
-    const isCorrectEnvironment = (config.maps.environment === process.env.NODE_ENV || config.maps.environment === 'all');
-
-    if (isCorrectEnvironment && (config.maps.type === 'inline' || config.maps.type === 'file')) {
+  if (mapping && config.maps && (config.maps.environment === process.env.NODE_ENV || config.maps.environment === 'all')) {
+    if (config.maps.type === 'inline' || config.maps.type === 'file') {
       contentEnding = `\n//# sourceMappingURL=${config.maps.type === 'inline' ? mapping.toUrl() : mapFileName}`;
     }
 

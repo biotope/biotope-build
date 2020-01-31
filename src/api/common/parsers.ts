@@ -59,7 +59,6 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setByPriority(configFile, 'exclude', cliOptions.exclude, defaultCliOptions.exclude, toArray);
   setByPriority(configFile, 'output', cliOptions.output, defaultCliOptions.output);
   setByPriority(configFile, 'copy', cliOptions.copy, defaultCliOptions.copy, toArray);
-  setByPriority(configFile, 'maps', cliOptions.maps, defaultCliOptions.maps);
   setByPriority(configFile, 'watch', cliOptions.watch, defaultCliOptions.watch);
   setByPriority(configFile, 'production', cliOptions.production, defaultCliOptions.production);
   setByPriority(configFile, 'debug', cliOptions.debug, defaultCliOptions.debug);
@@ -67,6 +66,7 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setByPriority(configFile, 'extLogic', cliOptions.extLogic, defaultCliOptions.extLogic, toArray);
   setByPriority(configFile, 'extStyle', cliOptions.extStyle, defaultCliOptions.extStyle, toArray);
   setObjectByPriority(configFile, 'legacy', cliOptions.legacy, defaultCliOptions.legacy);
+  setObjectByPriority(configFile, 'maps', cliOptions.maps, defaultCliOptions.maps);
   setObjectByPriority(configFile, 'serve', cliOptions.serve, defaultCliOptions.serve);
   setObjectByPriority(configFile, 'chunks', undefined, defaultConfigs.chunks);
   setObjectByPriority(configFile, 'style', undefined, defaultConfigs.style);
