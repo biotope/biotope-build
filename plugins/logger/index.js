@@ -33,7 +33,6 @@ const midBuild = ({ start }, { debug }, builds, event, isFirstTime) => {
     start();
   }
 
-  // TODO - implement better error logging
   if (event.code === 'ERROR') {
     // eslint-disable-next-line no-console
     console.error('Error:', event.error.code);

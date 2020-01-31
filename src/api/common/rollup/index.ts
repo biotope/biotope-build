@@ -43,7 +43,7 @@ const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
         format: !legacy ? 'esm' : 'cjs',
         chunkFileNames: '[name].js',
         banner: getLegacyBanner(config, legacy),
-        sourcemap: true, // TODO minor speed-up: disable if maps === false
+        sourcemap: true,
       },
       priorityPlugins: [],
       plugins: [],

@@ -36,8 +36,6 @@ export const bundleExtract = ({
       });
     }
 
-    // TODO: remove old files before adding new ones
-
     Object.keys(bundle).forEach((key) => {
       let filename = key;
       if (styleExtracted && key.slice(-4) === '.css') {
