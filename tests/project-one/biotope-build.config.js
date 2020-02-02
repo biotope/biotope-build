@@ -5,7 +5,7 @@ const manifestJson = require('@biotope/build/plugins/manifest-json');
 const jsx = require('@biotope/build/plugins/jsx');
 // const noCodeSplit = require('@biotope/build/plugins/no-code-split');
 
-// can also export a function that receives the current process.env.NODE_ENV as a parameter
+// can also export a function that receives the current environment as a parameter
 module.exports = {
   // project: 'src',
   // output: 'dist',
@@ -57,6 +57,7 @@ module.exports = {
   chunks: {
     'biotope-element': ['@biotope/element'],
     react: ['react', 'react-dom'],
+    vue: ['vue'],
     // style: ['src/style/index.ts'], // TODO - project-code chunks
   },
   style: {
