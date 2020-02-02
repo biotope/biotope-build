@@ -35,7 +35,7 @@ const appendToHtml = (
           content: !second && !third
             ? content.replace('</head>', `  ${identifierNode}${htmlToAppend}${identifierNode}\n</head>`)
             : [first, htmlToAppend, third].join(identifierNode),
-        }, true);
+        });
       }
     });
 };

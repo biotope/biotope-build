@@ -88,6 +88,8 @@ export interface OutputFile {
     checksum: string;
     size: number;
     gzip: number;
+    buildId: string;
+    previousChecksum: string;
 }
 export interface Build {
     build: PreRollupOptions;

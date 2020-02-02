@@ -46,7 +46,7 @@ export const bundleExtract = ({
         name: filename,
         content: getOutputContent(bundle[key]),
         mapping: (bundle[key] as OutputChunk).map,
-      }, true);
+      });
       // eslint-disable-next-line no-param-reassign
       delete bundle[key];
     });

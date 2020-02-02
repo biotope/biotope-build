@@ -57,7 +57,7 @@ const sortPaths = (files) => files.sort(({ name: leftName }, { name: rightName }
 });
 
 const createTableLayout = (folder, builds) => {
-  const filteredFiles = builds.reverse().reduce((accumulator, { outputFiles }) => ([
+  const filteredFiles = [...builds].reverse().reduce((accumulator, { outputFiles }) => ([
     ...accumulator,
     ...Object.values(outputFiles)
       .filter((file) => file.changed && !accumulator.find(({ name }) => file.name === name))

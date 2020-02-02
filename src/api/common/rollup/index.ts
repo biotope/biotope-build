@@ -4,7 +4,7 @@ import { resolver } from '../resolver';
 import { getContent } from '../require';
 import { getAddFileFunction, getRemoveFileFunction } from '../emit';
 import {
-  ParsedOptions, LegacyOptions, Build, PostBuild, OutputFile,
+  ParsedOptions, LegacyOptions, Build, PostBuild, OutputFile, OutputFileInfo,
 } from '../types';
 import { createInputs } from './create-inputs';
 import { manualChunks } from './manual-chunks';
@@ -17,69 +17,82 @@ const getLegacyBanner = (config: ParsedOptions, legacy: boolean): string => (
   legacy && (config.legacy as LegacyOptions).inline ? getContent(true) : ''
 );
 
-const createBuild = (config: ParsedOptions, legacy: boolean): Build => {
+const createBuild = (
+  config: ParsedOptions,
+  legacy: boolean,
+  input: Record<string, string>,
+  warnings: Record<string, RollupWarning[]>,
+  outputFiles: Record<string, OutputFile>,
+  addFile: (file: OutputFileInfo) => void,
+  removeFile: (file: string | OutputFileInfo) => void,
+  triggerBuild: (file?: string | undefined) => void,
+): Build => ({
+  build: {
+    input,
+    onwarn(warning: RollupWarning): void {
+      // eslint-disable-next-line no-param-reassign
+      warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] = [
+        ...(warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] || []),
+        warning,
+      ];
+    },
+    output: {
+      dir: config.output,
+      format: !legacy ? 'esm' : 'cjs',
+      chunkFileNames: '[name].js',
+      banner: getLegacyBanner(config, legacy),
+      sourcemap: true,
+    },
+    priorityPlugins: [],
+    plugins: [],
+    pluginsConfig: {
+      postcss: [postcss(config, legacy)],
+      commonjs: [commonJs()],
+      nodeResolve: [nodeResolve(config)],
+      typescript: !legacy ? [typescript()] : undefined,
+      babel: legacy ? [babel(config)] : undefined,
+      json: [],
+      terser: config.production ? [] : undefined,
+      bundleExtract: [bundleExtract(config, legacy, addFile)],
+    },
+    watch: {
+      chokidar: true,
+    },
+    manualChunks: manualChunks('vendor', config.chunks || {}, legacy ? config.legacy as LegacyOptions : false),
+  },
+  legacy,
+  warnings,
+  outputFiles,
+  addFile,
+  removeFile,
+  triggerBuild,
+});
+
+export const createPreBuilds = (config: ParsedOptions): Build[] => {
   const warnings: Record<string, RollupWarning[]> = {};
   const outputFiles: Record<string, OutputFile> = {};
   const addFile = getAddFileFunction(config, outputFiles);
   const removeFile = getRemoveFileFunction(outputFiles);
-  const input = createInputs(
-    config.project,
-    config.extLogic,
-    legacy ? (config.legacy as LegacyOptions).suffix : '',
-    resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic),
-  );
-
-  return {
-    build: {
-      input,
-      onwarn(warning: RollupWarning): void {
-        warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] = [
-          ...(warnings[warning.code || 'BIOTOPE_BUILD_UNKNOWN'] || []),
-          warning,
-        ];
-      },
-      output: {
-        dir: config.output,
-        format: !legacy ? 'esm' : 'cjs',
-        chunkFileNames: '[name].js',
-        banner: getLegacyBanner(config, legacy),
-        sourcemap: true,
-      },
-      priorityPlugins: [],
-      plugins: [],
-      pluginsConfig: {
-        postcss: [postcss(config, legacy)],
-        commonjs: [commonJs()],
-        nodeResolve: [nodeResolve(config)],
-        typescript: !legacy ? [typescript()] : undefined,
-        babel: legacy ? [babel(config)] : undefined,
-        json: [],
-        terser: config.production ? [] : undefined,
-        bundleExtract: [bundleExtract(config, legacy, addFile)],
-      },
-      watch: {
-        chokidar: true,
-      },
-      manualChunks: manualChunks('vendor', config.chunks || {}, legacy ? config.legacy as LegacyOptions : false),
-    },
-    legacy,
-    warnings,
-    outputFiles,
-    addFile,
-    removeFile,
-    triggerBuild(file?: string): void {
-      if (!legacy && config.watch) {
-        const intendedFile = file || input[Object.keys(input)[0]];
-        writeFileSync(intendedFile, readFileSync(intendedFile));
-      }
-    },
+  const inputs = [...Array(config.legacy ? 2 : 1)].map((_, index) => ({
+    legacy: index !== 0,
+    input: createInputs(
+      config.project,
+      config.extLogic,
+      index !== 0 ? (config.legacy as LegacyOptions).suffix : '',
+      resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic),
+    ),
+  }));
+  const designatedTriggerInput = inputs[0].input[Object.keys(inputs[0].input)[0]];
+  const triggerBuild = (file?: string): void => {
+    const intendedFile = file || designatedTriggerInput;
+    if (config.watch && intendedFile) {
+      writeFileSync(intendedFile, readFileSync(intendedFile));
+    }
   };
+  return inputs.map(({ legacy, input }) => createBuild(
+    config, legacy, input, warnings, outputFiles, addFile, removeFile, triggerBuild,
+  ));
 };
-
-export const createPreBuilds = (config: ParsedOptions): Build[] => ([
-  createBuild(config, false),
-  ...(config.legacy ? [createBuild(config, true)] : []),
-]);
 
 export const finalizeBuilds = (builds: Build[]): PostBuild[] => {
   const rollupBuilds = builds
