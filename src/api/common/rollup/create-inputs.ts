@@ -19,7 +19,7 @@ const getOutputName = (file: string, folder: string): string => {
 export const createInputs = (
   folder: string, extensions: string[], suffix: string, excludes: string[],
 ): Record<string, string> => (
-  resolver([folder], false, extensions).reduce((accumulator, files) => ([
+  resolver(folder, false, extensions).reduce((accumulator, files) => ([
     ...accumulator,
     ...(typeof files === 'string' ? [files] : files),
   ]), []).reduce((accumulator, file): Record<string, string> => ({

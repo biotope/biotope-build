@@ -1,5 +1,5 @@
-const { resolve } = require('path');
-const { readFileSync } = require('fs-extra');
+const { resolve, dirname } = require('path');
+const { readFileSync, statSync, existsSync } = require('fs-extra');
 const { sync: glob } = require('glob');
 const { resolver } = require('../../lib/api/common/resolver');
 const watchFilesPlugin = require('../watch-files');
@@ -10,7 +10,19 @@ const getConfig = (config, projectConfig, builds) => (
   from: input.from || `${projectConfig.project}/${input}`,
   to: input.to || input.from || input,
   ignore: input.ignore || [],
-})).filter(({ from }) => glob(from).length > 0);
+})).map(({ from, to, ignore }) => { // /**/*
+  const fromResolved = resolve(from);
+  const newTo = from.indexOf('*') < 0 && existsSync(fromResolved) && !statSync(fromResolved).isDirectory()
+    ? dirname(to)
+    : to;
+  return {
+    from,
+    to: newTo === '.' ? '' : newTo,
+    ignore,
+  };
+}).filter(({ from }) => glob(from).length > 0);
+
+const toDirname = (path) => resolve(statSync(resolve(path)).isDirectory() ? path : dirname(path));
 
 const copyPlugin = (pluginConfig = []) => ([
   {
@@ -23,13 +35,13 @@ const copyPlugin = (pluginConfig = []) => ([
       const list = getConfig(pluginConfig, projectConfig, builds)
         .map(({ from, to, ignore }) => {
           const flatten = from.indexOf('*') >= 0;
-          return resolver([from], true)
+          return resolver(from, true)
             .filter((file) => !ignore.some((ign) => (new RegExp(ign)).test(file)))
             .reduce((accumulator, file) => ({
               ...accumulator,
               [file]: !flatten
-                ? `${to}/${file.replace(`${resolve(from)}/`, '')}`
-                : `${to}/${file.split('/').pop()}`,
+                ? `${to}${to ? '/' : ''}${file.replace(`${toDirname(from)}/`, '')}`
+                : `${to}${to ? '/' : ''}${file.split('/').pop()}`,
             }), {});
         })
         .reduce((accumulator, files) => ({

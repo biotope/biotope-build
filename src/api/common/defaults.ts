@@ -5,7 +5,7 @@ export const defaultCliOptions: Options = {
   project: 'src',
   exclude: 'resources',
   output: 'dist',
-  copy: 'resources',
+  copy: 'resources,index.html',
   maps: true,
   watch: false,
   production: false,

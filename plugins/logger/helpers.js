@@ -15,7 +15,7 @@ const cleanChalk = (str) => str.replace(/[^ -~]+/g, '').replace(/\[[0-9][0-9]m/g
 const checkLimit = (size, total, t) => {
   const transform = t || ((s) => s);
   let warning = false;
-  if (size > total) {
+  if (size > total && size > 10) {
     warning = true;
   }
   if (size < 10 && !warning) {
@@ -56,6 +56,8 @@ const sortPaths = (files) => files.sort(({ name: leftName }, { name: rightName }
   }, null);
 });
 
+const isInfinity = (percent) => Number.isNaN(percent) || percent === Infinity || percent > 500;
+
 const createTableLayout = (folder, builds) => {
   const filteredFiles = [...builds].reverse().reduce((accumulator, { outputFiles }) => ([
     ...accumulator,
@@ -74,7 +76,7 @@ const createTableLayout = (folder, builds) => {
   }) => ([...accumulator, [
     `${chalk.grey(`${folder}/`)}${name}`,
     toKb(size),
-    checkLimit(gzip, size, () => `${toKb(gzip)} ${percent <= 100 ? ' ' : ''}(${percent}%)`),
+    checkLimit(gzip, size, () => `${toKb(gzip)} ${percent <= 100 ? ' ' : ''}(${isInfinity(percent) ? '---' : percent}%)`),
   ]]), [['Assets', 'Size', 'Gzipped']]);
 };
 

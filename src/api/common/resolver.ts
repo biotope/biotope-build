@@ -1,11 +1,11 @@
 import { resolve } from 'path';
-import { statSync } from 'fs-extra';
+import { statSync, existsSync } from 'fs-extra';
 import { sync as glob } from 'glob';
 
 export const resolver = (
   pattern: string | string[], includeNodeModules: boolean, extensions?: string[],
 ): string[] => (Array.isArray(pattern) ? pattern : [pattern])
-  .map((item) => (item.indexOf('*') < 0 && statSync(item).isDirectory() ? `${item}/**/*` : item))
+  .map((item) => (item.indexOf('*') < 0 && existsSync(item) && statSync(item).isDirectory() ? `${item}/**/*` : item))
   .map((item) => glob(item))
   .reduce((accumulator, file) => ([
     ...accumulator,
