@@ -4,7 +4,13 @@ const { sync: glob } = require('glob');
 const { resolver } = require('../../lib/api/common/resolver');
 const watchFilesPlugin = require('../watch-files');
 
-const getConfig = (config, ...args) => (typeof config === 'function' ? config(...args) : config);
+const getConfig = (config, projectConfig, builds) => (
+  typeof config === 'function' ? config(projectConfig, builds) : config
+).map((input) => ({
+  from: input.from || `${projectConfig.project}/${input}`,
+  to: input.to || input.from || input,
+  ignore: input.ignore || [],
+})).filter(({ from }) => glob(from).length > 0);
 
 const copyPlugin = (pluginConfig = []) => ([
   {
@@ -15,12 +21,6 @@ const copyPlugin = (pluginConfig = []) => ([
       const [{ addFile }] = builds;
 
       const list = getConfig(pluginConfig, projectConfig, builds)
-        .map((input) => ({
-          from: input.from || `${projectConfig.project}/${input}`,
-          to: input.to || input.from || input,
-          ignore: input.ignore || [],
-        }))
-        .filter(({ from }) => glob(from).length > 0)
         .map(({ from, to, ignore }) => {
           const flatten = from.indexOf('*') >= 0;
           return resolver([from], true)
