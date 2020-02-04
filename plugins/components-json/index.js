@@ -4,6 +4,10 @@ const componentsJsonPlugin = (pattern) => ({
   hook: 'before-emit',
   priority: -10,
   runner(_, builds) {
+    if (typeof pattern !== 'string' || !pattern) {
+      return;
+    }
+
     const [{ addFile }] = builds;
     const inputs = builds.reduce((accumulator, { build, legacy }) => ({
       ...accumulator,
