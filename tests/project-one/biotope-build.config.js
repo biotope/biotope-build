@@ -12,8 +12,7 @@ module.exports = {
   copy: [
     // 'resources',
     {
-      from: 'src/resources',
-      to: 'resources',
+      from: 'resources',
       ignore: ['favicon.png'],
     },
     {

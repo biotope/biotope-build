@@ -30,7 +30,6 @@ const devPreviewPlugin = (pluginConfig = {}) => {
       },
       {
         from: `${project}/${assets}`,
-        to: output,
         ignore: [],
       },
     ])),
