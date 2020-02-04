@@ -24,7 +24,7 @@ const rollupJsxPlugin = ({ extensions, factory }) => ({
 });
 
 const jsxPlugin = (pluginConfig = {}) => {
-  const extIgnore = pluginConfig.extIgnore || ['.ts', '.tsx'];
+  const extIgnore = pluginConfig.extIgnore || ['.ts', '.tsx', '.vue'];
   const factory = pluginConfig.factory || 'React.createElement';
 
   return {

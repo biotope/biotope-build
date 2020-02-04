@@ -1,12 +1,13 @@
 import classnames from 'classnames';
 import { camelCase } from 'change-case';
+import { answer } from 'question';
 import { logStyle } from './style';
 import { logger } from './logger';
 import { errorLogger } from './error';
 
 console.log(ENVIRONMENT);
 console.log(process.env.NODE_ENV);
-console.log(`ENVIRONMENT-${`${ENVIRONMENT}${ENVIRONMENT}`}-ENVIRONMENT`);
+console.log(`ENVIRONMENT-${`${ENVIRONMENT}-${answer}-${ENVIRONMENT}`}-ENVIRONMENT`);
 
 // This next part ensures that the word "ENVIRONMENT" is not replaced in comments and strings
 // HELLO ENVIRONMENT

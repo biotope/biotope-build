@@ -1,8 +1,10 @@
+const { resolve } = require('path');
 const favicons = require('@biotope/build/plugins/favicons');
 const handlebars = require('@biotope/build/plugins/handlebars');
 const devPreview = require('@biotope/build/plugins/dev-preview');
 const manifestJson = require('@biotope/build/plugins/manifest-json');
 const jsx = require('@biotope/build/plugins/jsx');
+const vue = require('@biotope/build/plugins/vue');
 // const noCodeSplit = require('@biotope/build/plugins/no-code-split');
 
 // can also export a function that receives the current environment as a parameter
@@ -29,7 +31,7 @@ module.exports = {
   // exclude: [],
   // watch: true,
   // production: true,
-  extLogic: ['.js', '.ts', '.jsx', '.tsx'],
+  extLogic: ['.js', '.ts', '.jsx', '.tsx', '.vue'],
   // extStyle: ['.css', '.scss'],
   componentsJson: 'components\\/.*\\/index\\.(j|t)sx?$',
   maps: {
@@ -57,7 +59,6 @@ module.exports = {
     'biotope-element': ['@biotope/element'],
     react: ['react', 'react-dom'],
     vue: ['vue'],
-    // style: ['src/style/index.ts'], // TODO - project-code chunks
   },
   style: {
     extract: true,
@@ -65,7 +66,7 @@ module.exports = {
     // modules: false,
   },
   alias: {
-    vue: require('path').resolve('./node_modules/vue/dist/vue.esm.browser'),
+    question: resolve('./src/hidden/little/question/answer'),
   },
   runtime: {
     COLORS: {
@@ -85,6 +86,8 @@ module.exports = {
     // },
 
     jsx(),
+    vue(),
+    // vue({ runtimeOnly: true }), // use with Vue SFC (example: bio-vue-runtime-only)
     handlebars({
       source: [
         'src/components/**/scaffolding/*.hbs',
