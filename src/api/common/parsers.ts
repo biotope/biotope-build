@@ -36,7 +36,7 @@ const setObjectByPriority = (
   } else if (typeof config[prop] === 'object') {
     // eslint-disable-next-line no-param-reassign
     config[prop] = {
-      ...defaultConfig,
+      ...(defaultConfig as object),
       ...config[prop],
     };
   }
@@ -62,12 +62,12 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setByPriority(configFile, 'watch', cliOptions.watch, defaultCliOptions.watch);
   setByPriority(configFile, 'production', cliOptions.production, defaultCliOptions.production);
   setByPriority(configFile, 'debug', cliOptions.debug, defaultCliOptions.debug);
-  setByPriority(configFile, 'componentsJson', cliOptions.componentsJson, defaultCliOptions.componentsJson);
   setByPriority(configFile, 'extLogic', cliOptions.extLogic, defaultCliOptions.extLogic, toArray);
   setByPriority(configFile, 'extStyle', cliOptions.extStyle, defaultCliOptions.extStyle, toArray);
   setObjectByPriority(configFile, 'legacy', cliOptions.legacy, defaultCliOptions.legacy);
   setObjectByPriority(configFile, 'maps', cliOptions.maps, defaultCliOptions.maps);
   setObjectByPriority(configFile, 'serve', cliOptions.serve, defaultCliOptions.serve);
+  setObjectByPriority(configFile, 'componentsJson', cliOptions.componentsJson, defaultCliOptions.componentsJson);
   setObjectByPriority(configFile, 'alias', undefined, defaultConfigs.alias);
   setObjectByPriority(configFile, 'chunks', undefined, defaultConfigs.chunks);
   setObjectByPriority(configFile, 'style', undefined, defaultConfigs.style);

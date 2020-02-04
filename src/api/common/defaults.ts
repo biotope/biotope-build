@@ -10,7 +10,7 @@ export const defaultCliOptions: Options = {
   watch: false,
   production: false,
   debug: false,
-  componentsJson: 'components\\/.*\\/index\\.(j|t)s$',
+  componentsJson: false,
   extLogic: '.js,.ts',
   extStyle: '.css,.scss',
   legacy: false,
@@ -19,6 +19,7 @@ export const defaultCliOptions: Options = {
 };
 
 export const defaultConfigs: ParsedOptionsConfig = {
+  componentsJson: 'components\\/.*\\/index\\.(j|t)s$',
   maps: {
     type: 'inline',
     environment: 'development',

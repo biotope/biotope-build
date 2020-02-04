@@ -15,7 +15,7 @@ export interface Options {
   chunks: boolean;
   production: boolean;
   debug: boolean;
-  componentsJson: string;
+  componentsJson: boolean | string;
   extLogic: string;
   extStyle: string;
 }
@@ -47,6 +47,7 @@ export interface MapOptions {
 }
 
 export interface ParsedOptionsConfig {
+  componentsJson: false | string;
   maps: false | MapOptions;
   legacy: false | LegacyOptions;
   serve: false | ServeOptions;
@@ -79,7 +80,6 @@ export interface ParsedOptions extends ParsedOptionsConfig {
   watch: boolean;
   production: boolean;
   debug: boolean;
-  componentsJson: boolean | string;
   extLogic: string[];
   extStyle: string[];
   plugins: Plugin[];
