@@ -64,6 +64,9 @@ module.exports = {
     // global: true,
     // modules: false,
   },
+  alias: {
+    vue: require('path').resolve('./node_modules/vue/dist/vue.esm.browser'),
+  },
   runtime: {
     COLORS: {
       PRIMARY: '#ff0000',

@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue.esm.browser';
+import Vue from 'vue';
 
 Vue.component('button-counter', {
   data() {

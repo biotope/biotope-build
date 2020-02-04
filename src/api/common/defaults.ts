@@ -41,6 +41,7 @@ export const defaultConfigs: ParsedOptionsConfig = {
     global: false,
     modules: true,
   },
+  alias: {},
   runtime: {},
 };
 

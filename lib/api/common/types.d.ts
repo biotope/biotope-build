@@ -42,6 +42,7 @@ export interface ParsedOptionsConfig {
     legacy: false | LegacyOptions;
     serve: false | ServeOptions;
     chunks: false | Record<string, string[]>;
+    alias: Record<string, string>;
     style: StyleOptions;
     runtime: RuntimeOptions;
 }
@@ -65,7 +66,7 @@ export interface ParsedOptions extends ParsedOptionsConfig {
     watch: boolean;
     production: boolean;
     debug: boolean;
-    componentsJson: string;
+    componentsJson: boolean | string;
     extLogic: string[];
     extStyle: string[];
     plugins: Plugin[];

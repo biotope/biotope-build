@@ -1,3 +1,4 @@
+export * from './alias';
 export * from './babel';
 export * from './commonjs';
 export * from './node-resolve';

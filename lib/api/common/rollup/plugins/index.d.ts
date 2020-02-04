@@ -2,6 +2,7 @@ import * as commonjs from '@rollup/plugin-commonjs';
 import * as nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 export declare const innerPlugins: {
+    alias: any;
     babel: any;
     commonjs: typeof commonjs;
     nodeResolve: typeof nodeResolve;
