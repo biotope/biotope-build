@@ -3,35 +3,18 @@ import { existsSync } from 'fs-extra';
 import * as deepmerge from 'deepmerge';
 import { requireJson } from '../../../json-handlers';
 
-const MINIMAL_TYPESCRIPT_CONFIG = {
-  compilerOptions: {
-    esModuleInterop: true,
-  },
-};
-
-const MANDATORY_TYPESCRIPT_CONFIG = {
-  compilerOptions: {
-    target: 'ES6',
-  },
-};
-
-const MANDATORY_TYPESCRIPT_CONFIG_DELETIONS = ['include', 'exclude'];
+const MINIMAL_CONFIG_PATH = resolve(`${__dirname}/../../../../../../tsconfig.minimal.json`);
+const MINIMAL_CONFIG_CONTENT: object = requireJson(MINIMAL_CONFIG_PATH);
 
 export const typescript = (): object => {
   const configFile = resolve(`${process.cwd()}/tsconfig.json`);
-
-  const tsconfig: RecordAny = configFile && existsSync(configFile)
-    // eslint-disable-next-line import/no-dynamic-require,global-require
-    ? requireJson(configFile)
-    : MINIMAL_TYPESCRIPT_CONFIG;
-
-  MANDATORY_TYPESCRIPT_CONFIG_DELETIONS.forEach((key) => {
-    tsconfig[key] = undefined;
-  });
+  const configFileExists = configFile && existsSync(configFile);
+  const tsconfig: object = configFileExists ? requireJson(configFile) : MINIMAL_CONFIG_CONTENT;
 
   return {
     // eslint-disable-next-line global-require
     typescript: require('typescript'),
-    tsconfigOverride: deepmerge(tsconfig, MANDATORY_TYPESCRIPT_CONFIG),
+    tsconfig: !configFileExists ? MINIMAL_CONFIG_PATH : configFile,
+    tsconfigOverride: deepmerge(MINIMAL_CONFIG_CONTENT, tsconfig),
   };
 };

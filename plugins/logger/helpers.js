@@ -15,7 +15,7 @@ const cleanChalk = (str) => str.replace(/[^ -~]+/g, '').replace(/\[[0-9][0-9]m/g
 const checkLimit = (size, total, t) => {
   const transform = t || ((s) => s);
   let warning = false;
-  if (size > total && size > 10) {
+  if (size > total && size > 1) {
     warning = true;
   }
   if (size < 10 && !warning) {
