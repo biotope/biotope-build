@@ -1,7 +1,8 @@
 const chalk = require('chalk');
 const {
-  version, log, logTitle, logStrong, createTicker, logTable,
+  version, log, logTitle, logStrong, logTable, createTicker,
 } = require('./helpers');
+const errorHandlers = require('./error-handlers');
 
 const beforeBuild = (_, projectConfig) => {
   logTitle(`:sparkles: Starting Biotope Build (v${version}) with :sparkling_heart: for Frontend Developers around the world :sparkles:`);
@@ -17,7 +18,7 @@ const beforeBuild = (_, projectConfig) => {
   log(`${projectConfig.production ? 'production' : 'development'}\n`);
 };
 
-const midBuild = ({ start }, { debug }, builds, event, isFirstTime) => {
+const midBuild = ({ start, stop }, { debug }, builds, event, isFirstTime) => {
   if (debug) {
     logStrong(chalk.yellow('EVENT:\n'));
     // eslint-disable-next-line no-console
@@ -34,47 +35,44 @@ const midBuild = ({ start }, { debug }, builds, event, isFirstTime) => {
   }
 
   if (event.code === 'ERROR') {
-    // eslint-disable-next-line no-console
-    console.error('Error:', event.error.code);
-    // eslint-disable-next-line no-console
-    console.log(event.error);
-
-    try {
-      const { file, line, column } = event.error.loc;
-      // eslint-disable-next-line no-console
-      console.error('Origin:', file.replace(process.cwd(), '.'), `(${line},${column})`);
-      // eslint-disable-next-line no-empty
-    } catch (__) {}
-
-    // eslint-disable-next-line no-console
-    console.error('\n', event.error.stack);
+    stop();
+    (errorHandlers[event.error.code] || errorHandlers.DEFAULT)(event);
   }
 };
 
-const afterEmitBuild = ({ stop }, { debug, output }, builds) => {
+const beforeEmit = ({ stop }, { debug }, [{ warnings }]) => {
+  if (debug) {
+    return;
+  }
+  stop();
+
+  Object.keys(warnings)
+    .reduce((accumulator, key) => ([...accumulator, ...warnings[key]]), [])
+    .forEach((warning) => {
+      (errorHandlers[warning.code] || errorHandlers.DEFAULT_WARN)(warning);
+    });
+};
+
+const afterEmitBuild = (_, { debug, output }, builds) => {
   if (debug) {
     logStrong(chalk.yellow('\n\nBUILD DATA:\n'));
     // eslint-disable-next-line no-console
     console.log(builds);
     return;
   }
-  stop();
-  logStrong('\n\n');
 
   logTable(output, builds);
 
   logStrong('\nBuild complete\n\n');
 };
 
-const afterEmitWatch = ({ stop }, { debug, output }, builds /* , isFirstTime */) => {
+const afterEmitWatch = (_, { debug, output }, builds) => {
   if (debug) {
     logStrong(chalk.yellow('\nBUILD DATA:\n'));
     // eslint-disable-next-line no-console
     console.log(builds);
     return;
   }
-  stop();
-  logStrong('\n\n');
 
   const currentTime = (new Date(Date.now())).toTimeString().split(' ')[0];
 
@@ -101,6 +99,14 @@ const loggerPlugin = () => {
       priority: 10,
       runner(projectConfig, builds, event) {
         midBuild(ticker, projectConfig, builds, event, isFirstTime);
+      },
+    },
+    {
+      name: 'biotope-build-plugin-logger',
+      hook: 'before-emit',
+      priority: -10,
+      runner(projectConfig, builds, event) {
+        beforeEmit(ticker, projectConfig, builds, event, isFirstTime);
       },
     },
     {

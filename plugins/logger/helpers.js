@@ -103,10 +103,17 @@ const logTable = (folder, builds) => {
 
 const createTicker = (ticker = { isRunning: undefined }) => ({
   start: () => {
+    if (ticker.isRunning) {
+      clearInterval(ticker.isRunning);
+    }
     // eslint-disable-next-line no-param-reassign
     ticker.isRunning = setInterval(() => process.stdout.write('.'), 150);
   },
-  stop: () => clearInterval(ticker.isRunning),
+  stop: () => {
+    if (ticker.isRunning) {
+      clearInterval(ticker.isRunning);
+    }
+  },
 });
 
 module.exports = {
