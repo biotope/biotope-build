@@ -1,6 +1,9 @@
 const { resolve } = require('path');
 const { readFileSync } = require('fs-extra');
 const { parse } = require('dotenv');
+const cssColorNames = require('css-color-names');
+
+const cssColors = Object.keys(cssColorNames);
 
 const getDotEnv = () => {
   try {
@@ -34,7 +37,7 @@ const isNumber = (variable) => {
 };
 
 const toSassVariable = (variable) => (
-  !isNumber(variable) && (variable || '')[0] !== '#' ? `'${variable}'` : variable
+  !isNumber(variable) && (variable || '')[0] !== '#' && !cssColors.includes(variable) ? `'${variable}'` : variable
 );
 
 const flattenName = (prefix, key) => `${prefix}${prefix ? '_' : ''}${key}`;
@@ -59,4 +62,5 @@ module.exports = {
   getRuntime,
   getRuntimeJavascript,
   getRuntimeSass,
+  getVariablesCss: flattenObject,
 };

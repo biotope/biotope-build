@@ -57,14 +57,14 @@ const handlebarsPlugin = (pluginOptions = {}) => [
 
       glob(sourcePatterns).forEach((file) => addFile({
         name: `${cleanFilePath(project, file, '.hbs').replace('./', '')}.html`,
-        content: handlebars.compile(readFileSync(file, { encoding: 'utf8' }))({ data: templateData }),
+        content: handlebars.compile(readFileSync(file, { encoding: 'utf8' }))(templateData),
       }));
     },
   },
   watchFilesPlugin([
-    ...pluginOptions.data,
-    ...pluginOptions.partial,
-    ...pluginOptions.source,
+    ...(pluginOptions.data || []),
+    ...(pluginOptions.partial || []),
+    ...(pluginOptions.source || []),
   ]),
 ];
 

@@ -46,6 +46,7 @@
     "comment-json": "~2.4",
     "console-emoji": "~0.0",
     "crc": "~3.8",
+    "css-color-names": "~1.0",
     "deepmerge": "~4.2",
     "dotenv": "~8.2",
     "favicons": "~5.5",

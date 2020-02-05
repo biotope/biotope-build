@@ -1,3 +1,4 @@
+const cssExtras = require('./postcss-plugin-css-extras');
 const { getRuntime, getRuntimeJavascript, getRuntimeSass } = require('./runtime');
 const { getPrependConfig, prepend } = require('./prepend');
 
@@ -12,6 +13,7 @@ const runtimePlugin = () => ({
     const stylePrepend = getPrependConfig(getRuntimeSass(variables), extStyle);
 
     builds.forEach(({ build }) => {
+      build.pluginsConfig.postcss[0].plugins.unshift(cssExtras(variables));
       build.priorityPlugins.unshift(prepend(logicPrepend));
       build.priorityPlugins.unshift(prepend(stylePrepend));
     });

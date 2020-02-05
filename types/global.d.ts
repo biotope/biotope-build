@@ -11,6 +11,15 @@ declare module '*.scss' {
   export default exports;
 }
 
+declare module '*.css' {
+  interface StyleObject extends Record<string, string> {
+    default: string;
+  }
+  const exports: StyleObject;
+  // eslint-disable-next-line import/no-default-export
+  export default exports;
+}
+
 // FIXME: Typescript limitation on importing deconstructed json files
 // declare module '*.json' {
 //   const content: RecordAny;

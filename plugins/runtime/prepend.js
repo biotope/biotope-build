@@ -64,6 +64,8 @@ const prepend = ({
         (!string && !object)
         || (!nodeModules && isInsideNodeModules)
         || (extensions ? !(new RegExp(`(${extensions.join('|')})$`)).test(id) : true)
+        // ignore css files due to including the custom postcss plugin
+        || id.slice(-4) === '.css'
       ) {
         return undefined;
       }
