@@ -1,11 +1,11 @@
-const { resolve, basename } = require('path');
+const { resolve, basename, sep } = require('path');
 const { readFileSync, statSync, existsSync } = require('fs-extra');
 const { resolver } = require('../../lib/api/common/resolver');
 const watchFilesPlugin = require('../watch-files');
 
 const hasWildCard = (input) => input.indexOf('*') >= 0;
 
-const getProjectFolder = (folder) => `${resolve(`${process.cwd()}/${folder}`)}/`;
+const getProjectFolder = (folder) => `${resolve(`${process.cwd()}/${folder}`)}${sep}`;
 
 const findInput = (from, folder) => {
   const fromSimple = resolve(from);

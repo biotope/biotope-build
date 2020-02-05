@@ -4,6 +4,7 @@ import * as babelPluginProposalClassProperties from '@babel/plugin-proposal-clas
 import * as babelPluginTransformClasses from '@babel/plugin-transform-classes';
 import * as babelPluginTransformObjectAssign from '@babel/plugin-transform-object-assign';
 import * as babelPluginProposalDecorators from '@babel/plugin-proposal-decorators';
+import * as babelPluginTransformRuntime from '@babel/plugin-transform-runtime';
 import { ParsedOptions } from '../../../types';
 
 export const babel = (config: ParsedOptions): object => ({
@@ -18,6 +19,8 @@ export const babel = (config: ParsedOptions): object => ({
     [babelPluginTransformClasses, { loose: true }],
     babelPluginTransformObjectAssign,
     [babelPluginProposalDecorators, { decoratorsBeforeExport: true }],
+    babelPluginTransformRuntime,
   ],
+  runtimeHelpers: true,
   compact: false,
 });

@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@biotope/build": "github:biotope/biotope-build#new/custom-refactor",
+    "promise-polyfill": "~8.1",
     "whatwg-fetch": "~3.0"
   }
 }

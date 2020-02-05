@@ -69,7 +69,7 @@ const createTableLayout = (folder, builds) => {
         gzip: file.gzip / 1024,
         percent: Math.round((file.gzip / file.size) * 100),
       })),
-  ]), []);
+  ]), []).map((file) => ({ ...file, name: (file.name[0] === '\\' ? file.name.substr(1) : file.name).replace('\\', '/') }));
 
   return sortPaths(filteredFiles, (file) => file.name, '/').reduce((accumulator, {
     name, size, gzip, percent,

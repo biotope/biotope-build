@@ -61,6 +61,7 @@ const afterEmitBuild = (_, { debug, output }, builds) => {
     return;
   }
 
+  log('\n\n');
   logTable(output, builds);
 
   logStrong('\nBuild complete\n\n');
@@ -76,6 +77,7 @@ const afterEmitWatch = (_, { debug, output }, builds) => {
 
   const currentTime = (new Date(Date.now())).toTimeString().split(' ')[0];
 
+  log('\n\n');
   logTable(output, builds);
 
   logStrong(`\nFinished build at ${chalk.underline(currentTime)}\n`);

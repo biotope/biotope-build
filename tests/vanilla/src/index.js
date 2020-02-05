@@ -1,3 +1,4 @@
+import 'promise-polyfill/src/polyfill';
 import 'whatwg-fetch';
 import json from './assets/static.json';
 
