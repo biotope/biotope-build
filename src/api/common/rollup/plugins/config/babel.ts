@@ -3,6 +3,7 @@ import * as babelPresetTypescript from '@babel/preset-typescript';
 import * as babelPluginProposalClassProperties from '@babel/plugin-proposal-class-properties';
 import * as babelPluginTransformClasses from '@babel/plugin-transform-classes';
 import * as babelPluginTransformObjectAssign from '@babel/plugin-transform-object-assign';
+import * as babelPluginProposalDecorators from '@babel/plugin-proposal-decorators';
 import { ParsedOptions } from '../../../types';
 
 export const babel = (config: ParsedOptions): object => ({
@@ -16,6 +17,7 @@ export const babel = (config: ParsedOptions): object => ({
     [babelPluginProposalClassProperties, { loose: true }],
     [babelPluginTransformClasses, { loose: true }],
     babelPluginTransformObjectAssign,
+    [babelPluginProposalDecorators, { loose: true }],
   ],
   compact: false,
 });
