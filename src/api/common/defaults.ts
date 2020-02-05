@@ -35,7 +35,7 @@ export const defaultConfigs: ParsedOptionsConfig = {
     secure: false,
   },
   chunks: {
-    'biotope-element': ['@biotope/element'],
+    // 'biotope-element': ['@biotope/element'],
   },
   style: {
     extract: false,

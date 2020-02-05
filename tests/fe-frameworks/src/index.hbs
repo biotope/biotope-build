@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>React Vue App</title>
+</head>
+<body>
+  <div id="{{ IDS.TS_ELEMENT }}">{{ PLACEHOLDERS.TS_ELEMENT }} FAIL</div>
+
+  <div id="{{ IDS.JS_REACT }}">{{ PLACEHOLDERS.JS_REACT }} FAIL</div>
+  <div id="{{ IDS.TS_REACT }}">{{ PLACEHOLDERS.TS_REACT }} FAIL</div>
+
+  <div id="{{ IDS.TS_VUE }}">{{ PLACEHOLDERS.TS_VUE }} FAIL</div>
+  <div id="{{ IDS.VUE_SFC }}">{{ PLACEHOLDERS.VUE_SFC }} FAIL</div>
+
+  <script src="./polyfills/webcomponents-loader.js"></script>
+  <script type="module" src="./index.js"></script>
+  <script nomodule="" src="./index.legacy.js"></script>
+</body>
+</html>

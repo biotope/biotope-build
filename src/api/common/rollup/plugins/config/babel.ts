@@ -17,7 +17,7 @@ export const babel = (config: ParsedOptions): object => ({
     [babelPluginProposalClassProperties, { loose: true }],
     [babelPluginTransformClasses, { loose: true }],
     babelPluginTransformObjectAssign,
-    [babelPluginProposalDecorators, { loose: true }],
+    [babelPluginProposalDecorators, { decoratorsBeforeExport: true }],
   ],
   compact: false,
 });

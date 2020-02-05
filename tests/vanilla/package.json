@@ -1,0 +1,16 @@
+{
+  "name": "vanilla",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "biotope-build --legacy --watch --serve",
+    "build": "biotope-build --legacy --production"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@biotope/build": "github:biotope/biotope-build#new/custom-refactor",
+    "whatwg-fetch": "~3.0"
+  }
+}

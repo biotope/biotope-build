@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true
+  },
+  "include": [
+    "types/global.d.ts",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
+}

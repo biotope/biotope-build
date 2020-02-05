@@ -1,0 +1,28 @@
+{
+  "name": "fe-frameworks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "biotope-build --config biotope-build.config.js --watch --serve",
+    "build": "biotope-build --config biotope-build.config.js --production"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@biotope/build": "github:biotope/biotope-build#new/custom-refactor",
+    "@biotope/element": "~4.3",
+    "@types/react": "~16.9",
+    "@types/react-dom": "~16.9",
+    "@webcomponents/webcomponentsjs": "~2.4",
+    "load-entry": "~1.1",
+    "react": "~16.12",
+    "react-dom": "~16.12",
+    "style-inject": "~0.3",
+    "vue": "~2.6",
+    "vue-property-decorator": "~8.4"
+  },
+  "devDependencies": {
+    "@biotope/quality-gate": "~1.0"
+  }
+}

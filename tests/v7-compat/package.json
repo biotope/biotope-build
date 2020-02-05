@@ -1,0 +1,20 @@
+{
+  "name": "v7-compat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "biotope-build --config biotope-build.config.js --watch --serve",
+    "build": "biotope-build --config biotope-build.config.js --production"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@biotope/build": "biotope/biotope-build#new/custom-refactor",
+    "@biotope/element": "~4.3",
+    "@webcomponents/webcomponentsjs": "~2.4"
+  },
+  "devDependencies": {
+    "@biotope/quality-gate": "~1.0"
+  }
+}

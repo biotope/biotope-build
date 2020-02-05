@@ -1,0 +1,7 @@
+@import '~@biotope/element/lib/host.mixin';
+
+@include host(bio-button);
+
+.bio-button--container {
+  color: red;
+}
