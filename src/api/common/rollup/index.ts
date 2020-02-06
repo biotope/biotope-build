@@ -79,10 +79,13 @@ export const createPreBuilds = (config: ParsedOptions): Build[] => {
     input: createInputs(
       config.project,
       config.extLogic,
-      index !== 0 ? (config.legacy as LegacyOptions).suffix : '',
+      (index !== 0 && !(config.legacy as LegacyOptions).only)
+        ? (config.legacy as LegacyOptions).suffix
+        : '',
       resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic),
     ),
-  }));
+  })).filter((_, index) => index !== 0 || (config.legacy && !config.legacy.only));
+
   const designatedTriggerInput = inputs[0].input[Object.keys(inputs[0].input)[0]];
   const triggerBuild = (file?: string): void => {
     const intendedFile = file || designatedTriggerInput;

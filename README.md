@@ -118,11 +118,11 @@ cli-default: no
 config-default: `{ port: 8000, open: false, spa: false, secure: false }`
 
 ### legacy
-should we also build for IE11 and below?
+should we also build for legacy browsers (IE11)?
 
 cli-default: no
 
-config-default: `{ inline: true, suffix: '.legacy' }`
+config-default: `{ inline: true, suffix: '.legacy', only: false }`
 
 ### components-json
 what is the components.json pattern that generates a list of components?

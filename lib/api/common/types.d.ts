@@ -27,6 +27,7 @@ export interface ServeOptions {
 export interface LegacyOptions {
     inline: boolean;
     suffix: string;
+    only: boolean;
 }
 export declare type RuntimeOptions = Record<string, any>;
 export interface StyleOptions {

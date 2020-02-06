@@ -28,6 +28,7 @@ export const defaultConfigs: ParsedOptionsConfig = {
   legacy: {
     inline: true,
     suffix: '.legacy',
+    only: false,
   },
   serve: {
     port: 8000,

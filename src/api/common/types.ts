@@ -31,6 +31,7 @@ export interface ServeOptions {
 export interface LegacyOptions {
   inline: boolean;
   suffix: string;
+  only: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
