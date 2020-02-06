@@ -12,7 +12,7 @@ export const defaultCliOptions: Options = {
   ignoreResult: false,
   debug: false,
   componentsJson: false,
-  extLogic: '.js,.ts',
+  extLogic: '.js,.mjs,.ts',
   extStyle: '.css,.scss',
   legacy: false,
   serve: false,

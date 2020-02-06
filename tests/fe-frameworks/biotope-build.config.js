@@ -6,7 +6,7 @@ module.exports = {
   maps: true,
   legacy: true,
   componentsJson: true,
-  extLogic: ['.js', '.ts', '.jsx', '.tsx', '.vue'],
+  extLogic: ['.js', '.mjs', '.ts', '.jsx', '.tsx', '.vue'],
   copy: [
     'resources',
     {
