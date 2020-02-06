@@ -6,12 +6,12 @@ const logWarnCode = (...args) => process.stdout.write(chalk.yellow.bold(...args)
 const logWarn = (...args) => process.stdout.write(chalk.yellow(...args));
 
 const MISSING_EXPORT = ({ error: { stack, loc: { file, line, column } } }) => {
-  logErrorCode('\n\nMISSING_EXPORT', file.replace(process.cwd(), '.'), `(${line},${column})`);
+  logErrorCode('\n\nMISSING_EXPORT', file.replace(process.cwd(), '.'), `(${line},${column})\n`);
   logError(stack, '\n');
 };
 
 const PARSE_ERROR = ({ error: { stack, loc: { file, line, column } } }) => {
-  logErrorCode('\n\nPARSE_ERROR', file.replace(process.cwd(), '.'), `(${line},${column})`);
+  logErrorCode('\n\nPARSE_ERROR', file.replace(process.cwd(), '.'), `(${line},${column})\n`);
   logError(stack, '\n');
 };
 
@@ -36,6 +36,14 @@ const THIS_IS_UNDEFINED = ({
   logWarn('\n');
 };
 
+const SOURCEMAP_ERROR = () => {
+  // FIXME: fix this warning on biotope-build
+
+  // Example:
+  // SOURCEMAP_ERROR .\src\index.js (8,19)
+  // Error when using sourcemap for reporting an error: Can't resolve original location of error.
+};
+
 const DEFAULT_WARN = ({
   code, message, url, loc: { file, line, column }, frame,
 }) => {
@@ -46,7 +54,9 @@ const DEFAULT_WARN = ({
 
   logWarnCode(`\n\n${code}`, localFile, `(${line},${column})\n`);
   logWarn(message, '\n');
-  logWarn(frame, '\n');
+  if (frame) {
+    logWarn(frame, '\n');
+  }
   if (url) {
     logWarn(`More info at: ${url}\n`);
   }
@@ -58,5 +68,6 @@ module.exports = {
   PARSE_ERROR,
   DEFAULT,
   THIS_IS_UNDEFINED,
+  SOURCEMAP_ERROR,
   DEFAULT_WARN,
 };
