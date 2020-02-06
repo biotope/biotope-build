@@ -16,7 +16,7 @@ const PARSE_ERROR = ({ error: { stack, loc: { file, line, column } } }) => {
 };
 
 const DEFAULT = ({ error: { code, stack } }) => {
-  logErrorCode(`\n\n${code}`);
+  logErrorCode(`\n\n${code}\n`);
   logError(stack, '\n');
 };
 

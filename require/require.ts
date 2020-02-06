@@ -3,13 +3,25 @@ type FullRequire = (rootRequire: boolean, currentPath: string, file: string) => 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Require = (file: string) => any;
 
-interface WindowRequire extends Window {
-  require?: Require;
+interface WindowRequireExtensions {
+  require: Require;
 }
+
+interface WindowCacheExtensions {
+  __require_imports: Record<string, object>;
+}
+
+type ExtendedWindow = typeof window & WindowCacheExtensions & WindowRequireExtensions;
 
 type ExtensionType = 'executable' | 'object'; // | 'style';
 
-if (window && !(window as WindowRequire).require) {
+if (window && !(window as ExtendedWindow).require) {
+  // eslint-disable-next-line no-underscore-dangle
+  if (!(window as ExtendedWindow).__require_imports) {
+    // eslint-disable-next-line no-underscore-dangle,@typescript-eslint/camelcase
+    (window as ExtendedWindow).__require_imports = {};
+  }
+
   const extensionTypes: Record<ExtensionType, string[]> = {
     executable: ['js'],
     object: ['json'],
@@ -74,33 +86,56 @@ if (window && !(window as WindowRequire).require) {
     return module.exports;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const cacheCall = (key: string, content: any): void => {
+    // eslint-disable-next-line no-underscore-dangle
+    (window as ExtendedWindow).__require_imports[key] = content;
+  };
+
+  const isCached = (key: string): boolean => Object
+    // eslint-disable-next-line no-underscore-dangle
+    .keys((window as ExtendedWindow).__require_imports).indexOf(key) >= 0;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any,no-underscore-dangle
+  const getFromCache = (key: string): any => (window as ExtendedWindow).__require_imports[key];
+
   const require: FullRequire = (rootRequire: boolean, currentPath: string, file: string) => {
     const extension = toExtensionType(file.split('.').pop() as ExtensionType);
     const scriptSource = (lastOf<HTMLScriptElement>(document.querySelectorAll('script')) || {}).src;
     const path = rootRequire && scriptSource ? getCurrentPath(scriptSource) : currentPath;
     const url = `${window.location.origin}/${resolveRelativity(file, path)}`;
 
+    if (isCached(url)) {
+      return getFromCache(url);
+    }
+
     try {
       const value = fetchSync(url);
+
       if (value === undefined) {
-        return undefined;
-      }
-      switch (extension) {
-        case 'executable':
-          return getExports(require, url, value);
-        case 'object':
-          return JSON.parse(value);
-        // case 'style':
-        //   document.head.appendChild(createElementAndSet('style', 'innerHTML', value));
-        //   return value;
-        default:
-          return value;
+        cacheCall(url, undefined);
+      } else {
+        switch (extension) {
+          case 'executable':
+            cacheCall(url, getExports(require, url, value));
+            break;
+          case 'object':
+            cacheCall(url, JSON.parse(value));
+            break;
+          // case 'style':
+          //   document.head.appendChild(createElementAndSet('style', 'innerHTML', value));
+          //   return value;
+          default:
+            cacheCall(url, value);
+        }
       }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
       return undefined;
     }
+
+    return getFromCache(url);
   };
 
   const rootPath = getCurrentPath(
@@ -109,5 +144,5 @@ if (window && !(window as WindowRequire).require) {
       : window.location.href,
   );
 
-  (window as WindowRequire).require = require.bind(window, true, rootPath) as Require;
+  (window as ExtendedWindow).require = require.bind(window, true, rootPath);
 }

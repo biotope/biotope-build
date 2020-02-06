@@ -61,6 +61,7 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setByPriority(configFile, 'copy', cliOptions.copy, defaultCliOptions.copy, toArray);
   setByPriority(configFile, 'watch', cliOptions.watch, defaultCliOptions.watch);
   setByPriority(configFile, 'production', cliOptions.production, defaultCliOptions.production);
+  setByPriority(configFile, 'ignoreResult', cliOptions.ignoreResult, defaultCliOptions.ignoreResult);
   setByPriority(configFile, 'debug', cliOptions.debug, defaultCliOptions.debug);
   setByPriority(configFile, 'extLogic', cliOptions.extLogic, defaultCliOptions.extLogic, toArray);
   setByPriority(configFile, 'extStyle', cliOptions.extStyle, defaultCliOptions.extStyle, toArray);

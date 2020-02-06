@@ -7,6 +7,8 @@ import { runPlugins } from './common/run-plugins';
 import { emit } from './common/emit';
 import { Options, ParsedOptions, PostBuild } from './common/types';
 
+let buildHasErrors = false;
+
 const watch = (options: ParsedOptions, builds: PostBuild[]): void => {
   const { push } = createAsyncQueue();
 
@@ -27,6 +29,7 @@ const run = async (options: ParsedOptions, builds: PostBuild[]): Promise<void> =
       const result = await runRollup(build);
       await result.write(build.output as OutputOptions);
     } catch (error) {
+      buildHasErrors = true;
       await runPlugins(options.plugins, 'mid-build', options, builds, { code: 'ERROR', error });
     }
   }));
@@ -49,4 +52,8 @@ export const build = async (options: Partial<Options>): Promise<void> => {
   await (!parsedOptions.watch ? run : watch)(parsedOptions, builds);
 
   process.env.NODE_ENV = originalEnvironment;
+
+  if (buildHasErrors && !parsedOptions.ignoreResult) {
+    process.exit(-1);
+  }
 };

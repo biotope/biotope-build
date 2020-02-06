@@ -15,10 +15,10 @@ export const babel = (config: ParsedOptions): object => ({
     babelPresetTypescript,
   ],
   plugins: [
+    [babelPluginProposalDecorators, { legacy: true }],
     [babelPluginProposalClassProperties, { loose: true }],
     [babelPluginTransformClasses, { loose: true }],
     babelPluginTransformObjectAssign,
-    [babelPluginProposalDecorators, { decoratorsBeforeExport: true }],
     babelPluginTransformRuntime,
   ],
   runtimeHelpers: true,

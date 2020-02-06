@@ -1,6 +1,9 @@
 const { resolve } = require('path');
 const VuePlugin = require('rollup-plugin-vue');
 const { alias } = require('../../lib/api/common/rollup/plugins/config');
+const { invertObject, manualChunks } = require('../../lib/api/common/rollup/manual-chunks');
+
+const additionalVuePackages = ['vue-property-decorator', 'vue-class-component', 'vue-runtime-helpers'];
 
 const getVueDist = (isProduction, needsTemplateCompiler) => {
   if (!isProduction) {
@@ -20,9 +23,21 @@ const vuePlugin = (pluginConfig = {}) => ({
       },
     });
 
-    builds.forEach(({ build }) => {
+    const invertedChunks = invertObject(projectConfig.chunks || {});
+    const hasVueChunk = invertedChunks.vue !== undefined;
+
+    if (hasVueChunk) {
+      projectConfig.chunks[invertedChunks.vue].push(...additionalVuePackages);
+    }
+
+    builds.forEach(({ build, legacy }) => {
       // eslint-disable-next-line no-param-reassign
       build.pluginsConfig.alias[0] = newAliasConfig;
+
+      if (hasVueChunk) {
+        // eslint-disable-next-line no-param-reassign
+        build.manualChunks = manualChunks('vendor', projectConfig.chunks || {}, legacy ? projectConfig.legacy : false);
+      }
 
       build.priorityPlugins.push(VuePlugin());
     });
