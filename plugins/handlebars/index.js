@@ -1,4 +1,6 @@
-const { resolve, dirname, basename } = require('path');
+const {
+  resolve, dirname, basename, sep,
+} = require('path');
 const { readFileSync } = require('fs-extra');
 const { sync: glob } = require('glob');
 const handlebars = require('handlebars');
@@ -13,18 +15,18 @@ const createGlobPattern = (array) => (array.length === 1 ? array[0] : `{${array.
 const cleanFilePath = (projectFolder, file, ext) => {
   const name = resolve(file)
     .replace(resolve(`${process.cwd()}/${projectFolder}`), '')
-    .split('/')
+    .split(sep)
     .filter((slug) => !!slug)
-    .join('/');
+    .join(sep);
 
-  return ext ? `${dirname(name)}/${basename(name, ext)}` : name;
+  return ext ? `${dirname(name)}${sep}${basename(name, ext)}` : name;
 };
 
 const gatherData = (runtime, projectFolder, globString) => {
   const collectedData = deepmerge({}, runtime);
   glob(globString).forEach((file) => setValue(
     collectedData,
-    file.replace(`${projectFolder}/`, '').replace('.json', '').replace(new RegExp('/', 'g'), '.'),
+    file.replace(`${projectFolder}/`, '').replace('.json', '').replace(/\//g, '.'),
     parseJson(readFileSync(file, { encoding: 'utf8' })),
   ));
   return collectedData;
@@ -32,7 +34,7 @@ const gatherData = (runtime, projectFolder, globString) => {
 
 const registerPartials = (projectFolder, partialPattern, hbs) => glob(partialPattern)
   .forEach((file) => hbs.registerPartial(
-    cleanFilePath(projectFolder, file, '.hbs'),
+    cleanFilePath(projectFolder, file, '.hbs').replace(/\\/g, '/'),
     readFileSync(file, { encoding: 'utf8' }),
   ));
 
@@ -57,7 +59,7 @@ const handlebarsPlugin = (pluginOptions = {}) => [
 
       glob(sourcePatterns).forEach((file) => addFile({
         name: `${cleanFilePath(project, file, '.hbs').replace('./', '')}.html`,
-        content: handlebars.compile(readFileSync(file, { encoding: 'utf8' }))(templateData),
+        content: handlebars.compile(readFileSync(resolve(file), { encoding: 'utf8' }))(templateData),
       }));
     },
   },

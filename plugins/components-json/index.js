@@ -1,3 +1,8 @@
+const { dirname, sep } = require('path');
+
+const fixWindowsRegexResults = (match) => (
+  sep === '\\' ? dirname(match.replace(/\\/g, '/')).substr(1) : match
+);
 
 const componentsJsonPlugin = (pattern) => ({
   name: 'biotope-build-plugin-component-json',
@@ -7,6 +12,7 @@ const componentsJsonPlugin = (pattern) => ({
     if (typeof pattern !== 'string' || !pattern) {
       return;
     }
+    const regex = new RegExp(pattern.replace(/\//g, sep));
 
     const [{ addFile }] = builds;
     const inputs = builds.reduce((accumulator, { build, legacy }) => ({
@@ -15,7 +21,9 @@ const componentsJsonPlugin = (pattern) => ({
     }), {});
 
     const content = JSON.stringify(
-      Object.keys(inputs).filter((key) => (new RegExp(pattern)).test(inputs[key])),
+      Object.keys(inputs)
+        .filter((key) => regex.test(inputs[key]))
+        .map(fixWindowsRegexResults),
     );
 
     addFile({ name: 'components.json', content });

@@ -50,7 +50,7 @@ module.exports = {
       options: {
         appName: 'ProjectOne',
         theme_color: '#3367D6',
-        appleStatusBarStyle: 'black-translucent', // black,default
+        appleStatusBarStyle: 'black-translucent',
       },
     }),
     manifestJson({

@@ -1,4 +1,4 @@
-const path = require('path');
+const { resolve, sep } = require('path');
 const favicons = require('favicons');
 const { joinPath, appendToHtml } = require('../helpers');
 
@@ -24,21 +24,21 @@ const prodIcons = {
   yandex: false,
 };
 
-const createIcons = (source, options) => new Promise((resolve) => {
+const createIcons = (source, options) => new Promise((done) => {
   favicons(source, options, (error, response) => {
     if (error) {
       // eslint-disable-next-line no-console
       console.error(error.message);
-      resolve(null);
+      done(null);
       return;
     }
     if (!response || !Array.isArray(response.images)) {
       // eslint-disable-next-line no-console
       console.log('No favicons created.');
-      resolve(null);
+      done(null);
       return;
     }
-    resolve({ ...response });
+    done({ ...response });
   });
 });
 
@@ -58,7 +58,7 @@ const faviconsPlugin = (pluginConfig = {}) => {
       hook: 'before-build',
       async runner({ production }) {
         destination = pluginConfig.destination
-          ? path.resolve(pluginConfig.destination).replace(`${process.cwd()}/`, '')
+          ? resolve(pluginConfig.destination).replace(`${process.cwd()}${sep}`, '')
           : '';
         options = {
           ...favicons.config.defaults,
@@ -74,14 +74,14 @@ const faviconsPlugin = (pluginConfig = {}) => {
       hook: 'before-emit',
       async runner(_, [{ outputFiles, addFile }]) {
         if (!contentPromise) {
-          return new Promise((resolve) => resolve());
+          return Promise.resolve();
         }
         let faviconContent;
         contentPromise.then((data) => {
           faviconContent = data;
         });
 
-        return new Promise((resolve) => {
+        return new Promise((done) => {
           const tryFinish = () => {
             if (faviconContent === undefined) {
               setTimeout(tryFinish, 0);
@@ -93,12 +93,12 @@ const faviconsPlugin = (pluginConfig = {}) => {
 
             [...images, ...files.filter(({ name }) => name === 'browserconfig.xml')]
               .forEach(({ name, contents }) => addFile({
-                name: joinPath(destination, name),
+                name: joinPath(destination, name).replace(/\//g, sep),
                 content: contents,
               }));
 
             appendToHtml({ outputFiles, addFile }, 'favicons', htmlNodes, options.path, destination);
-            resolve();
+            done();
           };
           tryFinish();
         });
