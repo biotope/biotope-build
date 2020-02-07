@@ -19,17 +19,22 @@ const getFlatObject = (object, currentPath = '') => Object.keys(object).reduce((
 
 const createRegex = (variable) => new RegExp(`(?<![A-z0-9\\._$€])${variable.split('.').join('\\.')}(?![A-z0-9\\._$€])`, 'g');
 
-const isBetween = (needleIndex, haystack, left, right) => {
+const isBetween = (needleIndex, haystack, left, right = left) => {
+  let templateStatus = 0;
   let opened = false;
   for (let index = 0; index < needleIndex; index += 1) {
     if (haystack[index] === '\\') {
       index += 1;
-    } else if (!opened && haystack.substr(index, left.length) === left) {
-      opened = true;
-      index += left.length - 1;
-    } else if (opened && haystack.substr(index, right.length) === right) {
-      opened = false;
-      index += right.length - 1;
+    } else if (haystack[index] === '`') {
+      templateStatus += 1;
+    } else if (templateStatus % 2 === 0) {
+      if (!opened && haystack.substr(index, left.length) === left) {
+        opened = true;
+        index += left.length - 1;
+      } else if (opened && haystack.substr(index, right.length) === right) {
+        opened = false;
+        index += right.length - 1;
+      }
     }
   }
   return opened;
@@ -46,8 +51,8 @@ const findAllMatches = (variable, string) => {
   return locations.filter((location) => !(
     isBetween(location, string, '/*', '*/')
     || isBetween(location, string, '//', '\n')
-    || isBetween(location, string, '"', '"')
-    || isBetween(location, string, '\'', '\'')
+    || isBetween(location, string, '"')
+    || isBetween(location, string, '\'')
   ));
 };
 
