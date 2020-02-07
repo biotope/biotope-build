@@ -56,7 +56,7 @@ const faviconsPlugin = (pluginConfig = {}) => {
     {
       name: 'biotope-build-plugin-favicons',
       hook: 'before-build',
-      async runner({ production }) {
+      runner({ production }) {
         destination = pluginConfig.destination
           ? resolve(pluginConfig.destination).replace(`${process.cwd()}${sep}`, '')
           : '';
@@ -84,7 +84,7 @@ const faviconsPlugin = (pluginConfig = {}) => {
         return new Promise((done) => {
           const tryFinish = () => {
             if (faviconContent === undefined) {
-              setTimeout(tryFinish, 0);
+              setTimeout(tryFinish);
               return;
             }
 
