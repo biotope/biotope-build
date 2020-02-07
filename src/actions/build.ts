@@ -2,7 +2,12 @@ import { Options } from '../api/common/types';
 import { build } from '../api';
 import { Action } from './types';
 
-const buildAction = (options: Partial<Options>): Promise<void> => build(options);
+const buildAction = async (options: Partial<Options>): Promise<void> => {
+  const exitNormally = await build(options);
+  if (!exitNormally) {
+    process.exitCode = -1;
+  }
+};
 
 export const registerLint: Action = (program) => program
   .option('-c, --config <file>', 'Specify a configuration file')

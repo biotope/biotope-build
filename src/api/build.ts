@@ -37,7 +37,7 @@ const run = async (options: ParsedOptions, builds: PostBuild[]): Promise<void> =
   await emit(options, builds);
 };
 
-export const build = async (options: Partial<Options>): Promise<void> => {
+export const build = async (options: Partial<Options>): Promise<boolean> => {
   const originalEnvironment = process.env.NODE_ENV;
   process.env.NODE_ENV = options.production ? 'production' : 'development';
 
@@ -52,7 +52,5 @@ export const build = async (options: Partial<Options>): Promise<void> => {
 
   process.env.NODE_ENV = originalEnvironment;
 
-  if (buildHasErrors && !parsedOptions.ignoreResult) {
-    process.exit(-1);
-  }
+  return !buildHasErrors || parsedOptions.ignoreResult;
 };
