@@ -35,13 +35,13 @@ const expandFrom = (from, folder) => {
 };
 
 const toCopyFiles = (files, folder, flatten = false, to = '', ignore = []) => files
+  .filter((file) => !ignore.some((ign) => (new RegExp(ign)).test(file)))
   .map((from) => ({
     from,
     to: `${to || ''}${to ? '/' : ''}${flatten
       ? basename(from)
       : from.replace(getProjectFolder(folder), '')}`,
-  }))
-  .filter((file) => !ignore.some((ign) => (new RegExp(ign)).test(file)));
+  }));
 
 const getFiles = (input, folder) => {
   if (typeof input === 'string') {
