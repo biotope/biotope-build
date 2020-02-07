@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { resolver } from '../resolver';
+import { ParsedOptions, LegacyOptions } from '../types';
 
 const getOutputName = (file: string, folder: string): string => {
   const split = file.replace(resolve(`${process.cwd()}${folder ? `/${folder}` : ''}`), '')
@@ -16,16 +17,19 @@ const getOutputName = (file: string, folder: string): string => {
   return split.join('/');
 };
 
-export const createInputs = (
-  folder: string, extensions: string[], suffix: string, excludes: string[],
-): Record<string, string> => (
-  resolver(folder, false, extensions).reduce((accumulator, files) => ([
+export const createInputs = (config: ParsedOptions, legacy: boolean): Record<string, string> => {
+  const suffix = legacy && !(config.legacy as LegacyOptions).only
+    ? (config.legacy as LegacyOptions).suffix
+    : '';
+  const excludes = resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic);
+
+  return resolver(config.project, false, config.extLogic).reduce((accumulator, files) => ([
     ...accumulator,
     ...(typeof files === 'string' ? [files] : files),
   ]), []).reduce((accumulator, file): Record<string, string> => ({
     ...accumulator,
     ...(excludes.indexOf(resolve(file)) >= 0 ? {} : {
-      [`${getOutputName(file, folder)}${suffix}`]: resolve(file),
+      [`${getOutputName(file, config.project)}${suffix}`]: resolve(file),
     }),
-  }), {})
-);
+  }), {});
+};

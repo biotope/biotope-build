@@ -1,1 +1,2 @@
-export declare const createInputs: (folder: string, extensions: string[], suffix: string, excludes: string[]) => Record<string, string>;
+import { ParsedOptions } from '../types';
+export declare const createInputs: (config: ParsedOptions, legacy: boolean) => Record<string, string>;

@@ -1,6 +1,5 @@
 import { RollupWarning, RollupOptions } from 'rollup';
 import { readFileSync, writeFileSync } from 'fs-extra';
-import { resolver } from '../resolver';
 import { getContent } from '../require';
 import { getAddFileFunction, getRemoveFileFunction } from '../emit';
 import {
@@ -74,27 +73,33 @@ export const createPreBuilds = (config: ParsedOptions): Build[] => {
   const outputFiles: Record<string, OutputFile> = {};
   const addFile = getAddFileFunction(config, outputFiles);
   const removeFile = getRemoveFileFunction(outputFiles);
-  const inputs = [...Array(config.legacy ? 2 : 1)].map((_, index) => ({
-    legacy: index !== 0,
-    input: createInputs(
-      config.project,
-      config.extLogic,
-      (index !== 0 && !(config.legacy as LegacyOptions).only)
-        ? (config.legacy as LegacyOptions).suffix
-        : '',
-      resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic),
-    ),
-  })).filter((_, index) => index !== 0 || (config.legacy && !config.legacy.only));
 
-  const designatedTriggerInput = inputs[0].input[Object.keys(inputs[0].input)[0]];
+  const inputsModules = (!config.legacy || !config.legacy.only)
+    ? createInputs(config, false)
+    : undefined;
+  const inputsLegacy = (!inputsModules || config.legacy) ? createInputs(config, true) : undefined;
+
+  const inputs = [
+    ...(inputsModules ? [inputsModules] : []),
+    ...(inputsLegacy ? [inputsLegacy] : []),
+  ];
+
+  const designatedTriggerInput = inputs[0][Object.keys(inputs[0])[0]];
   const triggerBuild = (file?: string): void => {
     const intendedFile = file || designatedTriggerInput;
     if (config.watch && intendedFile) {
       writeFileSync(intendedFile, readFileSync(intendedFile));
     }
   };
-  return inputs.map(({ legacy, input }) => createBuild(
-    config, legacy, input, warnings, outputFiles, addFile, removeFile, triggerBuild,
+  return inputs.map((input, index) => createBuild(
+    config,
+    !inputsModules || index > 0,
+    input,
+    warnings,
+    outputFiles,
+    addFile,
+    removeFile,
+    triggerBuild,
   ));
 };
 
