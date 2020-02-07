@@ -54,7 +54,15 @@ const findAllMatches = (variable, string) => {
 const prepend = ({
   string, object, extensions, nodeModules,
 }) => {
-  const flatObject = object && !string ? getFlatObject(object) : null;
+  let flatObject = object && !string ? getFlatObject(object) : null;
+  if (flatObject) {
+    flatObject = Object.keys(flatObject)
+      .filter((key) => key !== 'process')
+      .reduce((accumulator, key) => ({
+        ...accumulator,
+        [key]: flatObject[key],
+      }), {});
+  }
 
   return {
     name: 'biotope-build-rollup-plugin-prepend',

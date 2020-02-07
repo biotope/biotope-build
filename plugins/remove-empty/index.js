@@ -4,10 +4,10 @@ const removeEmptyPlugin = () => ({
   hook: 'before-emit',
   priority: 5,
   runner(_, builds) {
-    builds.forEach(({ warnings, outputFiles }) => {
+    builds.forEach(({ warnings, outputFiles, removeFile }) => {
       (warnings.EMPTY_BUNDLE || []).forEach((warning) => {
         if (warning.chunkName) {
-          builds.removeFile(`${warning.chunkName}.js`, outputFiles);
+          removeFile(`${warning.chunkName}.js`, outputFiles);
         }
       });
     });

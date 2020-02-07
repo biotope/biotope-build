@@ -37,6 +37,8 @@ const THIS_IS_UNDEFINED = ({
 };
 
 const SOURCEMAP_ERROR = () => {
+  // SUPPRESS ERROR (for now)
+
   // FIXME: fix this warning on biotope-build
 
   // Example:
@@ -44,15 +46,19 @@ const SOURCEMAP_ERROR = () => {
   // Error when using sourcemap for reporting an error: Can't resolve original location of error.
 };
 
+const EMPTY_BUNDLE = () => {
+  // SUPPRESS ERROR
+};
+
 const DEFAULT_WARN = ({
-  code, message, url, loc: { file, line, column }, frame,
+  code, message, url, loc, frame,
 }) => {
-  const localFile = file.replace(process.cwd(), '.');
-  if (localFile.indexOf('./node_modules/') === 0) {
+  const localFile = (loc && loc.file) ? loc.file.replace(process.cwd(), '.') : undefined;
+  if (localFile && localFile.indexOf('./node_modules/') === 0) {
     return;
   }
 
-  logWarnCode(`\n\n${code}`, localFile, `(${line},${column})\n`);
+  logWarnCode(`\n\n${code}`, localFile, loc ? `(${loc.line},${loc.column})\n` : '\n');
   logWarn(message, '\n');
   if (frame) {
     logWarn(frame, '\n');
@@ -69,5 +75,6 @@ module.exports = {
   DEFAULT,
   THIS_IS_UNDEFINED,
   SOURCEMAP_ERROR,
+  EMPTY_BUNDLE,
   DEFAULT_WARN,
 };
