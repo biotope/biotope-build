@@ -5,6 +5,12 @@ import { requireJson } from '../../../json-handlers';
 
 const MINIMAL_CONFIG_PATH = resolve(`${__dirname}/../../../../../../tsconfig.minimal.json`);
 const MINIMAL_CONFIG_CONTENT: object = requireJson(MINIMAL_CONFIG_PATH);
+const BUILD_CONFIG_CONTENT = {
+  compilerOptions: {
+    allowUnreachableCode: true,
+    noEmitOnError: false,
+  },
+};
 
 export const typescript = (): object => {
   const configFile = resolve(`${process.cwd()}/tsconfig.json`);
@@ -15,6 +21,9 @@ export const typescript = (): object => {
     // eslint-disable-next-line global-require
     typescript: require('typescript'),
     tsconfig: !configFileExists ? MINIMAL_CONFIG_PATH : configFile,
-    tsconfigOverride: deepmerge(MINIMAL_CONFIG_CONTENT, tsconfig),
+    tsconfigOverride: deepmerge(
+      deepmerge(MINIMAL_CONFIG_CONTENT, tsconfig) as object,
+      BUILD_CONFIG_CONTENT,
+    ),
   };
 };

@@ -18,6 +18,7 @@ export const manualChunks = (
 ): ManualChunksOption => {
   const invertedChunks = invertObject(chunks);
   const invertedChunksKeys = Object.keys(invertedChunks);
+  const bundleFile = `${folder}/bundle${legacy && !legacy.only ? legacy.suffix : ''}`;
 
   return (path: string): string | undefined => {
     const relativePath = path
@@ -35,12 +36,10 @@ export const manualChunks = (
       const lib = libPath.split('/').splice(0, libPath.indexOf('@') === 0 ? 2 : 1).join('/');
 
       return !invertedChunksKeys.includes(lib)
-        ? `${folder}/bundle${legacy ? legacy.suffix : ''}`
+        ? bundleFile
         : `${folder}/${invertedChunks[lib].split('/').join('-')}${legacy ? legacy.suffix : ''}`;
     }
 
-    return (hasDelimiters || bundleOverrides.includes(pathClean))
-      ? `${folder}/bundle${legacy ? legacy.suffix : ''}`
-      : undefined;
+    return (hasDelimiters || bundleOverrides.includes(pathClean)) ? bundleFile : undefined;
   };
 };

@@ -38,11 +38,10 @@ const run = async (options: ParsedOptions, builds: PostBuild[]): Promise<void> =
 };
 
 export const build = async (options: Partial<Options>): Promise<void> => {
-  const parsedOptions = parseOptions(options);
-
   const originalEnvironment = process.env.NODE_ENV;
-  process.env.NODE_ENV = parsedOptions.production ? 'production' : 'development';
+  process.env.NODE_ENV = options.production ? 'production' : 'development';
 
+  const parsedOptions = parseOptions(options);
   const preBuilds = createPreBuilds(parsedOptions);
   cleanFolder(parsedOptions.output);
 
