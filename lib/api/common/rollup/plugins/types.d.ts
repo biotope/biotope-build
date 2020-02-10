@@ -4,6 +4,7 @@ export interface BundleExtractPluginOptions {
     isInline: boolean;
     styleExtracted: boolean;
     production: boolean;
+    suffix: string;
     addFile: (file: OutputFileInfo, override?: boolean) => void;
 }
 export interface AddWatchPluginOptions {

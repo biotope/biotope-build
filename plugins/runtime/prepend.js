@@ -94,12 +94,18 @@ const prepend = ({
       if (string) {
         magicString.prepend(`${string}\n`);
       } else {
+        const isTypescript = id.slice(-3) === '.ts' || id.slice(-3) === '.tsx';
+
         Object.keys(flatObject).map((runtimeKey) => ({
           runtimeKey,
           locations: findAllMatches(runtimeKey, code),
         })).forEach(({ runtimeKey, locations }) => {
+          const variableAvoidingTypeConflicts = !isTypescript ? flatObject[runtimeKey] : `(${flatObject[runtimeKey]} as any)`;
+
           locations.forEach((location) => {
-            magicString.overwrite(location, location + runtimeKey.length, flatObject[runtimeKey]);
+            magicString.overwrite(
+              location, location + runtimeKey.length, variableAvoidingTypeConflicts,
+            );
           });
         });
       }

@@ -1,4 +1,4 @@
-const jsx = require('@biotope/build/plugins/jsx');
+const react = require('@biotope/build/plugins/react');
 const vue = require('@biotope/build/plugins/vue');
 const handlebars = require('@biotope/build/plugins/handlebars');
 
@@ -26,7 +26,7 @@ module.exports = {
     vue: ['vue'],
   },
   plugins: [
-    jsx(),
+    react(),
     vue(),
     // vue({ runtimeOnly: true }), // use with Vue SFC (example: components/vue-hello)
     handlebars({ source: ['src/*.hbs'] }),

@@ -12,7 +12,7 @@ const watchFilesPlugin = (pluginConfig = []) => {
         if (!projectConfig.watch) {
           return;
         }
-        files = resolver(typeof pluginConfig === 'function' ? pluginConfig(projectConfig, builds) : pluginConfig);
+        files = resolver(typeof pluginConfig === 'function' ? pluginConfig(projectConfig, builds) : pluginConfig, true);
       },
     },
     {

@@ -33,10 +33,10 @@ const createExtractor = (
 });
 
 export const postcss = (
-  config: ParsedOptions, legacy: boolean, extractor = createExtractor(),
+  config: ParsedOptions, extractor = createExtractor(),
 ): object => ({
   extensions: config.extStyle,
-  extract: !legacy && config.style.extract,
+  extract: config.style.extract,
   inject: false,
   minimize: config.production,
   modules: config.style.modules ? {

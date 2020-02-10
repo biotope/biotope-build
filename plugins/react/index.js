@@ -1,7 +1,6 @@
 const { resolve } = require('path');
 const jsxTransform = require('jsx-transform');
 const MagicString = require('magic-string');
-const babelPresetReact = require('@babel/preset-react');
 
 const rollupJsxPlugin = ({ extensions, factory }) => ({
   name: 'biotope-build-jsx',
@@ -23,12 +22,15 @@ const rollupJsxPlugin = ({ extensions, factory }) => ({
   },
 });
 
-const jsxPlugin = (pluginConfig = {}) => {
+const reactPlugin = (pluginConfig = {}) => {
   const extIgnore = pluginConfig.extIgnore || ['.ts', '.tsx', '.vue'];
-  const factory = pluginConfig.factory || 'React.createElement';
+  const factory = /* pluginConfig.factory || */ 'React.createElement';
+  // eslint-disable-next-line import/no-dynamic-require,global-require
+  const reactNamedExports = Object.keys(require(`${process.cwd()}/node_modules/react`))
+    .filter((name) => name !== '__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED');
 
   return {
-    name: 'biotope-build-plugin-jsx',
+    name: 'biotope-build-plugin-react',
     hook: 'before-build',
     priority: 10,
     runner({ extLogic }, builds) {
@@ -39,11 +41,16 @@ const jsxPlugin = (pluginConfig = {}) => {
         build.priorityPlugins.push(rollupJsxPlugin({ extensions, factory }));
 
         if (build.pluginsConfig.babel) {
-          build.pluginsConfig.babel[0].presets.push(babelPresetReact);
+          // eslint-disable-next-line import/no-dynamic-require,global-require
+          build.pluginsConfig.babel[0].presets.push(require(`${process.cwd()}/node_modules/@babel/preset-react`));
+        }
+        if (build.pluginsConfig.commonjs) {
+          // eslint-disable-next-line no-param-reassign
+          build.pluginsConfig.commonjs[0].namedExports.react = reactNamedExports;
         }
       });
     },
   };
 };
 
-module.exports = jsxPlugin;
+module.exports = reactPlugin;

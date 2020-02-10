@@ -25,7 +25,7 @@ const getOutputContent = (output: OutputAsset | OutputChunk): string | Buffer =>
 };
 
 export const bundleExtract = ({
-  legacy, isInline, production, styleExtracted, addFile,
+  legacy, isInline, production, styleExtracted, suffix, addFile,
 }: BundleExtractPluginOptions): Plugin => ({
   name: 'biotope-build-rollup-plugin-extract',
   generateBundle(_: OutputOptions, bundle: OutputBundle): void {
@@ -39,7 +39,7 @@ export const bundleExtract = ({
     Object.keys(bundle).forEach((key) => {
       let filename = key;
       if (styleExtracted && key.slice(-4) === '.css') {
-        filename = 'index.css';
+        filename = `index${suffix}.css`;
       }
 
       addFile({

@@ -6,6 +6,7 @@ const watchFilesPlugin = require('../watch-files');
 const hasWildCard = (input) => input.indexOf('*') >= 0;
 
 const getProjectFolder = (folder) => `${resolve(`${process.cwd()}/${folder}`)}${sep}`;
+const getWorkingFolder = () => `${resolve(process.cwd())}${sep}`;
 
 const findInput = (from, folder) => {
   const fromSimple = resolve(from);
@@ -34,18 +35,20 @@ const expandFrom = (from, folder) => {
   return resolver(resolvedInput, true);
 };
 
-const toCopyFiles = (files, folder, flatten = false, to = '', ignore = []) => files
+const oneOf = (left, right) => ((left !== undefined && left !== false) ? left : right);
+
+const toCopyFiles = (files, basePath, to, ignore = []) => files
   .filter((file) => !ignore.some((ign) => (new RegExp(ign)).test(file)))
   .map((from) => ({
     from,
-    to: `${to || ''}${to ? '/' : ''}${flatten
+    to: `${oneOf(to, basePath)}${oneOf(to, basePath) ? '/' : ''}${!basePath
       ? basename(from)
-      : from.replace(getProjectFolder(folder), '')}`,
+      : from.replace(basePath, '')}`,
   }));
 
 const getFiles = (input, folder) => {
   if (typeof input === 'string') {
-    return toCopyFiles(expandFrom(input, folder), folder);
+    return toCopyFiles(expandFrom(input, folder), getProjectFolder(folder), '');
   }
 
   if (!input.from) {
@@ -60,10 +63,16 @@ const getFiles = (input, folder) => {
     return [];
   }
 
-  const projectFolder = getProjectFolder(folder);
-  const flatten = resolvedFrom.indexOf(projectFolder) !== 0;
+  const inProjectFolder = resolvedFrom.indexOf(getProjectFolder(folder)) === 0;
+  const inWorkingFolder = !inProjectFolder && resolvedFrom.indexOf(getWorkingFolder()) === 0;
+  const basePath = inWorkingFolder ? getWorkingFolder() : getProjectFolder(folder);
 
-  return toCopyFiles(expandFrom(input.from, folder), folder, flatten, input.to, input.ignore);
+  return toCopyFiles(
+    expandFrom(input.from, folder),
+    !fromHasWildCard ? `${basePath}${input.from}${sep}` : undefined,
+    input.to || input.from,
+    input.ignore,
+  );
 };
 
 const getConfig = (config, projectConfig, builds) => (

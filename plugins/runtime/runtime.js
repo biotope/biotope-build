@@ -4,6 +4,9 @@ const { parse } = require('dotenv');
 const cssColorNames = require('css-color-names');
 
 const cssColors = Object.keys(cssColorNames);
+const cssUnits = [
+  'cm', 'mm', 'Q', 'in', 'pc', 'pt', 'px', 'em', 'ex', 'ch', 'rem', 'lh', 'vw', 'vh', 'vmin', 'vmax',
+];
 
 const getDotEnv = () => {
   try {
@@ -31,13 +34,15 @@ const getRuntimeJavascript = (variables) => {
   return finalVariables;
 };
 
-const isNumber = (variable) => {
+const isNumber = (variable = '') => {
   const value = parseFloat(variable);
-  return !Number.isNaN(value) && typeof value === 'number';
+  return !Number.isNaN(value) && cssUnits.some((unit) => `${value}${unit}` === variable);
 };
 
+const isColor = (variable = '') => (variable[0] === '#' && variable.length < 8) || cssColors.includes(variable);
+
 const toSassVariable = (variable) => (
-  !isNumber(variable) && (variable || '')[0] !== '#' && !cssColors.includes(variable) ? `'${variable}'` : variable
+  !isNumber(variable) && !isColor(variable) ? `'${variable}'` : variable
 );
 
 const flattenName = (prefix, key) => `${prefix}${prefix ? '_' : ''}${key}`;

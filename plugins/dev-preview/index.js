@@ -24,7 +24,7 @@ const devPreviewPlugin = (pluginConfig = {}) => {
   return [
     copyPlugin(({ project }) => ([
       {
-        from: `${__dirname}/files`,
+        from: `${__dirname}/files/*`,
         to: output,
         ignore: [],
       },

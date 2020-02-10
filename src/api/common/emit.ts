@@ -107,5 +107,9 @@ export const emit = async (options: ParsedOptions, builds: PostBuild[]): Promise
 
   await runPlugins(options.plugins, 'after-emit', options, builds);
 
+  Object.keys(builds[0].warnings).forEach((key) => {
+    // eslint-disable-next-line no-param-reassign
+    delete builds[0].warnings[key];
+  });
   buildId = generateRandomId();
 };

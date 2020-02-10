@@ -8,5 +8,6 @@ export const bundleExtract = (
   isInline: isLegacyBuild ? (config.legacy as LegacyOptions).inline : false,
   styleExtracted: config.style.extract,
   production: config.production,
+  suffix: isLegacyBuild && config.legacy && !config.legacy.only ? (config.legacy as LegacyOptions).suffix : '',
   addFile,
 });
