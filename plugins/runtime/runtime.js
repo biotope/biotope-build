@@ -36,7 +36,8 @@ const getRuntimeJavascript = (variables) => {
 
 const isNumber = (variable = '') => {
   const value = parseFloat(variable);
-  return !Number.isNaN(value) && cssUnits.some((unit) => `${value}${unit}` === variable);
+  return !Number.isNaN(value)
+    && (cssUnits.some((unit) => `${value}${unit}` === variable) || `${value}` === variable);
 };
 
 const isColor = (variable = '') => (variable[0] === '#' && variable.length < 8) || cssColors.includes(variable);

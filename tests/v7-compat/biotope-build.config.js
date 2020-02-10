@@ -19,14 +19,10 @@ module.exports = {
   copy: [
     'resources',
     {
-      from: 'node_modules/@webcomponents/webcomponentsjs/*.js',
+      from: 'node_modules/@webcomponents/webcomponentsjs/',
       to: 'polyfills',
-      ignore: ['es5-adapter.js$'],
-    },
-    {
-      from: 'node_modules/@webcomponents/webcomponentsjs/bundles/**/*',
-      to: 'polyfills/bundles',
-      ignore: ['.map$'],
+      // ignore everything that does not end with ".js" (plus some other files)
+      ignore: ['.*(?<!.js)$', 'es5-adapter.js$', 'src/'],
     },
   ],
   plugins: [

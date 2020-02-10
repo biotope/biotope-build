@@ -69,7 +69,7 @@ const getFiles = (input, folder) => {
 
   return toCopyFiles(
     expandFrom(input.from, folder),
-    !fromHasWildCard ? `${basePath}${input.from}${sep}` : undefined,
+    !fromHasWildCard ? `${basePath}${input.from}${input.from[input.from.length - 1] !== '/' ? sep : ''}` : undefined,
     input.to || input.from,
     input.ignore,
   );
