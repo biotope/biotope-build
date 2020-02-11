@@ -16,9 +16,10 @@ export const invertObject = (vendors: Record<string, string[]>): Record<string, 
 export const manualChunks = (
   folder: string, chunks: Record<string, string[]>, legacy: false | LegacyOptions,
 ): ManualChunksOption => {
+  const suffix = legacy && !legacy.only ? legacy.suffix : '';
   const invertedChunks = invertObject(chunks);
   const invertedChunksKeys = Object.keys(invertedChunks);
-  const bundleFile = `${folder}/bundle${legacy && !legacy.only ? legacy.suffix : ''}`;
+  const bundleFile = `${folder}/bundle${suffix}`;
 
   return (path: string): string | undefined => {
     const relativePath = path
@@ -37,7 +38,7 @@ export const manualChunks = (
 
       return !invertedChunksKeys.includes(lib)
         ? bundleFile
-        : `${folder}/${invertedChunks[lib].split('/').join('-')}${legacy ? legacy.suffix : ''}`;
+        : `${folder}/${invertedChunks[lib].split('/').join('-')}${suffix}`;
     }
 
     return (hasDelimiters || bundleOverrides.includes(pathClean)) ? bundleFile : undefined;
