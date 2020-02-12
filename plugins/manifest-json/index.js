@@ -20,14 +20,18 @@ const manifestJsonPlugin = (pluginConfig = {}) => ({
       name: 'manifest.json',
       content: JSON.stringify({
         ...pluginConfig,
-        icons: await Promise.all(images.map(async ({ image, content }) => {
-          const { width, height, type } = imageSize(content);
-          return {
-            src: image,
-            type: `image/${type}`,
-            sizes: `${width}x${height}`,
-          };
-        })),
+        icons: (await Promise.all(images.map(async ({ image, content }) => {
+          try {
+            const { width, height, type } = imageSize(content);
+            return {
+              src: image,
+              type: `image/${type}`,
+              sizes: `${width}x${height}`,
+            };
+          } catch (__) {
+            return undefined;
+          }
+        }))).filter((icon) => !!icon),
       }, null, 2),
     });
 
