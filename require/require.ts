@@ -1,27 +1,23 @@
+/* eslint-disable no-underscore-dangle */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type RequireBase = (rootRequire: boolean, currentPath: string, file: string) => any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type RequireBound = (file: string) => any;
+interface CommonJSModule<T = any> { exports: T }
 
-interface ESModule {
-  module: {
-    exports: object;
-  };
+type RequireBase = (rootRequire: boolean, currentPath: string, file: string) => CommonJSModule['exports'];
+
+type RequireBound = (file: string) => ReturnType<RequireBase>;
+
+interface CachedModule {
+  module: CommonJSModule;
 }
 
 interface RequireOptions {
-  __cache: Record<string, ESModule>;
+  __cache: Record<string, CachedModule>;
   __base: RequireBase;
 }
 
 type Require = RequireBound & RequireOptions;
 
-interface RequireWindowExtension {
-  require: Require;
-  __require_root: string;
-}
-
-type ExtendedWindow = typeof window & RequireWindowExtension;
+type ExtendedWindow = typeof window & { require: Require; __require_root: string };
 
 const createElementAndSet = <T extends HTMLElement>(
   tag: string, prop: string, value: string,
@@ -65,60 +61,47 @@ const fetchSync = (url: string): string | undefined => {
   return request.status === 200 ? request.responseText : undefined;
 };
 
-const removeSourceMaps = (code: string): string => code.replace(new RegExp('\\/\\/\\# sourceMappingURL\\=.*'), '');
-
-const runAndCache = (url: string, code: string): void => {
-  const script = createElementAndSet('script', 'innerHTML', `
-    ;(function() {
-      var module = window.require.__cache["${url}"].module;
-      var newPath = "${getCurrentPath(url)}";
-      function exec(exports, require, module, __filename, __dirname) {;
-        ${removeSourceMaps(code || '')}
-      ;}
-      exec.call(window, module.exports, window.require.__base.bind(window, false, newPath), module, "${url}", newPath);
-    })();
-  `);
-  document.body.appendChild(script);
-  document.body.removeChild(script);
+const createCommonJsModuleCache = (url: string): CachedModule => {
+  const exports = {};
+  const module: CommonJSModule = { exports };
+  (window as ExtendedWindow).require.__cache[url] = { module };
+  return (window as ExtendedWindow).require.__cache[url];
 };
 
-const isCached = (url: string): boolean => Object
-  // eslint-disable-next-line no-underscore-dangle
-  .keys((window as ExtendedWindow).require.__cache).indexOf(url) >= 0;
+const runAndCache = (url: string, code: string): void => {
+  const cache = createCommonJsModuleCache(url);
+  const path = getCurrentPath(url);
+  const require: RequireBound = (window as ExtendedWindow).require.__base.bind(window, false, path);
+  // eslint-disable-next-line no-new-func
+  (new Function('exports', 'require', 'module', '__filename', '__dirname', code))
+    .call(window, cache.module.exports, require, cache.module, url, path);
+};
 
-// eslint-disable-next-line no-underscore-dangle
-const getCached = (url: string): ESModule => (window as ExtendedWindow).require.__cache[url];
+const isCached = (key: string): boolean => Object
+  .keys((window as ExtendedWindow).require.__cache).indexOf(key) >= 0;
+
+const getCached = (key: string): CachedModule => (window as ExtendedWindow).require.__cache[key];
 
 const requireBase: RequireBase = (rootRequire: boolean, currentPath: string, file: string) => {
   const scriptSource = (lastOf<HTMLScriptElement>(document.querySelectorAll('script')) || {}).src;
   const path = rootRequire && scriptSource ? getCurrentPath(scriptSource) : currentPath;
   const url = `${window.location.origin}/${resolveRelativity(file, path)}`;
 
-  if (isCached(url)) {
-    return getCached(url).module.exports;
+  if (!isCached(url)) {
+    runAndCache(url, fetchSync(url) || '');
   }
-
-  const module = { exports: {} };
-  Object.freeze(module);
-  // eslint-disable-next-line no-underscore-dangle
-  (window as ExtendedWindow).require.__cache[url] = { module };
-
-  runAndCache(url, fetchSync(url) || '');
   return getCached(url).module.exports;
 };
 
 if (window && !(window as ExtendedWindow).require) {
-  // eslint-disable-next-line no-underscore-dangle
   const rootPath = typeof (window as ExtendedWindow).__require_root === 'string'
-    // eslint-disable-next-line no-underscore-dangle
     ? (window as ExtendedWindow).__require_root
     : getCurrentPath(window.location.href.indexOf('/') === window.location.href.length - 1
       ? window.location.href.slice(0, window.location.href.length - 1)
       : window.location.href);
 
   (window as ExtendedWindow).require = requireBase.bind(window, true, rootPath);
-  // eslint-disable-next-line no-underscore-dangle
   (window as ExtendedWindow).require.__base = requireBase;
-  // eslint-disable-next-line no-underscore-dangle
   (window as ExtendedWindow).require.__cache = {};
 }
+/* eslint-enable no-underscore-dangle */
