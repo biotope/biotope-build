@@ -61,6 +61,7 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setByPriority(configFile, 'copy', cliOptions.copy, defaultCliOptions.copy, toArray);
   setByPriority(configFile, 'watch', cliOptions.watch, defaultCliOptions.watch);
   setByPriority(configFile, 'production', cliOptions.production, defaultCliOptions.production);
+  setByPriority(configFile, 'silent', cliOptions.silent, defaultCliOptions.silent);
   setByPriority(configFile, 'ignoreResult', cliOptions.ignoreResult, defaultCliOptions.ignoreResult);
   setByPriority(configFile, 'debug', cliOptions.debug, defaultCliOptions.debug);
   setByPriority(configFile, 'extLogic', cliOptions.extLogic, defaultCliOptions.extLogic, toArray);
@@ -76,7 +77,7 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
 
   configFile.plugins = [
     ...(configFile.plugins || []),
-    ...defaultPlugins.map((pluginName) => {
+    ...(configFile.silent ? defaultPlugins.filter((name) => name !== 'logger') : defaultPlugins).map((pluginName) => {
       const plugin = fetchFile<Function>(`${__dirname}/../../../plugins/${pluginName}`);
       const pluginConfig = (configFile as Record<string, object>)[
         kebabToCamel(pluginName) as keyof typeof configFile

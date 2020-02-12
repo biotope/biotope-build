@@ -21,6 +21,7 @@ export const registerLint: Action = (program) => program
   .option('-l, --legacy', 'Include legacy build')
   .option('-k, --chunks', 'Include chunks')
   .option('-j, --components-json [pattern]', 'Automatically create a components.json file')
+  .option('--silent', 'Skip logging to the console')
   .option('--production', 'Build for production')
   .option('--ext-logic <pattern>', 'Extensions to include for logic files (comma separated)')
   .option('--ext-style <pattern>', 'Extensions to include for style files (comma separated)')

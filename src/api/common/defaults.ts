@@ -9,6 +9,7 @@ export const defaultCliOptions: Options = {
   maps: true,
   watch: false,
   production: false,
+  silent: false,
   ignoreResult: false,
   debug: false,
   componentsJson: false,

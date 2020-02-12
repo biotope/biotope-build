@@ -45,9 +45,9 @@ const createBuild = (
     priorityPlugins: [],
     plugins: [],
     pluginsConfig: {
-      postcss: [postcss(config)],
-      commonjs: [commonJs()],
       alias: [alias(config)],
+      postcss: [postcss(config)],
+      commonjs: [commonJs(config)],
       nodeResolve: [nodeResolve(config)],
       typescript: !legacy ? [typescript()] : undefined,
       babel: legacy ? [babel(config)] : undefined,

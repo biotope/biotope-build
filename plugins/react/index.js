@@ -28,11 +28,13 @@ const reactPlugin = (pluginConfig = {}) => {
   // eslint-disable-next-line import/no-dynamic-require,global-require
   const reactNamedExports = Object.keys(require(`${process.cwd()}/node_modules/react`))
     .filter((name) => name !== '__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED');
+  // eslint-disable-next-line import/no-dynamic-require,global-require
+  const babelPresetReact = require(`${process.cwd()}/node_modules/@babel/preset-react`);
 
   return {
     name: 'biotope-build-plugin-react',
     hook: 'before-build',
-    priority: 10,
+    priority: -5,
     runner({ extLogic }, builds) {
       const extensions = extLogic
         .filter((extension) => !extIgnore.some((ext) => extension === ext));
@@ -41,8 +43,7 @@ const reactPlugin = (pluginConfig = {}) => {
         build.priorityPlugins.push(rollupJsxPlugin({ extensions, factory }));
 
         if (build.pluginsConfig.babel) {
-          // eslint-disable-next-line import/no-dynamic-require,global-require
-          build.pluginsConfig.babel[0].presets.push(require(`${process.cwd()}/node_modules/@babel/preset-react`));
+          build.pluginsConfig.babel[0].presets.push(babelPresetReact);
         }
         if (build.pluginsConfig.commonjs) {
           // eslint-disable-next-line no-param-reassign

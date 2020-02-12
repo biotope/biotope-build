@@ -43,6 +43,7 @@
     "@types/fs-extra": "~8.0",
     "@types/rimraf": "~2.0",
     "autoprefixer": "~9.7",
+    "babel-plugin-module-resolver": "~4.0",
     "chalk": "~3.0",
     "chokidar": "~3.3",
     "commander": "~4.1",

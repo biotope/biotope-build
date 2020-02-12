@@ -7,6 +7,7 @@ const MINIMAL_CONFIG_PATH = resolve(`${__dirname}/../../../../../../tsconfig.min
 const MINIMAL_CONFIG_CONTENT: object = requireJson(MINIMAL_CONFIG_PATH);
 const BUILD_CONFIG_CONTENT = {
   compilerOptions: {
+    allowJs: true,
     allowUnreachableCode: true,
     noEmitOnError: false,
   },

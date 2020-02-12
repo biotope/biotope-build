@@ -7,6 +7,7 @@ const safeName = (name) => name.replace(/[&/\\#,+()$~%.'":*?<>{}\s-]/g, '_').toL
 const noCodeSplitPlugin = (pluginConfig = {}) => ({
   name: 'biotope-build-plugin-no-code-split',
   hook: 'before-build',
+  priority: -10,
   runner(_, builds) {
     const files = pluginConfig.files || 'legacy';
     const newBuilds = [];

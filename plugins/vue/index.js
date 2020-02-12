@@ -1,6 +1,6 @@
 const { resolve } = require('path');
 const VuePlugin = require('rollup-plugin-vue');
-const { alias } = require('../../lib/api/common/rollup/plugins/config');
+const { alias, babel } = require('../../lib/api/common/rollup/plugins/config');
 const { invertObject, manualChunks } = require('../../lib/api/common/rollup/manual-chunks');
 
 const additionalVuePackages = ['vue-property-decorator', 'vue-class-component', 'vue-runtime-helpers'];
@@ -15,13 +15,13 @@ const getVueDist = (isProduction, needsTemplateCompiler) => {
 const vuePlugin = (pluginConfig = {}) => ({
   name: 'biotope-build-plugin-vue',
   hook: 'before-build',
+  priority: 5,
   runner(projectConfig, builds) {
-    const newAliasConfig = alias({
-      alias: {
-        ...(projectConfig.alias || {}),
-        vue: getVueDist(projectConfig.production, !pluginConfig.runtimeOnly),
-      },
-    });
+    // eslint-disable-next-line no-param-reassign
+    projectConfig.alias = {
+      ...(projectConfig.alias || {}),
+      vue: getVueDist(projectConfig.production, !pluginConfig.runtimeOnly),
+    };
 
     const invertedChunks = invertObject(projectConfig.chunks || {});
     const hasVueChunk = invertedChunks.vue !== undefined;
@@ -32,7 +32,12 @@ const vuePlugin = (pluginConfig = {}) => ({
 
     builds.forEach(({ build, legacy }) => {
       // eslint-disable-next-line no-param-reassign
-      build.pluginsConfig.alias[0] = newAliasConfig;
+      build.pluginsConfig.alias[0] = alias(projectConfig);
+
+      if (build.pluginsConfig.babel) {
+        // eslint-disable-next-line no-param-reassign
+        build.pluginsConfig.babel[0] = babel(projectConfig);
+      }
 
       if (hasVueChunk) {
         // eslint-disable-next-line no-param-reassign

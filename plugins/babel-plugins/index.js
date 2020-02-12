@@ -2,6 +2,7 @@
 const babelPluginsPlugin = (pluginConfig = []) => ({
   name: 'biotope-build-plugin-babel-plugins',
   hook: 'before-build',
+  priority: -5,
   runner(projectConfig, builds) {
     const babelPlugins = typeof pluginConfig === 'function' ? pluginConfig(projectConfig, builds) : pluginConfig;
 

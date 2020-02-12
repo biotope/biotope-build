@@ -5,7 +5,7 @@ const { getPrependConfig, prepend } = require('./prepend');
 const runtimePlugin = () => ({
   name: 'biotope-build-plugin-runtime',
   hook: 'before-build',
-  priority: 10,
+  priority: -5,
   runner(projectConfig, builds) {
     const { extLogic, extStyle } = projectConfig;
     const variables = getRuntime(projectConfig);

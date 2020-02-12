@@ -12,6 +12,7 @@ export interface Options {
     legacy: boolean;
     chunks: boolean;
     production: boolean;
+    silent: boolean;
     ignoreResult: boolean;
     debug: boolean;
     componentsJson: boolean | string;
@@ -68,6 +69,7 @@ export interface ParsedOptions extends ParsedOptionsConfig {
     copy: (string | CopyItem)[];
     watch: boolean;
     production: boolean;
+    silent: boolean;
     ignoreResult: boolean;
     debug: boolean;
     extLogic: string[];
