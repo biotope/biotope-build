@@ -72,6 +72,7 @@ const faviconsPlugin = (pluginConfig = {}) => {
     {
       name: 'biotope-build-plugin-favicons',
       hook: 'before-emit',
+      priority: -5,
       async runner(_, [{ outputFiles, addFile }]) {
         if (!contentPromise) {
           return Promise.resolve();
@@ -91,13 +92,13 @@ const faviconsPlugin = (pluginConfig = {}) => {
             const { images, files, html } = faviconContent;
             const htmlNodes = html.filter((node) => node.indexOf('rel="manifest"') < 0);
 
-            [...images, ...files.filter(({ name }) => name === 'browserconfig.xml')]
+            [...images, ...files.filter(({ name }) => name !== 'browserconfig.xml')]
               .forEach(({ name, contents }) => addFile({
                 name: joinPath(destination, name).replace(/\//g, sep),
                 content: contents,
               }));
 
-            appendToHtml({ outputFiles, addFile }, 'favicons', htmlNodes, options.path, destination);
+            appendToHtml(outputFiles, addFile, 'favicons', htmlNodes, options.path, destination);
             done();
           };
           tryFinish();

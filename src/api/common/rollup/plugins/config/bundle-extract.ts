@@ -4,10 +4,9 @@ import { BundleExtractPluginOptions } from '../types';
 export const bundleExtract = (
   config: ParsedOptions, isLegacyBuild: boolean, addFile: BundleExtractPluginOptions['addFile'],
 ): BundleExtractPluginOptions => ({
-  legacy: isLegacyBuild,
-  isInline: isLegacyBuild ? (config.legacy as LegacyOptions).inline : false,
-  styleExtracted: config.style.extract,
+  isLegacyBuild,
   production: config.production,
-  suffix: isLegacyBuild && config.legacy && !config.legacy.only ? (config.legacy as LegacyOptions).suffix : '',
+  style: config.style,
+  legacy: isLegacyBuild ? config.legacy as LegacyOptions : undefined,
   addFile,
 });

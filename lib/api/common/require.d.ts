@@ -1,1 +1,1 @@
-export declare const getContent: (minified?: boolean) => string;
+export declare const getContent: (minified: boolean) => string;

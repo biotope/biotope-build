@@ -8,6 +8,7 @@ module.exports = {
   maps: true,
   componentsJson: true,
   legacy: {
+    require: false,
     only: true,
   },
   style: {

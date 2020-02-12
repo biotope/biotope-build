@@ -36,7 +36,7 @@ export const postcss = (
   config: ParsedOptions, extractor = createExtractor(),
 ): object => ({
   extensions: config.extStyle,
-  extract: config.style.extract,
+  extract: !!config.style.extract,
   inject: false,
   minimize: config.production,
   modules: config.style.modules ? {

@@ -2,6 +2,7 @@ import {
   Plugin, OutputOptions, OutputBundle, OutputAsset, OutputChunk,
 } from 'rollup';
 import { getContent } from '../../require';
+import { LegacyOptions } from '../../types';
 import { BundleExtractPluginOptions } from './types';
 
 const getOutputContent = (output: OutputAsset | OutputChunk): string | Buffer => {
@@ -25,30 +26,30 @@ const getOutputContent = (output: OutputAsset | OutputChunk): string | Buffer =>
 };
 
 export const bundleExtract = ({
-  legacy, isInline, production, styleExtracted, suffix, addFile,
+  isLegacyBuild, production, style, legacy, addFile,
 }: BundleExtractPluginOptions): Plugin => ({
   name: 'biotope-build-rollup-plugin-extract',
   generateBundle(_: OutputOptions, bundle: OutputBundle): void {
-    if (legacy && !isInline) {
+    if (isLegacyBuild && (legacy as LegacyOptions).require === 'file') {
       addFile({
         name: 'require.js',
         content: getContent(production),
       });
     }
 
-    Object.keys(bundle).forEach((key) => {
-      let filename = key;
-      if (styleExtracted && key.slice(-4) === '.css') {
-        filename = `index${suffix}.css`;
+    Object.keys(bundle).forEach((name) => {
+      const isCssFile = name.slice(-4) === '.css';
+      const content = getOutputContent(bundle[name]);
+      const mapping = (bundle[name] as OutputChunk).map;
+
+      if (isCssFile && style.extract && (!isLegacyBuild || (legacy as LegacyOptions).only)) {
+        addFile({ name: `${style.extractName}.css`, content, mapping });
+      } else if (!isCssFile) {
+        addFile({ name, content, mapping });
       }
 
-      addFile({
-        name: filename,
-        content: getOutputContent(bundle[key]),
-        mapping: (bundle[key] as OutputChunk).map,
-      });
       // eslint-disable-next-line no-param-reassign
-      delete bundle[key];
+      delete bundle[name];
     });
   },
 });

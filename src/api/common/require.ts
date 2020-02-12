@@ -5,7 +5,7 @@ const requireFolder = resolve(`${__dirname}/../../`);
 const path = `${requireFolder}/require.js`;
 const pathMin = `${requireFolder}/require.min.js`;
 
-export const getContent = (minified = false): string => {
+export const getContent = (minified: boolean): string => {
   const file = minified ? pathMin : path;
   try {
     return readFileSync(file).toString();

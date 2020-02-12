@@ -27,7 +27,7 @@ export const defaultConfigs: ParsedOptionsConfig = {
     environment: 'development',
   },
   legacy: {
-    inline: true,
+    require: 'inline',
     suffix: '.legacy',
     only: false,
   },
@@ -37,14 +37,13 @@ export const defaultConfigs: ParsedOptionsConfig = {
     spa: false,
     secure: false,
   },
-  chunks: {
-    // 'biotope-element': ['@biotope/element'],
-  },
   style: {
     extract: false,
+    extractName: 'index',
     global: false,
     modules: true,
   },
+  chunks: {},
   alias: {},
   runtime: {},
 };
@@ -54,6 +53,7 @@ export const defaultPlugins = [
   'runtime',
   'images',
   'copy',
+  'append-extracted-css',
   'components-json',
   'remove-empty',
   'serve',

@@ -3,14 +3,14 @@ const getIndentation = (n) => Array(n).fill(' ').join('');
 
 const joinPath = (left, right) => `${left}${left && left[left.length - 1] !== '/' ? '/' : ''}${right}`;
 
-const replaceAttributes = (html, originalPath, newPath, attributes = ['href', 'src', 'content']) => attributes
+const replaceAttributes = (html, originalPath, newPath, attributes) => attributes
   .reduce((finalHtml, attribute) => finalHtml.map((node) => node.replace(
     `${attribute}="${originalPath}`,
     `${attribute}="${joinPath(newPath, '')}`,
   )), Array.isArray(html) ? html : [html]);
 
 const appendToHtml = (
-  { outputFiles, addFile }, identifier, nodes, originalPath, destination, attributes, indent = 4,
+  outputFiles, addFile, identifier, nodes, originalPath = '/', destination = '', attributes = ['href', 'src', 'content'], indent = 2,
 ) => {
   const indentation = getIndentation(indent);
   const identifierNode = `<!-- biotope-build${identifier ? ': ' : ''}${identifier} -->`;
@@ -29,7 +29,7 @@ const appendToHtml = (
 
       const [first, second, third] = content.split(identifierNode);
       const htmlToAppend = mappedNodes.length
-        ? `\n${indentation}${mappedNodes.join(`\n${indentation}`)}\n  `
+        ? `\n${indentation}${mappedNodes.join(`\n${indentation}`)}\n${indentation}`
         : '';
 
       if ((!second && !third) || second !== htmlToAppend) {

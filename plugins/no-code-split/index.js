@@ -26,7 +26,6 @@ const noCodeSplitPlugin = (pluginConfig = {}) => ({
               ...build.output,
               format: 'iife',
               name: `${safeName(packageName)}__${safeName(key)}`,
-              banner: '',
             },
             manualChunks: undefined,
           },

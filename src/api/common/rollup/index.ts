@@ -13,7 +13,7 @@ import {
 import { InnerPlugin, innerPlugins } from './plugins';
 
 const getLegacyBanner = (config: ParsedOptions, legacy: boolean): string => (
-  legacy && (config.legacy as LegacyOptions).inline ? getContent(true) : ''
+  legacy && (config.legacy as LegacyOptions).require && (config.legacy as LegacyOptions).require !== 'file' ? getContent(!config.debug) : ''
 );
 
 const createBuild = (

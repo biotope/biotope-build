@@ -26,13 +26,14 @@ export interface ServeOptions {
     secure: boolean;
 }
 export interface LegacyOptions {
-    inline: boolean;
+    require: 'inline' | 'file' | false;
     suffix: string;
     only: boolean;
 }
 export declare type RuntimeOptions = Record<string, any>;
 export interface StyleOptions {
-    extract: boolean;
+    extract: boolean | 'inject' | 'inline';
+    extractName: string;
     global: boolean;
     modules: boolean;
 }

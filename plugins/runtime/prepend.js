@@ -85,10 +85,13 @@ const prepend = ({
 
       const magicString = new MagicString(code);
 
-      // Fixes some packages that do not tree-shake well
-      // Example: React-DOM includes both "dev" and "prod" builds if this is not done
+      // Some packages that auto-import different files depending on the environment can have
+      // this variable inside their auto-imported imported file. This will cause runtime crashes or
+      // may cause development packages to be included in production builds. Example: react-dom,vue
+      // This code will hoist a "process" variable and inject it with the correct environment.
+      // For production builds, the code will be optimized and this "hack" will be tree-shaken.
       if (isInsideNodeModules && code.indexOf('process.env.NODE_ENV') >= 0) {
-        magicString.prepend(`;var process={env:{NODE_ENV:${flatObject['process.env.NODE_ENV']}}};\n`);
+        magicString.prepend(`\n;if(!process) { var process; } process={env:{NODE_ENV:${flatObject['process.env.NODE_ENV']}}};\n`);
       }
 
       if (string) {

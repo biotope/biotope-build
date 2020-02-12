@@ -30,7 +30,7 @@ export interface ServeOptions {
 }
 
 export interface LegacyOptions {
-  inline: boolean;
+  require: 'inline' | 'file' | false;
   suffix: string;
   only: boolean;
 }
@@ -39,7 +39,8 @@ export interface LegacyOptions {
 export type RuntimeOptions = Record<string, any>;
 
 export interface StyleOptions {
-  extract: boolean;
+  extract: boolean | 'inject' | 'inline';
+  extractName: string;
   global: boolean;
   modules: boolean;
 }

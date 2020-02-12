@@ -1,10 +1,9 @@
-import { OutputFileInfo } from '../../types';
+import { OutputFileInfo, LegacyOptions, StyleOptions } from '../../types';
 export interface BundleExtractPluginOptions {
-    legacy: boolean;
-    isInline: boolean;
-    styleExtracted: boolean;
+    isLegacyBuild: boolean;
     production: boolean;
-    suffix: string;
+    style: StyleOptions;
+    legacy?: LegacyOptions;
     addFile: (file: OutputFileInfo, override?: boolean) => void;
 }
 export interface AddWatchPluginOptions {

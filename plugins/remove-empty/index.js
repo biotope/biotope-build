@@ -2,7 +2,7 @@
 const removeEmptyPlugin = () => ({
   name: 'biotope-build-plugin-remove-empty',
   hook: 'before-emit',
-  priority: 5,
+  priority: 10,
   runner(_, builds) {
     builds.forEach(({ warnings, outputFiles, removeFile }) => {
       (warnings.EMPTY_BUNDLE || []).forEach((warning) => {
