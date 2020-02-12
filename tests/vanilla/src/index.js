@@ -8,7 +8,7 @@ const addToBody = (text) => {
   document.body.appendChild(element);
 };
 
-addToBody(`"${(json && json.text) || ''}"`);
+addToBody(`-> ${(json && json.text) || ''} <-`);
 
 (async () => {
   const response = await fetch('resources/copied-resource.txt');

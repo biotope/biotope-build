@@ -92,7 +92,7 @@ const faviconsPlugin = (pluginConfig = {}) => {
             const { images, files, html } = faviconContent;
             const htmlNodes = html.filter((node) => node.indexOf('rel="manifest"') < 0);
 
-            [...images, ...files.filter(({ name }) => name !== 'browserconfig.xml')]
+            [...images, ...files.filter(({ name }) => name === 'browserconfig.xml')]
               .forEach(({ name, contents }) => addFile({
                 name: joinPath(destination, name).replace(/\//g, sep),
                 content: contents,
