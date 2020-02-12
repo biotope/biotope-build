@@ -6,7 +6,6 @@ const watchFilesPlugin = require('../watch-files');
 const hasWildCard = (input) => input.indexOf('*') >= 0;
 
 const getProjectFolder = (folder) => `${resolve(`${process.cwd()}/${folder}`)}${sep}`;
-const getWorkingFolder = () => `${resolve(process.cwd())}${sep}`;
 
 const findInput = (from, folder) => {
   const fromSimple = resolve(from);
@@ -38,10 +37,10 @@ const expandFrom = (from, folder) => {
 const oneOf = (left, right) => ((left !== undefined && left !== false) ? left : right);
 
 const toCopyFiles = (files, basePath, to, ignore = []) => files
-  .filter((file) => !ignore.some((ign) => (new RegExp(ign)).test(file)))
+  .filter((file) => !ignore.some((ign) => (new RegExp(ign.replace(/\//g, `\\${sep}`))).test(file)))
   .map((from) => ({
     from,
-    to: `${oneOf(to, basePath)}${oneOf(to, basePath) ? '/' : ''}${!basePath
+    to: `${oneOf(to, basePath)}${oneOf(to, basePath) ? sep : ''}${!basePath
       ? basename(from)
       : from.replace(basePath, '')}`,
   }));
@@ -63,13 +62,9 @@ const getFiles = (input, folder) => {
     return [];
   }
 
-  const inProjectFolder = resolvedFrom.indexOf(getProjectFolder(folder)) === 0;
-  const inWorkingFolder = !inProjectFolder && resolvedFrom.indexOf(getWorkingFolder()) === 0;
-  const basePath = inWorkingFolder ? getWorkingFolder() : getProjectFolder(folder);
-
   return toCopyFiles(
     expandFrom(input.from, folder),
-    !fromHasWildCard ? `${basePath}${input.from}${input.from[input.from.length - 1] !== '/' ? sep : ''}` : undefined,
+    !fromHasWildCard ? `${resolvedFrom}${resolvedFrom[resolvedFrom.length - 1] !== sep ? sep : ''}` : undefined,
     input.to || input.from,
     input.ignore,
   );

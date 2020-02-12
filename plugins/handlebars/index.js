@@ -58,7 +58,7 @@ const handlebarsPlugin = (pluginOptions = {}) => [
       registerPartials(project, partialPatterns, handlebars);
 
       glob(sourcePatterns).forEach((file) => addFile({
-        name: `${cleanFilePath(project, file, '.hbs').replace('./', '')}.html`,
+        name: `${cleanFilePath(project, file, '.hbs').replace(`.${sep}`, '')}.html`,
         content: handlebars.compile(readFileSync(resolve(file), { encoding: 'utf8' }))(templateData),
       }));
     },

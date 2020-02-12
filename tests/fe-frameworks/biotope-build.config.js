@@ -13,7 +13,7 @@ module.exports = {
       from: 'node_modules/@webcomponents/webcomponentsjs',
       to: 'polyfills',
       // ignore everything that does not end with ".js" (plus some other files)
-      ignore: ['.*(?<!.js)$', 'es5-adapter.js$', 'src/'],
+      ignore: ['.*(?<!.js)$', 'es5-adapter.js$', 'src'],
     },
   ],
   chunks: {
