@@ -38,6 +38,7 @@ const createBuild = (
     output: {
       dir: config.output,
       format: !legacy ? 'esm' : 'cjs',
+      exports: 'named',
       chunkFileNames: '[name].js',
       banner: getLegacyBanner(config, legacy),
       sourcemap: true,
