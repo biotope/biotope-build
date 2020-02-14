@@ -36,7 +36,11 @@ const midBuild = ({ start, stop }, { debug }, builds, event, isFirstTime) => {
 
   if (event.code === 'ERROR') {
     stop();
-    (errorHandlers[event.error.code] || errorHandlers.DEFAULT)(event);
+    try {
+      (errorHandlers[event.error.code] || errorHandlers.DEFAULT)(event);
+    } catch (_) {
+      console.error(event);
+    }
   }
 };
 
@@ -49,7 +53,11 @@ const beforeEmit = ({ stop }, { debug }, [{ warnings }]) => {
   Object.keys(warnings)
     .reduce((accumulator, key) => ([...accumulator, ...warnings[key]]), [])
     .forEach((warning) => {
-      (errorHandlers[warning.code] || errorHandlers.DEFAULT_WARN)(warning);
+      try {
+        (errorHandlers[warning.code] || errorHandlers.DEFAULT_WARN)(warning);
+      } catch (_) {
+        console.warn(warning);
+      }
     });
 };
 

@@ -22,17 +22,14 @@ const devPreviewPlugin = (pluginConfig = {}) => {
   const output = pluginConfig.output || 'dev-preview';
   const assets = pluginConfig.assets || 'dev-preview';
   return [
-    copyPlugin(({ project }) => ([
+    copyPlugin([
+      assets,
       {
         from: `${__dirname}/files/*`,
         to: output,
         ignore: [],
       },
-      {
-        from: `${project}/${assets}`,
-        ignore: [],
-      },
-    ])),
+    ]),
     {
       name: 'biotope-build-plugin-dev-preview',
       hook: 'before-emit',
