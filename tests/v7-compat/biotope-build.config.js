@@ -6,7 +6,6 @@ const manifestJson = require('@biotope/build/plugins/manifest-json');
 
 module.exports = {
   maps: true,
-  componentsJson: true,
   legacy: {
     require: false,
     only: true,

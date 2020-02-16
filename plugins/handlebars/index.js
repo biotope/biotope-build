@@ -38,7 +38,7 @@ const registerPartials = (projectFolder, partialPattern, hbs) => glob(partialPat
     readFileSync(file, { encoding: 'utf8' }),
   ));
 
-const toArray = (array) => Array.isArray(array || []) ? (array || []) : [array];
+const toArray = (array) => (Array.isArray(array || []) ? (array || []) : [array]);
 
 const handlebarsPlugin = (pluginOptions = {}) => {
   const data = toArray(pluginOptions.data);

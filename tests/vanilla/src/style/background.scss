@@ -1,0 +1,18 @@
+
+%image-center-bottom {
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.with-base64 {
+  @extend %image-center-bottom;
+
+  background-image: url('../assets/background.png');
+}
+
+.with-image {
+  @extend %image-center-bottom;
+
+  background-image: url('resources/background.png');
+}

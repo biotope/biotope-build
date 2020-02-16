@@ -39,6 +39,7 @@ const midBuild = ({ start, stop }, { debug }, builds, event, isFirstTime) => {
     try {
       (errorHandlers[event.error.code] || errorHandlers.DEFAULT)(event);
     } catch (_) {
+      // eslint-disable-next-line no-console
       console.error(event);
     }
   }
@@ -56,6 +57,7 @@ const beforeEmit = ({ stop }, { debug }, [{ warnings }]) => {
       try {
         (errorHandlers[warning.code] || errorHandlers.DEFAULT_WARN)(warning);
       } catch (_) {
+        // eslint-disable-next-line no-console
         console.warn(warning);
       }
     });

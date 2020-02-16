@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { plugin as postcssPlugin } from 'postcss';
+import * as postcssUrl from 'postcss-url';
 import * as autoprefixer from 'autoprefixer';
 import { ParsedOptions } from '../../../types';
 
@@ -60,6 +61,7 @@ export const postcss = (
     getJSON: extractor.getJSON,
   } : false,
   plugins: [
+    postcssUrl({ url: 'inline' }),
     autoprefixer({ grid: 'autoplace' }),
     ...(config.style.modules ? [extractor.plugin] : []),
   ],

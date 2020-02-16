@@ -1,6 +1,8 @@
 const { resolve } = require('path');
 const { readFileSync } = require('fs-extra');
+const { defaultConfigs } = require('../../lib/api/common/defaults');
 const copyPlugin = require('../copy');
+const componentsJsonPlugin = require('../components-json');
 
 const toArray = (files) => {
   if (!files) {
@@ -23,13 +25,30 @@ const devPreviewPlugin = (pluginConfig = {}) => {
   const assets = pluginConfig.assets || 'dev-preview';
   return [
     copyPlugin([
-      assets,
       {
-        from: `${__dirname}/files/*`,
+        from: assets,
+        to: output,
+      },
+      {
+        from: `${__dirname}/files`,
         to: output,
         ignore: [],
       },
     ]),
+    {
+      name: 'biotope-build-plugin-dev-preview',
+      hook: 'before-build',
+      priority: 5,
+      runner(projectConfig) {
+        if (projectConfig.componentsJson) {
+          return;
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        projectConfig.componentsJson = defaultConfigs.componentsJson;
+        projectConfig.plugins.push(componentsJsonPlugin(defaultConfigs.componentsJson));
+      },
+    },
     {
       name: 'biotope-build-plugin-dev-preview',
       hook: 'before-emit',

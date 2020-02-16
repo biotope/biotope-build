@@ -46,6 +46,12 @@ const SOURCEMAP_ERROR = () => {
   // Error when using sourcemap for reporting an error: Can't resolve original location of error.
 };
 
+const PLUGIN_WARNING = () => {
+  // SUPPRESS ERROR (for now)
+
+  // FIXME: fix this warning on biotope-build
+};
+
 const EMPTY_BUNDLE = () => {
   // SUPPRESS ERROR
 };
@@ -75,6 +81,7 @@ module.exports = {
   DEFAULT,
   THIS_IS_UNDEFINED,
   SOURCEMAP_ERROR,
+  PLUGIN_WARNING,
   EMPTY_BUNDLE,
   DEFAULT_WARN,
 };
