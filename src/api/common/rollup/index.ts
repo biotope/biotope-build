@@ -3,25 +3,26 @@ import { readFileSync, writeFileSync } from 'fs-extra';
 import { getContent } from '../require';
 import { getAddFileFunction, getRemoveFileFunction } from '../emit';
 import {
-  ParsedOptions, LegacyOptions, Build, PostBuild, OutputFile, OutputFileInfo,
+  ParsedOptions, Build, PostBuild, OutputFile, OutputFileInfo,
 } from '../types';
 import { createInputs } from './create-inputs';
 import { manualChunks } from './manual-chunks';
 import {
-  alias, babel, commonJs, postcss, nodeResolve, typescript, bundleExtract,
+  alias, babel, commonJs, postcss, nodeResolve, typescript, exclude, bundleExtract,
 } from './plugins/config';
 import { InnerPlugin, innerPlugins } from './plugins';
 
-const getLegacyBanner = (config: ParsedOptions, legacy: boolean): string => (
-  legacy && (config.legacy as LegacyOptions).require && (config.legacy as LegacyOptions).require !== 'file' ? getContent(!config.debug) : ''
+const getBanner = (config: ParsedOptions, legacy: boolean): string => (
+  legacy && config.legacy && config.legacy.require && config.legacy.require !== 'file' ? getContent(!config.debug) : ''
 );
 
 const createBuild = (
   config: ParsedOptions,
   legacy: boolean,
   input: Record<string, string>,
-  warnings: Record<string, RollupWarning[]>,
   outputFiles: Record<string, OutputFile>,
+  warnings: Record<string, RollupWarning[]>,
+  extractedStyle: Record<string, string>,
   addFile: (file: OutputFileInfo) => void,
   removeFile: (file: string | OutputFileInfo) => void,
   triggerBuild: (file?: string | undefined) => void,
@@ -40,26 +41,28 @@ const createBuild = (
       format: !legacy ? 'esm' : 'cjs',
       exports: 'named',
       chunkFileNames: '[name].js',
-      banner: getLegacyBanner(config, legacy),
+      banner: getBanner(config, legacy),
       sourcemap: true,
+      esModule: false,
     },
     priorityPlugins: [],
     plugins: [],
     pluginsConfig: {
       alias: [alias(config)],
-      postcss: [postcss(config)],
+      postcss: [postcss(config, extractedStyle)],
       commonjs: [commonJs(config)],
       nodeResolve: [nodeResolve(config)],
+      exclude: [exclude(config, legacy)],
       typescript: !legacy ? [typescript()] : undefined,
       babel: legacy ? [babel(config)] : undefined,
       json: [],
       terser: config.production ? [] : undefined,
-      bundleExtract: [bundleExtract(config, legacy, addFile)],
+      bundleExtract: [bundleExtract(config, legacy, extractedStyle, addFile)],
     },
     watch: {
       chokidar: true,
     },
-    manualChunks: manualChunks('vendor', config.chunks || {}, legacy ? config.legacy as LegacyOptions : false),
+    manualChunks: manualChunks('vendor', config, legacy),
   },
   legacy,
   warnings,
@@ -70,8 +73,9 @@ const createBuild = (
 });
 
 export const createPreBuilds = (config: ParsedOptions): Build[] => {
-  const warnings: Record<string, RollupWarning[]> = {};
   const outputFiles: Record<string, OutputFile> = {};
+  const warnings: Record<string, RollupWarning[]> = {};
+  const extractedStyle: Record<string, string> = {};
   const addFile = getAddFileFunction(config, outputFiles);
   const removeFile = getRemoveFileFunction(outputFiles);
 
@@ -96,8 +100,9 @@ export const createPreBuilds = (config: ParsedOptions): Build[] => {
     config,
     !inputsModules || index > 0,
     input,
-    warnings,
     outputFiles,
+    warnings,
+    extractedStyle,
     addFile,
     removeFile,
     triggerBuild,

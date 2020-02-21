@@ -28,6 +28,7 @@ export const defaultConfigs: ParsedOptionsConfig = {
   },
   legacy: {
     require: 'inline',
+    exclusivePackages: [],
     suffix: '.legacy',
     only: false,
   },
@@ -40,6 +41,7 @@ export const defaultConfigs: ParsedOptionsConfig = {
   style: {
     extract: false,
     extractName: 'index',
+    extractExclude: false,
     global: false,
     modules: true,
   },

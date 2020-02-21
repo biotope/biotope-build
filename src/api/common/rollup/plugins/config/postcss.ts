@@ -1,40 +1,46 @@
 import { resolve } from 'path';
 import { plugin as postcssPlugin } from 'postcss';
-import * as postcssUrl from 'postcss-url';
 import * as autoprefixer from 'autoprefixer';
+import { requireJson } from '../../../json-handlers';
 import { ParsedOptions } from '../../../types';
 
 interface Extractor {
-  identifiers: string[];
-  getJSON: (_: string, __: Record<string, string>, ___: string) => void;
+  originalNames: string[];
   plugin: Function;
+  getJSON: (_: string, __: Record<string, string>, ___: string) => void;
 }
 
+const safeName = (name: string): string => name.replace(/[&#,+()$~%.'":*?<>{}\s-]/g, '-').replace(/[/\\]/g, '_');
+
+const projectName = safeName(requireJson<{ name: string }>(resolve(`${process.cwd()}/package.json`)).name);
+
 const createExtractor = (
-  localCSS: Record<string, string> = {}, identifiers: string[] = [],
+  localCss: Record<string, string>, originalNames: string[] = [],
 ): Extractor => ({
-  identifiers,
-  getJSON: (filename: string, json: Record<string, string>): void => {
-    if (localCSS[filename]) {
-      Object.keys(json).filter((key) => !identifiers.includes(json[key])).forEach((key) => {
-        // eslint-disable-next-line no-param-reassign
-        localCSS[filename] = localCSS[filename].replace(new RegExp(`\\.${key}`, 'g'), `.${json[key]}`);
-      });
-      // eslint-disable-next-line no-param-reassign
-      json.default = localCSS[filename];
-    }
-  },
+  originalNames,
   plugin: postcssPlugin('biotope-build-postcss-plugin-content-extractor', () => (root): void => {
     const result = root.toResult().css;
     if (root.source && root.source.input.file && result.indexOf(':export') === -1) {
       // eslint-disable-next-line no-param-reassign
-      localCSS[root.source.input.file] = result;
+      localCss[root.source.input.file] = result;
     }
   })(),
+  getJSON: (filename: string, cssModules: Record<string, string>): void => {
+    if (localCss[filename]) {
+      Object.keys(cssModules)
+        .filter((key) => !originalNames.includes(cssModules[key]))
+        .forEach((key) => {
+          // eslint-disable-next-line no-param-reassign
+          localCss[filename] = localCss[filename].replace(new RegExp(`\\.${key}`, 'g'), `.${cssModules[key]}`);
+        });
+      // eslint-disable-next-line no-param-reassign
+      cssModules.default = localCss[filename];
+    }
+  },
 });
 
 export const postcss = (
-  config: ParsedOptions, extractor = createExtractor(),
+  config: ParsedOptions, extracted: Record<string, string>, extractor = createExtractor(extracted),
 ): object => ({
   extensions: config.extStyle,
   extract: !!config.style.extract,
@@ -48,20 +54,16 @@ export const postcss = (
       }
 
       if (css.indexOf(`.${name}`) < 0) {
-        extractor.identifiers.push(name);
+        extractor.originalNames.push(name);
         return name;
       }
 
-      const path = file
-        .replace(`${resolve(`${process.cwd()}/${config.project}`)}/`, '')
-        .replace(/[&#,+()$~%.'":*?<>{}\s-]/g, '-')
-        .replace(/[/\\]/g, '_');
-      return `${path}__${name}`;
+      const path = safeName(file.replace(`${resolve(`${process.cwd()}/${config.project}`)}/`, ''));
+      return `${projectName}__${path}__${name}`;
     },
     getJSON: extractor.getJSON,
   } : false,
   plugins: [
-    postcssUrl({ url: 'inline' }),
     autoprefixer({ grid: 'autoplace' }),
     ...(config.style.modules ? [extractor.plugin] : []),
   ],

@@ -46,14 +46,14 @@ const toSassVariable = (variable) => (
   !isNumber(variable) && !isColor(variable) ? `'${variable}'` : variable
 );
 
-const flattenName = (prefix, key) => `${prefix}${prefix ? '_' : ''}${key}`;
+const flattenName = (prefix, key, separator) => `${prefix}${prefix ? separator : ''}${key}`;
 
-const flattenObject = (variables, prefix = '') => Object.keys(variables)
+const flattenObject = (variables, separator = '_', prefix = '') => Object.keys(variables)
   .reduce((accumulator, key) => ({
     ...accumulator,
     ...(typeof variables[key] === 'object'
-      ? flattenObject(variables[key], flattenName(prefix, key))
-      : { [flattenName(prefix, key)]: toSassVariable(variables[key]) }
+      ? flattenObject(variables[key], separator, flattenName(prefix, key, separator))
+      : { [flattenName(prefix, key, separator)]: toSassVariable(variables[key]) }
     ),
   }), {});
 

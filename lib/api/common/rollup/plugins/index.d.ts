@@ -10,6 +10,7 @@ export declare const innerPlugins: {
     terser: typeof terser;
     typescript: import("rollup").PluginImpl<import("rollup-plugin-typescript2/dist/partial").Partial<import("rollup-plugin-typescript2/dist/ioptions").IOptions>>;
     json: () => import("rollup").Plugin;
-    bundleExtract: ({ isLegacyBuild, production, style, legacy, addFile, }: import("./types").BundleExtractPluginOptions) => import("rollup").Plugin;
+    exclude: ({ isLegacyBuild, legacy }: import("./types").ExcludePluginOptions) => import("rollup").Plugin;
+    bundleExtract: ({ isLegacyBuild, production, style, extracted, legacy, addFile, }: import("./types").BundleExtractPluginOptions) => import("rollup").Plugin;
 };
 export declare type InnerPlugin = keyof typeof innerPlugins;

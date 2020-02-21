@@ -1,5 +1,5 @@
 import { ManualChunksOption } from 'rollup';
-import { LegacyOptions } from '../types';
+import { ParsedOptions } from '../types';
 
 const bundleOverrides = ['commonjsHelpers.js', 'rollupPluginBabelHelpers.js'];
 
@@ -14,10 +14,10 @@ export const invertObject = (vendors: Record<string, string[]>): Record<string, 
   }), {});
 
 export const manualChunks = (
-  folder: string, chunks: Record<string, string[]>, legacy: false | LegacyOptions,
+  folder: string, config: ParsedOptions, isLegacyBuild: boolean,
 ): ManualChunksOption => {
-  const suffix = legacy && !legacy.only ? legacy.suffix : '';
-  const invertedChunks = invertObject(chunks);
+  const suffix = isLegacyBuild && config.legacy ? config.legacy.suffix : '';
+  const invertedChunks = invertObject(config.chunks || {});
   const invertedChunksKeys = Object.keys(invertedChunks);
   const bundleFile = `${folder}/bundle${suffix}`;
 

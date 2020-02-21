@@ -1,8 +1,8 @@
 import { ParsedOptions } from '../../../types';
 interface Extractor {
-    identifiers: string[];
-    getJSON: (_: string, __: Record<string, string>, ___: string) => void;
+    originalNames: string[];
     plugin: Function;
+    getJSON: (_: string, __: Record<string, string>, ___: string) => void;
 }
-export declare const postcss: (config: ParsedOptions, extractor?: Extractor) => object;
+export declare const postcss: (config: ParsedOptions, extracted: Record<string, string>, extractor?: Extractor) => object;
 export {};

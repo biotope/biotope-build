@@ -6,6 +6,7 @@ import * as postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import * as rawTypescript from 'rollup-plugin-typescript2';
 import { json } from './json';
+import { exclude } from './exclude';
 import { bundleExtract } from './bundle-extract';
 
 // FIXME: typings fix
@@ -21,6 +22,7 @@ export const innerPlugins = {
   terser,
   typescript,
   json,
+  exclude,
   bundleExtract,
 };
 

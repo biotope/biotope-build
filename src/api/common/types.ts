@@ -31,6 +31,7 @@ export interface ServeOptions {
 
 export interface LegacyOptions {
   require: 'inline' | 'file' | false;
+  exclusivePackages: string[];
   suffix: string;
   only: boolean;
 }
@@ -41,6 +42,7 @@ export type RuntimeOptions = Record<string, any>;
 export interface StyleOptions {
   extract: boolean | 'inject' | 'inline';
   extractName: string;
+  extractExclude: false | string;
   global: boolean;
   modules: boolean;
 }

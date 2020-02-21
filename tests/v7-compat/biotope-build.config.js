@@ -5,9 +5,9 @@ const favicons = require('@biotope/build/plugins/favicons');
 const manifestJson = require('@biotope/build/plugins/manifest-json');
 
 module.exports = {
-  maps: true,
   legacy: {
     require: false,
+    suffix: '',
     only: true,
   },
   style: {

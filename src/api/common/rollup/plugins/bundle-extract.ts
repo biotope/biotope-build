@@ -26,7 +26,7 @@ const getOutputContent = (output: OutputAsset | OutputChunk): string | Buffer =>
 };
 
 export const bundleExtract = ({
-  isLegacyBuild, production, style, legacy, addFile,
+  isLegacyBuild, production, style, extracted, legacy, addFile,
 }: BundleExtractPluginOptions): Plugin => ({
   name: 'biotope-build-rollup-plugin-extract',
   generateBundle(_: OutputOptions, bundle: OutputBundle): void {
@@ -39,13 +39,23 @@ export const bundleExtract = ({
 
     Object.keys(bundle).forEach((name) => {
       const isCssFile = name.slice(-4) === '.css';
-      const content = getOutputContent(bundle[name]);
-      const mapping = (bundle[name] as OutputChunk).map;
 
       if (isCssFile && style.extract && (!isLegacyBuild || (legacy as LegacyOptions).only)) {
-        addFile({ name: `${style.extractName}.css`, content, mapping });
+        addFile({
+          name: `${style.extractName}.css`,
+          content: Object.keys(extracted)
+            .filter((file) => (
+              !style.extractExclude || !(new RegExp(style.extractExclude)).test(file)
+            ))
+            .reduce((css, file) => [...css, extracted[file].toString()], [])
+            .join('\n'),
+        });
       } else if (!isCssFile) {
-        addFile({ name, content, mapping });
+        addFile({
+          name,
+          content: getOutputContent(bundle[name]),
+          mapping: (bundle[name] as OutputChunk).map,
+        });
       }
 
       // eslint-disable-next-line no-param-reassign

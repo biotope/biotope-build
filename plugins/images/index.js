@@ -1,5 +1,6 @@
 const image = require('@rollup/plugin-image');
 const svg = require('rollup-plugin-svg');
+const postcssUrl = require('postcss-url');
 
 const imagesPlugin = () => ({
   name: 'biotope-build-plugin-images',
@@ -9,6 +10,7 @@ const imagesPlugin = () => ({
     builds.forEach(({ build }) => {
       build.plugins.push(svg());
       build.plugins.push(image({ exclude: /.svg$/ }));
+      build.pluginsConfig.postcss[0].plugins.unshift(postcssUrl({ url: 'inline' }));
     });
   },
 });

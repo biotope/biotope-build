@@ -41,7 +41,7 @@ const vuePlugin = (pluginConfig = {}) => ({
 
       if (hasVueChunk) {
         // eslint-disable-next-line no-param-reassign
-        build.manualChunks = manualChunks('vendor', projectConfig.chunks || {}, legacy ? projectConfig.legacy : false);
+        build.manualChunks = manualChunks('vendor', projectConfig, legacy);
       }
 
       build.priorityPlugins.push(VuePlugin());

@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { resolver } from '../resolver';
-import { ParsedOptions, LegacyOptions } from '../types';
+import { ParsedOptions } from '../types';
 
 const getOutputName = (file: string, folder: string): string => {
   const split = file.replace(resolve(`${process.cwd()}${folder ? `/${folder}` : ''}`), '')
@@ -18,9 +18,7 @@ const getOutputName = (file: string, folder: string): string => {
 };
 
 export const createInputs = (config: ParsedOptions, legacy: boolean): Record<string, string> => {
-  const suffix = legacy && !(config.legacy as LegacyOptions).only
-    ? (config.legacy as LegacyOptions).suffix
-    : '';
+  const suffix = config.legacy && legacy ? config.legacy.suffix : '';
   const excludes = resolver(config.exclude.map((folder) => `${config.project}/${folder}`), false, config.extLogic);
 
   return resolver(config.project, false, config.extLogic).reduce((accumulator, files) => ([
