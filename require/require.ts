@@ -17,7 +17,13 @@ interface RequireOptions {
 
 type Require = RequireBound & RequireOptions;
 
-type ExtendedWindow = typeof window & { require: Require; __require_root: string };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ExtendedWindow<T = any> = typeof window & {
+  exports: T;
+  require: Require;
+  __require_root: string;
+  module: CommonJSModule<T>;
+};
 
 const createElementAndSet = <T extends HTMLElement>(
   tag: string, prop: string, value: string,
@@ -93,6 +99,20 @@ const requireBase: RequireBase = (rootRequire: boolean, currentPath: string, fil
   return getCached(url).module.exports;
 };
 
+const initRootRequireWindow = (rootPath: string): void => {
+  (window as ExtendedWindow).exports = {};
+
+  (window as ExtendedWindow).require = requireBase.bind(window, true, rootPath);
+  (window as ExtendedWindow).require.__base = requireBase;
+  (window as ExtendedWindow).require.__cache = {};
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  (window as ExtendedWindow).module = {
+    exports: (window as ExtendedWindow).exports,
+  };
+};
+
 if (window && !(window as ExtendedWindow).require) {
   const rootPath = typeof (window as ExtendedWindow).__require_root === 'string'
     ? (window as ExtendedWindow).__require_root
@@ -100,8 +120,6 @@ if (window && !(window as ExtendedWindow).require) {
       ? window.location.href.slice(0, window.location.href.length - 1)
       : window.location.href);
 
-  (window as ExtendedWindow).require = requireBase.bind(window, true, rootPath);
-  (window as ExtendedWindow).require.__base = requireBase;
-  (window as ExtendedWindow).require.__cache = {};
+  initRootRequireWindow(rootPath);
 }
 /* eslint-enable no-underscore-dangle */

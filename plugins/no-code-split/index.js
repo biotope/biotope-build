@@ -1,8 +1,6 @@
-const { requireJson } = require('../../lib/api/common/json-handlers');
+const { requireJson, safeName } = require('../../lib/api/common/json-handlers');
 
 const { name: packageName } = requireJson(`${process.cwd()}/package.json`);
-
-const safeName = (name) => name.replace(/[&/\\#,+()$~%.'":*?<>{}\s-]/g, '_').toLowerCase();
 
 const noCodeSplitPlugin = (pluginConfig = {}) => ({
   name: 'biotope-build-plugin-no-code-split',

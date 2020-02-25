@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { plugin as postcssPlugin } from 'postcss';
 import * as autoprefixer from 'autoprefixer';
-import { requireJson } from '../../../json-handlers';
+import { requireJson, safeName } from '../../../json-handlers';
 import { ParsedOptions } from '../../../types';
 
 interface Extractor {
@@ -9,8 +9,6 @@ interface Extractor {
   plugin: Function;
   getJSON: (_: string, __: Record<string, string>, ___: string) => void;
 }
-
-const safeName = (name: string): string => name.replace(/[&#,+()$~%.'":*?<>{}\s-]/g, '-').replace(/[/\\]/g, '_');
 
 const projectName = safeName(requireJson<{ name: string }>(resolve(`${process.cwd()}/package.json`)).name);
 
