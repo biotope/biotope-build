@@ -17,7 +17,7 @@ const getFlatObject = (object, currentPath = '') => Object.keys(object).reduce((
   };
 }, {});
 
-const createRegex = (variable) => new RegExp(`(?<![A-z0-9\\._$€])${variable.split('.').join('\\.')}(?![A-z0-9\\._$€])`, 'g');
+const createRegex = (variable) => new RegExp(`(?<![A-z0-9\\._$€])${variable.split('.').join('\\.')}(?![A-z0-9_$€])`, 'g');
 
 const isBetween = (needleIndex, haystack, left, right = left) => {
   let templateStatus = 0;
@@ -63,6 +63,17 @@ const prepend = ({
   if (flatObject) {
     flatObject = Object.keys(flatObject)
       .filter((key) => key !== 'process')
+      .sort((left, right) => {
+        const leftNumber = left.match(/./g);
+        const rightNumber = right.match(/./g);
+        if (leftNumber > rightNumber) {
+          return -1;
+        }
+        if (leftNumber < rightNumber) {
+          return 1;
+        }
+        return 0;
+      })
       .reduce((accumulator, key) => ({
         ...accumulator,
         [key]: flatObject[key],
@@ -102,14 +113,20 @@ const prepend = ({
         Object.keys(flatObject).map((runtimeKey) => ({
           runtimeKey,
           locations: findAllMatches(runtimeKey, code),
-        })).forEach(({ runtimeKey, locations }) => {
-          const variableAvoidingTypeConflicts = !isTypescript ? flatObject[runtimeKey] : `(${flatObject[runtimeKey]} as any)`;
+        })).forEach(({ runtimeKey, locations }, index, array) => {
+          const safeVariable = !isTypescript ? flatObject[runtimeKey] : `(${flatObject[runtimeKey]} as any)`;
+          const previousLocations = [...array].reverse()
+            .slice(array.length - index)
+            .map((key) => key.locations)
+            .reduce((acc, arr) => [...acc, ...arr], []);
 
-          locations.forEach((location) => {
-            magicString.overwrite(
-              location, location + runtimeKey.length, variableAvoidingTypeConflicts,
-            );
-          });
+          locations
+            .filter((location) => previousLocations.indexOf(location) === -1)
+            .forEach((location) => {
+              magicString.overwrite(
+                location, location + runtimeKey.length, safeVariable,
+              );
+            });
         });
       }
 
