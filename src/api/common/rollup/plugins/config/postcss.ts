@@ -10,7 +10,7 @@ interface Extractor {
   getJSON: (_: string, __: Record<string, string>, ___: string) => void;
 }
 
-const projectName = safeName(requireJson<{ name: string }>(resolve(`${process.cwd()}/package.json`)).name);
+const classPrefix = `${safeName(requireJson<{ name: string }>(resolve(`${process.cwd()}/package.json`)).name)}--`;
 
 const createExtractor = (
   localCss: Record<string, string>, originalNames: string[] = [],
@@ -57,7 +57,7 @@ export const postcss = (
       }
 
       const path = safeName(file.replace(`${resolve(`${process.cwd()}/${config.project}`)}/`, ''));
-      return `${projectName}__${path}__${name}`;
+      return `${config.production ? classPrefix : ''}${path}--${name}`;
     },
     getJSON: extractor.getJSON,
   } : false,
