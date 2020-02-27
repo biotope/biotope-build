@@ -1,7 +1,5 @@
 {
-  "compilerOptions": {
-    "esModuleInterop": true
-  },
+  "extends": "../../tsconfig.minimal.json",
   "include": [
     "types/global.d.ts",
     "src/**/*.js",

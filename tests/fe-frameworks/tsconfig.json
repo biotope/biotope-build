@@ -1,8 +1,6 @@
 {
+  "extends": "../../tsconfig.minimal.json",
   "compilerOptions": {
-    "target": "es6",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
     "jsx": "react",
     "experimentalDecorators": true,
     "typeRoots": [
