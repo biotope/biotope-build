@@ -74,7 +74,7 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setObjectByPriority(configFile, 'style', undefined, defaultConfigs.style);
   setObjectByPriority(configFile, 'runtime', undefined, defaultConfigs.runtime);
 
-  setObjectByPriority(configFile, 'serve', true, defaultCliOptions.serve);
+  setObjectByPriority(configFile, 'serve', undefined, defaultConfigs.serve);
   if (!cliOptions.serve) {
     configFile.serve = undefined;
   }
