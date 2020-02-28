@@ -1,20 +1,17 @@
 const devPreview = require('@biotope/build/plugins/dev-preview');
-const noCodeSplit = require('@biotope/build/plugins/no-code-split');
+// const noCodeSplit = require('@biotope/build/plugins/no-code-split');
 const handlebars = require('@biotope/build/plugins/handlebars');
 const favicons = require('@biotope/build/plugins/favicons');
 const manifestJson = require('@biotope/build/plugins/manifest-json');
 
 module.exports = {
   legacy: {
-    require: false,
+    // require: false,
     suffix: '',
     only: true,
   },
   style: {
     modules: false,
-  },
-  chunks: {
-    'biotope-element': ['@biotope/element'],
   },
   copy: [
     'resources',
@@ -27,7 +24,7 @@ module.exports = {
   ],
   plugins: [
     devPreview(),
-    noCodeSplit({ files: 'all' }),
+    // noCodeSplit({ files: 'all' }),
     handlebars({
       source: [
         'src/components/**/scaffolding/*.hbs',

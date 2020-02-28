@@ -1,3 +1,4 @@
+import '@webcomponents/webcomponentsjs/webcomponents-bundle';
 import Component, { HTMLFragment } from '@biotope/element';
 import style from './ts-element-hello.scss';
 

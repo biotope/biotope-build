@@ -4,20 +4,13 @@ const handlebars = require('@biotope/build/plugins/handlebars');
 
 module.exports = {
   maps: true,
-  legacy: true,
+  legacy: {
+    exclusivePackages: ['@webcomponents/webcomponentsjs'],
+  },
   componentsJson: true,
   extLogic: ['.js', '.mjs', '.ts', '.jsx', '.tsx', '.vue'],
-  copy: [
-    'resources',
-    {
-      from: 'node_modules/@webcomponents/webcomponentsjs',
-      to: 'polyfills',
-      // ignore everything that does not end with ".js" (plus some other files)
-      ignore: ['.*(?<!.js)$', 'es5-adapter.js$', 'src'],
-    },
-  ],
   chunks: {
-    'biotope-element': ['@biotope/element'],
+    'biotope-element': ['@webcomponents/webcomponentsjs', '@biotope/element'],
     react: ['react', 'react-dom'],
     vue: ['vue'],
   },
