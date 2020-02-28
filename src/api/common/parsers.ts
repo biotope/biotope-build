@@ -68,12 +68,16 @@ export const parseOptions = (cliOptions: Partial<Options>): ParsedOptions => {
   setByPriority(configFile, 'extStyle', cliOptions.extStyle, defaultCliOptions.extStyle, toArray);
   setObjectByPriority(configFile, 'legacy', cliOptions.legacy, defaultCliOptions.legacy);
   setObjectByPriority(configFile, 'maps', cliOptions.maps, defaultCliOptions.maps);
-  setObjectByPriority(configFile, 'serve', cliOptions.serve, defaultCliOptions.serve);
   setObjectByPriority(configFile, 'componentsJson', cliOptions.componentsJson, defaultCliOptions.componentsJson);
   setObjectByPriority(configFile, 'alias', undefined, defaultConfigs.alias);
   setObjectByPriority(configFile, 'chunks', undefined, defaultConfigs.chunks);
   setObjectByPriority(configFile, 'style', undefined, defaultConfigs.style);
   setObjectByPriority(configFile, 'runtime', undefined, defaultConfigs.runtime);
+
+  setObjectByPriority(configFile, 'serve', true, defaultCliOptions.serve);
+  if (!cliOptions.serve) {
+    configFile.serve = undefined;
+  }
 
   configFile.plugins = [
     ...(configFile.plugins || []),
