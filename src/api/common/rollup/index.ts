@@ -8,7 +8,7 @@ import {
 import { createInputs } from './create-inputs';
 import { manualChunks } from './manual-chunks';
 import {
-  alias, babel, commonJs, postcss, nodeResolve, typescript, exclude, bundleExtract,
+  alias, babel, commonJs, postcss, nodeResolve, typescript, exclude, bundleExtract, replace,
 } from './plugins/config';
 import { InnerPlugin, innerPlugins } from './plugins';
 
@@ -50,6 +50,7 @@ const createBuild = (
     pluginsConfig: {
       alias: [alias(config)],
       postcss: [postcss(config, extractedStyle)],
+      replace: [replace(legacy)],
       commonjs: [commonJs(config)],
       nodeResolve: [nodeResolve(config)],
       exclude: [exclude(config, legacy)],

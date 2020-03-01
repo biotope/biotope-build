@@ -4,7 +4,6 @@ import * as babelPluginProposalClassProperties from '@babel/plugin-proposal-clas
 import * as babelPluginTransformClasses from '@babel/plugin-transform-classes';
 import * as babelPluginTransformObjectAssign from '@babel/plugin-transform-object-assign';
 import * as babelPluginProposalDecorators from '@babel/plugin-proposal-decorators';
-import * as babelPluginSyntaxImportMeta from '@babel/plugin-syntax-import-meta';
 import * as babelPluginTransformRuntime from '@babel/plugin-transform-runtime';
 import * as babelPluginModuleResolver from 'babel-plugin-module-resolver';
 import { ParsedOptions } from '../../../types';
@@ -26,7 +25,6 @@ export const babel = (config: ParsedOptions): object => ({
       alias: config.alias,
       extensions: config.extLogic,
     }],
-    [babelPluginSyntaxImportMeta],
   ],
   runtimeHelpers: true,
   compact: false,

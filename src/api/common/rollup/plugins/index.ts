@@ -1,7 +1,8 @@
-import * as babel from 'rollup-plugin-babel';
+import * as alias from '@rollup/plugin-alias';
 import * as commonjs from '@rollup/plugin-commonjs';
 import * as nodeResolve from '@rollup/plugin-node-resolve';
-import * as alias from '@rollup/plugin-alias';
+import * as replace from '@rollup/plugin-replace';
+import * as babel from 'rollup-plugin-babel';
 import * as postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import * as rawTypescript from 'rollup-plugin-typescript2';
@@ -16,14 +17,15 @@ const typescript: typeof rawTypescript.default = rawTypescript as any;
 export const innerPlugins = {
   alias,
   babel,
+  bundleExtract,
   commonjs,
+  exclude,
+  json,
   nodeResolve,
   postcss,
+  replace,
   terser,
   typescript,
-  json,
-  exclude,
-  bundleExtract,
 };
 
 export type InnerPlugin = keyof typeof innerPlugins;
