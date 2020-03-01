@@ -91,7 +91,7 @@ const afterEmitWatch = (_, { debug, output }, builds) => {
   logTable(output, builds);
 
   logStrong(`\nFinished build at ${chalk.underline(currentTime)}\n`);
-  log('Press [Enter] to manually trigger a rebuild…\n');
+  log('Press [Enter] to manually trigger a rebuild…\n\n');
 };
 
 const loggerPlugin = () => {
