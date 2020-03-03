@@ -44,6 +44,7 @@ export interface StyleOptions {
   extractName: string;
   extractExclude: false | string;
   global: boolean;
+  moduleExceptions: Record<string, string>;
   modules: boolean;
 }
 

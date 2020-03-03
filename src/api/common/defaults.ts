@@ -44,6 +44,7 @@ export const defaultConfigs: ParsedOptionsConfig = {
     extractExclude: false,
     global: false,
     modules: true,
+    moduleExceptions: {},
   },
   chunks: {},
   alias: {},

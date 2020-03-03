@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { resolve, sep } from 'path';
 import { plugin as postcssPlugin } from 'postcss';
 import * as autoprefixer from 'autoprefixer';
 import { requireJson, safeName } from '../../../json-handlers';
@@ -37,6 +37,8 @@ const createExtractor = (
   },
 });
 
+const resolveOS = (file: string): string => resolve(file).replace(new RegExp(sep, 'g'), '/');
+
 export const postcss = (
   config: ParsedOptions, extracted: Record<string, string>, extractor = createExtractor(extracted),
 ): object => ({
@@ -47,7 +49,12 @@ export const postcss = (
   modules: config.style.modules ? {
     camelCase: true,
     generateScopedName(name: string, file: string, css: string): string {
-      if (config.style.global) {
+      const { global, moduleExceptions } = config.style;
+      const exceptionKey = Object
+        .keys(moduleExceptions)
+        .find((key) => resolveOS(key) === resolveOS(file));
+
+      if (global || (exceptionKey && moduleExceptions[exceptionKey].includes(name))) {
         return name;
       }
 
