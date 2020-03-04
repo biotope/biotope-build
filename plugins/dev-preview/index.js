@@ -23,7 +23,7 @@ const hydrateTemplate = (output, scaffolding, { template, prepend, append }) => 
 
 const devPreviewPlugin = (pluginConfig = {}) => {
   const output = pluginConfig.output || 'dev-preview';
-  const scaffolding = pluginConfig.scaffolding || '/scaffolding';
+  const scaffolding = pluginConfig.scaffolding || '/scaffolding/index.html';
   const assets = pluginConfig.assets || 'dev-preview';
   return [
     copyPlugin([
