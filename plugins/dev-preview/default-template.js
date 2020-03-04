@@ -1,5 +1,7 @@
 
-const template = ({ output, prepend, append }) => `
+const template = ({
+  output, scaffolding, prepend, append,
+}) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,15 +15,14 @@ const template = ({ output, prepend, append }) => `
 </head>
 
 <body>
-  <div id="app">
-    <develop-preview></develop-preview>
-  </div>
+  <div id="dev-preview-app"></div>
 
   <!-- Start: Dev-Preview Plugin Style and Scripts -->
   <link rel="stylesheet" href="./${output}/dev-preview.css">
   <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
   <script src="https://unpkg.com/vue-router@3.1.3/dist/vue-router.js"></script>
   <script>;__BIOTOPE_DEV_PREVIEW_ROOT="${output}";</script>
+  <script>;__BIOTOPE_DEV_PREVIEW_PREFIX="${scaffolding}";</script>
   <script src="./${output}/dev-preview.js"></script>
   <!-- End: Dev-Preview Plugin Style and Scripts -->
 

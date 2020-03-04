@@ -11,17 +11,19 @@ const toArray = (files) => {
   return Array.isArray(files) ? files : [files];
 };
 
-const hydrateTemplate = (output, { template, prepend, append }) => (template
+const hydrateTemplate = (output, scaffolding, { template, prepend, append }) => (template
   ? readFileSync(resolve(template))
   // eslint-disable-next-line global-require
   : require('./default-template')({
     output,
+    scaffolding,
     prepend: toArray(prepend),
     append: toArray(append),
   }));
 
 const devPreviewPlugin = (pluginConfig = {}) => {
   const output = pluginConfig.output || 'dev-preview';
+  const scaffolding = pluginConfig.scaffolding || '/scaffolding';
   const assets = pluginConfig.assets || 'dev-preview';
   return [
     copyPlugin([
@@ -54,7 +56,7 @@ const devPreviewPlugin = (pluginConfig = {}) => {
       hook: 'before-emit',
       priority: 5,
       runner(_, [{ addFile }]) {
-        addFile({ name: 'index.html', content: hydrateTemplate(output, pluginConfig) });
+        addFile({ name: 'index.html', content: hydrateTemplate(output, scaffolding, pluginConfig) });
       },
     },
   ];
