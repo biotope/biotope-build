@@ -1,3 +1,3 @@
 import { crc32 } from 'crc';
 
-export const checksum = (data: string | Buffer): string => crc32(data).toString(16);
+export const checksum = (data: string | Uint8Array): string => crc32(data.toString()).toString(16);

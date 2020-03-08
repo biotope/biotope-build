@@ -5,7 +5,7 @@ import { getContent } from '../../require';
 import { LegacyOptions } from '../../types';
 import { BundleExtractPluginOptions } from './types';
 
-const getOutputContent = (output: OutputAsset | OutputChunk): string | Buffer => {
+const getOutputContent = (output: OutputAsset | OutputChunk): string | Uint8Array => {
   if (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (output.type === 'asset' || (output as any).isAsset)

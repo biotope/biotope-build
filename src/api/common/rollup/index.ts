@@ -60,9 +60,6 @@ const createBuild = (
       terser: config.production ? [] : undefined,
       bundleExtract: [bundleExtract(config, legacy, extractedStyle, addFile)],
     },
-    watch: {
-      chokidar: true,
-    },
     manualChunks: manualChunks('vendor', config, legacy),
   },
   legacy,

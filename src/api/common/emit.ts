@@ -64,12 +64,14 @@ export const getAddFileFunction = (
     }
   }
 
+  const finalContent = !contentEnding || typeof content !== 'string' ? content : `${content}${contentEnding}`;
+
   setOutputFile(files, name, {
-    content: !contentEnding || typeof content !== 'string' ? content : `${content}${contentEnding}`,
+    content: finalContent,
     checksum: crc,
     changed,
-    size: Buffer.byteLength(content, typeof content === 'string' ? 'utf-8' : undefined),
-    gzip: gzipSize(content),
+    size: Buffer.byteLength(finalContent, typeof finalContent === 'string' ? 'utf-8' : undefined),
+    gzip: gzipSize(finalContent.toString()),
     buildId,
     previousChecksum: previousCrc,
   });

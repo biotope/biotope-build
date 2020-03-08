@@ -1,2 +1,1 @@
-/// <reference types="node" />
-export declare const checksum: (data: string | Buffer) => string;
+export declare const checksum: (data: string | Uint8Array) => string;

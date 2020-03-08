@@ -63,7 +63,7 @@ export const postcss = (
         return name;
       }
 
-      const path = safeName(file.replace(`${resolve(`${process.cwd()}/${config.project}`)}/`, ''));
+      const path = safeName(file.replace(`${resolve(`${process.cwd()}${sep}${config.project}`)}${sep}`, ''));
       return `${config.production ? classPrefix : ''}${path}--${name}`;
     },
     getJSON: extractor.getJSON,

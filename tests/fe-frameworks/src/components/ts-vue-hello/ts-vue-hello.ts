@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { Component, Provide } from 'vue-property-decorator';
 import styleInject from 'style-inject';
-import template from './ts-vue-hello.vue';
+import template from './template.vue';
 import style from './ts-vue-hello.scss';
 
 styleInject(style.default);

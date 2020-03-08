@@ -1,7 +1,10 @@
+import { sep } from 'path';
 import { ManualChunksOption } from 'rollup';
 import { ParsedOptions } from '../types';
 
 const bundleOverrides = ['commonjsHelpers.js', 'rollupPluginBabelHelpers.js'];
+
+const nodoModulesFolder = `node_modules${sep}`;
 
 export const invertObject = (vendors: Record<string, string[]>): Record<string, string> => Object
   .keys(vendors)
@@ -33,8 +36,10 @@ export const manualChunks = (
     const hasDelimiters = pathClean !== path;
 
     if (relativePath.includes('node_modules')) {
-      const libPath = relativePath.slice(relativePath.indexOf('node_modules/') + 'node_modules/'.length);
-      const lib = libPath.split('/').splice(0, libPath.indexOf('@') === 0 ? 2 : 1).join('/');
+      const libPath = relativePath.slice(
+        relativePath.indexOf(nodoModulesFolder) + nodoModulesFolder.length,
+      );
+      const lib = libPath.split(sep).splice(0, libPath.indexOf('@') === 0 ? 2 : 1).join(sep);
 
       return !invertedChunksKeys.includes(lib)
         ? bundleFile

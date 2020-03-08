@@ -24,7 +24,7 @@ const findHosts = () => {
     .map((networkInterface) => networkInterface.address);
 
   ipList.unshift(os.hostname());
-  return ipList;
+  return ['localhost', ...ipList];
 };
 
 const createServer = (directory, port, open, spa, https) => {
