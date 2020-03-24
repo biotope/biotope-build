@@ -1,41 +1,31 @@
 import { resolve, sep } from 'path';
-import { plugin as postcssPlugin } from 'postcss';
+import { plugin as postcssPlugin, Declaration, Plugin } from 'postcss';
 import * as autoprefixer from 'autoprefixer';
 import { requireJson, safeName } from '../../../json-handlers';
 import { ParsedOptions } from '../../../types';
 
-interface Extractor {
-  originalNames: string[];
-  plugin: Function;
-  getJSON: (_: string, __: Record<string, string>, ___: string) => void;
-}
+const EXTRACTOR_PROP_NAME = 'default';
 
 const classPrefix = `${safeName(requireJson<{ name: string }>(resolve(`${process.cwd()}/package.json`)).name)}--`;
 
-const createExtractor = (
-  localCss: Record<string, string>, originalNames: string[] = [],
-): Extractor => ({
-  originalNames,
-  plugin: postcssPlugin('biotope-build-postcss-plugin-content-extractor', () => (root): void => {
-    const result = root.toResult().css;
-    if (root.source && root.source.input.file && result.indexOf(':export') === -1) {
-      // eslint-disable-next-line no-param-reassign
-      localCss[root.source.input.file] = result;
-    }
-  })(),
-  getJSON: (filename: string, cssModules: Record<string, string>): void => {
-    if (localCss[filename]) {
-      Object.keys(cssModules)
-        .filter((key) => !originalNames.includes(cssModules[key]))
-        .forEach((key) => {
+const createExtractor = (localCss: Record<string, string>): Plugin<undefined> => postcssPlugin(
+  'biotope-build-postcss-plugin-content-extractor',
+  () => (root): void => {
+    root.walkRules((rule) => {
+      if (rule.selector === ':export' && rule.nodes) {
+        let value = root.toResult().css;
+        value = value.substr(0, value.indexOf(':export {'));
+
+        rule.nodes.push({ type: 'decl', prop: EXTRACTOR_PROP_NAME, value } as Declaration);
+
+        if (root.source && root.source.input.file) {
           // eslint-disable-next-line no-param-reassign
-          localCss[filename] = localCss[filename].replace(new RegExp(`\\.${key}`, 'g'), `.${cssModules[key]}`);
-        });
-      // eslint-disable-next-line no-param-reassign
-      cssModules.default = localCss[filename];
-    }
+          localCss[root.source.input.file] = value;
+        }
+      }
+    });
   },
-});
+);
 
 const resolveOS = (file: string): string => resolve(file).replace(new RegExp(sep, 'g'), '/');
 
@@ -59,17 +49,15 @@ export const postcss = (
       }
 
       if (css.indexOf(`.${name}`) < 0) {
-        extractor.originalNames.push(name);
         return name;
       }
 
       const path = safeName(file.replace(`${resolve(`${process.cwd()}${sep}${config.project}`)}${sep}`, ''));
       return `${config.production ? classPrefix : ''}${path}--${name}`;
     },
-    getJSON: extractor.getJSON,
   } : false,
   plugins: [
     autoprefixer({ grid: 'autoplace' }),
-    ...(config.style.modules ? [extractor.plugin] : []),
+    ...(config.style.modules ? [extractor] : []),
   ],
 });
