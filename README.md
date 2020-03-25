@@ -1,36 +1,35 @@
 # biotope-build
 A module bundler for modern frontend applications.
 
-## Guidelines for usage
+## Installation
+  - npm i @biotope/build@latest
+  or
+  - yarn add @biotope/build@latest
+
+## Intro and Concept
+TODO
+
+## Quick guidelines for usage
 - B-E-M NOT NEEDED ANYMORE! PLEASE WRITE YOUR CSS AS IF IT WERE LOCAL!!!
-
 - third party code will be compiled and placed in "vendor/bundle.js"
-
 - for every js/ts file you have in your source
   - you will have that same file, with the same path, in the dist folder, built with ES6
   - you can also build an additional "legacy" file
-
 - when importing a scss/css file inside a js/ts file, you will get an object with:
   - every class you wrote in the CSS, converted to camelCase, as a KEY
   - a AUTOMATIC-BEM class as the VALUE for each KEY
   - a property called "default" which contains all the final CSS of the file you imported
-
 - style files will be inserted into the js/ts files that import them - always
   - this means the build will not generate any "css" files
-
 - image files, when imported, will be turned into base64 strings
-
 - svg files, when imported, will be simple strings containing the file contents
-
 - cli options are sacred and override everything
   - if an option is missing on the cli, the config file options are used
   - if nothing is provided, the default configs are used
   - if an option can be an object, but a boolean is given (either in the cli or config file), then it will assume the default config is to be used (true) or not (false)
-
 - plugins are easy to do and are the way to extend the functionality
   - have a look at /plugins/logger/index.js for a basic plugin example
   - /plugins/helpers.js has may useful functions
-
 - plugins are as "sync" as possible
   - plugins that run before the build will always end before the build start
     - even if they are promises
@@ -38,7 +37,11 @@ A module bundler for modern frontend applications.
   - plugins that run after the build will follow the same rules
     - each "set" of "after-build" plugins will run before the next set (i.e. there is less chance that the same plugin runs more than once in parallel with itself)
 
-## CLI and ConfigFile Options
+## Default behavior
+TODO
+
+## CLI
+TODO
 
 ### config
 where is the config file (if any)?
@@ -159,7 +162,10 @@ cli-default: N/A
 
 config-default: `{ ENVIRONMENT: ?? }` (?? => "development" or "production")
 
-## Guidelines for internal development
+## Migrating from v7
+TODO
+
+## Contributing
 - everything is a plugin
 - plugins that are not default WILL have their own repo/package - for now they are all stored under "/plugins" for convenience only
   - if you change the plugin API or CLI options, update and test all the plugins
