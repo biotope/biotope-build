@@ -40,14 +40,7 @@ gulp.task('connect', function () {
         cors(),
         history({
           index: config.connect.historyFallbackIndex,
-          rewrites: [
-            {
-              from: /\/_mock\//,
-              to: function(context) {
-                return context.parsedUrl.pathname;
-              }
-            }
-          ]
+          rewrites: config.connect.historyRewrites
         })
       ];
     },
