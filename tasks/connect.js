@@ -39,7 +39,8 @@ gulp.task('connect', function () {
         },
         cors(),
         history({
-          index: config.connect.historyFallbackIndex
+          index: config.connect.historyFallbackIndex,
+          rewrites: config.connect.historyRewrites
         })
       ];
     },

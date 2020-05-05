@@ -65,6 +65,14 @@ module.exports = {
     host: '0.0.0.0',
     port: 9000,
     historyFallbackIndex: '/index.html',
+    historyRewrites: [
+      {
+        from: /\/_mock\//,
+        to: function(context) {
+          return context.parsedUrl.pathname;
+        }
+      }
+    ],
     globs: [
       dev + '/**/*.*',
       src + '/resources/js/**/*.js',
