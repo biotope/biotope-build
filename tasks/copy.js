@@ -22,7 +22,10 @@ const ignoreScss = path.join(
   '*.scss'
 );
 
-const ignoreConfig = config.copy.ignoreList.map(ignorePattern => `!${path.join(config.global.cwd, config.global.src, ignorePattern)}`);
+const ignoreConfig = config.copy.ignoreList.map(
+  ignorePattern => 
+    `!${path.join(config.global.cwd, config.global.src, ignorePattern)}`    
+);
 
 const componentsFilesGlobPattern = [
   path.join(
