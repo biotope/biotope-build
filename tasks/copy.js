@@ -22,6 +22,8 @@ const ignoreScss = path.join(
   '*.scss'
 );
 
+const ignoreConfig = config.copy.ignoreList.map(ignorePattern => `!${path.join(config.global.cwd, config.global.src, ignorePattern)}`);
+
 const componentsFilesGlobPattern = [
   path.join(
     config.global.cwd,
@@ -46,9 +48,10 @@ const componentsFilesGlobPattern = [
     '**'
   )}`,
   `!${ignoreTS}`,
-  `!${ignoreScss}`
+  `!${ignoreScss}`,
+  ...ignoreConfig
 ];
-
+console.log(componentsFilesGlobPattern);
 gulp.task('copy:dev:components:files', function () {
   const from = componentsFilesGlobPattern;
   const to = path.join(
