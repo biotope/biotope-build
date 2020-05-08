@@ -23,7 +23,7 @@ const ignoreScss = path.join(
 );
 
 const ignoreConfig = config.copy.ignoreList.map(
-  ignorePattern => 
+  ignorePattern =>
     `!${path.join(config.global.cwd, config.global.src, ignorePattern)}`
 );
 
