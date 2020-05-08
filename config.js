@@ -37,7 +37,10 @@ module.exports = {
       version: true,
       webpack: true
     },
-    tsEntryPoints: ['resources/ts/**/*.ts', 'components/**/*.ts'],
+    tsEntryPoints: [
+      'resources/ts/**/*.ts',
+      'components/**/*.ts'
+    ],
     externalResources: {},
     bowerResources: {}
   },
@@ -119,8 +122,7 @@ module.exports = {
 
   handlebars: {
     templateWrap: 'Handlebars.template(<%= contents %>)',
-    partialWrap:
-      'Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));',
+    partialWrap: 'Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));',
     namespace: 'biotope.configuration.data.tpl',
     noRedeclare: true
   },
@@ -144,8 +146,7 @@ module.exports = {
       targetPath: '../../../../.iconfont/_icons.scss',
       fontPath: '../fonts/icons/',
       cssClass: 'icon'
-    },
-    {
+    }, {
       fontName: 'Icons',
       path: src + '/resources/scss/fonts/iconfont/_iconStyles.scss',
       targetPath: '../../../../.iconfont/_iconStyles.scss',
@@ -169,8 +170,13 @@ module.exports = {
   },
 
   modernizr: {
-    options: ['setClasses', 'addTest'],
-    excludeTests: ['hidden']
+    options: [
+      'setClasses',
+      'addTest'
+    ],
+    excludeTests: [
+      'hidden'
+    ]
   },
 
   sass: {
@@ -192,7 +198,7 @@ module.exports = {
 
   watch: {
     usePolling: isWin,
-    interval: isWin ? 250 : 100
+    interval: (isWin ? 250 : 100)
   },
 
   webpack: {

@@ -2,7 +2,9 @@ const gulp = require('gulp');
 const path = require('path');
 const config = require('./../config');
 const copyFiles = (from, to) => {
-  return gulp.src(from).pipe(gulp.dest(to));
+  return gulp
+    .src(from)
+    .pipe(gulp.dest(to));
 };
 
 const ignoreTS = path.join(
@@ -20,10 +22,7 @@ const ignoreScss = path.join(
   '*.scss'
 );
 
-const ignoreConfig = config.copy.ignoreList.map(
-  ignorePattern =>
-    `!${path.join(config.global.cwd, config.global.src, ignorePattern)}`
-);
+const ignoreConfig = config.copy.ignoreList.map(ignorePattern => `!${path.join(config.global.cwd, config.global.src, ignorePattern)}`);
 
 const componentsFilesGlobPattern = [
   path.join(
@@ -53,7 +52,7 @@ const componentsFilesGlobPattern = [
   ...ignoreConfig
 ];
 
-gulp.task('copy:dev:components:files', function() {
+gulp.task('copy:dev:components:files', function () {
   const from = componentsFilesGlobPattern;
   const to = path.join(
     config.global.cwd,
@@ -65,7 +64,7 @@ gulp.task('copy:dev:components:files', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dev:resources:js', function() {
+gulp.task('copy:dev:resources:js', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -84,7 +83,7 @@ gulp.task('copy:dev:resources:js', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:components:files', function() {
+gulp.task('copy:dist:components:files', function () {
   const from = componentsFilesGlobPattern;
   const to = path.join(
     config.global.cwd,
@@ -96,7 +95,7 @@ gulp.task('copy:dist:components:files', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:resources:js', function() {
+gulp.task('copy:dist:resources:js', function () {
   const from = path.join(
     config.global.cwd,
     config.global.dev,
@@ -115,7 +114,7 @@ gulp.task('copy:dist:resources:js', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:resources:react', function() {
+gulp.task('copy:dist:resources:react', function () {
   const from = path.join(
     config.global.cwd,
     config.global.dev,
@@ -134,7 +133,7 @@ gulp.task('copy:dist:resources:react', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:resources:ts-js', function() {
+gulp.task('copy:dist:resources:ts-js', function () {
   const from = path.join(
     config.global.cwd,
     config.global.dev,
@@ -153,7 +152,7 @@ gulp.task('copy:dist:resources:ts-js', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:resources:components', function() {
+gulp.task('copy:dist:resources:components', function () {
   const from = path.join(
     config.global.cwd,
     config.global.dev,
@@ -172,7 +171,7 @@ gulp.task('copy:dist:resources:components', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dev:npm:js', function() {
+gulp.task('copy:dev:npm:js', function () {
   const mergeStream = require('merge-stream');
   const filter = require('gulp-filter');
   const resources = config.global.externalResources;
@@ -182,13 +181,13 @@ gulp.task('copy:dev:npm:js', function() {
   }
 
   return mergeStream(
-    Object.keys(resources).map(function(key) {
+    Object.keys(resources).map(function (key) {
       if (typeof resources[key] === 'string') {
         resources[key] = [resources[key]];
       }
 
       return mergeStream(
-        resources[key].map(function(file) {
+        resources[key].map(function (file) {
           return gulp
             .src(config.global.node + '/' + key + '/' + file)
             .pipe(filter('**/*.js'))
@@ -203,7 +202,7 @@ gulp.task('copy:dev:npm:js', function() {
   );
 });
 
-gulp.task('copy:dev:npm:css', function() {
+gulp.task('copy:dev:npm:css', function () {
   const mergeStream = require('merge-stream');
   const filter = require('gulp-filter');
   const resources = config.global.externalResources;
@@ -213,13 +212,13 @@ gulp.task('copy:dev:npm:css', function() {
   }
 
   return mergeStream(
-    Object.keys(resources).map(function(key) {
+    Object.keys(resources).map(function (key) {
       if (typeof resources[key] === 'string') {
         resources[key] = [resources[key]];
       }
 
       return mergeStream(
-        resources[key].map(function(file) {
+        resources[key].map(function (file) {
           return gulp
             .src(config.global.node + '/' + key + '/' + file)
             .pipe(filter('**/*.css', '**/*.scss'))
@@ -234,7 +233,7 @@ gulp.task('copy:dev:npm:css', function() {
   );
 });
 
-gulp.task('copy:dist:resources:json', function() {
+gulp.task('copy:dist:resources:json', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -253,7 +252,7 @@ gulp.task('copy:dist:resources:json', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:resources:fonts', function() {
+gulp.task('copy:dist:resources:fonts', function () {
   const from = [
     path.join(
       config.global.cwd,
@@ -282,7 +281,7 @@ gulp.task('copy:dist:resources:fonts', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:resources:img', function() {
+gulp.task('copy:dist:resources:img', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -301,7 +300,7 @@ gulp.task('copy:dist:resources:img', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:resources:assets', function() {
+gulp.task('copy:dist:resources:assets', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -310,12 +309,16 @@ gulp.task('copy:dist:resources:assets', function() {
     '**',
     '*'
   );
-  const to = path.join(config.global.cwd, config.global.dist, '_assets');
+  const to = path.join(
+    config.global.cwd,
+    config.global.dist,
+    '_assets'
+  );
 
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:resources:css', function() {
+gulp.task('copy:dist:resources:css', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -334,7 +337,7 @@ gulp.task('copy:dist:resources:css', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:mock', function() {
+gulp.task('copy:dist:mock', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -342,12 +345,16 @@ gulp.task('copy:dist:mock', function() {
     '**',
     '*'
   );
-  const to = path.join(config.global.cwd, config.global.dist, '_mock');
+  const to = path.join(
+    config.global.cwd,
+    config.global.dist,
+    '_mock'
+  );
 
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:assets', function() {
+gulp.task('copy:dist:assets', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -355,12 +362,16 @@ gulp.task('copy:dist:assets', function() {
     '**',
     '*'
   );
-  const to = path.join(config.global.cwd, config.global.dist, '_assets');
+  const to = path.join(
+    config.global.cwd,
+    config.global.dist,
+    '_assets'
+  );
 
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:component:mock', function() {
+gulp.task('copy:dist:component:mock', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -379,7 +390,7 @@ gulp.task('copy:dist:component:mock', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:config', function() {
+gulp.task('copy:dist:config', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -387,12 +398,16 @@ gulp.task('copy:dist:config', function() {
     '**',
     '*'
   );
-  const to = path.join(config.global.cwd, config.global.dist, '_config');
+  const to = path.join(
+    config.global.cwd,
+    config.global.dist,
+    '_config'
+  );
 
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:resources:hbs', function() {
+gulp.task('copy:dist:resources:hbs', function () {
   const from = path.join(
     config.global.cwd,
     config.global.src,
@@ -411,7 +426,7 @@ gulp.task('copy:dist:resources:hbs', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('copy:dist:svgSprite', function() {
+gulp.task('copy:dist:svgSprite', function () {
   const from = [
     path.join(
       config.global.cwd,
@@ -440,10 +455,14 @@ gulp.task('copy:dist:svgSprite', function() {
   return copyFiles(from, to);
 });
 
-gulp.task('watch:components:files', function() {
+gulp.task('watch:components:files', function () {
   const watch = require('gulp-watch');
   const runSequence = require('run-sequence');
-  watch(componentsFilesGlobPattern, config.watch, function() {
-    runSequence(['copy:dev:components:files']);
-  });
+  watch(
+    componentsFilesGlobPattern,
+    config.watch,
+    function () {
+      runSequence(['copy:dev:components:files']);
+    }
+  );
 });
