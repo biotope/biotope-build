@@ -37,7 +37,7 @@ export const postcss = (
   inject: false,
   minimize: config.production,
   modules: config.style.modules ? {
-    camelCase: true,
+    localsConvention: 'camelCase',
     generateScopedName(name: string, file: string, css: string): string {
       const { global, moduleExceptions } = config.style;
       const exceptionKey = Object
