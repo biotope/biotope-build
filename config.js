@@ -176,7 +176,8 @@ module.exports = {
   },
 
   sass: {
-    includePaths: ['node_modules']
+    includePaths: ['node_modules'],
+    excludePaths: []
   },
 
   sassLint: {},

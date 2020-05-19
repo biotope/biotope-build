@@ -6,6 +6,11 @@ const componentsFolderName = config.global.components.slice(1);
 const resourcesFolderName = config.global.resources.slice(1);
 const scssResourcesFolderName = path.join(resourcesFolderName, 'scss');
 
+const ignoreConfig = config.sass.excludePaths.map(
+  ignorePattern =>
+    `!${path.join(config.global.cwd, config.global.src, ignorePattern)}`
+);
+
 gulp.task('sass', function () {
   if (config.global.tasks.sass) {
     const sass = require('gulp-sass');
@@ -18,7 +23,8 @@ gulp.task('sass', function () {
 
     return gulp
       .src([
-        config.global.src + '/**/*.s+(a|c)ss'
+        config.global.src + '/**/*.s+(a|c)ss',
+        ...ignoreConfig
       ])
       .pipe(cached('resourcesSass'))
       .pipe(dependents())
