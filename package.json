@@ -110,6 +110,7 @@
     "lodash": "latest",
     "map-stream": "0.0.7",
     "np": "^6.2.3",
+    "postcss-loader": "^3.0.0",
     "pre-commit": "1.2.2",
     "vinyl-string": "1.0.2"
   }
