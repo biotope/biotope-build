@@ -87,6 +87,10 @@ module.exports = {
     ]
   },
 
+  copy: {
+    ignoreList: []
+  },
+
   cssstats: {
     exit: true
   },
@@ -202,7 +206,8 @@ module.exports = {
     watchScss: false,
     tsWatchPatterns: [
       'resources/ts/**/*.ts',
-      'components/**/*.ts'
+      'components/**/*.ts',
+      'components/**/*.js'
     ]
   }
 };

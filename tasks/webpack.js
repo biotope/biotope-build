@@ -58,7 +58,7 @@ gulp.task('webpack:ts', function (cb) {
           relativePath = path.join(currentResourceParsed.name, relativePath);
         }
 
-        if (relativePath.endsWith('.ts')) {
+        if (relativePath.endsWith('.ts') || relativePath.endsWith('.js') ) {
           relativePath = relativePath.slice(0, -3);
         }
 

@@ -98,7 +98,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.tsx?$/,
+        test: /\.(t|j)sx?$/,
         loader: 'ts-loader',
         include: generalIncludePaths
       },
