@@ -1,6 +1,6 @@
 import * as alias from '@rollup/plugin-alias';
 import * as commonjs from '@rollup/plugin-commonjs';
-import * as nodeResolve from '@rollup/plugin-node-resolve';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import * as replace from '@rollup/plugin-replace';
 import * as babel from 'rollup-plugin-babel';
 import * as postcss from 'rollup-plugin-postcss';

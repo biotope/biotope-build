@@ -1,5 +1,7 @@
 import { resolve, sep } from 'path';
-import { plugin as postcssPlugin, decl, Plugin } from 'postcss';
+import {
+  plugin as postcssPlugin, decl, Plugin, Declaration,
+} from 'postcss';
 import * as autoprefixer from 'autoprefixer';
 import { requireJson, safeName } from '../../../json-handlers';
 import { ParsedOptions } from '../../../types';
@@ -19,7 +21,8 @@ const createExtractor = (localCss: Record<string, string>): Plugin<undefined> =>
         rule.nodes.push(decl({
           prop: EXTRACTOR_PROP_NAME,
           value,
-        }));
+          parent: rule,
+        } as Declaration));
 
         if (root.source && root.source.input.file) {
           // eslint-disable-next-line no-param-reassign

@@ -1,5 +1,5 @@
 import * as commonjs from '@rollup/plugin-commonjs';
-import * as nodeResolve from '@rollup/plugin-node-resolve';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import * as replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 export declare const innerPlugins: {
