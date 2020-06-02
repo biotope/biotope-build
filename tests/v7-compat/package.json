@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@biotope/build": "github:biotope/biotope-build#new/custom-refactor",
+    "@biotope/build": "8.0.0-beta.1",
     "@biotope/element": "~4.3",
     "@webcomponents/webcomponentsjs": "~2.4"
   },
