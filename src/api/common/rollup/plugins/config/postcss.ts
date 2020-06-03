@@ -1,6 +1,6 @@
 import { resolve, sep } from 'path';
 import {
-  plugin as postcssPlugin, decl, Plugin, Declaration,
+  plugin as postcssPlugin, decl, rule, Plugin, Declaration, Rule, Root, ChildNode,
 } from 'postcss';
 import * as autoprefixer from 'autoprefixer';
 import { requireJson, safeName } from '../../../json-handlers';
@@ -10,26 +10,62 @@ const EXTRACTOR_PROP_NAME = 'default';
 
 const classPrefix = `${safeName(requireJson<{ name: string }>(resolve(`${process.cwd()}/package.json`)).name)}--`;
 
+const getExportRule = (root: Root): Rule => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let exportRule: any;
+  root.walkRules((rootRule) => {
+    if (rootRule.selector === ':export') {
+      exportRule = rootRule;
+    }
+  });
+  if (!exportRule) {
+    if (!root.nodes) {
+      // eslint-disable-next-line no-param-reassign
+      root.nodes = [];
+    }
+    exportRule = rule({ selector: ':export' });
+    root.nodes.push(exportRule);
+  }
+  if (!exportRule.nodes) {
+    exportRule.nodes = [];
+  }
+  return exportRule as Rule;
+};
+
+const getCss = (root: Root): string => {
+  const rootCss = root.toResult().css;
+  const exportsIndex = rootCss.indexOf(':export {');
+  return exportsIndex >= 0 ? rootCss.substr(0, exportsIndex) : rootCss;
+};
+
 const createExtractor = (localCss: Record<string, string>): Plugin<undefined> => postcssPlugin(
   'biotope-build-postcss-plugin-content-extractor',
-  () => (root): void => {
-    root.walkRules((rule) => {
-      if (rule.selector === ':export' && rule.nodes) {
-        let value = root.toResult().css;
-        value = value.substr(0, value.indexOf(':export {'));
+  () => {
+    const parsedInputs: string[] = [];
 
-        rule.nodes.push(decl({
-          prop: EXTRACTOR_PROP_NAME,
-          value,
-          parent: rule,
-        } as Declaration));
-
-        if (root.source && root.source.input.file) {
-          // eslint-disable-next-line no-param-reassign
-          localCss[root.source.input.file] = value;
-        }
+    return (root): void => {
+      if (
+        !root.source
+        || !root.source.input.file
+        || parsedInputs.indexOf(root.source.input.file) >= 0
+      ) {
+        return;
       }
-    });
+
+      const exportRule = getExportRule(root);
+      const value = getCss(root);
+
+      (exportRule.nodes as ChildNode[]).push(decl({
+        prop: EXTRACTOR_PROP_NAME,
+        value,
+        parent: exportRule,
+      } as Declaration));
+
+      // eslint-disable-next-line no-param-reassign
+      localCss[root.source.input.file] = value;
+
+      parsedInputs.push(root.source.input.file);
+    };
   },
 );
 

@@ -2,7 +2,10 @@
 # Dependency directories
 node_modules/
 
-#/lib
+# Compiled Assets
+lib/
+
+# Other files
 TODO
 
 # System Files
