@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@biotope/build": "8.0.0-beta.1",
+    "@biotope/build": "8.0.0-beta.2",
     "promise-polyfill": "~8.1",
     "style-inject": "~0.3",
     "whatwg-fetch": "~3.0"
