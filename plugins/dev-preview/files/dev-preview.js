@@ -24,7 +24,7 @@
     template: "\
       <ul>\
         <li v-for=\"item in list\">\
-          <a :href=\"item + '" + __BIOTOPE_DEV_PREVIEW_PREFIX + "'\">{{ item.split('/').pop() }}</a>\
+          <a :href=\"item\">{{ item.split('/').pop() }}</a>\
         </li>\
       </ul>\
     ",

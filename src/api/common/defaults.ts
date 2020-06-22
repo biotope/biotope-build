@@ -21,7 +21,7 @@ export const defaultCliOptions: Options = {
 };
 
 export const defaultConfigs: ParsedOptionsConfig = {
-  componentsJson: 'components\\/.*\\/index\\.(j|t)s$',
+  componentsJson: 'components\\/.*\\.html$',
   maps: {
     type: 'inline',
     environment: 'development',

@@ -130,9 +130,9 @@ config-default: `{ inline: true, suffix: '.legacy', only: false }`
 ### components-json
 what is the components.json pattern that generates a list of components?
 
-cli-default: `components\\/.*\\/index\\.(j|t)s$`
+cli-default: `components\\/.*\\.html$`
 
-config-default: `components\/.*\/index\.(j|t)s$`
+config-default: `components\\/.*\\.html$`
 
 ### chunks
 which third-party libs should NOT be in "bundle.js" and where should they be placed then?

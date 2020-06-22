@@ -15,15 +15,15 @@ const componentsJsonPlugin = (pattern) => ({
     const regex = new RegExp(pattern.replace(/\//g, sep));
 
     const [{ addFile, legacy: noModulesBuild }] = builds;
-
-    const inputs = builds.reduce((accumulator, { build, legacy }) => ({
+    
+    const outputs = builds.filter(build => noModulesBuild || !build.legacy).reduce((accumulator, { outputFiles }) => ([
       ...accumulator,
-      ...(noModulesBuild || !legacy ? build.input : {}),
-    }), {});
-
+      ...Object.keys(outputFiles),
+    ]), []);
+    
     const content = JSON.stringify(
-      Object.keys(inputs)
-        .filter((key) => regex.test(inputs[key]))
+      outputs
+        .filter((output) => regex.test(output))
         .map(fixWindowsRegexResults),
     );
 
