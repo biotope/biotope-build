@@ -41,6 +41,7 @@ const registerPartials = (projectFolder, partialPattern, hbs) => glob(partialPat
 const toArray = (array) => (Array.isArray(array || []) ? (array || []) : [array]);
 
 const handlebarsPlugin = (pluginOptions = {}) => {
+  const includeDataKey = !!pluginOptions.includeDataKey;
   const data = toArray(pluginOptions.data);
   const partials = toArray(pluginOptions.partial);
   const sources = toArray(pluginOptions.source);
@@ -59,7 +60,12 @@ const handlebarsPlugin = (pluginOptions = {}) => {
         const dataPatterns = createGlobPattern(data);
         const partialPatterns = createGlobPattern(partials);
         const sourcePatterns = createGlobPattern(sources);
-        const templateData = gatherData(runtime, project, dataPatterns);
+        let templateData = gatherData(runtime, project, dataPatterns);
+        if (includeDataKey) {
+          templateData = {
+            data: templateData,
+          };
+        }
 
         registerPartials(project, partialPatterns, handlebars);
 

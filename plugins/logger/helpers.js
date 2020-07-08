@@ -66,8 +66,8 @@ const createTableLayout = (folder, builds) => {
       .map((file) => ({
         ...file,
         size: file.size / 1024,
-        gzip: file.gzip / 1024,
-        percent: Math.round((file.gzip / file.size) * 100),
+        gzip: file.gzip === undefined ? undefined : (file.gzip / 1024),
+        percent: file.gzip === undefined ? undefined : Math.round((file.gzip / file.size) * 100),
       })),
   ]), []).map((file) => ({ ...file, name: (file.name[0] === '\\' ? file.name.substr(1) : file.name).replace(/\\/g, '/') }));
 
@@ -76,7 +76,9 @@ const createTableLayout = (folder, builds) => {
   }) => ([...accumulator, [
     `${chalk.grey(`${folder}/`)}${name}`,
     toKb(size),
-    checkLimit(gzip, size, () => `${toKb(gzip)} ${percent <= 100 ? ' ' : ''}(${isInfinity(percent) ? '---' : percent}%)`),
+    typeof gzip === 'undefined'
+      ? `--- (---%)`
+      : checkLimit(gzip, size, () => `${toKb(gzip)} ${percent <= 100 ? ' ' : ''}(${isInfinity(percent) ? '---' : percent}%)`),
   ]]), [['Assets', 'Size', 'Gzipped']]);
 };
 

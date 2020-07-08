@@ -106,12 +106,14 @@ export interface PreRollupOptions extends RollupOptions {
 export interface OutputFileInfo {
   name: string;
   content: string | Uint8Array;
+  copyFrom?: string;
   mapping?: SourceMap;
 }
 
 export interface OutputFile {
   name: string;
-  content: string | Uint8Array;
+  content?: string | Uint8Array;
+  copyFrom?: string;
   changed: boolean;
   checksum: string;
   size: number;

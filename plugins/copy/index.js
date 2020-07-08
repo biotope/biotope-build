@@ -1,5 +1,5 @@
 const { resolve, basename, sep } = require('path');
-const { readFileSync, statSync, existsSync } = require('fs-extra');
+const { statSync, existsSync } = require('fs-extra');
 const { resolver } = require('../../lib/api/common/resolver');
 const watchFilesPlugin = require('../watch-files');
 
@@ -89,7 +89,7 @@ const copyPlugin = (pluginConfig = []) => ([
       const [{ addFile }] = builds;
 
       parseFiles(pluginConfig, projectConfig, builds)
-        .forEach(({ from, to }) => addFile({ name: to, content: readFileSync(from) }));
+        .forEach(({ from, to }) => addFile({ name: to, copyFrom: from }));
     },
   },
   watchFilesPlugin(

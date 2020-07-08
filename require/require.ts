@@ -17,12 +17,9 @@ interface RequireOptions {
 
 type Require = RequireBound & RequireOptions;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ExtendedWindow<T = any> = typeof window & {
-  exports: T;
+type ExtendedWindow = typeof window & {
   require: Require;
   __require_root: string;
-  module: CommonJSModule<T>;
 };
 
 const createElementAndSet = <T extends HTMLElement>(
@@ -100,17 +97,9 @@ const requireBase: RequireBase = (rootRequire: boolean, currentPath: string, fil
 };
 
 const initRootRequireWindow = (rootPath: string): void => {
-  (window as ExtendedWindow).exports = {};
-
   (window as ExtendedWindow).require = requireBase.bind(window, true, rootPath);
   (window as ExtendedWindow).require.__base = requireBase;
   (window as ExtendedWindow).require.__cache = {};
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
-  (window as ExtendedWindow).module = {
-    exports: (window as ExtendedWindow).exports,
-  };
 };
 
 if (window && !(window as ExtendedWindow).require) {

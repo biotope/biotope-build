@@ -1,5 +1,7 @@
 import { resolve, basename } from 'path';
-import { createFileSync, writeFileSync } from 'fs-extra';
+import {
+  createFileSync, writeFileSync, copyFileSync, statSync, readFileSync,
+} from 'fs-extra';
 import { sync as gzipSize } from 'gzip-size';
 import { runPlugins } from './run-plugins';
 import { checksum } from './checksum';
@@ -34,24 +36,24 @@ const setOutputFile = (
 
 export const getAddFileFunction = (
   config: ParsedOptions, files: Record<string, OutputFile>,
-) => ({ name, content, mapping }: OutputFileInfo): void => {
-  const mapName = `${name}.map`;
-  const isUpdate = (files[name] || {}).buildId === buildId;
+) => (fileInfo: OutputFileInfo): void => {
+  const mapName = `${fileInfo.name}.map`;
+  const isUpdate = (files[fileInfo.name] || {}).buildId === buildId;
 
-  const crc = checksum(content);
-  const previousCrc = (files[name] || {})[!isUpdate ? 'checksum' : 'previousChecksum'];
+  const crc = checksum(fileInfo.content || '');
+  const previousCrc = (files[fileInfo.name] || {})[!isUpdate ? 'checksum' : 'previousChecksum'];
   const changed = crc !== previousCrc;
 
   let contentEnding = '';
-  if (mapping && config.maps && isCorrectEnvironment(config)) {
+  if (fileInfo.content && fileInfo.mapping && config.maps && isCorrectEnvironment(config)) {
     if (config.maps.type === 'inline' || config.maps.type === 'file') {
       contentEnding = `\n//# sourceMappingURL=${
-        config.maps.type === 'inline' ? mapping.toUrl() : basename(mapName)
+        config.maps.type === 'inline' ? fileInfo.mapping.toUrl() : basename(mapName)
       }`;
     }
 
     if (config.maps.type === 'hidden' || config.maps.type === 'file') {
-      const mappingContent = mapping.toString();
+      const mappingContent = fileInfo.mapping.toString();
       setOutputFile(files, mapName, {
         content: mappingContent,
         checksum: crc,
@@ -64,14 +66,26 @@ export const getAddFileFunction = (
     }
   }
 
-  const finalContent = !contentEnding || typeof content !== 'string' ? content : `${content}${contentEnding}`;
+  const simpleCopy = !!fileInfo.copyFrom && !fileInfo.content;
+  const content = config.production
+    ? (!simpleCopy && fileInfo.content) || readFileSync(fileInfo.copyFrom as string)
+    : fileInfo.content;
 
-  setOutputFile(files, name, {
-    content: finalContent,
+  const finalContent = !contentEnding || typeof content !== 'string'
+    ? content : `${content}${contentEnding}`;
+
+  const size = simpleCopy && !config.production
+    ? statSync(fileInfo.copyFrom as string).size
+    : Buffer.byteLength(finalContent, typeof finalContent === 'string' ? 'utf-8' : undefined);
+
+  const gzip = simpleCopy && !config.production ? undefined : gzipSize(finalContent.toString());
+
+  setOutputFile(files, fileInfo.name, {
+    ...(!simpleCopy ? { content: finalContent } : { copyFrom: fileInfo.copyFrom }),
     checksum: crc,
     changed,
-    size: Buffer.byteLength(finalContent, typeof finalContent === 'string' ? 'utf-8' : undefined),
-    gzip: gzipSize(finalContent.toString()),
+    size,
+    gzip,
     buildId,
     previousChecksum: previousCrc,
   });
@@ -102,7 +116,12 @@ export const emit = async (options: ParsedOptions, builds: PostBuild[]): Promise
       if (outputFiles[filename].changed) {
         const filePath = resolve(`${options.output}/${outputFiles[filename].name}`);
         createFileSync(filePath);
-        writeFileSync(filePath, outputFiles[filename].content);
+
+        if (outputFiles[filename].content) {
+          writeFileSync(filePath, outputFiles[filename].content as string);
+        } else if (outputFiles[filename].copyFrom) {
+          copyFileSync(outputFiles[filename].copyFrom as string, filePath);
+        }
       }
     });
   });

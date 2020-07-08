@@ -27,7 +27,7 @@ module.exports = {
     // noCodeSplit({ files: 'all' }),
     handlebars({
       source: [
-        'src/components/**/scaffolding/*.hbs',
+        'src/components/*/scaffolding/index.hbs',
       ],
       partial: [
         'src/components/**/*.hbs',
@@ -36,6 +36,7 @@ module.exports = {
         'src/components/**/*.json',
         'src/resources/**/*.json',
       ],
+      includeDateKey: true,
     }),
     favicons({
       source: 'src/assets/favicon.png',

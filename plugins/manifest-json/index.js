@@ -1,4 +1,5 @@
 const imageSize = require('image-size');
+const { readFileSync } = require('fs-extra');
 const { appendToHtml } = require('../helpers');
 
 const extensions = ['.ico', '.png', '.svg', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.webp'];
@@ -13,7 +14,9 @@ const manifestJsonPlugin = (pluginConfig = {}) => ({
       .filter((file) => extensions.some((ext) => (new RegExp(`${ext}$`)).test(file)))
       .map((image) => ({
         image,
-        content: Buffer.from(outputFiles[image].content),
+        content: Buffer.from(
+          outputFiles[image].content || readFileSync(outputFiles[image].copyFrom),
+        ),
       }));
 
     addFile({

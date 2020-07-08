@@ -38,7 +38,7 @@
     "@rollup/plugin-alias": "~3.1",
     "@rollup/plugin-commonjs": "~12.0",
     "@rollup/plugin-image": "~2.0",
-    "@rollup/plugin-node-resolve": "~8.0",
+    "@rollup/plugin-node-resolve": "~8.1",
     "@rollup/plugin-replace": "~2.3",
     "@types/autoprefixer": "~9.7",
     "@types/crc": "~3.4",
@@ -47,7 +47,7 @@
     "@types/rimraf": "~3.0",
     "autoprefixer": "~9.8",
     "babel-plugin-module-resolver": "~4.0",
-    "chalk": "~4.0",
+    "chalk": "~4.1",
     "chokidar": "~3.4",
     "commander": "~5.1",
     "comment-json": "~3.0",
@@ -69,9 +69,11 @@
     "node-sass": "~4.14",
     "open": "~7.0",
     "postcss": "~7.0",
+    "postcss-scss": "~2.1",
+    "postcss-node-sass": "~2.1",
     "postcss-url": "~8.0",
     "rimraf": "~3.0",
-    "rollup": "~2.12",
+    "rollup": "~2.21",
     "rollup-plugin-babel": "~4.4",
     "rollup-plugin-livereload": "~1.3",
     "rollup-plugin-postcss": "~3.1",
@@ -86,7 +88,7 @@
   },
   "devDependencies": {
     "@biotope/quality-gate": "~1.0",
-    "np": "~6.2",
-    "uglify-js": "~3.9"
+    "np": "~6.3",
+    "uglify-js": "~3.10"
   }
 }

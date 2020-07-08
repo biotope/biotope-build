@@ -4,12 +4,14 @@ const registerHelpers = (handlebars) => {
   /**
    * defines a default variable value, that gets overwritten by context data
    */
-  handlebars.registerHelper('bioDef', (valueToCheck, defaultValue) => valueToCheck || defaultValue);
+  handlebars.registerHelper('bioDef', function (valueToCheck, defaultValue) {
+    return valueToCheck || defaultValue;
+  });
 
   /**
    * creates image src for generated assets
    */
-  handlebars.registerHelper('bioImg', (width, height, src) => {
+  handlebars.registerHelper('bioImg', function (width, height, src) {
     const splitSrc = src.split('.');
     const fileEnding = splitSrc.pop();
 
@@ -19,7 +21,7 @@ const registerHelpers = (handlebars) => {
   /**
    * creates fill text
    */
-  handlebars.registerHelper('bioText', (count, max) => {
+  handlebars.registerHelper('bioText', function (count, max) {
     let finalCount = count;
     if (max !== 0 && typeof max !== 'undefined' && max > finalCount) {
       finalCount = Math.floor(Math.random() * max) + finalCount;
@@ -35,22 +37,28 @@ const registerHelpers = (handlebars) => {
    * defines a code block to allow curly brackts for other frameworks
    * use with {{{{code}}}} {{{{/code}}}} (4 curly brackets for literal string contents)
    */
-  handlebars.registerHelper('bioCode', (content) => content.fn());
+  handlebars.registerHelper('bioCode', function (content) {
+    return content.fn();
+  });
 
   /**
    * stringify an json/js object for debugging
    */
-  handlebars.registerHelper('bioStringify', (object) => JSON.stringify(object));
+  handlebars.registerHelper('bioStringify', function (object) {
+    return JSON.stringify(object);
+  });
 
   /**
    * stringify an json/js object for debugging
    */
-  handlebars.registerHelper('bioParseJSON', (data, options) => options.fn(JSON.parse(data)));
+  handlebars.registerHelper('bioParseJSON', function (data, options) {
+    return options.fn(JSON.parse(data));
+  });
 
   /**
    * include a partial
    */
-  handlebars.registerHelper('bioInclude', (partialName, context) => {
+  handlebars.registerHelper('bioInclude', function (partialName, context) {
     if (typeof partialName !== 'string') {
       return '';
     }
@@ -107,7 +115,7 @@ const registerHelpers = (handlebars) => {
    * The value is lower than 10
    * {{/bioCompare}}
    */
-  handlebars.registerHelper('bioCompare', (...args) => {
+  handlebars.registerHelper('bioCompare', function (...args) {
     const [left, initialOperator, initialRight, initialOptions] = args;
     if (args.length < 3) {
       throw new Error('Handlebars Helper "bioCompare" needs 2 parameters');
@@ -154,7 +162,7 @@ const registerHelpers = (handlebars) => {
    * {{math 5 '*' 10}} returns 50
    * {{math 10 '%' 3}} returns 1
    */
-  handlebars.registerHelper('bioMath', (left, operator, right) => {
+  handlebars.registerHelper('bioMath', function (left, operator, right) {
     const lvalue = parseFloat(left);
     const rvalue = parseFloat(right);
 

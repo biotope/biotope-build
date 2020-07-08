@@ -7,7 +7,19 @@
     return request.status === 200 ? request.responseText : undefined;
   };
 
-  var components = JSON.parse(fetchText('components.json'));
+  var components = JSON.parse(fetchText('components.json')).map(function (ref) {
+    var splitRef = ref.split('/');
+    var isIndexFile = splitRef[splitRef.length - 1].split('.')[0] === 'index';
+    var hasScaffoldingFolder = splitRef[splitRef.length - 2] === 'scaffolding';
+    return {
+      label: isIndexFile
+        ? splitRef[splitRef.length - 2 - (hasScaffoldingFolder ? 1 : 0)]
+        : (hasScaffoldingFolder ? [splitRef[splitRef.length - 3]] : []).concat(
+          [splitRef[splitRef.length - 2], splitRef[splitRef.length - 1]]
+        ).join(','),
+      file: ref
+    };
+  });
 
   var Header = Vue.extend({
     name: 'dev-preview-header',
@@ -24,7 +36,7 @@
     template: "\
       <ul>\
         <li v-for=\"item in list\">\
-          <a :href=\"item\">{{ item.split('/').pop() }}</a>\
+          <a :href=\"item.file\">{{ item.label }}</a>\
         </li>\
       </ul>\
     ",
