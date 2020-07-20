@@ -1,6 +1,6 @@
 import { resolve, basename } from 'path';
 import {
-  createFileSync, writeFileSync, copyFileSync, statSync, readFileSync,
+  createFileSync, writeFileSync, copyFileSync, statSync,
 } from 'fs-extra';
 import { sync as gzipSize } from 'gzip-size';
 import { runPlugins } from './run-plugins';
@@ -67,18 +67,14 @@ export const getAddFileFunction = (
   }
 
   const simpleCopy = !!fileInfo.copyFrom && !fileInfo.content;
-  const content = config.production
-    ? (!simpleCopy && fileInfo.content) || readFileSync(fileInfo.copyFrom as string)
-    : fileInfo.content;
+  const finalContent = !contentEnding || typeof fileInfo.content !== 'string'
+    ? fileInfo.content : `${fileInfo.content}${contentEnding}`;
 
-  const finalContent = !contentEnding || typeof content !== 'string'
-    ? content : `${content}${contentEnding}`;
-
-  const size = simpleCopy && !config.production
+  const size = simpleCopy
     ? statSync(fileInfo.copyFrom as string).size
     : Buffer.byteLength(finalContent, typeof finalContent === 'string' ? 'utf-8' : undefined);
 
-  const gzip = simpleCopy && !config.production ? undefined : gzipSize(finalContent.toString());
+  const gzip = simpleCopy ? undefined : gzipSize(finalContent.toString());
 
   setOutputFile(files, fileInfo.name, {
     ...(!simpleCopy ? { content: finalContent } : { copyFrom: fileInfo.copyFrom }),

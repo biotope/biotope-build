@@ -59,7 +59,7 @@ const sortPaths = (files) => files.sort(({ name: leftName }, { name: rightName }
 const isInfinity = (percent) => Number.isNaN(percent) || percent === Infinity || percent > 500;
 
 const createTableLayout = (folder, builds) => {
-  const filteredFiles = [...builds].reverse().reduce((accumulator, { outputFiles }) => ([
+  let filteredFiles = [...builds].reverse().reduce((accumulator, { outputFiles }) => ([
     ...accumulator,
     ...Object.values(outputFiles)
       .filter((file) => file.changed && !accumulator.find(({ name }) => file.name === name))
@@ -71,19 +71,32 @@ const createTableLayout = (folder, builds) => {
       })),
   ]), []).map((file) => ({ ...file, name: (file.name[0] === '\\' ? file.name.substr(1) : file.name).replace(/\\/g, '/') }));
 
-  return sortPaths(filteredFiles, (file) => file.name, '/').reduce((accumulator, {
+  const copyCount = filteredFiles.reduce(
+    (count, { gzip }) => (gzip === undefined ? count + 1 : count), 0,
+  );
+
+  if (copyCount > 100) {
+    filteredFiles = filteredFiles.filter(({ gzip }) => gzip !== undefined);
+  }
+
+  const sorted = sortPaths(filteredFiles, (file) => file.name, '/').reduce((accumulator, {
     name, size, gzip, percent,
   }) => ([...accumulator, [
     `${chalk.grey(`${folder}/`)}${name}`,
     toKb(size),
     typeof gzip === 'undefined'
-      ? `--- (---%)`
+      ? '--- (---%)'
       : checkLimit(gzip, size, () => `${toKb(gzip)} ${percent <= 100 ? ' ' : ''}(${isInfinity(percent) ? '---' : percent}%)`),
   ]]), [['Assets', 'Size', 'Gzipped']]);
+
+  return {
+    copyCount,
+    table: sorted,
+  };
 };
 
 const logTable = (folder, builds) => {
-  const table = createTableLayout(folder, builds);
+  const { copyCount, table } = createTableLayout(folder, builds);
 
   if (table.length === 1) {
     log('No file changes detected…\n');
@@ -101,6 +114,10 @@ const logTable = (folder, builds) => {
   table
     .map((row) => row.reduce((rowText, column, index) => `${rowText}${(index === 0 ? alignLeft : alignRight)(column, columnSizes[index])}  `, ''))
     .forEach((row, index) => (index ? log : logStrong)(`${row}\n`));
+
+  if (copyCount > 100) {
+    log(chalk.grey('Note: Copied files not shown due to their large amount'));
+  }
 };
 
 const createTicker = (ticker = { isRunning: undefined }) => ({

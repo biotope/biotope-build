@@ -42,6 +42,7 @@ const toArray = (array) => (Array.isArray(array || []) ? (array || []) : [array]
 
 const handlebarsPlugin = (pluginOptions = {}) => {
   const includeDataKey = !!pluginOptions.includeDataKey;
+  const moveTo = pluginOptions.moveTo.split(sep).filter((slug) => !!slug).join(sep);
   const data = toArray(pluginOptions.data);
   const partials = toArray(pluginOptions.partial);
   const sources = toArray(pluginOptions.source);
@@ -70,7 +71,9 @@ const handlebarsPlugin = (pluginOptions = {}) => {
         registerPartials(project, partialPatterns, handlebars);
 
         glob(sourcePatterns).forEach((file) => addFile({
-          name: `${cleanFilePath(project, file, '.hbs').replace(`.${sep}`, '')}.html`,
+          name: typeof moveTo === 'string'
+            ? `${moveTo ? `${moveTo}${sep}` : moveTo}${basename(file, '.hbs')}.html`
+            : `${cleanFilePath(project, file, '.hbs').replace(`.${sep}`, '')}.html`,
           content: handlebars.compile(readFileSync(resolve(file), { encoding: 'utf8' }))(templateData),
         }));
       },

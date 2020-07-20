@@ -11,7 +11,7 @@ const noCodeSplitPlugin = (pluginConfig = {}) => ({
     const newBuilds = [];
 
     builds.forEach(({
-      build, legacy, outputFiles, warnings, addFile, removeFile,
+      build, legacy, outputFiles, warnings, addFile, removeFile, triggerBuild,
     }, index) => {
       if (files === 'all' || (files === 'legacy' && legacy)) {
         newBuilds.push(...Object.keys(build.input).map((key) => ({
@@ -31,6 +31,7 @@ const noCodeSplitPlugin = (pluginConfig = {}) => ({
           warnings,
           addFile,
           removeFile,
+          triggerBuild,
         })));
 
         builds.splice(index, 1);

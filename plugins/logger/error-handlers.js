@@ -6,17 +6,17 @@ const logWarnCode = (...args) => process.stdout.write(chalk.yellow.bold(...args)
 const logWarn = (...args) => process.stdout.write(chalk.yellow(...args));
 
 const MISSING_EXPORT = ({ error: { stack, loc: { file, line, column } } }) => {
-  logErrorCode('\n\nMISSING_EXPORT', file.replace(process.cwd(), '.'), `(${line},${column})\n`);
+  logErrorCode('\nMISSING_EXPORT', file.replace(process.cwd(), '.'), `(${line},${column})\n`);
   logError(stack, '\n');
 };
 
 const PARSE_ERROR = ({ error: { stack, loc: { file, line, column } } }) => {
-  logErrorCode('\n\nPARSE_ERROR', file.replace(process.cwd(), '.'), `(${line},${column})\n`);
+  logErrorCode('\nPARSE_ERROR', file.replace(process.cwd(), '.'), `(${line},${column})\n`);
   logError(stack, '\n');
 };
 
 const DEFAULT = ({ error: { code, stack } }) => {
-  logErrorCode(`\n\n${code}\n`);
+  logErrorCode(`\n${code}\n`);
   logError(stack, '\n');
 };
 
@@ -64,7 +64,7 @@ const DEFAULT_WARN = ({
     return;
   }
 
-  logWarnCode(`\n\n${code}`, localFile, loc ? `(${loc.line},${loc.column})\n` : '\n');
+  logWarnCode(`\n${code}`, localFile, loc ? `(${loc.line},${loc.column})\n` : '\n');
   logWarn(message, '\n');
   if (frame) {
     logWarn(frame, '\n');

@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+/* eslint-disable prefer-arrow-callback */
 const { all: deepMergeAll } = require('deepmerge');
 
 const registerHelpers = (handlebars) => {
@@ -177,3 +179,5 @@ const registerHelpers = (handlebars) => {
 };
 
 module.exports = registerHelpers;
+/* eslint-enable func-names */
+/* eslint-enable prefer-arrow-callback */

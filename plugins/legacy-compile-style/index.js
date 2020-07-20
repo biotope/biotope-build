@@ -1,4 +1,6 @@
-const { resolve, basename, extname, sep } = require('path');
+const {
+  resolve, basename, extname, sep,
+} = require('path');
 const postcss = require('postcss');
 const postcssNodeSass = require('postcss-node-sass');
 const postcssScss = require('postcss-scss');
@@ -34,13 +36,14 @@ const legacyCompileStylePlugin = (options = []) => {
       priority: 0,
       async runner(_, [{ addFile }]) {
         const postcssRunner = postcss(postcssNodeSass, ...plugins);
-        await Promise.all(files.map(({ input, output }) => new Promise((done) => {
+        await Promise.all(files.map(async ({ input, output }) => {
           const content = readFileSync(input);
-          postcssRunner.process(content, { from: input, parser: postcssScss.parse }).then((result) => {
-            addFile({ name: output, content: result.css });
-            done();
+          const result = await postcssRunner.process(content, {
+            from: input,
+            parser: postcssScss.parse,
           });
-        })));
+          addFile({ name: output, content: result.css });
+        }));
       },
     },
   ];

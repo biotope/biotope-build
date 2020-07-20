@@ -15,12 +15,13 @@ const componentsJsonPlugin = (pattern) => ({
     const regex = new RegExp(pattern.replace(/\//g, sep));
 
     const [{ addFile, legacy: noModulesBuild }] = builds;
-    
-    const outputs = builds.filter(build => noModulesBuild || !build.legacy).reduce((accumulator, { outputFiles }) => ([
-      ...accumulator,
-      ...Object.keys(outputFiles),
-    ]), []);
-    
+
+    const outputs = builds.filter((build) => noModulesBuild || !build.legacy)
+      .reduce((accumulator, { outputFiles }) => ([
+        ...accumulator,
+        ...Object.keys(outputFiles),
+      ]), []);
+
     const content = JSON.stringify(
       outputs
         .filter((output) => regex.test(output))
