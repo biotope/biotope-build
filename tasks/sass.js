@@ -21,6 +21,10 @@ gulp.task('sass', function () {
     const dependents = require('gulp-dependents');
     const rename = require('gulp-rename');
 
+    if (config.sass.options.compiler) {
+      sass.compiler = config.sass.options.compiler;
+    }
+
     return gulp
       .src([
         config.global.src + '/**/*.s+(a|c)ss',
