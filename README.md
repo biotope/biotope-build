@@ -243,12 +243,14 @@ modernizr: {
 ```
 
 #### sass
-Sass compiler based on node-sass.
+Sass compiler based on node-sass (can be changed to dart-sass via projectConfig.js).
 Repo: https://github.com/dlmanning/gulp-sass
 Options: https://github.com/sass/node-sass#options
 ```
 sass: {
-	includePaths: []
+	includePaths: [],
+	compiler: null // default behaviour. utilizes `node-sass`
+	compiler: require('sass') // overwrite to use `dart-sass` (`sass` package uses `dart-sass` by default nowadays)
 },
 ```
 
